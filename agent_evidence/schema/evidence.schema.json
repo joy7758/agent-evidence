@@ -5,40 +5,40 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "record_id",
-    "timestamp",
-    "payload",
-    "payload_digest",
-    "chain_digest",
-    "schema_version"
+    "schema_version",
+    "event",
+    "hashes"
   ],
   "properties": {
-    "record_id": {
-      "type": "string"
-    },
-    "timestamp": {
-      "type": "string"
-    },
-    "payload_digest": {
-      "type": "string"
-    },
-    "previous_digest": {
-      "type": ["string", "null"]
-    },
-    "chain_digest": {
-      "type": "string"
-    },
     "schema_version": {
-      "type": "string"
+      "type": "string",
+      "const": "2.0.0"
     },
-    "payload": {
+    "event": {
       "type": "object",
-      "required": ["actor", "action", "inputs", "outputs", "metadata", "tags"],
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "timestamp",
+        "event_type",
+        "actor",
+        "inputs",
+        "outputs",
+        "context",
+        "metadata"
+      ],
       "properties": {
-        "actor": {
+        "event_id": {
           "type": "string"
         },
-        "action": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "event_type": {
+          "type": "string"
+        },
+        "actor": {
           "type": "string"
         },
         "inputs": {
@@ -47,14 +47,73 @@
         "outputs": {
           "type": "object"
         },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source",
+            "ancestor_span_ids",
+            "tags",
+            "attributes"
+          ],
+          "properties": {
+            "source": {
+              "type": "string"
+            },
+            "component": {
+              "type": ["string", "null"]
+            },
+            "source_event_type": {
+              "type": ["string", "null"]
+            },
+            "span_id": {
+              "type": ["string", "null"]
+            },
+            "parent_span_id": {
+              "type": ["string", "null"]
+            },
+            "ancestor_span_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "name": {
+              "type": ["string", "null"]
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "attributes": {
+              "type": "object"
+            }
+          }
+        },
         "metadata": {
           "type": "object"
+        }
+      }
+    },
+    "hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_hash",
+        "previous_event_hash",
+        "chain_hash"
+      ],
+      "properties": {
+        "event_hash": {
+          "type": "string"
         },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        "previous_event_hash": {
+          "type": ["string", "null"]
+        },
+        "chain_hash": {
+          "type": "string"
         }
       }
     }

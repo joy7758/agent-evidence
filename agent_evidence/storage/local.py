@@ -32,11 +32,17 @@ class LocalEvidenceStore(EvidenceStore):
                 records.append(EvidenceEnvelope.model_validate_json(line))
         return records
 
-    def latest_chain_digest(self) -> str | None:
+    def latest_event_hash(self) -> str | None:
         records = self.list()
         if not records:
             return None
-        return records[-1].chain_digest
+        return records[-1].hashes.event_hash
+
+    def latest_chain_hash(self) -> str | None:
+        records = self.list()
+        if not records:
+            return None
+        return records[-1].hashes.chain_hash
 
     def export_json(self) -> str:
         return json.dumps(

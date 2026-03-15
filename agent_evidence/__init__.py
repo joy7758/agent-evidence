@@ -1,12 +1,14 @@
 """Public package API for Agent Evidence."""
 
-from .models import EvidenceEnvelope, EvidencePayload
+from .models import EvidenceContext, EvidenceEnvelope, EvidenceEvent, EvidenceHashes
 from .recorder import EvidenceRecorder
 from .storage.local import LocalEvidenceStore
 
 __all__ = [
+    "EvidenceContext",
     "EvidenceEnvelope",
-    "EvidencePayload",
+    "EvidenceEvent",
+    "EvidenceHashes",
     "EvidenceRecorder",
     "LocalEvidenceStore",
 ]

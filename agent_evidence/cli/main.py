@@ -5,6 +5,7 @@ from pathlib import Path
 
 import click
 
+from agent_evidence.crypto.chain import verify_chain
 from agent_evidence.models import EvidenceEnvelope
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage.local import LocalEvidenceStore
@@ -31,28 +32,37 @@ def main() -> None:
 @main.command()
 @click.option("--store", "store_path", required=True, type=click.Path(dir_okay=False))
 @click.option("--actor", required=True)
-@click.option("--action", required=True)
+@click.option("--event-type", "event_type")
+@click.option("--action", help="Deprecated alias for --event-type.")
 @click.option("--input", "inputs_raw")
 @click.option("--output", "outputs_raw")
+@click.option("--context", "context_raw")
 @click.option("--metadata", "metadata_raw")
 @click.option("--tag", "tags", multiple=True)
 def record(
     store_path: str,
     actor: str,
-    action: str,
+    event_type: str | None,
+    action: str | None,
     inputs_raw: str | None,
     outputs_raw: str | None,
+    context_raw: str | None,
     metadata_raw: str | None,
     tags: tuple[str, ...],
 ) -> None:
     """Append one evidence record to the local store."""
 
+    resolved_event_type = event_type or action
+    if not resolved_event_type:
+        raise click.ClickException("One of --event-type or --action is required.")
+
     recorder = EvidenceRecorder(build_store(store_path))
     envelope = recorder.record(
         actor=actor,
-        action=action,
+        event_type=resolved_event_type,
         inputs=parse_json_option(inputs_raw),
         outputs=parse_json_option(outputs_raw),
+        context=parse_json_option(context_raw),
         metadata=parse_json_option(metadata_raw),
         tags=list(tags),
     )
@@ -70,11 +80,11 @@ def list_records(store_path: str) -> None:
             json.dumps(
                 {
                     "index": index,
-                    "record_id": envelope.record_id,
-                    "timestamp": envelope.timestamp,
-                    "actor": envelope.payload.actor,
-                    "action": envelope.payload.action,
-                    "chain_digest": envelope.chain_digest,
+                    "event_id": envelope.event.event_id,
+                    "timestamp": envelope.event.timestamp.isoformat(),
+                    "actor": envelope.event.actor,
+                    "event_type": envelope.event.event_type,
+                    "chain_hash": envelope.hashes.chain_hash,
                 },
                 sort_keys=True,
             )
@@ -95,6 +105,25 @@ def show(store_path: str, index_: int) -> None:
         raise click.ClickException(f"Record index out of range: {index_}") from exc
 
     click.echo(envelope.model_dump_json(indent=2))
+
+
+@main.command()
+@click.option("--store", "store_path", required=True, type=click.Path(dir_okay=False))
+def verify(store_path: str) -> None:
+    """Verify chain integrity for all records in a local store."""
+
+    store = build_store(store_path)
+    records = store.list()
+    issues = verify_chain(records)
+    result = {
+        "ok": not issues,
+        "records": len(records),
+        "latest_chain_hash": records[-1].hashes.chain_hash if records else None,
+        "issues": issues,
+    }
+    click.echo(json.dumps(result, indent=2, sort_keys=True))
+    if issues:
+        raise click.ClickException("Evidence chain verification failed.")
 
 
 @main.command()

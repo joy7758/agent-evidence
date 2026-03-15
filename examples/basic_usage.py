@@ -9,9 +9,10 @@ def main() -> None:
 
     envelope = recorder.record(
         actor="planner",
-        action="tool_call",
+        event_type="tool.call",
         inputs={"tool": "search", "query": "agent observability"},
         outputs={"status": "ok", "documents": 3},
+        context={"source": "example", "component": "tool"},
         metadata={"session_id": "demo-session"},
         tags=["example", "demo"],
     )

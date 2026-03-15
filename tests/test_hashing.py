@@ -1,5 +1,5 @@
-from agent_evidence.crypto.chain import chain_digest_for_record
-from agent_evidence.crypto.hashing import canonical_json_bytes, hash_payload
+from agent_evidence.crypto.chain import chain_digest_for_event
+from agent_evidence.crypto.hashing import canonical_json_bytes, compute_hash
 
 
 def test_canonical_json_is_stable() -> None:
@@ -9,7 +9,7 @@ def test_canonical_json_is_stable() -> None:
 
 
 def test_chain_digest_changes_with_previous_link() -> None:
-    payload_digest = hash_payload({"actor": "planner"})
-    first = chain_digest_for_record(payload_digest=payload_digest, previous_digest=None)
-    second = chain_digest_for_record(payload_digest=payload_digest, previous_digest=first)
+    event_hash = compute_hash({"actor": "planner"})
+    first = chain_digest_for_event(event_hash=event_hash, previous_chain_hash=None)
+    second = chain_digest_for_event(event_hash=event_hash, previous_chain_hash=first)
     assert first != second

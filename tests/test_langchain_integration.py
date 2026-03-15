@@ -44,21 +44,22 @@ def test_callback_handler_records_chain_and_tool_runs(tmp_path: Path) -> None:
     )
 
     records = store.list()
-    actions = [record.payload.action for record in records]
-    assert "on_chain_start" in actions
-    assert "on_chain_end" in actions
-    assert "on_tool_start" in actions
-    assert "on_tool_end" in actions
+    event_types = [record.event.event_type for record in records]
+    assert "chain.start" in event_types
+    assert "chain.end" in event_types
+    assert "tool.start" in event_types
+    assert "tool.end" in event_types
 
-    chain_start = next(record for record in records if record.payload.action == "on_chain_start")
-    assert chain_start.payload.inputs["input"] == "hello"
-    assert chain_start.payload.metadata["session_id"] == "chain-demo"
-    assert "baseline" in chain_start.payload.tags
-    assert "langchain" in chain_start.payload.tags
+    chain_start = next(record for record in records if record.event.event_type == "chain.start")
+    assert chain_start.event.inputs["input"] == "hello"
+    assert chain_start.event.metadata["session_id"] == "chain-demo"
+    assert "baseline" in chain_start.event.context.tags
+    assert "langchain" in chain_start.event.context.tags
+    assert chain_start.event.context.source_event_type == "on_chain_start"
 
-    tool_end = next(record for record in records if record.payload.action == "on_tool_end")
-    assert tool_end.payload.outputs["x"] == "1"
-    assert tool_end.payload.metadata["_langchain"]["component"] == "tool"
+    tool_end = next(record for record in records if record.event.event_type == "tool.end")
+    assert tool_end.event.outputs["x"] == "1"
+    assert tool_end.event.context.component == "tool"
 
 
 def test_stream_event_adapter_matches_v2_event_shape(tmp_path: Path) -> None:
@@ -70,16 +71,17 @@ def test_stream_event_adapter_matches_v2_event_shape(tmp_path: Path) -> None:
     start_event = next(event for event in events if event["event"] == "on_chain_start")
     end_event = next(event for event in events if event["event"] == "on_chain_end")
 
-    payload = evidence_from_langchain_event(start_event)
-    assert payload.actor == "reverse"
-    assert payload.action == "on_chain_start"
-    assert payload.inputs["input"] == "hello"
-    assert payload.metadata["_langchain"]["component"] == "chain"
+    evidence_event = evidence_from_langchain_event(start_event)
+    assert evidence_event.actor == "reverse"
+    assert evidence_event.event_type == "chain.start"
+    assert evidence_event.inputs["input"] == "hello"
+    assert evidence_event.context.component == "chain"
+    assert evidence_event.context.source_event_type == "on_chain_start"
 
     store = LocalEvidenceStore(tmp_path / "stream.evidence.jsonl")
     recorder = EvidenceRecorder(store)
     record_langchain_event(recorder, end_event)
 
     [record] = store.list()
-    assert record.payload.action == "on_chain_end"
-    assert record.payload.outputs["output"] == "olleh"
+    assert record.event.event_type == "chain.end"
+    assert record.event.outputs["output"] == "olleh"

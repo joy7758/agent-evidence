@@ -18,12 +18,14 @@ def test_cli_record_and_show(tmp_path: Path) -> None:
             str(store_path),
             "--actor",
             "planner",
-            "--action",
-            "tool_call",
+            "--event-type",
+            "tool.call",
             "--input",
             '{"prompt":"hello"}',
             "--output",
             '{"status":"ok"}',
+            "--context",
+            '{"source":"cli","component":"tool"}',
             "--tag",
             "cli",
         ],
@@ -34,8 +36,15 @@ def test_cli_record_and_show(tmp_path: Path) -> None:
     assert listed.exit_code == 0, listed.output
     rows = [json.loads(line) for line in listed.output.strip().splitlines()]
     assert rows[0]["actor"] == "planner"
+    assert rows[0]["event_type"] == "tool.call"
 
     shown = runner.invoke(main, ["show", "--store", str(store_path), "--index", "0"])
     assert shown.exit_code == 0, shown.output
     payload = json.loads(shown.output)
-    assert payload["payload"]["action"] == "tool_call"
+    assert payload["event"]["event_type"] == "tool.call"
+    assert payload["event"]["context"]["component"] == "tool"
+
+    verified = runner.invoke(main, ["verify", "--store", str(store_path)])
+    assert verified.exit_code == 0, verified.output
+    result = json.loads(verified.output)
+    assert result["ok"] is True

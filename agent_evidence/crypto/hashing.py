@@ -20,5 +20,9 @@ def sha256_hex(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def compute_hash(data: Any) -> str:
+    return sha256_hex(canonical_json_bytes(data))
+
+
 def hash_payload(payload: Any) -> str:
-    return sha256_hex(canonical_json_bytes(payload))
+    return compute_hash(payload)

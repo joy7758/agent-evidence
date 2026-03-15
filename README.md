@@ -5,6 +5,13 @@ about autonomous agent execution. It provides structured evidence records,
 deterministic hashing, append-only local storage, and a small CLI for
 inspection and export.
 
+The current model treats each record as a semantic event envelope:
+
+- `event.event_type` is framework-neutral, such as `chain.start` or `tool.end`
+- `event.context.source_event_type` preserves the raw framework event name
+- `hashes.previous_event_hash` links to the prior event
+- `hashes.chain_hash` provides a cumulative chain tip for integrity checks
+
 ## Why this shape
 
 The project is organized so evidence capture stays modular:
@@ -33,12 +40,14 @@ agent-evidence schema
 agent-evidence record \
   --store ./data/evidence.jsonl \
   --actor planner \
-  --action tool_call \
+  --event-type tool.call \
   --input '{"task":"summarize"}' \
-  --output '{"status":"ok"}'
+  --output '{"status":"ok"}' \
+  --context '{"source":"cli","component":"tool"}'
 
 agent-evidence list --store ./data/evidence.jsonl
 agent-evidence show --store ./data/evidence.jsonl --index 0
+agent-evidence verify --store ./data/evidence.jsonl
 ```
 
 ## Development
@@ -52,6 +61,44 @@ make hooks
 
 The repository includes a `.pre-commit-config.yaml` with baseline whitespace,
 JSON, and Ruff checks.
+
+## Semantic event model
+
+Each persisted record follows this shape:
+
+```json
+{
+  "schema_version": "2.0.0",
+  "event": {
+    "event_id": "...",
+    "timestamp": "2026-03-16T00:00:00+00:00",
+    "event_type": "tool.end",
+    "actor": "search-tool",
+    "inputs": {},
+    "outputs": {},
+    "context": {
+      "source": "langchain",
+      "component": "tool",
+      "source_event_type": "on_tool_end",
+      "span_id": "...",
+      "parent_span_id": null,
+      "ancestor_span_ids": [],
+      "name": "search-tool",
+      "tags": ["langchain", "tool"],
+      "attributes": {}
+    },
+    "metadata": {}
+  },
+  "hashes": {
+    "event_hash": "...",
+    "previous_event_hash": "...",
+    "chain_hash": "..."
+  }
+}
+```
+
+`event_type` is the stable semantic layer. `source_event_type` keeps the
+original callback or trace event for lossless debugging.
 
 ## LangChain integration
 
@@ -97,3 +144,18 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
+
+Both integration paths normalize LangChain callback names such as
+`on_chain_start` and `on_tool_end` into semantic event types such as
+`chain.start` and `tool.end`.
+
+## Verification
+
+Use the CLI to validate the chain after capture:
+
+```bash
+agent-evidence verify --store ./data/evidence.jsonl
+```
+
+This recomputes each `event_hash`, checks `previous_event_hash`, and validates
+the cumulative `chain_hash`.

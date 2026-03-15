@@ -15,5 +15,9 @@ class EvidenceStore(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def latest_chain_digest(self) -> str | None:
+    def latest_event_hash(self) -> str | None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def latest_chain_hash(self) -> str | None:
         raise NotImplementedError
