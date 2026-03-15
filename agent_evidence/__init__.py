@@ -4,7 +4,9 @@ from .export import (
     export_csv_bundle,
     export_json_bundle,
     export_xml_bundle,
+    package_export_archive,
     verify_csv_export,
+    verify_export_archive,
     verify_json_bundle,
     verify_xml_export,
 )
@@ -37,7 +39,9 @@ __all__ = [
     "export_json_bundle",
     "export_xml_bundle",
     "open_store",
+    "package_export_archive",
     "verify_csv_export",
+    "verify_export_archive",
     "verify_json_bundle",
     "verify_xml_export",
 ]

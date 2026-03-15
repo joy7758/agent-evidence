@@ -1,4 +1,6 @@
 import json
+import tarfile
+import zipfile
 from pathlib import Path
 
 from click.testing import CliRunner
@@ -11,7 +13,9 @@ from agent_evidence.export import (
     export_csv_bundle,
     export_json_bundle,
     export_xml_bundle,
+    package_export_archive,
     verify_csv_export,
+    verify_export_archive,
     verify_json_bundle,
     verify_xml_export,
 )
@@ -100,6 +104,19 @@ def write_keyring(tmp_path: Path, entries: list[dict[str, str]]) -> Path:
     return keyring_path
 
 
+def rewrite_zip_member(path: Path, member_name: str, old: str, new: str) -> None:
+    with zipfile.ZipFile(path, "r") as archive:
+        members = {
+            info.filename: archive.read(info.filename)
+            for info in archive.infolist()
+            if not info.is_dir()
+        }
+    members[member_name] = members[member_name].decode("utf-8").replace(old, new, 1).encode("utf-8")
+    with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        for name, payload in sorted(members.items()):
+            archive.writestr(name, payload)
+
+
 def test_export_json_bundle_and_verify_signature(tmp_path: Path) -> None:
     records, _ = build_records(tmp_path)
     _, _, private_pem, public_pem = write_ed25519_keypair(tmp_path)
@@ -183,6 +200,42 @@ def test_export_xml_bundle_detects_tampering(tmp_path: Path) -> None:
     assert "artifact_digest mismatch" in tampered["issues"]
 
 
+def test_package_export_archive_zip_and_detect_tampering(tmp_path: Path) -> None:
+    records, _ = build_records(tmp_path)
+    _, _, private_pem, public_pem = write_ed25519_keypair(tmp_path)
+    archive_path = tmp_path / "bundle-package.zip"
+
+    packaged = package_export_archive(
+        records,
+        archive_path,
+        export_format="xml",
+        private_key_pem=private_pem,
+        key_id="archive-key",
+    )
+
+    assert packaged["archive_format"] == "zip"
+    assert packaged["export_format"] == "xml"
+    assert packaged["signature_count"] == 1
+
+    verified = verify_export_archive(archive_path, public_key_pem=public_pem)
+    assert verified["ok"] is True
+    assert verified["packaged"] is True
+    assert verified["archive_format"] == "zip"
+    assert verified["format"] == "xml"
+    assert verified["signature_count"] == 1
+    assert verified["signature_verified"] is True
+
+    rewrite_zip_member(
+        archive_path,
+        "bundle-package.xml",
+        "tool.end",
+        "tool.fail",
+    )
+    tampered = verify_export_archive(archive_path, public_key_pem=public_pem)
+    assert tampered["ok"] is False
+    assert "artifact_digest mismatch" in tampered["issues"]
+
+
 def test_cli_export_and_verify_bundle(tmp_path: Path) -> None:
     records, store = build_records(tmp_path)
     runner = CliRunner()
@@ -227,6 +280,68 @@ def test_cli_export_and_verify_bundle(tmp_path: Path) -> None:
     assert verified.exit_code == 0, verified.output
     verify_result = json.loads(verified.output)
     assert verify_result["ok"] is True
+    assert verify_result["signature_count"] == 1
+    assert verify_result["signature_verified"] is True
+
+
+def test_cli_export_and_verify_archive_tgz(tmp_path: Path) -> None:
+    records, store = build_records(tmp_path)
+    runner = CliRunner()
+    private_path, public_path, _, _ = write_ed25519_keypair(tmp_path)
+    archive_path = tmp_path / "cli-package.tgz"
+
+    exported = runner.invoke(
+        main,
+        [
+            "export",
+            "--store",
+            str(store.path),
+            "--format",
+            "json",
+            "--archive-format",
+            "tar.gz",
+            "--output",
+            str(archive_path),
+            "--actor",
+            "planner",
+            "--private-key",
+            str(private_path),
+            "--key-id",
+            "archive-cli-key",
+        ],
+    )
+    assert exported.exit_code == 0, exported.output
+    export_result = json.loads(exported.output)
+    assert export_result["archive_format"] == "tar.gz"
+    assert export_result["format"] == "json"
+    assert export_result["packaged"] is True
+    assert export_result["record_count"] == len(records)
+    assert export_result["signature_count"] == 1
+
+    with tarfile.open(archive_path, "r:gz") as archive:
+        member_names = sorted(member.name for member in archive.getmembers() if member.isfile())
+    assert member_names == [
+        "cli-package.bundle.json",
+        "cli-package.bundle.json.manifest.json",
+        "package-manifest.json",
+    ]
+
+    verified = runner.invoke(
+        main,
+        [
+            "verify-export",
+            "--archive",
+            str(archive_path),
+            "--public-key",
+            str(public_path),
+        ],
+    )
+    assert verified.exit_code == 0, verified.output
+    verify_result = json.loads(verified.output)
+    assert verify_result["ok"] is True
+    assert verify_result["packaged"] is True
+    assert verify_result["archive_format"] == "tar.gz"
+    assert verify_result["format"] == "json"
     assert verify_result["signature_count"] == 1
     assert verify_result["signature_verified"] is True
 

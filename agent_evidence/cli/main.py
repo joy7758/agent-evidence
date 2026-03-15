@@ -15,7 +15,9 @@ from agent_evidence.export import (
     export_csv_bundle,
     export_json_bundle,
     export_xml_bundle,
+    package_export_archive,
     verify_csv_export,
+    verify_export_archive,
     verify_json_bundle,
     verify_xml_export,
 )
@@ -450,6 +452,7 @@ def query(
 @click.option("--signature-role")
 @click.option("--signature-metadata")
 @click.option("--signed-at")
+@click.option("--archive-format", type=click.Choice(["zip", "tar.gz"]))
 @click.option("--required-signatures", type=click.IntRange(min=1))
 @click.option("--required-signature-role", "required_signature_roles", multiple=True)
 @click.option(
@@ -471,6 +474,7 @@ def export_records(
     signature_role: str | None,
     signature_metadata: str | None,
     signed_at: str | None,
+    archive_format: str | None,
     required_signatures: int | None,
     required_signature_roles: tuple[str, ...],
     signer_config_paths: tuple[Path, ...],
@@ -516,6 +520,19 @@ def export_records(
         limit=limit,
     )
     records = store.query(**query_kwargs)
+    if archive_format is not None and manifest_output is not None:
+        raise click.ClickException(
+            "--manifest-output cannot be used with --archive-format; "
+            "the package includes its own manifest path."
+        )
+    if archive_format == "zip" and output_path.suffix.lower() != ".zip":
+        raise click.ClickException("--archive-format zip requires an output path ending in .zip.")
+    if archive_format == "tar.gz" and not (
+        output_path.name.lower().endswith(".tar.gz") or output_path.name.lower().endswith(".tgz")
+    ):
+        raise click.ClickException(
+            "--archive-format tar.gz requires an output path ending in .tar.gz or .tgz."
+        )
     signer_configs = build_signer_configs(
         private_key=private_key,
         key_id=key_id,
@@ -528,6 +545,36 @@ def export_records(
     )
 
     manifest_path: Path | None = manifest_output
+    if archive_format is not None:
+        package_result = package_export_archive(
+            records,
+            output_path,
+            export_format=export_format,
+            filters=query_kwargs,
+            signer_configs=signer_configs,
+            minimum_valid_signatures=required_signatures,
+            minimum_valid_signatures_by_role=role_thresholds,
+        )
+        click.echo(
+            json.dumps(
+                {
+                    "archive_format": archive_format,
+                    "format": export_format,
+                    "output": str(output_path),
+                    "artifact_path": package_result["artifact_path"],
+                    "manifest_output": package_result["manifest_path"],
+                    "packaged": True,
+                    "record_count": len(records),
+                    "signed": package_result["signature_count"] > 0,
+                    "signature_count": package_result["signature_count"],
+                    "required_signatures": required_signatures,
+                    "required_signature_roles": role_thresholds,
+                },
+                indent=2,
+                sort_keys=True,
+            )
+        )
+        return
     if export_format == "json":
         bundle = export_json_bundle(
             records,
@@ -583,6 +630,7 @@ def export_records(
 
 
 @main.command(name="verify-export")
+@click.option("--archive", type=click.Path(exists=True, dir_okay=False, path_type=Path))
 @click.option("--bundle", type=click.Path(exists=True, dir_okay=False, path_type=Path))
 @click.option("--csv", "csv_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
 @click.option("--xml", "xml_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
@@ -604,6 +652,7 @@ def export_records(
 @click.option("--required-signatures", type=click.IntRange(min=1))
 @click.option("--required-signature-role", "required_signature_roles", multiple=True)
 def verify_export_command(
+    archive: Path | None,
     bundle: Path | None,
     csv_path: Path | None,
     xml_path: Path | None,
@@ -617,17 +666,26 @@ def verify_export_command(
 ) -> None:
     """Verify an exported JSON bundle, CSV artifact, or XML artifact."""
 
+    if archive is not None and (
+        bundle is not None
+        or csv_path is not None
+        or xml_path is not None
+        or manifest_path is not None
+    ):
+        raise click.ClickException(
+            "Use --archive or one of --bundle, --csv/--manifest, or --xml/--manifest, not both."
+        )
     if bundle is not None and (
         csv_path is not None or xml_path is not None or manifest_path is not None
     ):
         raise click.ClickException(
             "Use --bundle or one of the --csv/--manifest or --xml/--manifest pairs, not both."
         )
-    if bundle is None:
+    if archive is None and bundle is None:
         artifact_count = int(csv_path is not None) + int(xml_path is not None)
         if artifact_count != 1 or manifest_path is None:
             raise click.ClickException(
-                "Provide --bundle, or provide exactly one of --csv or --xml "
+                "Provide --archive, --bundle, or exactly one of --csv or --xml "
                 "together with --manifest."
             )
 
@@ -642,7 +700,14 @@ def verify_export_command(
         required_signatures=required_signatures,
         role_thresholds=role_thresholds,
     )
-    if bundle is not None:
+    if archive is not None:
+        result = verify_export_archive(
+            archive,
+            verification_keys=verification_keys,
+            minimum_valid_signatures=required_signatures,
+            minimum_valid_signatures_by_role=role_thresholds or None,
+        )
+    elif bundle is not None:
         result = verify_json_bundle(
             bundle,
             verification_keys=verification_keys,

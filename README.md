@@ -115,6 +115,14 @@ agent-evidence export \
 agent-evidence export \
   --store ./data/evidence.jsonl \
   --format json \
+  --archive-format tar.gz \
+  --output ./exports/evidence-package.tgz \
+  --private-key ./keys/manifest-private.pem \
+  --key-id evidence-demo
+
+agent-evidence export \
+  --store ./data/evidence.jsonl \
+  --format json \
   --output ./exports/evidence.multisig.json \
   --required-signatures 2 \
   --required-signature-role approver=1 \
@@ -138,6 +146,10 @@ agent-evidence verify-export \
 agent-evidence verify-export \
   --xml ./exports/evidence.xml \
   --manifest ./exports/evidence.xml.manifest.json \
+  --public-key ./keys/manifest-public.pem
+
+agent-evidence verify-export \
+  --archive ./exports/evidence-package.tgz \
   --public-key ./keys/manifest-public.pem
 ```
 
@@ -310,6 +322,13 @@ Agent Evidence supports three export shapes:
 - JSON bundles containing `records`, `manifest`, and one or more detached signatures
 - CSV artifacts plus a JSON sidecar manifest
 - XML artifacts plus a JSON sidecar manifest
+
+Exports can also be packaged as a single `.zip` or `.tar.gz` archive via
+`--archive-format`. Packaged exports include:
+
+- the exported artifact
+- the sidecar manifest
+- a small `package-manifest.json` used to locate those files during verification
 
 Both formats include a manifest with:
 
