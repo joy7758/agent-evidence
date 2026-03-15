@@ -77,6 +77,19 @@ agent-evidence query \
   --store sqlite+pysqlite:///./data/evidence.db \
   --event-type tool.call \
   --source cli
+
+agent-evidence query \
+  --store sqlite+pysqlite:///./data/evidence.db \
+  --span-id tool-1 \
+  --parent-span-id root \
+  --offset 0 \
+  --limit 50
+
+agent-evidence query \
+  --store sqlite+pysqlite:///./data/evidence.db \
+  --previous-event-hash <event-hash> \
+  --event-hash-from <lower-bound-hash> \
+  --event-hash-to <upper-bound-hash>
 ```
 
 ## Development
@@ -205,9 +218,23 @@ while keeping indexed columns for efficient filtering:
 - `timestamp`
 - `source`
 - `component`
+- `span_id`
+- `parent_span_id`
 - `previous_event_hash`
 - `event_hash`
 - `chain_hash`
+
+The query interface supports:
+
+- semantic filters such as `event_type`, `actor`, `source`, and `component`
+- chain traversal via `previous_event_hash`
+- span-scoped inspection with `span_id` and `parent_span_id`
+- time windows via `since` and `until`
+- lexicographic hash windows via `event_hash_from/to` and `chain_hash_from/to`
+- pagination via `offset` and `limit`
+
+Hash window filters operate on fixed-width lowercase SHA-256 hex digests, so
+lexicographic ranges map cleanly to digest ordering for indexed lookups.
 
 The store accepts standard SQLAlchemy URLs, for example:
 

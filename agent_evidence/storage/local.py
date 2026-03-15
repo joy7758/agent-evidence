@@ -52,8 +52,16 @@ class LocalEvidenceStore(EvidenceStore):
         actor: str | None = None,
         source: str | None = None,
         component: str | None = None,
+        span_id: str | None = None,
+        parent_span_id: str | None = None,
+        previous_event_hash: str | None = None,
         since: datetime | None = None,
         until: datetime | None = None,
+        event_hash_from: str | None = None,
+        event_hash_to: str | None = None,
+        chain_hash_from: str | None = None,
+        chain_hash_to: str | None = None,
+        offset: int | None = None,
         limit: int | None = None,
     ) -> list[EvidenceEnvelope]:
         records = self.list()
@@ -61,6 +69,7 @@ class LocalEvidenceStore(EvidenceStore):
         def matches(envelope: EvidenceEnvelope) -> bool:
             event = envelope.event
             context = event.context
+            hashes = envelope.hashes
             if event_type is not None and event.event_type != event_type:
                 return False
             if actor is not None and event.actor != actor:
@@ -69,13 +78,32 @@ class LocalEvidenceStore(EvidenceStore):
                 return False
             if component is not None and context.component != component:
                 return False
+            if span_id is not None and context.span_id != span_id:
+                return False
+            if parent_span_id is not None and context.parent_span_id != parent_span_id:
+                return False
+            if (
+                previous_event_hash is not None
+                and hashes.previous_event_hash != previous_event_hash
+            ):
+                return False
             if since is not None and event.timestamp < since:
                 return False
             if until is not None and event.timestamp > until:
                 return False
+            if event_hash_from is not None and hashes.event_hash < event_hash_from:
+                return False
+            if event_hash_to is not None and hashes.event_hash > event_hash_to:
+                return False
+            if chain_hash_from is not None and hashes.chain_hash < chain_hash_from:
+                return False
+            if chain_hash_to is not None and hashes.chain_hash > chain_hash_to:
+                return False
             return True
 
         filtered = [envelope for envelope in records if matches(envelope)]
+        if offset is not None:
+            filtered = filtered[offset:]
         if limit is not None:
             return filtered[:limit]
         return filtered

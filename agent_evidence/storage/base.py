@@ -31,8 +31,16 @@ class EvidenceStore(ABC):
         actor: str | None = None,
         source: str | None = None,
         component: str | None = None,
+        span_id: str | None = None,
+        parent_span_id: str | None = None,
+        previous_event_hash: str | None = None,
         since: datetime | None = None,
         until: datetime | None = None,
+        event_hash_from: str | None = None,
+        event_hash_to: str | None = None,
+        chain_hash_from: str | None = None,
+        chain_hash_to: str | None = None,
+        offset: int | None = None,
         limit: int | None = None,
     ) -> list[EvidenceEnvelope]:
         raise NotImplementedError

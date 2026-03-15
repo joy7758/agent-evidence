@@ -147,20 +147,36 @@ def verify(store_target: str) -> None:
 @click.option("--actor")
 @click.option("--source")
 @click.option("--component")
+@click.option("--span-id")
+@click.option("--parent-span-id")
+@click.option("--previous-event-hash")
 @click.option("--since")
 @click.option("--until")
-@click.option("--limit", type=int)
+@click.option("--event-hash-from")
+@click.option("--event-hash-to")
+@click.option("--chain-hash-from")
+@click.option("--chain-hash-to")
+@click.option("--offset", type=click.IntRange(min=0))
+@click.option("--limit", type=click.IntRange(min=0))
 def query(
     store_target: str,
     event_type: str | None,
     actor: str | None,
     source: str | None,
     component: str | None,
+    span_id: str | None,
+    parent_span_id: str | None,
+    previous_event_hash: str | None,
     since: str | None,
     until: str | None,
+    event_hash_from: str | None,
+    event_hash_to: str | None,
+    chain_hash_from: str | None,
+    chain_hash_to: str | None,
+    offset: int | None,
     limit: int | None,
 ) -> None:
-    """Query evidence records by semantic fields and time range."""
+    """Query evidence records by semantic fields, chain pointers, and hash ranges."""
 
     store = build_store(store_target)
     records = store.query(
@@ -168,14 +184,25 @@ def query(
         actor=actor,
         source=source,
         component=component,
+        span_id=span_id,
+        parent_span_id=parent_span_id,
+        previous_event_hash=previous_event_hash,
         since=parse_datetime_option(since),
         until=parse_datetime_option(until),
+        event_hash_from=event_hash_from,
+        event_hash_to=event_hash_to,
+        chain_hash_from=chain_hash_from,
+        chain_hash_to=chain_hash_to,
+        offset=offset,
         limit=limit,
     )
     click.echo(
         json.dumps(
             {
                 "count": len(records),
+                "returned": len(records),
+                "offset": offset or 0,
+                "limit": limit,
                 "records": [record.model_dump(mode="json") for record in records],
             },
             indent=2,

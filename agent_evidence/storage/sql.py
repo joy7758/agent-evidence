@@ -117,8 +117,16 @@ class SqlEvidenceStore(EvidenceStore):
         actor: str | None = None,
         source: str | None = None,
         component: str | None = None,
+        span_id: str | None = None,
+        parent_span_id: str | None = None,
+        previous_event_hash: str | None = None,
         since: datetime | None = None,
         until: datetime | None = None,
+        event_hash_from: str | None = None,
+        event_hash_to: str | None = None,
+        chain_hash_from: str | None = None,
+        chain_hash_to: str | None = None,
+        offset: int | None = None,
         limit: int | None = None,
     ) -> list[EvidenceEnvelope]:
         statement = select(EvidenceRecordRow).order_by(
@@ -133,6 +141,14 @@ class SqlEvidenceStore(EvidenceStore):
             statement = statement.where(EvidenceRecordRow.source == source)
         if component is not None:
             statement = statement.where(EvidenceRecordRow.component == component)
+        if span_id is not None:
+            statement = statement.where(EvidenceRecordRow.span_id == span_id)
+        if parent_span_id is not None:
+            statement = statement.where(EvidenceRecordRow.parent_span_id == parent_span_id)
+        if previous_event_hash is not None:
+            statement = statement.where(
+                EvidenceRecordRow.previous_event_hash == previous_event_hash
+            )
         if since is not None:
             statement = statement.where(
                 EvidenceRecordRow.timestamp_epoch_us >= _to_epoch_micros(since)
@@ -141,6 +157,16 @@ class SqlEvidenceStore(EvidenceStore):
             statement = statement.where(
                 EvidenceRecordRow.timestamp_epoch_us <= _to_epoch_micros(until)
             )
+        if event_hash_from is not None:
+            statement = statement.where(EvidenceRecordRow.event_hash >= event_hash_from)
+        if event_hash_to is not None:
+            statement = statement.where(EvidenceRecordRow.event_hash <= event_hash_to)
+        if chain_hash_from is not None:
+            statement = statement.where(EvidenceRecordRow.chain_hash >= chain_hash_from)
+        if chain_hash_to is not None:
+            statement = statement.where(EvidenceRecordRow.chain_hash <= chain_hash_to)
+        if offset is not None:
+            statement = statement.offset(offset)
         if limit is not None:
             statement = statement.limit(limit)
 
