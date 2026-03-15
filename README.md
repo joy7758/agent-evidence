@@ -85,7 +85,7 @@ JSON, and Ruff checks.
 For PostgreSQL support, install the extra driver dependencies:
 
 ```bash
-pip install -e ".[postgres]"
+pip install -e ".[dev,postgres]"
 ```
 
 ## Semantic event model
@@ -217,3 +217,17 @@ agent-evidence migrate \
 
 The `query` command works across both local and SQL stores, although SQL stores
 are preferable once record volume grows beyond simple local inspection.
+
+## PostgreSQL integration validation
+
+For a repeatable real-database validation path, use the bundled Docker-backed
+integration script:
+
+```bash
+make install-postgres
+make test-postgres
+```
+
+This starts a temporary PostgreSQL container, exports
+`AGENT_EVIDENCE_POSTGRES_URL`, and runs `tests/test_postgres_integration.py`
+against the live database.

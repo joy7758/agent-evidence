@@ -4,13 +4,19 @@ PRE_COMMIT ?= ./.venv/bin/pre-commit
 PYTEST ?= ./.venv/bin/pytest
 RUFF ?= ./.venv/bin/ruff
 
-.PHONY: install test lint format hooks pre-commit clean
+.PHONY: install install-postgres test test-postgres lint format hooks pre-commit clean
 
 install:
 	$(PIP) install -e ".[dev,langchain,sql]"
 
+install-postgres:
+	$(PIP) install -e ".[dev,postgres]"
+
 test:
 	$(PYTEST)
+
+test-postgres:
+	./scripts/run_postgres_integration.sh
 
 lint:
 	$(RUFF) check .
