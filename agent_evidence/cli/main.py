@@ -1,12 +1,21 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 import click
 
 from agent_evidence.crypto.chain import verify_chain
+from agent_evidence.export import (
+    default_manifest_path,
+    export_csv_bundle,
+    export_json_bundle,
+    verify_csv_export,
+    verify_json_bundle,
+)
 from agent_evidence.models import EvidenceEnvelope
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage import migrate_records, open_store
@@ -37,6 +46,67 @@ def parse_datetime_option(raw: str | None) -> datetime | None:
     if value.tzinfo is None:
         return value.replace(tzinfo=timezone.utc)
     return value
+
+
+def add_query_filter_options(function: Callable[..., Any]) -> Callable[..., Any]:
+    options = [
+        click.option("--event-type"),
+        click.option("--actor"),
+        click.option("--source"),
+        click.option("--component"),
+        click.option("--span-id"),
+        click.option("--parent-span-id"),
+        click.option("--previous-event-hash"),
+        click.option("--since"),
+        click.option("--until"),
+        click.option("--event-hash-from"),
+        click.option("--event-hash-to"),
+        click.option("--chain-hash-from"),
+        click.option("--chain-hash-to"),
+        click.option("--offset", type=click.IntRange(min=0)),
+        click.option("--limit", type=click.IntRange(min=0)),
+    ]
+    decorated = function
+    for option in reversed(options):
+        decorated = option(decorated)
+    return decorated
+
+
+def build_query_kwargs(
+    *,
+    event_type: str | None,
+    actor: str | None,
+    source: str | None,
+    component: str | None,
+    span_id: str | None,
+    parent_span_id: str | None,
+    previous_event_hash: str | None,
+    since: str | None,
+    until: str | None,
+    event_hash_from: str | None,
+    event_hash_to: str | None,
+    chain_hash_from: str | None,
+    chain_hash_to: str | None,
+    offset: int | None,
+    limit: int | None,
+) -> dict[str, Any]:
+    return {
+        "event_type": event_type,
+        "actor": actor,
+        "source": source,
+        "component": component,
+        "span_id": span_id,
+        "parent_span_id": parent_span_id,
+        "previous_event_hash": previous_event_hash,
+        "since": parse_datetime_option(since),
+        "until": parse_datetime_option(until),
+        "event_hash_from": event_hash_from,
+        "event_hash_to": event_hash_to,
+        "chain_hash_from": chain_hash_from,
+        "chain_hash_to": chain_hash_to,
+        "offset": offset,
+        "limit": limit,
+    }
 
 
 @click.group()
@@ -143,21 +213,7 @@ def verify(store_target: str) -> None:
 
 @main.command()
 @click.option("--store", "store_target", required=True)
-@click.option("--event-type")
-@click.option("--actor")
-@click.option("--source")
-@click.option("--component")
-@click.option("--span-id")
-@click.option("--parent-span-id")
-@click.option("--previous-event-hash")
-@click.option("--since")
-@click.option("--until")
-@click.option("--event-hash-from")
-@click.option("--event-hash-to")
-@click.option("--chain-hash-from")
-@click.option("--chain-hash-to")
-@click.option("--offset", type=click.IntRange(min=0))
-@click.option("--limit", type=click.IntRange(min=0))
+@add_query_filter_options
 def query(
     store_target: str,
     event_type: str | None,
@@ -179,7 +235,7 @@ def query(
     """Query evidence records by semantic fields, chain pointers, and hash ranges."""
 
     store = build_store(store_target)
-    records = store.query(
+    query_kwargs = build_query_kwargs(
         event_type=event_type,
         actor=actor,
         source=source,
@@ -187,8 +243,8 @@ def query(
         span_id=span_id,
         parent_span_id=parent_span_id,
         previous_event_hash=previous_event_hash,
-        since=parse_datetime_option(since),
-        until=parse_datetime_option(until),
+        since=since,
+        until=until,
         event_hash_from=event_hash_from,
         event_hash_to=event_hash_to,
         chain_hash_from=chain_hash_from,
@@ -196,6 +252,7 @@ def query(
         offset=offset,
         limit=limit,
     )
+    records = store.query(**query_kwargs)
     click.echo(
         json.dumps(
             {
@@ -209,6 +266,155 @@ def query(
             sort_keys=True,
         )
     )
+
+
+@main.command(name="export")
+@click.option("--store", "store_target", required=True)
+@click.option(
+    "--format",
+    "export_format",
+    type=click.Choice(["json", "csv"]),
+    default="json",
+    show_default=True,
+)
+@click.option(
+    "--output",
+    "output_path",
+    required=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+)
+@click.option(
+    "--manifest-output",
+    type=click.Path(dir_okay=False, path_type=Path),
+)
+@click.option(
+    "--private-key",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+)
+@click.option("--key-id")
+@add_query_filter_options
+def export_records(
+    store_target: str,
+    export_format: str,
+    output_path: Path,
+    manifest_output: Path | None,
+    private_key: Path | None,
+    key_id: str | None,
+    event_type: str | None,
+    actor: str | None,
+    source: str | None,
+    component: str | None,
+    span_id: str | None,
+    parent_span_id: str | None,
+    previous_event_hash: str | None,
+    since: str | None,
+    until: str | None,
+    event_hash_from: str | None,
+    event_hash_to: str | None,
+    chain_hash_from: str | None,
+    chain_hash_to: str | None,
+    offset: int | None,
+    limit: int | None,
+) -> None:
+    """Export evidence records as a JSON bundle or CSV artifact with manifest."""
+
+    store = build_store(store_target)
+    query_kwargs = build_query_kwargs(
+        event_type=event_type,
+        actor=actor,
+        source=source,
+        component=component,
+        span_id=span_id,
+        parent_span_id=parent_span_id,
+        previous_event_hash=previous_event_hash,
+        since=since,
+        until=until,
+        event_hash_from=event_hash_from,
+        event_hash_to=event_hash_to,
+        chain_hash_from=chain_hash_from,
+        chain_hash_to=chain_hash_to,
+        offset=offset,
+        limit=limit,
+    )
+    records = store.query(**query_kwargs)
+    private_key_pem = private_key.read_bytes() if private_key is not None else None
+
+    manifest_path: Path | None = manifest_output
+    if export_format == "json":
+        bundle = export_json_bundle(
+            records,
+            output_path,
+            filters=query_kwargs,
+            private_key_pem=private_key_pem,
+            key_id=key_id,
+            manifest_output_path=manifest_output,
+        )
+        signature_present = bundle.signature is not None
+    else:
+        manifest_path = manifest_output or default_manifest_path(output_path)
+        manifest_document = export_csv_bundle(
+            records,
+            output_path,
+            manifest_output_path=manifest_path,
+            filters=query_kwargs,
+            private_key_pem=private_key_pem,
+            key_id=key_id,
+        )
+        signature_present = manifest_document.signature is not None
+
+    click.echo(
+        json.dumps(
+            {
+                "format": export_format,
+                "output": str(output_path),
+                "manifest_output": str(manifest_path) if manifest_path is not None else None,
+                "record_count": len(records),
+                "signed": signature_present,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+
+
+@main.command(name="verify-export")
+@click.option("--bundle", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option("--csv", "csv_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option(
+    "--manifest",
+    "manifest_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+)
+@click.option(
+    "--public-key",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+)
+def verify_export_command(
+    bundle: Path | None,
+    csv_path: Path | None,
+    manifest_path: Path | None,
+    public_key: Path | None,
+) -> None:
+    """Verify an exported JSON bundle or CSV artifact plus manifest."""
+
+    if bundle is not None and (csv_path is not None or manifest_path is not None):
+        raise click.ClickException("Use --bundle or the --csv/--manifest pair, not both.")
+    if bundle is None and (csv_path is None or manifest_path is None):
+        raise click.ClickException("Provide --bundle, or provide both --csv and --manifest.")
+
+    public_key_pem = public_key.read_bytes() if public_key is not None else None
+    if bundle is not None:
+        result = verify_json_bundle(bundle, public_key_pem=public_key_pem)
+    else:
+        result = verify_csv_export(
+            csv_path,
+            manifest_path,
+            public_key_pem=public_key_pem,
+        )
+
+    click.echo(json.dumps(result, indent=2, sort_keys=True))
+    if not result["ok"]:
+        raise click.ClickException("Export verification failed.")
 
 
 @main.command()

@@ -11,8 +11,8 @@ SQLite, and PostgreSQL storage backends.
 
 Agent Evidence is a minimal Python toolkit for capturing verifiable evidence
 about autonomous agent execution. It provides structured evidence records,
-deterministic hashing, append-only local storage, and a small CLI for
-inspection and export.
+deterministic hashing, append-only local storage, signed export bundles, and a
+small CLI for inspection and export.
 
 The toolkit now supports two storage modes:
 
@@ -90,6 +90,23 @@ agent-evidence query \
   --previous-event-hash <event-hash> \
   --event-hash-from <lower-bound-hash> \
   --event-hash-to <upper-bound-hash>
+
+agent-evidence export \
+  --store ./data/evidence.jsonl \
+  --format json \
+  --output ./exports/evidence.bundle.json
+
+agent-evidence export \
+  --store ./data/evidence.jsonl \
+  --format csv \
+  --output ./exports/evidence.csv \
+  --manifest-output ./exports/evidence.csv.manifest.json \
+  --private-key ./keys/manifest-private.pem \
+  --key-id evidence-demo
+
+agent-evidence verify-export \
+  --bundle ./exports/evidence.bundle.json \
+  --public-key ./keys/manifest-public.pem
 ```
 
 ## Development
@@ -253,6 +270,39 @@ agent-evidence migrate \
 
 The `query` command works across both local and SQL stores, although SQL stores
 are preferable once record volume grows beyond simple local inspection.
+
+## Bundle export
+
+Agent Evidence supports two export shapes:
+
+- JSON bundles containing `records`, `manifest`, and an optional detached signature
+- CSV artifacts plus a JSON sidecar manifest
+
+Both formats include a manifest with:
+
+- `artifact_digest` for the exported bytes
+- ordered event-hash and chain-hash list digests
+- first/last event hashes and latest chain hash
+- export filters used to produce the artifact
+
+Manifest signing uses Ed25519 PEM keys. To enable signing outside the dev
+environment:
+
+```bash
+pip install -e ".[signing]"
+```
+
+Example key generation with OpenSSL:
+
+```bash
+openssl genpkey -algorithm Ed25519 -out ./keys/manifest-private.pem
+openssl pkey -in ./keys/manifest-private.pem -pubout -out ./keys/manifest-public.pem
+```
+
+When you export CSV, Agent Evidence writes the CSV artifact and a manifest
+sidecar such as `evidence.csv.manifest.json`. `verify-export` validates the
+manifest summary, exported artifact digest, and the signature when a public key
+is provided.
 
 ## PostgreSQL integration validation
 
