@@ -1,5 +1,13 @@
 # Agent Evidence
 
+Capture autonomous agent execution as verifiable semantic events with JSONL,
+SQLite, and PostgreSQL storage backends.
+
+![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
+![Semantic Events](https://img.shields.io/badge/semantic%20events-v2.0.0-1f6feb)
+![Storage](https://img.shields.io/badge/storage-JSONL%20%7C%20SQLite%20%7C%20Postgres-0a7b83)
+![Status](https://img.shields.io/badge/status-experimental-orange)
+
 Agent Evidence is a minimal Python toolkit for capturing verifiable evidence
 about autonomous agent execution. It provides structured evidence records,
 deterministic hashing, append-only local storage, and a small CLI for
