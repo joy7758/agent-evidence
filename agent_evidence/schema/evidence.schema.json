@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/agent-evidence/evidence.schema.json",
+  "title": "EvidenceEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_id",
+    "timestamp",
+    "payload",
+    "payload_digest",
+    "chain_digest",
+    "schema_version"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string"
+    },
+    "payload_digest": {
+      "type": "string"
+    },
+    "previous_digest": {
+      "type": ["string", "null"]
+    },
+    "chain_digest": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object",
+      "required": ["actor", "action", "inputs", "outputs", "metadata", "tags"],
+      "properties": {
+        "actor": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "object"
+        },
+        "outputs": {
+          "type": "object"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
