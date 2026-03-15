@@ -108,6 +108,7 @@ agent-evidence export \
   --store ./data/evidence.jsonl \
   --format json \
   --output ./exports/evidence.multisig.json \
+  --required-signatures 2 \
   --signer-config ./keys/operations-q2.signer.json \
   --signer-config ./keys/compliance-q1.signer.json
 
@@ -118,6 +119,11 @@ agent-evidence verify-export \
 agent-evidence verify-export \
   --bundle ./exports/evidence.multisig.json \
   --keyring ./keys/manifest-keyring.json
+
+agent-evidence verify-export \
+  --bundle ./exports/evidence.multisig.json \
+  --keyring ./keys/manifest-keyring.json \
+  --required-signatures 1
 ```
 
 ## Development
@@ -302,6 +308,10 @@ Each signature can also carry:
 - `signer` and `role` for audit attribution
 - `signed_at` and arbitrary JSON metadata
 
+Manifests can also carry a threshold policy such as `1-of-2` or `2-of-3` via
+`signature_policy.minimum_valid_signatures`. If omitted, verification defaults
+to requiring every signature in the artifact to validate.
+
 Manifest signing uses Ed25519 PEM keys. To enable signing outside the dev
 environment:
 
@@ -331,6 +341,11 @@ Signer config files let you attach multiple signatures during export. Example
   }
 }
 ```
+
+To embed an `N-of-M` policy in the exported manifest, pass
+`--required-signatures N` during export. `verify-export` will honor that policy
+by default, or you can override it at verification time with another
+`--required-signatures` value.
 
 Keyrings let `verify-export` resolve rotated keys by `key_id` and
 `key_version`. Example `manifest-keyring.json`:

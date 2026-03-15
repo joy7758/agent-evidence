@@ -13,6 +13,7 @@ from agent_evidence.crypto.hashing import canonical_json_bytes, compute_hash, sh
 from agent_evidence.manifest import (
     EvidenceManifest,
     ManifestDocument,
+    SignaturePolicy,
     SignerConfig,
     VerificationKey,
     normalize_filters,
@@ -109,6 +110,7 @@ def _build_manifest(
     export_format: Literal["json", "csv"],
     artifact_digest: str,
     filters: dict[str, Any] | None = None,
+    minimum_valid_signatures: int | None = None,
 ) -> EvidenceManifest:
     event_hashes = [record.hashes.event_hash for record in records]
     chain_hashes = [record.hashes.chain_hash for record in records]
@@ -122,6 +124,9 @@ def _build_manifest(
         last_event_hash=event_hashes[-1] if event_hashes else None,
         latest_chain_hash=chain_hashes[-1] if chain_hashes else None,
         filters=normalize_filters(filters),
+        signature_policy=SignaturePolicy(
+            minimum_valid_signatures=minimum_valid_signatures,
+        ),
     )
 
 
@@ -194,6 +199,7 @@ def export_json_bundle(
     role: str | None = None,
     signature_metadata: dict[str, Any] | None = None,
     signer_configs: Sequence[SignerConfig] | None = None,
+    minimum_valid_signatures: int | None = None,
     manifest_output_path: str | Path | None = None,
 ) -> JsonBundleDocument:
     records_payload = _records_payload(records)
@@ -202,6 +208,7 @@ def export_json_bundle(
         export_format="json",
         artifact_digest=sha256_hex(canonical_json_bytes(records_payload)),
         filters=filters,
+        minimum_valid_signatures=minimum_valid_signatures,
     )
     manifest_document = _manifest_document(
         manifest,
@@ -237,6 +244,7 @@ def export_csv_bundle(
     role: str | None = None,
     signature_metadata: dict[str, Any] | None = None,
     signer_configs: Sequence[SignerConfig] | None = None,
+    minimum_valid_signatures: int | None = None,
 ) -> ManifestDocument:
     artifact_bytes = _csv_bytes(records)
     output = Path(output_path)
@@ -247,6 +255,7 @@ def export_csv_bundle(
         export_format="csv",
         artifact_digest=sha256_hex(artifact_bytes),
         filters=filters,
+        minimum_valid_signatures=minimum_valid_signatures,
     )
     document = _manifest_document(
         manifest,
@@ -297,6 +306,79 @@ def _issues_for_manifest_summary(
     return issues
 
 
+def _required_signature_count(
+    document: ManifestDocument,
+    minimum_valid_signatures: int | None,
+) -> int:
+    if minimum_valid_signatures is not None:
+        return minimum_valid_signatures
+    if document.manifest.signature_policy.minimum_valid_signatures is not None:
+        return document.manifest.signature_policy.minimum_valid_signatures
+    return len(document.signatures)
+
+
+def _evaluate_signature_results(
+    document: ManifestDocument,
+    *,
+    public_key_pem: bytes | None = None,
+    key_id: str | None = None,
+    key_version: str | None = None,
+    verification_keys: Sequence[VerificationKey] | None = None,
+    minimum_valid_signatures: int | None = None,
+) -> tuple[list[dict[str, Any]], bool | None, int, int, list[str]]:
+    required_signature_count = _required_signature_count(
+        document,
+        minimum_valid_signatures,
+    )
+    signature_count = len(document.signatures)
+    issues: list[str] = []
+
+    if required_signature_count > signature_count:
+        issues.append(
+            "signature threshold invalid: "
+            f"required {required_signature_count} but only {signature_count} signatures are present"
+        )
+        return [], False, required_signature_count, 0, issues
+
+    if not document.signatures:
+        return [], None, required_signature_count, 0, issues
+
+    resolved_verification_keys = _verification_keys(
+        public_key_pem=public_key_pem,
+        key_id=key_id,
+        key_version=key_version,
+        verification_keys=verification_keys,
+    )
+    if not resolved_verification_keys:
+        if minimum_valid_signatures is not None or (
+            document.manifest.signature_policy.minimum_valid_signatures is not None
+        ):
+            issues.append("verification keys are required to evaluate signature threshold")
+            return [], False, required_signature_count, 0, issues
+        return [], None, required_signature_count, 0, issues
+
+    signature_results = verify_manifest_signatures(
+        document.manifest,
+        document.signatures,
+        resolved_verification_keys,
+    )
+    verified_signature_count = sum(1 for item in signature_results if item["verified"])
+    signature_verified = verified_signature_count >= required_signature_count
+    if not signature_verified:
+        issues.append(
+            "signature threshold not met: "
+            f"verified {verified_signature_count} of {signature_count} signatures; "
+            f"required {required_signature_count}"
+        )
+    return (
+        signature_results,
+        signature_verified,
+        required_signature_count,
+        verified_signature_count,
+        issues,
+    )
+
+
 def verify_json_bundle(
     bundle_path: str | Path,
     *,
@@ -304,6 +386,7 @@ def verify_json_bundle(
     key_id: str | None = None,
     key_version: str | None = None,
     verification_keys: Sequence[VerificationKey] | None = None,
+    minimum_valid_signatures: int | None = None,
 ) -> dict[str, Any]:
     document = JsonBundleDocument.model_validate_json(Path(bundle_path).read_text(encoding="utf-8"))
     records_payload = _records_payload(document.records)
@@ -318,35 +401,32 @@ def verify_json_bundle(
     )
     issues.extend(f"chain: {issue}" for issue in verify_chain(document.records))
 
-    resolved_verification_keys = _verification_keys(
+    (
+        signature_results,
+        signature_verified,
+        required_signature_count,
+        verified_signature_count,
+        signature_issues,
+    ) = _evaluate_signature_results(
+        document,
         public_key_pem=public_key_pem,
         key_id=key_id,
         key_version=key_version,
         verification_keys=verification_keys,
+        minimum_valid_signatures=minimum_valid_signatures,
     )
-    signature_results: list[dict[str, Any]] = []
-    signature_verified: bool | None = None
-    if document.signatures:
-        if resolved_verification_keys:
-            signature_results = verify_manifest_signatures(
-                document.manifest,
-                document.signatures,
-                resolved_verification_keys,
-            )
-            signature_verified = all(item["verified"] for item in signature_results)
-            for item in signature_results:
-                if not item["verified"]:
-                    issues.append(item["error"] or "manifest signature verification failed")
-        else:
-            signature_verified = None
+    issues.extend(signature_issues)
 
     return {
         "ok": not issues,
         "format": "json",
         "record_count": len(document.records),
         "latest_chain_hash": document.manifest.latest_chain_hash,
+        "signature_policy": document.manifest.signature_policy.model_dump(mode="json"),
         "signature_count": len(document.signatures),
         "signature_present": bool(document.signatures),
+        "required_signature_count": required_signature_count,
+        "verified_signature_count": verified_signature_count,
         "signature_verified": signature_verified,
         "signature_results": signature_results,
         "issues": issues,
@@ -361,6 +441,7 @@ def verify_csv_export(
     key_id: str | None = None,
     key_version: str | None = None,
     verification_keys: Sequence[VerificationKey] | None = None,
+    minimum_valid_signatures: int | None = None,
 ) -> dict[str, Any]:
     csv_bytes = Path(csv_path).read_bytes()
     document = ManifestDocument.model_validate_json(Path(manifest_path).read_text(encoding="utf-8"))
@@ -378,35 +459,32 @@ def verify_csv_export(
         chain_hashes=chain_hashes,
     )
 
-    resolved_verification_keys = _verification_keys(
+    (
+        signature_results,
+        signature_verified,
+        required_signature_count,
+        verified_signature_count,
+        signature_issues,
+    ) = _evaluate_signature_results(
+        document,
         public_key_pem=public_key_pem,
         key_id=key_id,
         key_version=key_version,
         verification_keys=verification_keys,
+        minimum_valid_signatures=minimum_valid_signatures,
     )
-    signature_results: list[dict[str, Any]] = []
-    signature_verified: bool | None = None
-    if document.signatures:
-        if resolved_verification_keys:
-            signature_results = verify_manifest_signatures(
-                document.manifest,
-                document.signatures,
-                resolved_verification_keys,
-            )
-            signature_verified = all(item["verified"] for item in signature_results)
-            for item in signature_results:
-                if not item["verified"]:
-                    issues.append(item["error"] or "manifest signature verification failed")
-        else:
-            signature_verified = None
+    issues.extend(signature_issues)
 
     return {
         "ok": not issues,
         "format": "csv",
         "record_count": len(rows),
         "latest_chain_hash": document.manifest.latest_chain_hash,
+        "signature_policy": document.manifest.signature_policy.model_dump(mode="json"),
         "signature_count": len(document.signatures),
         "signature_present": bool(document.signatures),
+        "required_signature_count": required_signature_count,
+        "verified_signature_count": verified_signature_count,
         "signature_verified": signature_verified,
         "signature_results": signature_results,
         "issues": issues,

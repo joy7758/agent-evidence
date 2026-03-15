@@ -10,6 +10,7 @@ from .manifest import (
     EvidenceManifest,
     ManifestDocument,
     ManifestSignature,
+    SignaturePolicy,
     SignerConfig,
     VerificationKey,
 )
@@ -27,6 +28,7 @@ __all__ = [
     "LocalEvidenceStore",
     "ManifestDocument",
     "ManifestSignature",
+    "SignaturePolicy",
     "SignerConfig",
     "VerificationKey",
     "export_csv_bundle",

@@ -410,6 +410,7 @@ def query(
 @click.option("--signature-role")
 @click.option("--signature-metadata")
 @click.option("--signed-at")
+@click.option("--required-signatures", type=click.IntRange(min=1))
 @click.option(
     "--signer-config",
     "signer_config_paths",
@@ -429,6 +430,7 @@ def export_records(
     signature_role: str | None,
     signature_metadata: str | None,
     signed_at: str | None,
+    required_signatures: int | None,
     signer_config_paths: tuple[Path, ...],
     event_type: str | None,
     actor: str | None,
@@ -485,6 +487,7 @@ def export_records(
             output_path,
             filters=query_kwargs,
             signer_configs=signer_configs,
+            minimum_valid_signatures=required_signatures,
             manifest_output_path=manifest_output,
         )
         signature_count = len(bundle.signatures)
@@ -496,6 +499,7 @@ def export_records(
             manifest_output_path=manifest_path,
             filters=query_kwargs,
             signer_configs=signer_configs,
+            minimum_valid_signatures=required_signatures,
         )
         signature_count = len(manifest_document.signatures)
 
@@ -508,6 +512,7 @@ def export_records(
                 "record_count": len(records),
                 "signed": signature_count > 0,
                 "signature_count": signature_count,
+                "required_signatures": required_signatures,
             },
             indent=2,
             sort_keys=True,
@@ -533,6 +538,7 @@ def export_records(
     "--keyring",
     type=click.Path(exists=True, dir_okay=False, path_type=Path),
 )
+@click.option("--required-signatures", type=click.IntRange(min=1))
 def verify_export_command(
     bundle: Path | None,
     csv_path: Path | None,
@@ -541,6 +547,7 @@ def verify_export_command(
     key_id: str | None,
     key_version: str | None,
     keyring: Path | None,
+    required_signatures: int | None,
 ) -> None:
     """Verify an exported JSON bundle or CSV artifact plus manifest."""
 
@@ -556,12 +563,17 @@ def verify_export_command(
         keyring=keyring,
     )
     if bundle is not None:
-        result = verify_json_bundle(bundle, verification_keys=verification_keys)
+        result = verify_json_bundle(
+            bundle,
+            verification_keys=verification_keys,
+            minimum_valid_signatures=required_signatures,
+        )
     else:
         result = verify_csv_export(
             csv_path,
             manifest_path,
             verification_keys=verification_keys,
+            minimum_valid_signatures=required_signatures,
         )
 
     click.echo(json.dumps(result, indent=2, sort_keys=True))

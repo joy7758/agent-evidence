@@ -9,7 +9,7 @@ from agent_evidence.crypto.hashing import canonical_json_bytes
 from agent_evidence.models import utc_now
 from agent_evidence.serialization import to_jsonable
 
-MANIFEST_SCHEMA_VERSION = "1.1.0"
+MANIFEST_SCHEMA_VERSION = "1.2.0"
 
 
 class EvidenceManifest(BaseModel):
@@ -17,7 +17,7 @@ class EvidenceManifest(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    schema_version: Literal["1.0.0", "1.1.0"] = MANIFEST_SCHEMA_VERSION
+    schema_version: Literal["1.0.0", "1.1.0", "1.2.0"] = MANIFEST_SCHEMA_VERSION
     export_format: Literal["json", "csv"]
     digest_algorithm: Literal["sha256"] = "sha256"
     generated_at: str = Field(default_factory=lambda: utc_now().isoformat())
@@ -29,6 +29,7 @@ class EvidenceManifest(BaseModel):
     last_event_hash: str | None = None
     latest_chain_hash: str | None = None
     filters: dict[str, Any] = Field(default_factory=dict)
+    signature_policy: SignaturePolicy = Field(default_factory=lambda: SignaturePolicy())
 
 
 class ManifestSignature(BaseModel):
@@ -68,6 +69,14 @@ class VerificationKey(BaseModel):
     public_key_pem: bytes
     key_id: str | None = None
     key_version: str | None = None
+
+
+class SignaturePolicy(BaseModel):
+    """Verification policy for one or more manifest signatures."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    minimum_valid_signatures: int | None = Field(default=None, ge=1)
 
 
 class ManifestDocument(BaseModel):

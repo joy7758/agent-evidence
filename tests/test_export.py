@@ -13,6 +13,7 @@ from agent_evidence.export import (
     verify_csv_export,
     verify_json_bundle,
 )
+from agent_evidence.manifest import SignerConfig, VerificationKey
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage.local import LocalEvidenceStore
 
@@ -281,6 +282,8 @@ def test_cli_multisig_export_and_key_rotation_verification(tmp_path: Path) -> No
             "json",
             "--output",
             str(bundle_path),
+            "--required-signatures",
+            "2",
             "--signer-config",
             str(ops_config),
             "--signer-config",
@@ -305,6 +308,8 @@ def test_cli_multisig_export_and_key_rotation_verification(tmp_path: Path) -> No
     assert verified.exit_code == 0, verified.output
     verify_result = json.loads(verified.output)
     assert verify_result["ok"] is True
+    assert verify_result["required_signature_count"] == 2
+    assert verify_result["verified_signature_count"] == 2
     assert verify_result["signature_count"] == 2
     assert verify_result["signature_verified"] is True
     assert sorted(
@@ -313,4 +318,70 @@ def test_cli_multisig_export_and_key_rotation_verification(tmp_path: Path) -> No
     ) == [
         ("compliance", "2026-q1", "attestor"),
         ("operations", "2026-q2", "approver"),
+    ]
+
+
+def test_verify_json_bundle_threshold_policy_and_override(tmp_path: Path) -> None:
+    records, _ = build_records(tmp_path)
+
+    _, _, ops_private_pem, ops_public_pem = write_ed25519_keypair(tmp_path)
+    _, _, compliance_private_pem, _ = write_ed25519_keypair(tmp_path)
+    bundle_path = tmp_path / "threshold-bundle.json"
+
+    bundle = export_json_bundle(
+        records,
+        bundle_path,
+        signer_configs=[
+            SignerConfig(
+                private_key_pem=ops_private_pem,
+                key_id="operations",
+                key_version="2026-q2",
+                signer="Operations Bot",
+                role="approver",
+            ),
+            SignerConfig(
+                private_key_pem=compliance_private_pem,
+                key_id="compliance",
+                key_version="2026-q1",
+                signer="Compliance Bot",
+                role="attestor",
+            ),
+        ],
+        minimum_valid_signatures=1,
+    )
+
+    assert bundle.manifest.signature_policy.minimum_valid_signatures == 1
+
+    partial = verify_json_bundle(
+        bundle_path,
+        verification_keys=[
+            VerificationKey(
+                public_key_pem=ops_public_pem,
+                key_id="operations",
+                key_version="2026-q2",
+            )
+        ],
+    )
+    assert partial["ok"] is True
+    assert partial["required_signature_count"] == 1
+    assert partial["verified_signature_count"] == 1
+    assert partial["signature_verified"] is True
+
+    strict = verify_json_bundle(
+        bundle_path,
+        verification_keys=[
+            VerificationKey(
+                public_key_pem=ops_public_pem,
+                key_id="operations",
+                key_version="2026-q2",
+            )
+        ],
+        minimum_valid_signatures=2,
+    )
+    assert strict["ok"] is False
+    assert strict["required_signature_count"] == 2
+    assert strict["verified_signature_count"] == 1
+    assert strict["signature_verified"] is False
+    assert strict["issues"] == [
+        "signature threshold not met: verified 1 of 2 signatures; required 2"
     ]
