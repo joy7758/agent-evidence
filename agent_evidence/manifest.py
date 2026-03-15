@@ -3,13 +3,13 @@ from __future__ import annotations
 import base64
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from agent_evidence.crypto.hashing import canonical_json_bytes
 from agent_evidence.models import utc_now
 from agent_evidence.serialization import to_jsonable
 
-MANIFEST_SCHEMA_VERSION = "1.2.0"
+MANIFEST_SCHEMA_VERSION = "1.3.0"
 
 
 class EvidenceManifest(BaseModel):
@@ -17,7 +17,7 @@ class EvidenceManifest(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    schema_version: Literal["1.0.0", "1.1.0", "1.2.0"] = MANIFEST_SCHEMA_VERSION
+    schema_version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0"] = MANIFEST_SCHEMA_VERSION
     export_format: Literal["json", "csv"]
     digest_algorithm: Literal["sha256"] = "sha256"
     generated_at: str = Field(default_factory=lambda: utc_now().isoformat())
@@ -77,6 +77,35 @@ class SignaturePolicy(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     minimum_valid_signatures: int | None = Field(default=None, ge=1)
+    minimum_valid_signatures_by_role: dict[str, int] = Field(default_factory=dict)
+
+    @field_validator("minimum_valid_signatures_by_role")
+    @classmethod
+    def normalize_role_thresholds(cls, value: dict[str, int]) -> dict[str, int]:
+        normalized: dict[str, int] = {}
+        for role, count in value.items():
+            normalized_role = str(role).strip()
+            if not normalized_role:
+                raise ValueError("signature policy role names must be non-empty")
+            if count < 1:
+                raise ValueError("signature policy role thresholds must be positive integers")
+            if normalized_role in normalized:
+                raise ValueError(f"duplicate signature policy role threshold: {normalized_role}")
+            normalized[normalized_role] = int(count)
+        return normalized
+
+    @model_validator(mode="after")
+    def validate_threshold_consistency(self) -> SignaturePolicy:
+        role_threshold_total = sum(self.minimum_valid_signatures_by_role.values())
+        if (
+            self.minimum_valid_signatures is not None
+            and self.minimum_valid_signatures < role_threshold_total
+        ):
+            raise ValueError(
+                "minimum_valid_signatures must be greater than or equal to the "
+                "sum of role thresholds"
+            )
+        return self
 
 
 class ManifestDocument(BaseModel):

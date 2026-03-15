@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+from collections import Counter
 from pathlib import Path
 from typing import Any, Literal, Sequence
 
@@ -111,6 +112,7 @@ def _build_manifest(
     artifact_digest: str,
     filters: dict[str, Any] | None = None,
     minimum_valid_signatures: int | None = None,
+    minimum_valid_signatures_by_role: dict[str, int] | None = None,
 ) -> EvidenceManifest:
     event_hashes = [record.hashes.event_hash for record in records]
     chain_hashes = [record.hashes.chain_hash for record in records]
@@ -126,6 +128,7 @@ def _build_manifest(
         filters=normalize_filters(filters),
         signature_policy=SignaturePolicy(
             minimum_valid_signatures=minimum_valid_signatures,
+            minimum_valid_signatures_by_role=minimum_valid_signatures_by_role or {},
         ),
     )
 
@@ -200,6 +203,7 @@ def export_json_bundle(
     signature_metadata: dict[str, Any] | None = None,
     signer_configs: Sequence[SignerConfig] | None = None,
     minimum_valid_signatures: int | None = None,
+    minimum_valid_signatures_by_role: dict[str, int] | None = None,
     manifest_output_path: str | Path | None = None,
 ) -> JsonBundleDocument:
     records_payload = _records_payload(records)
@@ -209,6 +213,7 @@ def export_json_bundle(
         artifact_digest=sha256_hex(canonical_json_bytes(records_payload)),
         filters=filters,
         minimum_valid_signatures=minimum_valid_signatures,
+        minimum_valid_signatures_by_role=minimum_valid_signatures_by_role,
     )
     manifest_document = _manifest_document(
         manifest,
@@ -245,6 +250,7 @@ def export_csv_bundle(
     signature_metadata: dict[str, Any] | None = None,
     signer_configs: Sequence[SignerConfig] | None = None,
     minimum_valid_signatures: int | None = None,
+    minimum_valid_signatures_by_role: dict[str, int] | None = None,
 ) -> ManifestDocument:
     artifact_bytes = _csv_bytes(records)
     output = Path(output_path)
@@ -256,6 +262,7 @@ def export_csv_bundle(
         artifact_digest=sha256_hex(artifact_bytes),
         filters=filters,
         minimum_valid_signatures=minimum_valid_signatures,
+        minimum_valid_signatures_by_role=minimum_valid_signatures_by_role,
     )
     document = _manifest_document(
         manifest,
@@ -309,12 +316,24 @@ def _issues_for_manifest_summary(
 def _required_signature_count(
     document: ManifestDocument,
     minimum_valid_signatures: int | None,
+    minimum_valid_signatures_by_role: dict[str, int],
 ) -> int:
     if minimum_valid_signatures is not None:
         return minimum_valid_signatures
     if document.manifest.signature_policy.minimum_valid_signatures is not None:
         return document.manifest.signature_policy.minimum_valid_signatures
+    if minimum_valid_signatures_by_role:
+        return sum(minimum_valid_signatures_by_role.values())
     return len(document.signatures)
+
+
+def _required_role_signature_counts(
+    document: ManifestDocument,
+    minimum_valid_signatures_by_role: dict[str, int] | None,
+) -> dict[str, int]:
+    if minimum_valid_signatures_by_role is not None:
+        return dict(minimum_valid_signatures_by_role)
+    return dict(document.manifest.signature_policy.minimum_valid_signatures_by_role)
 
 
 def _evaluate_signature_results(
@@ -325,23 +344,86 @@ def _evaluate_signature_results(
     key_version: str | None = None,
     verification_keys: Sequence[VerificationKey] | None = None,
     minimum_valid_signatures: int | None = None,
-) -> tuple[list[dict[str, Any]], bool | None, int, int, list[str]]:
+    minimum_valid_signatures_by_role: dict[str, int] | None = None,
+) -> tuple[list[dict[str, Any]], bool | None, int, int, dict[str, int], dict[str, int], list[str]]:
+    required_role_signature_counts = _required_role_signature_counts(
+        document,
+        minimum_valid_signatures_by_role,
+    )
     required_signature_count = _required_signature_count(
         document,
         minimum_valid_signatures,
+        required_role_signature_counts,
     )
     signature_count = len(document.signatures)
     issues: list[str] = []
+    role_threshold_total = sum(required_role_signature_counts.values())
+
+    if required_signature_count < role_threshold_total:
+        issues.append(
+            "signature policy invalid: "
+            f"required {required_signature_count} total signatures but role thresholds "
+            f"sum to {role_threshold_total}"
+        )
+        return (
+            [],
+            False,
+            required_signature_count,
+            0,
+            required_role_signature_counts,
+            {},
+            issues,
+        )
 
     if required_signature_count > signature_count:
         issues.append(
             "signature threshold invalid: "
             f"required {required_signature_count} but only {signature_count} signatures are present"
         )
-        return [], False, required_signature_count, 0, issues
+        return (
+            [],
+            False,
+            required_signature_count,
+            0,
+            required_role_signature_counts,
+            {},
+            issues,
+        )
+
+    available_role_signature_counts = Counter(
+        signature.role for signature in document.signatures if signature.role
+    )
+    role_threshold_issues = [
+        (
+            "role signature threshold invalid: "
+            f"role {role} requires {count} signatures but only "
+            f"{available_role_signature_counts.get(role, 0)} signatures are present"
+        )
+        for role, count in required_role_signature_counts.items()
+        if count > available_role_signature_counts.get(role, 0)
+    ]
+    if role_threshold_issues:
+        issues.extend(role_threshold_issues)
+        return (
+            [],
+            False,
+            required_signature_count,
+            0,
+            required_role_signature_counts,
+            {},
+            issues,
+        )
 
     if not document.signatures:
-        return [], None, required_signature_count, 0, issues
+        return (
+            [],
+            None,
+            required_signature_count,
+            0,
+            required_role_signature_counts,
+            {},
+            issues,
+        )
 
     resolved_verification_keys = _verification_keys(
         public_key_pem=public_key_pem,
@@ -350,12 +432,30 @@ def _evaluate_signature_results(
         verification_keys=verification_keys,
     )
     if not resolved_verification_keys:
-        if minimum_valid_signatures is not None or (
-            document.manifest.signature_policy.minimum_valid_signatures is not None
+        if (
+            minimum_valid_signatures is not None
+            or (document.manifest.signature_policy.minimum_valid_signatures is not None)
+            or required_role_signature_counts
         ):
-            issues.append("verification keys are required to evaluate signature threshold")
-            return [], False, required_signature_count, 0, issues
-        return [], None, required_signature_count, 0, issues
+            issues.append("verification keys are required to evaluate signature policy")
+            return (
+                [],
+                False,
+                required_signature_count,
+                0,
+                required_role_signature_counts,
+                {},
+                issues,
+            )
+        return (
+            [],
+            None,
+            required_signature_count,
+            0,
+            required_role_signature_counts,
+            {},
+            issues,
+        )
 
     signature_results = verify_manifest_signatures(
         document.manifest,
@@ -363,6 +463,9 @@ def _evaluate_signature_results(
         resolved_verification_keys,
     )
     verified_signature_count = sum(1 for item in signature_results if item["verified"])
+    verified_role_signature_counts = dict(
+        Counter(item["role"] for item in signature_results if item["verified"] and item["role"])
+    )
     signature_verified = verified_signature_count >= required_signature_count
     if not signature_verified:
         issues.append(
@@ -370,11 +473,23 @@ def _evaluate_signature_results(
             f"verified {verified_signature_count} of {signature_count} signatures; "
             f"required {required_signature_count}"
         )
+    for role, count in required_role_signature_counts.items():
+        verified_role_count = verified_role_signature_counts.get(role, 0)
+        available_role_count = available_role_signature_counts.get(role, 0)
+        if verified_role_count < count:
+            signature_verified = False
+            issues.append(
+                "role signature threshold not met: "
+                f"role {role} verified {verified_role_count} of {available_role_count} signatures; "
+                f"required {count}"
+            )
     return (
         signature_results,
         signature_verified,
         required_signature_count,
         verified_signature_count,
+        required_role_signature_counts,
+        verified_role_signature_counts,
         issues,
     )
 
@@ -387,6 +502,7 @@ def verify_json_bundle(
     key_version: str | None = None,
     verification_keys: Sequence[VerificationKey] | None = None,
     minimum_valid_signatures: int | None = None,
+    minimum_valid_signatures_by_role: dict[str, int] | None = None,
 ) -> dict[str, Any]:
     document = JsonBundleDocument.model_validate_json(Path(bundle_path).read_text(encoding="utf-8"))
     records_payload = _records_payload(document.records)
@@ -406,6 +522,8 @@ def verify_json_bundle(
         signature_verified,
         required_signature_count,
         verified_signature_count,
+        required_role_signature_counts,
+        verified_role_signature_counts,
         signature_issues,
     ) = _evaluate_signature_results(
         document,
@@ -414,6 +532,7 @@ def verify_json_bundle(
         key_version=key_version,
         verification_keys=verification_keys,
         minimum_valid_signatures=minimum_valid_signatures,
+        minimum_valid_signatures_by_role=minimum_valid_signatures_by_role,
     )
     issues.extend(signature_issues)
 
@@ -427,6 +546,8 @@ def verify_json_bundle(
         "signature_present": bool(document.signatures),
         "required_signature_count": required_signature_count,
         "verified_signature_count": verified_signature_count,
+        "required_role_signature_counts": required_role_signature_counts,
+        "verified_role_signature_counts": verified_role_signature_counts,
         "signature_verified": signature_verified,
         "signature_results": signature_results,
         "issues": issues,
@@ -442,6 +563,7 @@ def verify_csv_export(
     key_version: str | None = None,
     verification_keys: Sequence[VerificationKey] | None = None,
     minimum_valid_signatures: int | None = None,
+    minimum_valid_signatures_by_role: dict[str, int] | None = None,
 ) -> dict[str, Any]:
     csv_bytes = Path(csv_path).read_bytes()
     document = ManifestDocument.model_validate_json(Path(manifest_path).read_text(encoding="utf-8"))
@@ -464,6 +586,8 @@ def verify_csv_export(
         signature_verified,
         required_signature_count,
         verified_signature_count,
+        required_role_signature_counts,
+        verified_role_signature_counts,
         signature_issues,
     ) = _evaluate_signature_results(
         document,
@@ -472,6 +596,7 @@ def verify_csv_export(
         key_version=key_version,
         verification_keys=verification_keys,
         minimum_valid_signatures=minimum_valid_signatures,
+        minimum_valid_signatures_by_role=minimum_valid_signatures_by_role,
     )
     issues.extend(signature_issues)
 
@@ -485,6 +610,8 @@ def verify_csv_export(
         "signature_present": bool(document.signatures),
         "required_signature_count": required_signature_count,
         "verified_signature_count": verified_signature_count,
+        "required_role_signature_counts": required_role_signature_counts,
+        "verified_role_signature_counts": verified_role_signature_counts,
         "signature_verified": signature_verified,
         "signature_results": signature_results,
         "issues": issues,

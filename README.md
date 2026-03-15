@@ -109,6 +109,8 @@ agent-evidence export \
   --format json \
   --output ./exports/evidence.multisig.json \
   --required-signatures 2 \
+  --required-signature-role approver=1 \
+  --required-signature-role attestor=1 \
   --signer-config ./keys/operations-q2.signer.json \
   --signer-config ./keys/compliance-q1.signer.json
 
@@ -123,7 +125,7 @@ agent-evidence verify-export \
 agent-evidence verify-export \
   --bundle ./exports/evidence.multisig.json \
   --keyring ./keys/manifest-keyring.json \
-  --required-signatures 1
+  --required-signature-role approver=1
 ```
 
 ## Development
@@ -308,9 +310,15 @@ Each signature can also carry:
 - `signer` and `role` for audit attribution
 - `signed_at` and arbitrary JSON metadata
 
-Manifests can also carry a threshold policy such as `1-of-2` or `2-of-3` via
-`signature_policy.minimum_valid_signatures`. If omitted, verification defaults
-to requiring every signature in the artifact to validate.
+Manifests can also carry threshold policies:
+
+- `signature_policy.minimum_valid_signatures` for `N-of-M`
+- `signature_policy.minimum_valid_signatures_by_role` for role thresholds such
+  as `{"approver": 1, "attestor": 1}`
+
+If neither is present, verification defaults to requiring every signature in
+the artifact to validate. If only role thresholds are present, the effective
+total threshold defaults to the sum of those role requirements.
 
 Manifest signing uses Ed25519 PEM keys. To enable signing outside the dev
 environment:
@@ -342,10 +350,14 @@ Signer config files let you attach multiple signatures during export. Example
 }
 ```
 
-To embed an `N-of-M` policy in the exported manifest, pass
-`--required-signatures N` during export. `verify-export` will honor that policy
-by default, or you can override it at verification time with another
-`--required-signatures` value.
+To embed signature policy in the exported manifest, pass:
+
+- `--required-signatures N` for a global `N-of-M` rule
+- `--required-signature-role <role>=<count>` one or more times for role rules
+
+`verify-export` will honor the manifest policy by default, or you can override
+the global threshold and role thresholds at verification time with the same
+flags.
 
 Keyrings let `verify-export` resolve rotated keys by `key_id` and
 `key_version`. Example `manifest-keyring.json`:

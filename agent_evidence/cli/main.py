@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import click
+from pydantic import ValidationError
 
 from agent_evidence.crypto.chain import verify_chain
 from agent_evidence.export import (
@@ -16,7 +17,7 @@ from agent_evidence.export import (
     verify_csv_export,
     verify_json_bundle,
 )
-from agent_evidence.manifest import SignerConfig, VerificationKey
+from agent_evidence.manifest import SignaturePolicy, SignerConfig, VerificationKey
 from agent_evidence.models import EvidenceEnvelope
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage import migrate_records, open_store
@@ -159,6 +160,43 @@ def build_verification_keys(
             ),
         )
     return verification_keys
+
+
+def parse_role_thresholds(raw_values: tuple[str, ...]) -> dict[str, int]:
+    role_thresholds: dict[str, int] = {}
+    for raw_value in raw_values:
+        role, separator, raw_count = raw_value.partition("=")
+        normalized_role = role.strip()
+        if separator != "=" or not normalized_role or not raw_count.strip():
+            raise click.BadParameter("Role thresholds must use the form <role>=<count>.")
+        try:
+            count = int(raw_count)
+        except ValueError as exc:
+            raise click.BadParameter(
+                f"Role threshold count must be an integer: {raw_value}"
+            ) from exc
+        if normalized_role in role_thresholds:
+            raise click.BadParameter(f"Duplicate role threshold provided: {normalized_role}")
+        role_thresholds[normalized_role] = count
+    try:
+        policy = SignaturePolicy(minimum_valid_signatures_by_role=role_thresholds)
+    except ValidationError as exc:
+        raise click.BadParameter(str(exc)) from exc
+    return policy.minimum_valid_signatures_by_role
+
+
+def validate_signature_policy(
+    *,
+    required_signatures: int | None,
+    role_thresholds: dict[str, int],
+) -> SignaturePolicy:
+    try:
+        return SignaturePolicy(
+            minimum_valid_signatures=required_signatures,
+            minimum_valid_signatures_by_role=role_thresholds,
+        )
+    except ValidationError as exc:
+        raise click.BadParameter(str(exc)) from exc
 
 
 def add_query_filter_options(function: Callable[..., Any]) -> Callable[..., Any]:
@@ -411,6 +449,7 @@ def query(
 @click.option("--signature-metadata")
 @click.option("--signed-at")
 @click.option("--required-signatures", type=click.IntRange(min=1))
+@click.option("--required-signature-role", "required_signature_roles", multiple=True)
 @click.option(
     "--signer-config",
     "signer_config_paths",
@@ -431,6 +470,7 @@ def export_records(
     signature_metadata: str | None,
     signed_at: str | None,
     required_signatures: int | None,
+    required_signature_roles: tuple[str, ...],
     signer_config_paths: tuple[Path, ...],
     event_type: str | None,
     actor: str | None,
@@ -451,6 +491,11 @@ def export_records(
     """Export evidence records as a JSON bundle or CSV artifact with manifest."""
 
     store = build_store(store_target)
+    role_thresholds = parse_role_thresholds(required_signature_roles)
+    validate_signature_policy(
+        required_signatures=required_signatures,
+        role_thresholds=role_thresholds,
+    )
     query_kwargs = build_query_kwargs(
         event_type=event_type,
         actor=actor,
@@ -488,6 +533,7 @@ def export_records(
             filters=query_kwargs,
             signer_configs=signer_configs,
             minimum_valid_signatures=required_signatures,
+            minimum_valid_signatures_by_role=role_thresholds,
             manifest_output_path=manifest_output,
         )
         signature_count = len(bundle.signatures)
@@ -500,6 +546,7 @@ def export_records(
             filters=query_kwargs,
             signer_configs=signer_configs,
             minimum_valid_signatures=required_signatures,
+            minimum_valid_signatures_by_role=role_thresholds,
         )
         signature_count = len(manifest_document.signatures)
 
@@ -513,6 +560,7 @@ def export_records(
                 "signed": signature_count > 0,
                 "signature_count": signature_count,
                 "required_signatures": required_signatures,
+                "required_signature_roles": role_thresholds,
             },
             indent=2,
             sort_keys=True,
@@ -539,6 +587,7 @@ def export_records(
     type=click.Path(exists=True, dir_okay=False, path_type=Path),
 )
 @click.option("--required-signatures", type=click.IntRange(min=1))
+@click.option("--required-signature-role", "required_signature_roles", multiple=True)
 def verify_export_command(
     bundle: Path | None,
     csv_path: Path | None,
@@ -548,6 +597,7 @@ def verify_export_command(
     key_version: str | None,
     keyring: Path | None,
     required_signatures: int | None,
+    required_signature_roles: tuple[str, ...],
 ) -> None:
     """Verify an exported JSON bundle or CSV artifact plus manifest."""
 
@@ -562,11 +612,17 @@ def verify_export_command(
         key_version=key_version,
         keyring=keyring,
     )
+    role_thresholds = parse_role_thresholds(required_signature_roles)
+    validate_signature_policy(
+        required_signatures=required_signatures,
+        role_thresholds=role_thresholds,
+    )
     if bundle is not None:
         result = verify_json_bundle(
             bundle,
             verification_keys=verification_keys,
             minimum_valid_signatures=required_signatures,
+            minimum_valid_signatures_by_role=role_thresholds or None,
         )
     else:
         result = verify_csv_export(
@@ -574,6 +630,7 @@ def verify_export_command(
             manifest_path,
             verification_keys=verification_keys,
             minimum_valid_signatures=required_signatures,
+            minimum_valid_signatures_by_role=role_thresholds or None,
         )
 
     click.echo(json.dumps(result, indent=2, sort_keys=True))

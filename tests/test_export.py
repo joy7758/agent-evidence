@@ -284,6 +284,10 @@ def test_cli_multisig_export_and_key_rotation_verification(tmp_path: Path) -> No
             str(bundle_path),
             "--required-signatures",
             "2",
+            "--required-signature-role",
+            "approver=1",
+            "--required-signature-role",
+            "attestor=1",
             "--signer-config",
             str(ops_config),
             "--signer-config",
@@ -294,6 +298,10 @@ def test_cli_multisig_export_and_key_rotation_verification(tmp_path: Path) -> No
     export_result = json.loads(exported.output)
     assert export_result["record_count"] == len(records)
     assert export_result["signature_count"] == 2
+    assert export_result["required_signature_roles"] == {
+        "approver": 1,
+        "attestor": 1,
+    }
 
     verified = runner.invoke(
         main,
@@ -310,6 +318,14 @@ def test_cli_multisig_export_and_key_rotation_verification(tmp_path: Path) -> No
     assert verify_result["ok"] is True
     assert verify_result["required_signature_count"] == 2
     assert verify_result["verified_signature_count"] == 2
+    assert verify_result["required_role_signature_counts"] == {
+        "approver": 1,
+        "attestor": 1,
+    }
+    assert verify_result["verified_role_signature_counts"] == {
+        "approver": 1,
+        "attestor": 1,
+    }
     assert verify_result["signature_count"] == 2
     assert verify_result["signature_verified"] is True
     assert sorted(
@@ -384,4 +400,110 @@ def test_verify_json_bundle_threshold_policy_and_override(tmp_path: Path) -> Non
     assert strict["signature_verified"] is False
     assert strict["issues"] == [
         "signature threshold not met: verified 1 of 2 signatures; required 2"
+    ]
+
+
+def test_verify_json_bundle_role_threshold_policy_and_override(tmp_path: Path) -> None:
+    records, _ = build_records(tmp_path)
+
+    _, _, ops_private_pem, ops_public_pem = write_ed25519_keypair(tmp_path)
+    _, _, compliance_private_pem, compliance_public_pem = write_ed25519_keypair(tmp_path)
+    _, _, observer_private_pem, _ = write_ed25519_keypair(tmp_path)
+    bundle_path = tmp_path / "role-threshold-bundle.json"
+
+    bundle = export_json_bundle(
+        records,
+        bundle_path,
+        signer_configs=[
+            SignerConfig(
+                private_key_pem=ops_private_pem,
+                key_id="operations",
+                key_version="2026-q2",
+                signer="Operations Bot",
+                role="approver",
+            ),
+            SignerConfig(
+                private_key_pem=compliance_private_pem,
+                key_id="compliance",
+                key_version="2026-q1",
+                signer="Compliance Bot",
+                role="attestor",
+            ),
+            SignerConfig(
+                private_key_pem=observer_private_pem,
+                key_id="observer",
+                key_version="2026-q1",
+                signer="Observer Bot",
+                role="observer",
+            ),
+        ],
+        minimum_valid_signatures_by_role={"approver": 1, "attestor": 1},
+    )
+
+    assert bundle.manifest.signature_policy.minimum_valid_signatures is None
+    assert bundle.manifest.signature_policy.minimum_valid_signatures_by_role == {
+        "approver": 1,
+        "attestor": 1,
+    }
+
+    partial = verify_json_bundle(
+        bundle_path,
+        verification_keys=[
+            VerificationKey(
+                public_key_pem=ops_public_pem,
+                key_id="operations",
+                key_version="2026-q2",
+            ),
+            VerificationKey(
+                public_key_pem=compliance_public_pem,
+                key_id="compliance",
+                key_version="2026-q1",
+            ),
+        ],
+    )
+    assert partial["ok"] is True
+    assert partial["required_signature_count"] == 2
+    assert partial["verified_signature_count"] == 2
+    assert partial["required_role_signature_counts"] == {
+        "approver": 1,
+        "attestor": 1,
+    }
+    assert partial["verified_role_signature_counts"] == {
+        "approver": 1,
+        "attestor": 1,
+    }
+    assert partial["signature_verified"] is True
+
+    strict = verify_json_bundle(
+        bundle_path,
+        verification_keys=[
+            VerificationKey(
+                public_key_pem=ops_public_pem,
+                key_id="operations",
+                key_version="2026-q2",
+            ),
+            VerificationKey(
+                public_key_pem=compliance_public_pem,
+                key_id="compliance",
+                key_version="2026-q1",
+            ),
+        ],
+        minimum_valid_signatures_by_role={"approver": 1, "attestor": 1, "observer": 1},
+    )
+    assert strict["ok"] is False
+    assert strict["required_signature_count"] == 3
+    assert strict["verified_signature_count"] == 2
+    assert strict["required_role_signature_counts"] == {
+        "approver": 1,
+        "attestor": 1,
+        "observer": 1,
+    }
+    assert strict["verified_role_signature_counts"] == {
+        "approver": 1,
+        "attestor": 1,
+    }
+    assert strict["signature_verified"] is False
+    assert strict["issues"] == [
+        "signature threshold not met: verified 2 of 3 signatures; required 3",
+        "role signature threshold not met: role observer verified 0 of 1 signatures; required 1",
     ]
