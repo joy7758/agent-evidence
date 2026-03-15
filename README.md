@@ -5,6 +5,11 @@ about autonomous agent execution. It provides structured evidence records,
 deterministic hashing, append-only local storage, and a small CLI for
 inspection and export.
 
+The toolkit now supports two storage modes:
+
+- append-only local JSONL files
+- SQLAlchemy-backed SQLite/PostgreSQL databases
+
 The current model treats each record as a semantic event envelope:
 
 - `event.event_type` is framework-neutral, such as `chain.start` or `tool.end`
@@ -30,7 +35,7 @@ The project is organized so evidence capture stays modular:
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -e ".[dev,langchain]"
+pip install -e ".[dev,langchain,sql]"
 agent-evidence schema
 ```
 
@@ -50,6 +55,21 @@ agent-evidence show --store ./data/evidence.jsonl --index 0
 agent-evidence verify --store ./data/evidence.jsonl
 ```
 
+SQL stores use a SQLAlchemy URL instead of a file path:
+
+```bash
+agent-evidence record \
+  --store sqlite+pysqlite:///./data/evidence.db \
+  --actor planner \
+  --event-type tool.call \
+  --context '{"source":"cli","component":"tool"}'
+
+agent-evidence query \
+  --store sqlite+pysqlite:///./data/evidence.db \
+  --event-type tool.call \
+  --source cli
+```
+
 ## Development
 
 ```bash
@@ -61,6 +81,12 @@ make hooks
 
 The repository includes a `.pre-commit-config.yaml` with baseline whitespace,
 JSON, and Ruff checks.
+
+For PostgreSQL support, install the extra driver dependencies:
+
+```bash
+pip install -e ".[postgres]"
+```
 
 ## Semantic event model
 
@@ -159,3 +185,35 @@ agent-evidence verify --store ./data/evidence.jsonl
 
 This recomputes each `event_hash`, checks `previous_event_hash`, and validates
 the cumulative `chain_hash`.
+
+## SQL storage
+
+`SqlEvidenceStore` persists the semantic event envelope into a relational table
+while keeping indexed columns for efficient filtering:
+
+- `event_type`
+- `actor`
+- `timestamp`
+- `source`
+- `component`
+- `previous_event_hash`
+- `event_hash`
+- `chain_hash`
+
+The store accepts standard SQLAlchemy URLs, for example:
+
+- `sqlite+pysqlite:///./data/evidence.db`
+- `postgresql+psycopg://user:password@localhost:5432/agent_evidence`
+
+## Migration
+
+You can migrate existing JSONL evidence into SQLite or PostgreSQL:
+
+```bash
+agent-evidence migrate \
+  --source ./data/evidence.jsonl \
+  --target sqlite+pysqlite:///./data/evidence.db
+```
+
+The `query` command works across both local and SQL stores, although SQL stores
+are preferable once record volume grows beyond simple local inspection.

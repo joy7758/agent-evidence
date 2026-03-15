@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 import click
@@ -8,7 +9,8 @@ import click
 from agent_evidence.crypto.chain import verify_chain
 from agent_evidence.models import EvidenceEnvelope
 from agent_evidence.recorder import EvidenceRecorder
-from agent_evidence.storage.local import LocalEvidenceStore
+from agent_evidence.storage import migrate_records, open_store
+from agent_evidence.storage.base import EvidenceStore
 
 
 def parse_json_option(raw: str | None) -> dict:
@@ -20,8 +22,21 @@ def parse_json_option(raw: str | None) -> dict:
     return value
 
 
-def build_store(path: str) -> LocalEvidenceStore:
-    return LocalEvidenceStore(Path(path))
+def build_store(target: str) -> EvidenceStore:
+    return open_store(target)
+
+
+def parse_datetime_option(raw: str | None) -> datetime | None:
+    if raw is None:
+        return None
+    normalized = raw.replace("Z", "+00:00")
+    try:
+        value = datetime.fromisoformat(normalized)
+    except ValueError as exc:
+        raise click.BadParameter(f"Invalid ISO datetime: {raw}") from exc
+    if value.tzinfo is None:
+        return value.replace(tzinfo=timezone.utc)
+    return value
 
 
 @click.group()
@@ -30,7 +45,7 @@ def main() -> None:
 
 
 @main.command()
-@click.option("--store", "store_path", required=True, type=click.Path(dir_okay=False))
+@click.option("--store", "store_target", required=True)
 @click.option("--actor", required=True)
 @click.option("--event-type", "event_type")
 @click.option("--action", help="Deprecated alias for --event-type.")
@@ -40,7 +55,7 @@ def main() -> None:
 @click.option("--metadata", "metadata_raw")
 @click.option("--tag", "tags", multiple=True)
 def record(
-    store_path: str,
+    store_target: str,
     actor: str,
     event_type: str | None,
     action: str | None,
@@ -56,7 +71,7 @@ def record(
     if not resolved_event_type:
         raise click.ClickException("One of --event-type or --action is required.")
 
-    recorder = EvidenceRecorder(build_store(store_path))
+    recorder = EvidenceRecorder(build_store(store_target))
     envelope = recorder.record(
         actor=actor,
         event_type=resolved_event_type,
@@ -70,11 +85,11 @@ def record(
 
 
 @main.command(name="list")
-@click.option("--store", "store_path", required=True, type=click.Path(dir_okay=False))
-def list_records(store_path: str) -> None:
+@click.option("--store", "store_target", required=True)
+def list_records(store_target: str) -> None:
     """List records with compact metadata."""
 
-    store = build_store(store_path)
+    store = build_store(store_target)
     for index, envelope in enumerate(store.list()):
         click.echo(
             json.dumps(
@@ -92,12 +107,12 @@ def list_records(store_path: str) -> None:
 
 
 @main.command()
-@click.option("--store", "store_path", required=True, type=click.Path(dir_okay=False))
+@click.option("--store", "store_target", required=True)
 @click.option("--index", "index_", required=True, type=int)
-def show(store_path: str, index_: int) -> None:
+def show(store_target: str, index_: int) -> None:
     """Show a full record by zero-based index."""
 
-    store = build_store(store_path)
+    store = build_store(store_target)
     records = store.list()
     try:
         envelope = records[index_]
@@ -108,11 +123,11 @@ def show(store_path: str, index_: int) -> None:
 
 
 @main.command()
-@click.option("--store", "store_path", required=True, type=click.Path(dir_okay=False))
-def verify(store_path: str) -> None:
+@click.option("--store", "store_target", required=True)
+def verify(store_target: str) -> None:
     """Verify chain integrity for all records in a local store."""
 
-    store = build_store(store_path)
+    store = build_store(store_target)
     records = store.list()
     issues = verify_chain(records)
     result = {
@@ -124,6 +139,76 @@ def verify(store_path: str) -> None:
     click.echo(json.dumps(result, indent=2, sort_keys=True))
     if issues:
         raise click.ClickException("Evidence chain verification failed.")
+
+
+@main.command()
+@click.option("--store", "store_target", required=True)
+@click.option("--event-type")
+@click.option("--actor")
+@click.option("--source")
+@click.option("--component")
+@click.option("--since")
+@click.option("--until")
+@click.option("--limit", type=int)
+def query(
+    store_target: str,
+    event_type: str | None,
+    actor: str | None,
+    source: str | None,
+    component: str | None,
+    since: str | None,
+    until: str | None,
+    limit: int | None,
+) -> None:
+    """Query evidence records by semantic fields and time range."""
+
+    store = build_store(store_target)
+    records = store.query(
+        event_type=event_type,
+        actor=actor,
+        source=source,
+        component=component,
+        since=parse_datetime_option(since),
+        until=parse_datetime_option(until),
+        limit=limit,
+    )
+    click.echo(
+        json.dumps(
+            {
+                "count": len(records),
+                "records": [record.model_dump(mode="json") for record in records],
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+
+
+@main.command()
+@click.option("--source", "source_target", required=True)
+@click.option("--target", "target_target", required=True)
+@click.option("--append", "allow_existing", is_flag=True)
+def migrate(source_target: str, target_target: str, allow_existing: bool) -> None:
+    """Copy evidence records between local files and SQL backends."""
+
+    source_store = build_store(source_target)
+    target_store = build_store(target_target)
+    migrated = migrate_records(
+        source_store=source_store,
+        target_store=target_store,
+        allow_existing=allow_existing,
+    )
+    click.echo(
+        json.dumps(
+            {
+                "migrated": migrated,
+                "source": source_target,
+                "target": target_target,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
 
 
 @main.command()

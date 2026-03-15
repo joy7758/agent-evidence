@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime
 from pathlib import Path
 
 from agent_evidence.models import EvidenceEnvelope
@@ -43,6 +44,41 @@ class LocalEvidenceStore(EvidenceStore):
         if not records:
             return None
         return records[-1].hashes.chain_hash
+
+    def query(
+        self,
+        *,
+        event_type: str | None = None,
+        actor: str | None = None,
+        source: str | None = None,
+        component: str | None = None,
+        since: datetime | None = None,
+        until: datetime | None = None,
+        limit: int | None = None,
+    ) -> list[EvidenceEnvelope]:
+        records = self.list()
+
+        def matches(envelope: EvidenceEnvelope) -> bool:
+            event = envelope.event
+            context = event.context
+            if event_type is not None and event.event_type != event_type:
+                return False
+            if actor is not None and event.actor != actor:
+                return False
+            if source is not None and context.source != source:
+                return False
+            if component is not None and context.component != component:
+                return False
+            if since is not None and event.timestamp < since:
+                return False
+            if until is not None and event.timestamp > until:
+                return False
+            return True
+
+        filtered = [envelope for envelope in records if matches(envelope)]
+        if limit is not None:
+            return filtered[:limit]
+        return filtered
 
     def export_json(self) -> str:
         return json.dumps(

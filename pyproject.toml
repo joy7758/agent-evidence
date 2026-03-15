@@ -23,10 +23,18 @@ dev = [
   "pre-commit>=3.7,<5.0",
   "ruff>=0.14,<1.0",
   "langchain-core>=1.2,<2.0",
+  "sqlalchemy>=2.0,<3.0",
 ]
 langchain = [
   "langchain>=1.0,<2.0",
   "langchain-core>=1.2,<2.0",
+]
+sql = [
+  "sqlalchemy>=2.0,<3.0",
+]
+postgres = [
+  "sqlalchemy>=2.0,<3.0",
+  "psycopg[binary]>=3.2,<4.0",
 ]
 
 [project.scripts]

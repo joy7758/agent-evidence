@@ -7,7 +7,7 @@ RUFF ?= ./.venv/bin/ruff
 .PHONY: install test lint format hooks pre-commit clean
 
 install:
-	$(PIP) install -e ".[dev,langchain]"
+	$(PIP) install -e ".[dev,langchain,sql]"
 
 test:
 	$(PYTEST)
