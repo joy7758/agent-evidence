@@ -3,8 +3,10 @@
 from .export import (
     export_csv_bundle,
     export_json_bundle,
+    export_xml_bundle,
     verify_csv_export,
     verify_json_bundle,
+    verify_xml_export,
 )
 from .manifest import (
     EvidenceManifest,
@@ -33,9 +35,11 @@ __all__ = [
     "VerificationKey",
     "export_csv_bundle",
     "export_json_bundle",
+    "export_xml_bundle",
     "open_store",
     "verify_csv_export",
     "verify_json_bundle",
+    "verify_xml_export",
 ]
 
 try:

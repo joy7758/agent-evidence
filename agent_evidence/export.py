@@ -6,6 +6,7 @@ import json
 from collections import Counter
 from pathlib import Path
 from typing import Any, Literal, Sequence
+from xml.etree import ElementTree as ET
 
 from pydantic import ConfigDict, Field
 
@@ -105,10 +106,79 @@ def _csv_bytes(records: Sequence[EvidenceEnvelope]) -> bytes:
     return buffer.getvalue().encode("utf-8")
 
 
+def _text_element(parent: ET.Element, name: str, value: str) -> None:
+    element = ET.SubElement(parent, name)
+    element.text = value
+
+
+def _xml_bytes(records: Sequence[EvidenceEnvelope]) -> bytes:
+    root = ET.Element("agent_evidence_export", {"schema_version": "1.0"})
+    for envelope in records:
+        event = envelope.event
+        context = event.context
+        hashes = envelope.hashes
+
+        record_element = ET.SubElement(
+            root,
+            "record",
+            {"schema_version": envelope.schema_version},
+        )
+        event_element = ET.SubElement(record_element, "event")
+        _text_element(event_element, "event_id", event.event_id)
+        _text_element(event_element, "timestamp", event.timestamp.isoformat())
+        _text_element(event_element, "event_type", event.event_type)
+        _text_element(event_element, "actor", event.actor)
+        _text_element(event_element, "inputs", _json_cell(event.inputs))
+        _text_element(event_element, "outputs", _json_cell(event.outputs))
+        _text_element(event_element, "metadata", _json_cell(event.metadata))
+
+        context_element = ET.SubElement(event_element, "context")
+        _text_element(context_element, "source", context.source)
+        _text_element(context_element, "component", context.component or "")
+        _text_element(context_element, "source_event_type", context.source_event_type or "")
+        _text_element(context_element, "span_id", context.span_id or "")
+        _text_element(context_element, "parent_span_id", context.parent_span_id or "")
+        _text_element(
+            context_element,
+            "ancestor_span_ids",
+            _json_cell(context.ancestor_span_ids),
+        )
+        _text_element(context_element, "name", context.name or "")
+        _text_element(context_element, "tags", _json_cell(context.tags))
+        _text_element(context_element, "attributes", _json_cell(context.attributes))
+
+        hashes_element = ET.SubElement(record_element, "hashes")
+        _text_element(hashes_element, "event_hash", hashes.event_hash)
+        _text_element(hashes_element, "previous_event_hash", hashes.previous_event_hash or "")
+        _text_element(hashes_element, "chain_hash", hashes.chain_hash)
+    return ET.tostring(root, encoding="utf-8", xml_declaration=True)
+
+
+def _xml_hash_rows(xml_bytes: bytes) -> list[dict[str, str]]:
+    try:
+        root = ET.fromstring(xml_bytes)
+    except ET.ParseError as exc:
+        raise ValueError("artifact XML is not well-formed") from exc
+    rows: list[dict[str, str]] = []
+    for record_element in root.findall("record"):
+        hashes_element = record_element.find("hashes")
+        rows.append(
+            {
+                "event_hash": (
+                    "" if hashes_element is None else hashes_element.findtext("event_hash", "")
+                ),
+                "chain_hash": (
+                    "" if hashes_element is None else hashes_element.findtext("chain_hash", "")
+                ),
+            }
+        )
+    return rows
+
+
 def _build_manifest(
     records: Sequence[EvidenceEnvelope],
     *,
-    export_format: Literal["json", "csv"],
+    export_format: Literal["json", "csv", "xml"],
     artifact_digest: str,
     filters: dict[str, Any] | None = None,
     minimum_valid_signatures: int | None = None,
@@ -278,10 +348,52 @@ def export_csv_bundle(
     return document
 
 
+def export_xml_bundle(
+    records: Sequence[EvidenceEnvelope],
+    output_path: str | Path,
+    *,
+    manifest_output_path: str | Path | None = None,
+    filters: dict[str, Any] | None = None,
+    private_key_pem: bytes | None = None,
+    key_id: str | None = None,
+    key_version: str | None = None,
+    signer: str | None = None,
+    role: str | None = None,
+    signature_metadata: dict[str, Any] | None = None,
+    signer_configs: Sequence[SignerConfig] | None = None,
+    minimum_valid_signatures: int | None = None,
+    minimum_valid_signatures_by_role: dict[str, int] | None = None,
+) -> ManifestDocument:
+    artifact_bytes = _xml_bytes(records)
+    output = Path(output_path)
+    output.write_bytes(artifact_bytes)
+
+    manifest = _build_manifest(
+        records,
+        export_format="xml",
+        artifact_digest=sha256_hex(artifact_bytes),
+        filters=filters,
+        minimum_valid_signatures=minimum_valid_signatures,
+        minimum_valid_signatures_by_role=minimum_valid_signatures_by_role,
+    )
+    document = _manifest_document(
+        manifest,
+        private_key_pem=private_key_pem,
+        key_id=key_id,
+        key_version=key_version,
+        signer=signer,
+        role=role,
+        signature_metadata=signature_metadata,
+        signer_configs=signer_configs,
+    )
+    write_manifest_document(document, manifest_output_path or default_manifest_path(output))
+    return document
+
+
 def _issues_for_manifest_summary(
     manifest: EvidenceManifest,
     *,
-    export_format: Literal["json", "csv"],
+    export_format: Literal["json", "csv", "xml"],
     artifact_digest: str,
     event_hashes: Sequence[str],
     chain_hashes: Sequence[str],
@@ -603,6 +715,74 @@ def verify_csv_export(
     return {
         "ok": not issues,
         "format": "csv",
+        "record_count": len(rows),
+        "latest_chain_hash": document.manifest.latest_chain_hash,
+        "signature_policy": document.manifest.signature_policy.model_dump(mode="json"),
+        "signature_count": len(document.signatures),
+        "signature_present": bool(document.signatures),
+        "required_signature_count": required_signature_count,
+        "verified_signature_count": verified_signature_count,
+        "required_role_signature_counts": required_role_signature_counts,
+        "verified_role_signature_counts": verified_role_signature_counts,
+        "signature_verified": signature_verified,
+        "signature_results": signature_results,
+        "issues": issues,
+    }
+
+
+def verify_xml_export(
+    xml_path: str | Path,
+    manifest_path: str | Path,
+    *,
+    public_key_pem: bytes | None = None,
+    key_id: str | None = None,
+    key_version: str | None = None,
+    verification_keys: Sequence[VerificationKey] | None = None,
+    minimum_valid_signatures: int | None = None,
+    minimum_valid_signatures_by_role: dict[str, int] | None = None,
+) -> dict[str, Any]:
+    xml_bytes = Path(xml_path).read_bytes()
+    document = ManifestDocument.model_validate_json(Path(manifest_path).read_text(encoding="utf-8"))
+    issues: list[str] = []
+    try:
+        rows = _xml_hash_rows(xml_bytes)
+    except ValueError as exc:
+        rows = []
+        issues.append(str(exc))
+    event_hashes = [row["event_hash"] for row in rows]
+    chain_hashes = [row["chain_hash"] for row in rows]
+    issues.extend(
+        _issues_for_manifest_summary(
+            document.manifest,
+            export_format="xml",
+            artifact_digest=sha256_hex(xml_bytes),
+            event_hashes=event_hashes,
+            chain_hashes=chain_hashes,
+        )
+    )
+
+    (
+        signature_results,
+        signature_verified,
+        required_signature_count,
+        verified_signature_count,
+        required_role_signature_counts,
+        verified_role_signature_counts,
+        signature_issues,
+    ) = _evaluate_signature_results(
+        document,
+        public_key_pem=public_key_pem,
+        key_id=key_id,
+        key_version=key_version,
+        verification_keys=verification_keys,
+        minimum_valid_signatures=minimum_valid_signatures,
+        minimum_valid_signatures_by_role=minimum_valid_signatures_by_role,
+    )
+    issues.extend(signature_issues)
+
+    return {
+        "ok": not issues,
+        "format": "xml",
         "record_count": len(rows),
         "latest_chain_hash": document.manifest.latest_chain_hash,
         "signature_policy": document.manifest.signature_policy.model_dump(mode="json"),

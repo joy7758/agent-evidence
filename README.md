@@ -106,6 +106,14 @@ agent-evidence export \
 
 agent-evidence export \
   --store ./data/evidence.jsonl \
+  --format xml \
+  --output ./exports/evidence.xml \
+  --manifest-output ./exports/evidence.xml.manifest.json \
+  --private-key ./keys/manifest-private.pem \
+  --key-id evidence-demo
+
+agent-evidence export \
+  --store ./data/evidence.jsonl \
   --format json \
   --output ./exports/evidence.multisig.json \
   --required-signatures 2 \
@@ -126,6 +134,11 @@ agent-evidence verify-export \
   --bundle ./exports/evidence.multisig.json \
   --keyring ./keys/manifest-keyring.json \
   --required-signature-role approver=1
+
+agent-evidence verify-export \
+  --xml ./exports/evidence.xml \
+  --manifest ./exports/evidence.xml.manifest.json \
+  --public-key ./keys/manifest-public.pem
 ```
 
 ## Development
@@ -292,10 +305,11 @@ are preferable once record volume grows beyond simple local inspection.
 
 ## Bundle export
 
-Agent Evidence supports two export shapes:
+Agent Evidence supports three export shapes:
 
 - JSON bundles containing `records`, `manifest`, and one or more detached signatures
 - CSV artifacts plus a JSON sidecar manifest
+- XML artifacts plus a JSON sidecar manifest
 
 Both formats include a manifest with:
 

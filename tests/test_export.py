@@ -10,8 +10,10 @@ from agent_evidence.export import (
     default_manifest_path,
     export_csv_bundle,
     export_json_bundle,
+    export_xml_bundle,
     verify_csv_export,
     verify_json_bundle,
+    verify_xml_export,
 )
 from agent_evidence.manifest import SignerConfig, VerificationKey
 from agent_evidence.recorder import EvidenceRecorder
@@ -152,6 +154,35 @@ def test_export_csv_bundle_detects_tampering(tmp_path: Path) -> None:
     assert "artifact_digest mismatch" in tampered["issues"]
 
 
+def test_export_xml_bundle_detects_tampering(tmp_path: Path) -> None:
+    records, _ = build_records(tmp_path)
+    _, _, private_pem, public_pem = write_ed25519_keypair(tmp_path)
+    xml_path = tmp_path / "bundle.xml"
+    manifest_path = default_manifest_path(xml_path)
+
+    document = export_xml_bundle(
+        records,
+        xml_path,
+        private_key_pem=private_pem,
+        key_id="xml-key",
+    )
+
+    assert document.signature is not None
+    verified = verify_xml_export(xml_path, manifest_path, public_key_pem=public_pem)
+    assert verified["ok"] is True
+    assert verified["format"] == "xml"
+    assert verified["signature_count"] == 1
+    assert verified["signature_verified"] is True
+
+    xml_path.write_text(
+        xml_path.read_text(encoding="utf-8").replace("tool.end", "tool.fail", 1),
+        encoding="utf-8",
+    )
+    tampered = verify_xml_export(xml_path, manifest_path, public_key_pem=public_pem)
+    assert tampered["ok"] is False
+    assert "artifact_digest mismatch" in tampered["issues"]
+
+
 def test_cli_export_and_verify_bundle(tmp_path: Path) -> None:
     records, store = build_records(tmp_path)
     runner = CliRunner()
@@ -196,6 +227,59 @@ def test_cli_export_and_verify_bundle(tmp_path: Path) -> None:
     assert verified.exit_code == 0, verified.output
     verify_result = json.loads(verified.output)
     assert verify_result["ok"] is True
+    assert verify_result["signature_count"] == 1
+    assert verify_result["signature_verified"] is True
+
+
+def test_cli_export_and_verify_xml_artifact(tmp_path: Path) -> None:
+    records, store = build_records(tmp_path)
+    runner = CliRunner()
+    private_path, public_path, _, _ = write_ed25519_keypair(tmp_path)
+    xml_path = tmp_path / "cli-bundle.xml"
+    manifest_path = default_manifest_path(xml_path)
+
+    exported = runner.invoke(
+        main,
+        [
+            "export",
+            "--store",
+            str(store.path),
+            "--format",
+            "xml",
+            "--output",
+            str(xml_path),
+            "--actor",
+            "planner",
+            "--private-key",
+            str(private_path),
+            "--key-id",
+            "xml-cli-key",
+        ],
+    )
+    assert exported.exit_code == 0, exported.output
+    export_result = json.loads(exported.output)
+    assert export_result["format"] == "xml"
+    assert export_result["manifest_output"] == str(manifest_path)
+    assert export_result["record_count"] == len(records)
+    assert export_result["signed"] is True
+    assert export_result["signature_count"] == 1
+
+    verified = runner.invoke(
+        main,
+        [
+            "verify-export",
+            "--xml",
+            str(xml_path),
+            "--manifest",
+            str(manifest_path),
+            "--public-key",
+            str(public_path),
+        ],
+    )
+    assert verified.exit_code == 0, verified.output
+    verify_result = json.loads(verified.output)
+    assert verify_result["ok"] is True
+    assert verify_result["format"] == "xml"
     assert verify_result["signature_count"] == 1
     assert verify_result["signature_verified"] is True
 

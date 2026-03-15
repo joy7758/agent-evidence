@@ -9,7 +9,7 @@ from agent_evidence.crypto.hashing import canonical_json_bytes
 from agent_evidence.models import utc_now
 from agent_evidence.serialization import to_jsonable
 
-MANIFEST_SCHEMA_VERSION = "1.3.0"
+MANIFEST_SCHEMA_VERSION = "1.4.0"
 
 
 class EvidenceManifest(BaseModel):
@@ -17,8 +17,8 @@ class EvidenceManifest(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    schema_version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0"] = MANIFEST_SCHEMA_VERSION
-    export_format: Literal["json", "csv"]
+    schema_version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.4.0"] = MANIFEST_SCHEMA_VERSION
+    export_format: Literal["json", "csv", "xml"]
     digest_algorithm: Literal["sha256"] = "sha256"
     generated_at: str = Field(default_factory=lambda: utc_now().isoformat())
     record_count: int

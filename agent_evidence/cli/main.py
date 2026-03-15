@@ -14,8 +14,10 @@ from agent_evidence.export import (
     default_manifest_path,
     export_csv_bundle,
     export_json_bundle,
+    export_xml_bundle,
     verify_csv_export,
     verify_json_bundle,
+    verify_xml_export,
 )
 from agent_evidence.manifest import SignaturePolicy, SignerConfig, VerificationKey
 from agent_evidence.models import EvidenceEnvelope
@@ -424,7 +426,7 @@ def query(
 @click.option(
     "--format",
     "export_format",
-    type=click.Choice(["json", "csv"]),
+    type=click.Choice(["json", "csv", "xml"]),
     default="json",
     show_default=True,
 )
@@ -488,7 +490,7 @@ def export_records(
     offset: int | None,
     limit: int | None,
 ) -> None:
-    """Export evidence records as a JSON bundle or CSV artifact with manifest."""
+    """Export evidence records as a JSON bundle, CSV artifact, or XML artifact."""
 
     store = build_store(store_target)
     role_thresholds = parse_role_thresholds(required_signature_roles)
@@ -537,9 +539,21 @@ def export_records(
             manifest_output_path=manifest_output,
         )
         signature_count = len(bundle.signatures)
-    else:
+    elif export_format == "csv":
         manifest_path = manifest_output or default_manifest_path(output_path)
         manifest_document = export_csv_bundle(
+            records,
+            output_path,
+            manifest_output_path=manifest_path,
+            filters=query_kwargs,
+            signer_configs=signer_configs,
+            minimum_valid_signatures=required_signatures,
+            minimum_valid_signatures_by_role=role_thresholds,
+        )
+        signature_count = len(manifest_document.signatures)
+    else:
+        manifest_path = manifest_output or default_manifest_path(output_path)
+        manifest_document = export_xml_bundle(
             records,
             output_path,
             manifest_output_path=manifest_path,
@@ -571,6 +585,7 @@ def export_records(
 @main.command(name="verify-export")
 @click.option("--bundle", type=click.Path(exists=True, dir_okay=False, path_type=Path))
 @click.option("--csv", "csv_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option("--xml", "xml_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
 @click.option(
     "--manifest",
     "manifest_path",
@@ -591,6 +606,7 @@ def export_records(
 def verify_export_command(
     bundle: Path | None,
     csv_path: Path | None,
+    xml_path: Path | None,
     manifest_path: Path | None,
     public_key: Path | None,
     key_id: str | None,
@@ -599,12 +615,21 @@ def verify_export_command(
     required_signatures: int | None,
     required_signature_roles: tuple[str, ...],
 ) -> None:
-    """Verify an exported JSON bundle or CSV artifact plus manifest."""
+    """Verify an exported JSON bundle, CSV artifact, or XML artifact."""
 
-    if bundle is not None and (csv_path is not None or manifest_path is not None):
-        raise click.ClickException("Use --bundle or the --csv/--manifest pair, not both.")
-    if bundle is None and (csv_path is None or manifest_path is None):
-        raise click.ClickException("Provide --bundle, or provide both --csv and --manifest.")
+    if bundle is not None and (
+        csv_path is not None or xml_path is not None or manifest_path is not None
+    ):
+        raise click.ClickException(
+            "Use --bundle or one of the --csv/--manifest or --xml/--manifest pairs, not both."
+        )
+    if bundle is None:
+        artifact_count = int(csv_path is not None) + int(xml_path is not None)
+        if artifact_count != 1 or manifest_path is None:
+            raise click.ClickException(
+                "Provide --bundle, or provide exactly one of --csv or --xml "
+                "together with --manifest."
+            )
 
     verification_keys = build_verification_keys(
         public_key=public_key,
@@ -624,9 +649,17 @@ def verify_export_command(
             minimum_valid_signatures=required_signatures,
             minimum_valid_signatures_by_role=role_thresholds or None,
         )
-    else:
+    elif csv_path is not None:
         result = verify_csv_export(
             csv_path,
+            manifest_path,
+            verification_keys=verification_keys,
+            minimum_valid_signatures=required_signatures,
+            minimum_valid_signatures_by_role=role_thresholds or None,
+        )
+    else:
+        result = verify_xml_export(
+            xml_path,
             manifest_path,
             verification_keys=verification_keys,
             minimum_valid_signatures=required_signatures,
