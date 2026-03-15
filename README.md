@@ -104,9 +104,20 @@ agent-evidence export \
   --private-key ./keys/manifest-private.pem \
   --key-id evidence-demo
 
+agent-evidence export \
+  --store ./data/evidence.jsonl \
+  --format json \
+  --output ./exports/evidence.multisig.json \
+  --signer-config ./keys/operations-q2.signer.json \
+  --signer-config ./keys/compliance-q1.signer.json
+
 agent-evidence verify-export \
   --bundle ./exports/evidence.bundle.json \
   --public-key ./keys/manifest-public.pem
+
+agent-evidence verify-export \
+  --bundle ./exports/evidence.multisig.json \
+  --keyring ./keys/manifest-keyring.json
 ```
 
 ## Development
@@ -275,7 +286,7 @@ are preferable once record volume grows beyond simple local inspection.
 
 Agent Evidence supports two export shapes:
 
-- JSON bundles containing `records`, `manifest`, and an optional detached signature
+- JSON bundles containing `records`, `manifest`, and one or more detached signatures
 - CSV artifacts plus a JSON sidecar manifest
 
 Both formats include a manifest with:
@@ -284,6 +295,12 @@ Both formats include a manifest with:
 - ordered event-hash and chain-hash list digests
 - first/last event hashes and latest chain hash
 - export filters used to produce the artifact
+
+Each signature can also carry:
+
+- `key_id` and `key_version` for key rotation
+- `signer` and `role` for audit attribution
+- `signed_at` and arbitrary JSON metadata
 
 Manifest signing uses Ed25519 PEM keys. To enable signing outside the dev
 environment:
@@ -299,10 +316,46 @@ openssl genpkey -algorithm Ed25519 -out ./keys/manifest-private.pem
 openssl pkey -in ./keys/manifest-private.pem -pubout -out ./keys/manifest-public.pem
 ```
 
+Signer config files let you attach multiple signatures during export. Example
+`operations-q2.signer.json`:
+
+```json
+{
+  "private_key": "./operations-q2-private.pem",
+  "key_id": "operations",
+  "key_version": "2026-q2",
+  "signer": "Operations Bot",
+  "role": "approver",
+  "metadata": {
+    "environment": "prod"
+  }
+}
+```
+
+Keyrings let `verify-export` resolve rotated keys by `key_id` and
+`key_version`. Example `manifest-keyring.json`:
+
+```json
+{
+  "keys": [
+    {
+      "key_id": "operations",
+      "key_version": "2026-q1",
+      "public_key": "./operations-q1-public.pem"
+    },
+    {
+      "key_id": "operations",
+      "key_version": "2026-q2",
+      "public_key": "./operations-q2-public.pem"
+    }
+  ]
+}
+```
+
 When you export CSV, Agent Evidence writes the CSV artifact and a manifest
 sidecar such as `evidence.csv.manifest.json`. `verify-export` validates the
-manifest summary, exported artifact digest, and the signature when a public key
-is provided.
+manifest summary, exported artifact digest, and every signature it can resolve
+from a provided public key or keyring.
 
 ## PostgreSQL integration validation
 

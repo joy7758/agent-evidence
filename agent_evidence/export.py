@@ -13,10 +13,11 @@ from agent_evidence.crypto.hashing import canonical_json_bytes, compute_hash, sh
 from agent_evidence.manifest import (
     EvidenceManifest,
     ManifestDocument,
-    ManifestSignature,
+    SignerConfig,
+    VerificationKey,
     normalize_filters,
-    sign_manifest,
-    verify_manifest_signature,
+    sign_manifest_set,
+    verify_manifest_signatures,
 )
 from agent_evidence.models import EvidenceEnvelope
 from agent_evidence.serialization import to_jsonable
@@ -129,11 +130,47 @@ def _manifest_document(
     *,
     private_key_pem: bytes | None = None,
     key_id: str | None = None,
+    key_version: str | None = None,
+    signer: str | None = None,
+    role: str | None = None,
+    signature_metadata: dict[str, Any] | None = None,
+    signer_configs: Sequence[SignerConfig] | None = None,
 ) -> ManifestDocument:
-    signature: ManifestSignature | None = None
+    resolved_signer_configs = list(signer_configs or [])
     if private_key_pem is not None:
-        signature = sign_manifest(manifest, private_key_pem, key_id=key_id)
-    return ManifestDocument(manifest=manifest, signature=signature)
+        resolved_signer_configs.insert(
+            0,
+            SignerConfig(
+                private_key_pem=private_key_pem,
+                key_id=key_id,
+                key_version=key_version,
+                signer=signer,
+                role=role,
+                metadata=signature_metadata or {},
+            ),
+        )
+    signatures = sign_manifest_set(manifest, resolved_signer_configs)
+    return ManifestDocument(manifest=manifest, signatures=signatures)
+
+
+def _verification_keys(
+    *,
+    public_key_pem: bytes | None = None,
+    key_id: str | None = None,
+    key_version: str | None = None,
+    verification_keys: Sequence[VerificationKey] | None = None,
+) -> list[VerificationKey]:
+    resolved_keys = list(verification_keys or [])
+    if public_key_pem is not None:
+        resolved_keys.insert(
+            0,
+            VerificationKey(
+                public_key_pem=public_key_pem,
+                key_id=key_id,
+                key_version=key_version,
+            ),
+        )
+    return resolved_keys
 
 
 def default_manifest_path(output_path: str | Path) -> Path:
@@ -152,6 +189,11 @@ def export_json_bundle(
     filters: dict[str, Any] | None = None,
     private_key_pem: bytes | None = None,
     key_id: str | None = None,
+    key_version: str | None = None,
+    signer: str | None = None,
+    role: str | None = None,
+    signature_metadata: dict[str, Any] | None = None,
+    signer_configs: Sequence[SignerConfig] | None = None,
     manifest_output_path: str | Path | None = None,
 ) -> JsonBundleDocument:
     records_payload = _records_payload(records)
@@ -165,10 +207,15 @@ def export_json_bundle(
         manifest,
         private_key_pem=private_key_pem,
         key_id=key_id,
+        key_version=key_version,
+        signer=signer,
+        role=role,
+        signature_metadata=signature_metadata,
+        signer_configs=signer_configs,
     )
     bundle = JsonBundleDocument(
         manifest=manifest_document.manifest,
-        signature=manifest_document.signature,
+        signatures=manifest_document.signatures,
         records=list(records),
     )
     Path(output_path).write_text(_json_text(bundle.model_dump(mode="json")), encoding="utf-8")
@@ -185,6 +232,11 @@ def export_csv_bundle(
     filters: dict[str, Any] | None = None,
     private_key_pem: bytes | None = None,
     key_id: str | None = None,
+    key_version: str | None = None,
+    signer: str | None = None,
+    role: str | None = None,
+    signature_metadata: dict[str, Any] | None = None,
+    signer_configs: Sequence[SignerConfig] | None = None,
 ) -> ManifestDocument:
     artifact_bytes = _csv_bytes(records)
     output = Path(output_path)
@@ -200,6 +252,11 @@ def export_csv_bundle(
         manifest,
         private_key_pem=private_key_pem,
         key_id=key_id,
+        key_version=key_version,
+        signer=signer,
+        role=role,
+        signature_metadata=signature_metadata,
+        signer_configs=signer_configs,
     )
     write_manifest_document(document, manifest_output_path or default_manifest_path(output))
     return document
@@ -244,6 +301,9 @@ def verify_json_bundle(
     bundle_path: str | Path,
     *,
     public_key_pem: bytes | None = None,
+    key_id: str | None = None,
+    key_version: str | None = None,
+    verification_keys: Sequence[VerificationKey] | None = None,
 ) -> dict[str, Any]:
     document = JsonBundleDocument.model_validate_json(Path(bundle_path).read_text(encoding="utf-8"))
     records_payload = _records_payload(document.records)
@@ -258,23 +318,37 @@ def verify_json_bundle(
     )
     issues.extend(f"chain: {issue}" for issue in verify_chain(document.records))
 
+    resolved_verification_keys = _verification_keys(
+        public_key_pem=public_key_pem,
+        key_id=key_id,
+        key_version=key_version,
+        verification_keys=verification_keys,
+    )
+    signature_results: list[dict[str, Any]] = []
     signature_verified: bool | None = None
-    if document.signature is not None and public_key_pem is not None:
-        signature_verified = verify_manifest_signature(
-            document.manifest,
-            document.signature,
-            public_key_pem,
-        )
-        if not signature_verified:
-            issues.append("manifest signature verification failed")
+    if document.signatures:
+        if resolved_verification_keys:
+            signature_results = verify_manifest_signatures(
+                document.manifest,
+                document.signatures,
+                resolved_verification_keys,
+            )
+            signature_verified = all(item["verified"] for item in signature_results)
+            for item in signature_results:
+                if not item["verified"]:
+                    issues.append(item["error"] or "manifest signature verification failed")
+        else:
+            signature_verified = None
 
     return {
         "ok": not issues,
         "format": "json",
         "record_count": len(document.records),
         "latest_chain_hash": document.manifest.latest_chain_hash,
-        "signature_present": document.signature is not None,
+        "signature_count": len(document.signatures),
+        "signature_present": bool(document.signatures),
         "signature_verified": signature_verified,
+        "signature_results": signature_results,
         "issues": issues,
     }
 
@@ -284,6 +358,9 @@ def verify_csv_export(
     manifest_path: str | Path,
     *,
     public_key_pem: bytes | None = None,
+    key_id: str | None = None,
+    key_version: str | None = None,
+    verification_keys: Sequence[VerificationKey] | None = None,
 ) -> dict[str, Any]:
     csv_bytes = Path(csv_path).read_bytes()
     document = ManifestDocument.model_validate_json(Path(manifest_path).read_text(encoding="utf-8"))
@@ -301,22 +378,36 @@ def verify_csv_export(
         chain_hashes=chain_hashes,
     )
 
+    resolved_verification_keys = _verification_keys(
+        public_key_pem=public_key_pem,
+        key_id=key_id,
+        key_version=key_version,
+        verification_keys=verification_keys,
+    )
+    signature_results: list[dict[str, Any]] = []
     signature_verified: bool | None = None
-    if document.signature is not None and public_key_pem is not None:
-        signature_verified = verify_manifest_signature(
-            document.manifest,
-            document.signature,
-            public_key_pem,
-        )
-        if not signature_verified:
-            issues.append("manifest signature verification failed")
+    if document.signatures:
+        if resolved_verification_keys:
+            signature_results = verify_manifest_signatures(
+                document.manifest,
+                document.signatures,
+                resolved_verification_keys,
+            )
+            signature_verified = all(item["verified"] for item in signature_results)
+            for item in signature_results:
+                if not item["verified"]:
+                    issues.append(item["error"] or "manifest signature verification failed")
+        else:
+            signature_verified = None
 
     return {
         "ok": not issues,
         "format": "csv",
         "record_count": len(rows),
         "latest_chain_hash": document.manifest.latest_chain_hash,
-        "signature_present": document.signature is not None,
+        "signature_count": len(document.signatures),
+        "signature_present": bool(document.signatures),
         "signature_verified": signature_verified,
+        "signature_results": signature_results,
         "issues": issues,
     }

@@ -16,6 +16,7 @@ from agent_evidence.export import (
     verify_csv_export,
     verify_json_bundle,
 )
+from agent_evidence.manifest import SignerConfig, VerificationKey
 from agent_evidence.models import EvidenceEnvelope
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage import migrate_records, open_store
@@ -46,6 +47,118 @@ def parse_datetime_option(raw: str | None) -> datetime | None:
     if value.tzinfo is None:
         return value.replace(tzinfo=timezone.utc)
     return value
+
+
+def load_json_file(path: Path) -> Any:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise click.ClickException(f"Invalid JSON file: {path}") from exc
+
+
+def resolve_path_reference(config_path: Path, raw_path: str) -> Path:
+    candidate = Path(raw_path)
+    if candidate.is_absolute():
+        return candidate
+    return (config_path.parent / candidate).resolve()
+
+
+def load_signer_config(path: Path) -> SignerConfig:
+    payload = load_json_file(path)
+    if not isinstance(payload, dict):
+        raise click.ClickException(f"Signer config must be a JSON object: {path}")
+
+    private_key_ref = payload.get("private_key")
+    if not isinstance(private_key_ref, str) or not private_key_ref:
+        raise click.ClickException(f"Signer config requires 'private_key': {path}")
+
+    metadata = payload.get("metadata") or {}
+    if not isinstance(metadata, dict):
+        raise click.ClickException(f"Signer config 'metadata' must be a JSON object: {path}")
+
+    private_key_path = resolve_path_reference(path, private_key_ref)
+    return SignerConfig(
+        private_key_pem=private_key_path.read_bytes(),
+        key_id=payload.get("key_id"),
+        key_version=payload.get("key_version"),
+        signed_at=payload.get("signed_at"),
+        signer=payload.get("signer"),
+        role=payload.get("role"),
+        metadata=metadata,
+    )
+
+
+def load_keyring(path: Path) -> list[VerificationKey]:
+    payload = load_json_file(path)
+    raw_keys = payload.get("keys") if isinstance(payload, dict) else payload
+    if not isinstance(raw_keys, list):
+        raise click.ClickException(f"Keyring must be a JSON array or an object with 'keys': {path}")
+
+    verification_keys: list[VerificationKey] = []
+    for index, raw_key in enumerate(raw_keys):
+        if not isinstance(raw_key, dict):
+            raise click.ClickException(f"Keyring entry {index} must be a JSON object: {path}")
+        public_key_ref = raw_key.get("public_key")
+        if not isinstance(public_key_ref, str) or not public_key_ref:
+            raise click.ClickException(f"Keyring entry {index} requires 'public_key': {path}")
+
+        public_key_path = resolve_path_reference(path, public_key_ref)
+        verification_keys.append(
+            VerificationKey(
+                public_key_pem=public_key_path.read_bytes(),
+                key_id=raw_key.get("key_id"),
+                key_version=raw_key.get("key_version"),
+            )
+        )
+    return verification_keys
+
+
+def build_signer_configs(
+    *,
+    private_key: Path | None,
+    key_id: str | None,
+    key_version: str | None,
+    signer: str | None,
+    signature_role: str | None,
+    signature_metadata_raw: str | None,
+    signed_at: str | None,
+    signer_config_paths: tuple[Path, ...],
+) -> list[SignerConfig]:
+    signer_configs = [load_signer_config(path) for path in signer_config_paths]
+    if private_key is not None:
+        signer_configs.insert(
+            0,
+            SignerConfig(
+                private_key_pem=private_key.read_bytes(),
+                key_id=key_id,
+                key_version=key_version,
+                signed_at=parse_datetime_option(signed_at).isoformat() if signed_at else None,
+                signer=signer,
+                role=signature_role,
+                metadata=parse_json_option(signature_metadata_raw),
+            ),
+        )
+    return signer_configs
+
+
+def build_verification_keys(
+    *,
+    public_key: Path | None,
+    key_id: str | None,
+    key_version: str | None,
+    keyring: Path | None,
+) -> list[VerificationKey]:
+    verification_keys = load_keyring(keyring) if keyring is not None else []
+    if public_key is not None:
+        verification_keys.insert(
+            0,
+            VerificationKey(
+                public_key_pem=public_key.read_bytes(),
+                key_id=key_id,
+                key_version=key_version,
+            ),
+        )
+    return verification_keys
 
 
 def add_query_filter_options(function: Callable[..., Any]) -> Callable[..., Any]:
@@ -292,6 +405,17 @@ def query(
     type=click.Path(exists=True, dir_okay=False, path_type=Path),
 )
 @click.option("--key-id")
+@click.option("--key-version")
+@click.option("--signer")
+@click.option("--signature-role")
+@click.option("--signature-metadata")
+@click.option("--signed-at")
+@click.option(
+    "--signer-config",
+    "signer_config_paths",
+    multiple=True,
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+)
 @add_query_filter_options
 def export_records(
     store_target: str,
@@ -300,6 +424,12 @@ def export_records(
     manifest_output: Path | None,
     private_key: Path | None,
     key_id: str | None,
+    key_version: str | None,
+    signer: str | None,
+    signature_role: str | None,
+    signature_metadata: str | None,
+    signed_at: str | None,
+    signer_config_paths: tuple[Path, ...],
     event_type: str | None,
     actor: str | None,
     source: str | None,
@@ -337,7 +467,16 @@ def export_records(
         limit=limit,
     )
     records = store.query(**query_kwargs)
-    private_key_pem = private_key.read_bytes() if private_key is not None else None
+    signer_configs = build_signer_configs(
+        private_key=private_key,
+        key_id=key_id,
+        key_version=key_version,
+        signer=signer,
+        signature_role=signature_role,
+        signature_metadata_raw=signature_metadata,
+        signed_at=signed_at,
+        signer_config_paths=signer_config_paths,
+    )
 
     manifest_path: Path | None = manifest_output
     if export_format == "json":
@@ -345,11 +484,10 @@ def export_records(
             records,
             output_path,
             filters=query_kwargs,
-            private_key_pem=private_key_pem,
-            key_id=key_id,
+            signer_configs=signer_configs,
             manifest_output_path=manifest_output,
         )
-        signature_present = bundle.signature is not None
+        signature_count = len(bundle.signatures)
     else:
         manifest_path = manifest_output or default_manifest_path(output_path)
         manifest_document = export_csv_bundle(
@@ -357,10 +495,9 @@ def export_records(
             output_path,
             manifest_output_path=manifest_path,
             filters=query_kwargs,
-            private_key_pem=private_key_pem,
-            key_id=key_id,
+            signer_configs=signer_configs,
         )
-        signature_present = manifest_document.signature is not None
+        signature_count = len(manifest_document.signatures)
 
     click.echo(
         json.dumps(
@@ -369,7 +506,8 @@ def export_records(
                 "output": str(output_path),
                 "manifest_output": str(manifest_path) if manifest_path is not None else None,
                 "record_count": len(records),
-                "signed": signature_present,
+                "signed": signature_count > 0,
+                "signature_count": signature_count,
             },
             indent=2,
             sort_keys=True,
@@ -389,11 +527,20 @@ def export_records(
     "--public-key",
     type=click.Path(exists=True, dir_okay=False, path_type=Path),
 )
+@click.option("--key-id")
+@click.option("--key-version")
+@click.option(
+    "--keyring",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+)
 def verify_export_command(
     bundle: Path | None,
     csv_path: Path | None,
     manifest_path: Path | None,
     public_key: Path | None,
+    key_id: str | None,
+    key_version: str | None,
+    keyring: Path | None,
 ) -> None:
     """Verify an exported JSON bundle or CSV artifact plus manifest."""
 
@@ -402,14 +549,19 @@ def verify_export_command(
     if bundle is None and (csv_path is None or manifest_path is None):
         raise click.ClickException("Provide --bundle, or provide both --csv and --manifest.")
 
-    public_key_pem = public_key.read_bytes() if public_key is not None else None
+    verification_keys = build_verification_keys(
+        public_key=public_key,
+        key_id=key_id,
+        key_version=key_version,
+        keyring=keyring,
+    )
     if bundle is not None:
-        result = verify_json_bundle(bundle, public_key_pem=public_key_pem)
+        result = verify_json_bundle(bundle, verification_keys=verification_keys)
     else:
         result = verify_csv_export(
             csv_path,
             manifest_path,
-            public_key_pem=public_key_pem,
+            verification_keys=verification_keys,
         )
 
     click.echo(json.dumps(result, indent=2, sort_keys=True))

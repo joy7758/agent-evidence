@@ -6,7 +6,13 @@ from .export import (
     verify_csv_export,
     verify_json_bundle,
 )
-from .manifest import EvidenceManifest, ManifestDocument, ManifestSignature
+from .manifest import (
+    EvidenceManifest,
+    ManifestDocument,
+    ManifestSignature,
+    SignerConfig,
+    VerificationKey,
+)
 from .models import EvidenceContext, EvidenceEnvelope, EvidenceEvent, EvidenceHashes
 from .recorder import EvidenceRecorder
 from .storage import LocalEvidenceStore, open_store
@@ -21,6 +27,8 @@ __all__ = [
     "LocalEvidenceStore",
     "ManifestDocument",
     "ManifestSignature",
+    "SignerConfig",
+    "VerificationKey",
     "export_csv_bundle",
     "export_json_bundle",
     "open_store",

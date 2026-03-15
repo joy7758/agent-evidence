@@ -58,6 +58,45 @@ def build_records(tmp_path: Path):
     return store.list(), store
 
 
+def write_signer_config(
+    tmp_path: Path,
+    name: str,
+    private_key_path: Path,
+    *,
+    key_id: str,
+    key_version: str,
+    signer: str,
+    role: str,
+    metadata: dict[str, str] | None = None,
+) -> Path:
+    config_path = tmp_path / f"{name}.signer.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "private_key": private_key_path.name,
+                "key_id": key_id,
+                "key_version": key_version,
+                "signer": signer,
+                "role": role,
+                "metadata": metadata or {},
+            },
+            indent=2,
+            sort_keys=True,
+        ),
+        encoding="utf-8",
+    )
+    return config_path
+
+
+def write_keyring(tmp_path: Path, entries: list[dict[str, str]]) -> Path:
+    keyring_path = tmp_path / "manifest-keyring.json"
+    keyring_path.write_text(
+        json.dumps({"keys": entries}, indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    return keyring_path
+
+
 def test_export_json_bundle_and_verify_signature(tmp_path: Path) -> None:
     records, _ = build_records(tmp_path)
     _, _, private_pem, public_pem = write_ed25519_keypair(tmp_path)
@@ -75,10 +114,11 @@ def test_export_json_bundle_and_verify_signature(tmp_path: Path) -> None:
 
     assert bundle.signature is not None
     manifest_document = json.loads(manifest_path.read_text(encoding="utf-8"))
-    assert manifest_document["signature"]["key_id"] == "test-key"
+    assert manifest_document["signatures"][0]["key_id"] == "test-key"
 
     result = verify_json_bundle(bundle_path, public_key_pem=public_pem)
     assert result["ok"] is True
+    assert result["signature_count"] == 1
     assert result["signature_present"] is True
     assert result["signature_verified"] is True
 
@@ -99,6 +139,7 @@ def test_export_csv_bundle_detects_tampering(tmp_path: Path) -> None:
     assert document.signature is not None
     verified = verify_csv_export(csv_path, manifest_path, public_key_pem=public_pem)
     assert verified["ok"] is True
+    assert verified["signature_count"] == 1
     assert verified["signature_verified"] is True
 
     csv_path.write_text(
@@ -139,6 +180,7 @@ def test_cli_export_and_verify_bundle(tmp_path: Path) -> None:
     assert export_result["format"] == "json"
     assert export_result["record_count"] == len(records)
     assert export_result["signed"] is True
+    assert export_result["signature_count"] == 1
 
     verified = runner.invoke(
         main,
@@ -153,4 +195,122 @@ def test_cli_export_and_verify_bundle(tmp_path: Path) -> None:
     assert verified.exit_code == 0, verified.output
     verify_result = json.loads(verified.output)
     assert verify_result["ok"] is True
+    assert verify_result["signature_count"] == 1
     assert verify_result["signature_verified"] is True
+
+
+def test_verify_json_bundle_accepts_legacy_signature_field(tmp_path: Path) -> None:
+    records, _ = build_records(tmp_path)
+    _, _, private_pem, public_pem = write_ed25519_keypair(tmp_path)
+    bundle_path = tmp_path / "legacy-bundle.json"
+
+    export_json_bundle(
+        records,
+        bundle_path,
+        private_key_pem=private_pem,
+        key_id="legacy",
+    )
+    payload = json.loads(bundle_path.read_text(encoding="utf-8"))
+    payload["signature"] = payload["signatures"][0]
+    payload.pop("signatures")
+    bundle_path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+
+    result = verify_json_bundle(bundle_path, public_key_pem=public_pem)
+    assert result["ok"] is True
+    assert result["signature_count"] == 1
+    assert result["signature_verified"] is True
+
+
+def test_cli_multisig_export_and_key_rotation_verification(tmp_path: Path) -> None:
+    records, store = build_records(tmp_path)
+    runner = CliRunner()
+
+    ops_old_private, ops_old_public, _, _ = write_ed25519_keypair(tmp_path)
+    ops_new_private, ops_new_public, _, _ = write_ed25519_keypair(tmp_path)
+    compliance_private, compliance_public, _, _ = write_ed25519_keypair(tmp_path)
+
+    ops_config = write_signer_config(
+        tmp_path,
+        "ops-current",
+        ops_new_private,
+        key_id="operations",
+        key_version="2026-q2",
+        signer="Operations Bot",
+        role="approver",
+        metadata={"environment": "prod"},
+    )
+    compliance_config = write_signer_config(
+        tmp_path,
+        "compliance",
+        compliance_private,
+        key_id="compliance",
+        key_version="2026-q1",
+        signer="Compliance Bot",
+        role="attestor",
+        metadata={"policy": "evidence-v1"},
+    )
+    keyring_path = write_keyring(
+        tmp_path,
+        [
+            {
+                "key_id": "operations",
+                "key_version": "2026-q1",
+                "public_key": ops_old_public.name,
+            },
+            {
+                "key_id": "operations",
+                "key_version": "2026-q2",
+                "public_key": ops_new_public.name,
+            },
+            {
+                "key_id": "compliance",
+                "key_version": "2026-q1",
+                "public_key": compliance_public.name,
+            },
+        ],
+    )
+    bundle_path = tmp_path / "multisig-bundle.json"
+
+    exported = runner.invoke(
+        main,
+        [
+            "export",
+            "--store",
+            str(store.path),
+            "--format",
+            "json",
+            "--output",
+            str(bundle_path),
+            "--signer-config",
+            str(ops_config),
+            "--signer-config",
+            str(compliance_config),
+        ],
+    )
+    assert exported.exit_code == 0, exported.output
+    export_result = json.loads(exported.output)
+    assert export_result["record_count"] == len(records)
+    assert export_result["signature_count"] == 2
+
+    verified = runner.invoke(
+        main,
+        [
+            "verify-export",
+            "--bundle",
+            str(bundle_path),
+            "--keyring",
+            str(keyring_path),
+        ],
+    )
+    assert verified.exit_code == 0, verified.output
+    verify_result = json.loads(verified.output)
+    assert verify_result["ok"] is True
+    assert verify_result["signature_count"] == 2
+    assert verify_result["signature_verified"] is True
+    assert sorted(
+        (item["key_id"], item["key_version"], item["role"])
+        for item in verify_result["signature_results"]
+    ) == [
+        ("compliance", "2026-q1", "attestor"),
+        ("operations", "2026-q2", "approver"),
+    ]
