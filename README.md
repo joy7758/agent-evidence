@@ -258,6 +258,52 @@ Both integration paths normalize LangChain callback names such as
 `on_chain_start` and `on_tool_end` into semantic event types such as
 `chain.start` and `tool.end`.
 
+## OpenAI Agents SDK integration
+
+OpenAI Agents SDK already exposes tracing extension points through custom trace
+processors, so Agent Evidence can mirror trace and span lifecycle events into
+the same semantic evidence model without patching the runtime.
+
+Install the optional dependency:
+
+```bash
+pip install -e ".[openai-agents]"
+```
+
+Example trace processor usage:
+
+```python
+from agents import trace
+from agents.tracing import custom_span
+
+from agent_evidence import EvidenceRecorder, LocalEvidenceStore, export_json_bundle
+from agent_evidence.integrations import install_openai_agents_processor
+
+store = LocalEvidenceStore("data/openai-agents.evidence.jsonl")
+recorder = EvidenceRecorder(store)
+install_openai_agents_processor(recorder)
+
+with trace(
+    "support-workflow",
+    group_id="session-001",
+    metadata={"session_id": "session-001"},
+):
+    with custom_span("collect_context", {"channel": "chat"}):
+        pass
+
+export_json_bundle(
+    store.query(source="openai_agents"),
+    "exports/openai-agents.bundle.json",
+)
+```
+
+By default `install_openai_agents_processor()` adds Agent Evidence alongside
+the SDK's active processors. Pass `replace=True` if you want the SDK to emit
+only into Agent Evidence for that process.
+
+See [`examples/openai_agents/basic_export.py`](examples/openai_agents/basic_export.py)
+for a complete local example.
+
 ## Verification
 
 Use the CLI to validate the chain after capture:

@@ -24,11 +24,15 @@ dev = [
   "ruff>=0.14,<1.0",
   "cryptography>=44,<46",
   "langchain-core>=1.2,<2.0",
+  "openai-agents>=0.12,<1.0",
   "sqlalchemy>=2.0,<3.0",
 ]
 langchain = [
   "langchain>=1.0,<2.0",
   "langchain-core>=1.2,<2.0",
+]
+openai-agents = [
+  "openai-agents>=0.12,<1.0",
 ]
 sql = [
   "sqlalchemy>=2.0,<3.0",

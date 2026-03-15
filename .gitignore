@@ -9,3 +9,7 @@ build/
 dist/
 examples/*.evidence.jsonl
 examples/*.db
+examples/**/*.evidence.jsonl
+examples/**/*.bundle.json
+examples/**/*.db
+outreach/
