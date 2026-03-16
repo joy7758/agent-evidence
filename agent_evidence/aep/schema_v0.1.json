@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-evidence.dev/schema/agent-evidence-profile/v0.1.json",
+  "title": "Agent Evidence Profile v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "manifest",
+    "records"
+  ],
+  "properties": {
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "profile",
+        "run_id",
+        "record_count",
+        "bundle_root_hash",
+        "digest_algorithm",
+        "privacy_mode",
+        "redaction",
+        "records_path",
+        "event_types",
+        "compatibility_targets"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "0.1.0"
+        },
+        "profile": {
+          "const": "agent-evidence-profile"
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bundle_root_hash": {
+          "$ref": "#/$defs/sha256Digest"
+        },
+        "digest_algorithm": {
+          "const": "sha256"
+        },
+        "privacy_mode": {
+          "type": "string",
+          "enum": [
+            "digest_only",
+            "inline"
+          ]
+        },
+        "redaction": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        },
+        "records_path": {
+          "const": "records.jsonl"
+        },
+        "event_types": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "compatibility_targets": {
+          "type": "object"
+        },
+        "capture_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_runtime_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_runtime_commit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_runtime_dirty": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "source_schema_fingerprint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "identity_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "policy_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "trace_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_runtime": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "export_warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "omitted_sections": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schema_version",
+          "run_id",
+          "event_type",
+          "timestamp",
+          "payload",
+          "payload_hash",
+          "record_hash",
+          "prev_hash",
+          "bundle_root_hash"
+        ],
+        "properties": {
+          "schema_version": {
+            "const": "0.1.0"
+          },
+          "run_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "event_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "payload": {},
+          "payload_hash": {
+            "$ref": "#/$defs/sha256Digest"
+          },
+          "record_hash": {
+            "$ref": "#/$defs/sha256Digest"
+          },
+          "prev_hash": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/sha256Digest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "bundle_root_hash": {
+            "$ref": "#/$defs/sha256Digest"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256Digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

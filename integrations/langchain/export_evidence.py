@@ -1,98 +1,86 @@
 from __future__ import annotations
 
-import hashlib
 import json
-from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from uuid import uuid4
+
+from langchain_core.runnables import RunnableLambda
+from langchain_core.tools import tool
+
+from agent_evidence.aep import EvidenceBundleBuilder, verify_bundle
+from agent_evidence.integrations import EvidenceCallbackHandler
 
 
-def _compute_hash(value: Any) -> str:
-    payload = json.dumps(
-        value,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=True,
-    ).encode("utf-8")
-    return hashlib.sha256(payload).hexdigest()
+@tool
+def multiply(x: int, y: int) -> int:
+    """Multiply two integers."""
+
+    return x * y
 
 
-def capture_runtime_trace() -> dict[str, Any]:
-    return {
-        "agent_framework": "langchain",
-        "run_id": "run-langchain-001",
-        "agent_id": "planner-chain",
-        "steps": [
-            {
-                "id": "run-1",
-                "type": "chain.end",
-                "name": "planner",
-                "status": "completed",
-            }
-        ],
-        "context": {
-            "source": "langchain",
-            "scenario": "integration-demo",
-        },
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-    }
-
-
-def convert_to_evidence_object(runtime_trace: dict[str, Any]) -> dict[str, Any]:
-    steps = [
-        {
-            "step_id": step["id"],
-            "step_type": step["type"],
-            "action": step["name"],
-            "status": step["status"],
-        }
-        for step in runtime_trace["steps"]
-    ]
-    context = {
-        "agent_id": runtime_trace["agent_id"],
-        "source": runtime_trace["context"]["source"],
-        "scenario": runtime_trace["context"]["scenario"],
-    }
-    action_hash = "sha256:" + _compute_hash(steps)
-    trace_hash = "sha256:" + _compute_hash(
-        {
-            "agent_framework": runtime_trace["agent_framework"],
-            "run_id": runtime_trace["run_id"],
-            "steps": steps,
-            "context": context,
-            "timestamp": runtime_trace["timestamp"],
-        }
+def export_langchain_evidence_bundle(output_dir: str | Path) -> Path:
+    builder = EvidenceBundleBuilder(
+        run_id="langchain-demo-run",
+        source_runtime="langchain",
+        trace_ref="langchain-demo-run",
+        redaction={"omit_request": False, "omit_response": False},
     )
-    proof_hash = "sha256:" + _compute_hash(
-        {
-            "action_hash": action_hash,
-            "trace_hash": trace_hash,
-        }
-    )
-    return {
-        "object_type": "execution-evidence-object",
-        "agent_framework": runtime_trace["agent_framework"],
-        "run_id": runtime_trace["run_id"],
-        "steps": steps,
-        "hashes": {
-            "action_hash": action_hash,
-            "trace_hash": trace_hash,
-            "proof_hash": proof_hash,
+    handler = EvidenceCallbackHandler(bundle_builder=builder, digest_only=True)
+
+    uppercase = RunnableLambda(lambda text: text.upper()).with_config({"run_name": "uppercase"})
+    failing = RunnableLambda(
+        lambda _: (_ for _ in ()).throw(RuntimeError("demo failure"))
+    ).with_config({"run_name": "explode"})
+
+    uppercase.invoke(
+        "hello world",
+        config={
+            "callbacks": [handler],
+            "metadata": {"scenario": "quickstart"},
+            "tags": ["quickstart"],
         },
-        "context": context,
-        "timestamp": runtime_trace["timestamp"],
-    }
+    )
+    multiply.invoke(
+        {"x": 6, "y": 7},
+        config={
+            "callbacks": [handler],
+            "metadata": {"scenario": "quickstart"},
+            "tags": ["quickstart"],
+        },
+    )
 
+    model_run_id = uuid4()
+    handler.on_chat_model_start(
+        serialized={"name": "mock-model"},
+        messages=[[{"type": "human", "content": "hello world"}]],
+        run_id=model_run_id,
+        name="mock-model",
+        metadata={"scenario": "quickstart"},
+    )
+    handler.on_llm_end(
+        {"text": "HELLO WORLD"},
+        run_id=model_run_id,
+        name="mock-model",
+        metadata={"scenario": "quickstart"},
+    )
 
-def export_json_evidence_bundle(output_path: str | Path) -> Path:
-    runtime_trace = capture_runtime_trace()
-    evidence_object = convert_to_evidence_object(runtime_trace)
-    target = Path(output_path)
-    target.write_text(json.dumps(evidence_object, indent=2) + "\n", encoding="utf-8")
-    return target
+    try:
+        failing.invoke(
+            "boom",
+            config={
+                "callbacks": [handler],
+                "metadata": {"scenario": "quickstart"},
+                "tags": ["quickstart"],
+            },
+        )
+    except RuntimeError:
+        pass
+
+    return builder.write_bundle(output_dir)
 
 
 if __name__ == "__main__":
-    destination = Path(__file__).with_name("langchain-evidence-object.json")
-    written = export_json_evidence_bundle(destination)
+    destination = Path(__file__).with_name("langchain-evidence-bundle")
+    written = export_langchain_evidence_bundle(destination)
     print(written)
+    print(json.dumps(verify_bundle(written), indent=2, sort_keys=True))

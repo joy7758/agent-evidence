@@ -1,0 +1,9 @@
+{
+  "bundle_root_hash": "sha256:51b2da4dca2bc7fc4ef5ef94b5f68638d2b31b574ed7138a44329919dfdabb04",
+  "identity_ref": "eip155:8453:0xB04B4e0151F9AD96B1D7206E3dae4e5A01994421",
+  "object_type": "fdo-ready-agent-evidence-bundle",
+  "policy_ref": "urn:aep:policy:automaton-readonly-export",
+  "schema_version": "0.1.0",
+  "source_runtime": "automaton",
+  "trace_ref": "urn:aep:trace:automaton-export-dfd90938f227"
+}

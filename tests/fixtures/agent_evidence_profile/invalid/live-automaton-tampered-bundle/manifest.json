@@ -1,0 +1,58 @@
+{
+  "bundle_root_hash": "sha256:51b2da4dca2bc7fc4ef5ef94b5f68638d2b31b574ed7138a44329919dfdabb04",
+  "capture_mode": "readonly",
+  "compatibility_targets": {
+    "automaton": {
+      "field_paths": {
+        "identity.address": "payload.attributes.automaton.identity.address",
+        "identity.creator": "payload.attributes.automaton.identity.creator",
+        "source_table": "payload.source_table"
+      },
+      "status": "reference-runtime"
+    },
+    "openinference": {
+      "field_paths": {
+        "span_kind": "payload.attributes.openinference.span_kind"
+      },
+      "status": "compatible-profile"
+    },
+    "opentelemetry": {
+      "field_paths": {
+        "gen_ai.operation.name": "payload.attributes.gen_ai.operation_name",
+        "gen_ai.system": "payload.attributes.gen_ai.system"
+      },
+      "status": "compatible-profile"
+    }
+  },
+  "digest_algorithm": "sha256",
+  "event_types": [
+    "code.commit",
+    "trace.turn"
+  ],
+  "export_warnings": [
+    "source_runtime_version unavailable",
+    "empty_table:tool_calls",
+    "empty_table:policy_decisions",
+    "empty_table:modifications",
+    "empty_table:transactions",
+    "empty_table:onchain_transactions",
+    "registry entry unavailable"
+  ],
+  "identity_ref": "eip155:8453:0xB04B4e0151F9AD96B1D7206E3dae4e5A01994421",
+  "omitted_sections": [],
+  "policy_ref": "urn:aep:policy:automaton-readonly-export",
+  "privacy_mode": "digest_only",
+  "profile": "agent-evidence-profile",
+  "record_count": 2,
+  "records_path": "records.jsonl",
+  "redaction": {
+    "automaton_readonly_export": true,
+    "digest_only": true
+  },
+  "run_id": "automaton-export-dfd90938f227",
+  "schema_version": "0.1.0",
+  "source_runtime": "automaton",
+  "source_runtime_version": null,
+  "source_schema_fingerprint": "sha256:678e58d95d4cb9ebc915bc06467d1581a010346e8f1d85a8ccc4b1a49b1371c0",
+  "trace_ref": "urn:aep:trace:automaton-export-dfd90938f227"
+}

@@ -1,5 +1,6 @@
 """Public package API for Agent Evidence."""
 
+from .aep import EvidenceBundleBuilder, verify_bundle
 from .export import (
     export_csv_bundle,
     export_json_bundle,
@@ -23,6 +24,7 @@ from .recorder import EvidenceRecorder
 from .storage import LocalEvidenceStore, open_store
 
 __all__ = [
+    "EvidenceBundleBuilder",
     "EvidenceManifest",
     "EvidenceContext",
     "EvidenceEnvelope",
@@ -40,6 +42,7 @@ __all__ = [
     "export_xml_bundle",
     "open_store",
     "package_export_archive",
+    "verify_bundle",
     "verify_csv_export",
     "verify_export_archive",
     "verify_json_bundle",

@@ -3,7 +3,9 @@ from __future__ import annotations
 from typing import Any, Mapping
 from uuid import UUID
 
-from agent_evidence.models import EvidenceContext, EvidenceEvent
+from agent_evidence.aep import EvidenceBundleBuilder
+from agent_evidence.aep.hash_chain import sha256_digest
+from agent_evidence.models import EvidenceContext, EvidenceEvent, utc_now
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.serialization import ensure_json_object, to_jsonable
 
@@ -67,6 +69,38 @@ def semantic_event_type(source_event_type: str) -> str:
     if source_event_type.startswith("on_"):
         return source_event_type[3:].replace("_", ".")
     return source_event_type.replace("_", ".")
+
+
+def _openinference_span_kind(component: str) -> str:
+    mapping = {
+        "agent": "AGENT",
+        "chain": "CHAIN",
+        "chat_model": "LLM",
+        "custom_event": "UNKNOWN",
+        "llm": "LLM",
+        "retriever": "RETRIEVER",
+        "retry": "UNKNOWN",
+        "text": "UNKNOWN",
+        "tool": "TOOL",
+    }
+    return mapping.get(component, "UNKNOWN")
+
+
+def _payload_slot(value: Any, *, digest_only: bool, omit: bool) -> dict[str, Any]:
+    if omit:
+        return {"mode": "omitted"}
+
+    normalized = to_jsonable(value)
+    if normalized is None or normalized == {} or normalized == []:
+        return {"mode": "absent"}
+
+    slot = {
+        "mode": "digest_only" if digest_only else "inline",
+        "digest": sha256_digest(normalized),
+    }
+    if not digest_only:
+        slot["content"] = normalized
+    return slot
 
 
 def _stream_inputs(data: Mapping[str, Any]) -> Any:
@@ -178,21 +212,31 @@ class EvidenceCallbackHandler(LangChainBaseCallbackHandler):
 
     def __init__(
         self,
-        recorder: EvidenceRecorder,
+        recorder: EvidenceRecorder | None = None,
         *,
         actor: str = "langchain",
         base_tags: list[str] | None = None,
         capture_stream_tokens: bool = False,
+        bundle_builder: EvidenceBundleBuilder | None = None,
+        digest_only: bool = True,
+        omit_request: bool = False,
+        omit_response: bool = False,
     ) -> None:
         if not _HAS_LANGCHAIN_CORE:
             raise ModuleNotFoundError(
                 "langchain-core is required for EvidenceCallbackHandler. "
                 "Install agent-evidence with the [langchain] extra."
             )
+        if recorder is None and bundle_builder is None:
+            raise ValueError("Provide at least one of recorder or bundle_builder.")
         self.recorder = recorder
         self.actor = actor
         self.base_tags = base_tags or []
         self.capture_stream_tokens = capture_stream_tokens
+        self.bundle_builder = bundle_builder
+        self.digest_only = digest_only
+        self.omit_request = omit_request
+        self.omit_response = omit_response
 
     def _record(
         self,
@@ -211,24 +255,71 @@ class EvidenceCallbackHandler(LangChainBaseCallbackHandler):
         serialized: Mapping[str, Any] | None = None,
         extra: Mapping[str, Any] | None = None,
     ) -> None:
-        self.recorder.record(
-            actor=actor or name or self.actor,
-            event_type=semantic_event_type(source_event_type),
-            inputs=inputs,
-            outputs=outputs,
-            context=build_langchain_context(
-                source_event_type=source_event_type,
-                component=component,
-                tags=_merge_tags(self.base_tags, tags),
-                run_id=run_id,
-                parent_run_id=parent_run_id,
-                parent_ids=parent_ids,
-                name=name,
-                serialized=serialized,
-                attributes=extra,
-            ),
-            metadata=ensure_json_object(metadata),
+        resolved_actor = actor or name or self.actor
+        resolved_tags = _merge_tags(self.base_tags, tags)
+        resolved_metadata = ensure_json_object(metadata)
+        resolved_context = build_langchain_context(
+            source_event_type=source_event_type,
+            component=component,
+            tags=resolved_tags,
+            run_id=run_id,
+            parent_run_id=parent_run_id,
+            parent_ids=parent_ids,
+            name=name,
+            serialized=serialized,
+            attributes=extra,
         )
+
+        if self.recorder is not None:
+            self.recorder.record(
+                actor=resolved_actor,
+                event_type=semantic_event_type(source_event_type),
+                inputs=inputs,
+                outputs=outputs,
+                context=resolved_context,
+                metadata=resolved_metadata,
+            )
+
+        if self.bundle_builder is not None and source_event_type != "on_llm_new_token":
+            self.bundle_builder.add_record(
+                event_type=semantic_event_type(source_event_type),
+                timestamp=utc_now().isoformat(),
+                payload={
+                    "actor": resolved_actor,
+                    "source": "langchain",
+                    "component": component,
+                    "source_event_type": source_event_type,
+                    "name": name,
+                    "tags": resolved_tags,
+                    "metadata": resolved_metadata,
+                    "attributes": {
+                        "openinference": {
+                            "span_kind": _openinference_span_kind(component),
+                        },
+                        "gen_ai": {
+                            "system": "langchain",
+                            "operation_name": semantic_event_type(source_event_type),
+                        },
+                        "span": {
+                            "run_id": str(run_id) if run_id else None,
+                            "parent_run_id": str(parent_run_id) if parent_run_id else None,
+                            "parent_ids": [str(parent_id) for parent_id in parent_ids or []],
+                        },
+                        "serialized": to_jsonable(serialized),
+                        "extra": ensure_json_object(extra),
+                    },
+                    "request": _payload_slot(
+                        inputs,
+                        digest_only=self.digest_only,
+                        omit=self.omit_request,
+                    ),
+                    "response": _payload_slot(
+                        outputs,
+                        digest_only=self.digest_only,
+                        omit=self.omit_response,
+                    ),
+                },
+            )
 
     def on_chain_start(
         self,

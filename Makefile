@@ -4,7 +4,7 @@ PRE_COMMIT ?= ./.venv/bin/pre-commit
 PYTEST ?= ./.venv/bin/pytest
 RUFF ?= ./.venv/bin/ruff
 
-.PHONY: install install-postgres test test-postgres lint format hooks pre-commit clean
+.PHONY: install install-postgres test gate specimen test-postgres lint format hooks pre-commit clean
 
 install:
 	$(PIP) install -e ".[dev,langchain,sql]"
@@ -14,6 +14,12 @@ install-postgres:
 
 test:
 	$(PYTEST)
+
+gate:
+	$(PYTHON) scripts/run_profile_gate.py
+
+specimen:
+	$(PYTHON) scripts/run_specimen_gate.py
 
 test-postgres:
 	./scripts/run_postgres_integration.sh

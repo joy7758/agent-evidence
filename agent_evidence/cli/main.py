@@ -9,6 +9,7 @@ from typing import Any
 import click
 from pydantic import ValidationError
 
+from agent_evidence.aep import load_bundle_payload, verify_bundle
 from agent_evidence.crypto.chain import verify_chain
 from agent_evidence.export import (
     default_manifest_path,
@@ -21,6 +22,7 @@ from agent_evidence.export import (
     verify_json_bundle,
     verify_xml_export,
 )
+from agent_evidence.integrations import export_automaton_bundle
 from agent_evidence.manifest import SignaturePolicy, SignerConfig, VerificationKey
 from agent_evidence.models import EvidenceEnvelope
 from agent_evidence.recorder import EvidenceRecorder
@@ -423,46 +425,8 @@ def query(
     )
 
 
-@main.command(name="export")
-@click.option("--store", "store_target", required=True)
-@click.option(
-    "--format",
-    "export_format",
-    type=click.Choice(["json", "csv", "xml"]),
-    default="json",
-    show_default=True,
-)
-@click.option(
-    "--output",
-    "output_path",
-    required=True,
-    type=click.Path(dir_okay=False, path_type=Path),
-)
-@click.option(
-    "--manifest-output",
-    type=click.Path(dir_okay=False, path_type=Path),
-)
-@click.option(
-    "--private-key",
-    type=click.Path(exists=True, dir_okay=False, path_type=Path),
-)
-@click.option("--key-id")
-@click.option("--key-version")
-@click.option("--signer")
-@click.option("--signature-role")
-@click.option("--signature-metadata")
-@click.option("--signed-at")
-@click.option("--archive-format", type=click.Choice(["zip", "tar.gz"]))
-@click.option("--required-signatures", type=click.IntRange(min=1))
-@click.option("--required-signature-role", "required_signature_roles", multiple=True)
-@click.option(
-    "--signer-config",
-    "signer_config_paths",
-    multiple=True,
-    type=click.Path(exists=True, dir_okay=False, path_type=Path),
-)
-@add_query_filter_options
-def export_records(
+def _export_records_impl(
+    *,
     store_target: str,
     export_format: str,
     output_path: Path,
@@ -629,6 +593,187 @@ def export_records(
     )
 
 
+@main.group(name="export", invoke_without_command=True)
+@click.pass_context
+@click.option("--store", "store_target")
+@click.option(
+    "--format",
+    "export_format",
+    type=click.Choice(["json", "csv", "xml"]),
+    default="json",
+    show_default=True,
+)
+@click.option(
+    "--output",
+    "output_path",
+    type=click.Path(dir_okay=False, path_type=Path),
+)
+@click.option(
+    "--manifest-output",
+    type=click.Path(dir_okay=False, path_type=Path),
+)
+@click.option(
+    "--private-key",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+)
+@click.option("--key-id")
+@click.option("--key-version")
+@click.option("--signer")
+@click.option("--signature-role")
+@click.option("--signature-metadata")
+@click.option("--signed-at")
+@click.option("--archive-format", type=click.Choice(["zip", "tar.gz"]))
+@click.option("--required-signatures", type=click.IntRange(min=1))
+@click.option("--required-signature-role", "required_signature_roles", multiple=True)
+@click.option(
+    "--signer-config",
+    "signer_config_paths",
+    multiple=True,
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+)
+@add_query_filter_options
+def export_command(
+    ctx: click.Context,
+    store_target: str,
+    export_format: str,
+    output_path: Path | None,
+    manifest_output: Path | None,
+    private_key: Path | None,
+    key_id: str | None,
+    key_version: str | None,
+    signer: str | None,
+    signature_role: str | None,
+    signature_metadata: str | None,
+    signed_at: str | None,
+    archive_format: str | None,
+    required_signatures: int | None,
+    required_signature_roles: tuple[str, ...],
+    signer_config_paths: tuple[Path, ...],
+    event_type: str | None,
+    actor: str | None,
+    source: str | None,
+    component: str | None,
+    span_id: str | None,
+    parent_span_id: str | None,
+    previous_event_hash: str | None,
+    since: str | None,
+    until: str | None,
+    event_hash_from: str | None,
+    event_hash_to: str | None,
+    chain_hash_from: str | None,
+    chain_hash_to: str | None,
+    offset: int | None,
+    limit: int | None,
+) -> None:
+    """Export evidence artifacts. Use `export automaton` for the experimental runtime path."""
+
+    if ctx.invoked_subcommand is not None:
+        return
+
+    if store_target is None or output_path is None:
+        raise click.ClickException(
+            "Use `agent-evidence export automaton ...` or provide both --store and --output "
+            "for record export."
+        )
+
+    _export_records_impl(
+        store_target=store_target,
+        export_format=export_format,
+        output_path=output_path,
+        manifest_output=manifest_output,
+        private_key=private_key,
+        key_id=key_id,
+        key_version=key_version,
+        signer=signer,
+        signature_role=signature_role,
+        signature_metadata=signature_metadata,
+        signed_at=signed_at,
+        archive_format=archive_format,
+        required_signatures=required_signatures,
+        required_signature_roles=required_signature_roles,
+        signer_config_paths=signer_config_paths,
+        event_type=event_type,
+        actor=actor,
+        source=source,
+        component=component,
+        span_id=span_id,
+        parent_span_id=parent_span_id,
+        previous_event_hash=previous_event_hash,
+        since=since,
+        until=until,
+        event_hash_from=event_hash_from,
+        event_hash_to=event_hash_to,
+        chain_hash_from=chain_hash_from,
+        chain_hash_to=chain_hash_to,
+        offset=offset,
+        limit=limit,
+    )
+
+
+@export_command.command(name="automaton")
+@click.option(
+    "--state-db",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+)
+@click.option(
+    "--repo",
+    "repo_root",
+    default=Path.home() / ".automaton",
+    show_default=True,
+    type=click.Path(file_okay=False, path_type=Path),
+)
+@click.option(
+    "--out",
+    "output_dir",
+    required=True,
+    type=click.Path(file_okay=False, path_type=Path),
+)
+@click.option(
+    "--runtime-root",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Optional Automaton runtime checkout used to resolve version/commit metadata.",
+)
+@click.option("--limit", type=click.IntRange(min=1), default=50, show_default=True)
+@click.option("--verify/--no-verify", "should_verify", default=True, show_default=True)
+def export_automaton_command(
+    state_db: Path,
+    repo_root: Path,
+    output_dir: Path,
+    runtime_root: Path | None,
+    limit: int,
+    should_verify: bool,
+) -> None:
+    """Experimental: export a read-only Automaton snapshot into an AEP bundle."""
+
+    bundle_dir = export_automaton_bundle(
+        state_db_path=state_db,
+        repo_root=repo_root,
+        runtime_root=runtime_root,
+        output_dir=output_dir,
+        limit=limit,
+    )
+    manifest = load_bundle_payload(bundle_dir)["manifest"]
+    verify_result = verify_bundle(bundle_dir) if should_verify else None
+
+    click.echo(
+        json.dumps(
+            {
+                "bundle_dir": str(bundle_dir),
+                "capture_mode": manifest.get("capture_mode"),
+                "experimental": True,
+                "manifest": manifest,
+                "verified": verify_result["ok"] if verify_result is not None else None,
+                "verify_result": verify_result,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    if verify_result is not None and not verify_result["ok"]:
+        raise click.ClickException("Automaton bundle verification failed.")
+
+
 @main.command(name="verify-export")
 @click.option("--archive", type=click.Path(exists=True, dir_okay=False, path_type=Path))
 @click.option("--bundle", type=click.Path(exists=True, dir_okay=False, path_type=Path))
@@ -734,6 +879,21 @@ def verify_export_command(
     click.echo(json.dumps(result, indent=2, sort_keys=True))
     if not result["ok"]:
         raise click.ClickException("Export verification failed.")
+
+
+@main.command(name="verify-bundle")
+@click.option(
+    "--bundle-dir",
+    required=True,
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+)
+def verify_bundle_command(bundle_dir: Path) -> None:
+    """Verify an Agent Evidence Profile bundle directory offline."""
+
+    result = verify_bundle(bundle_dir)
+    click.echo(json.dumps(result, indent=2, sort_keys=True))
+    if not result["ok"]:
+        raise click.ClickException("Bundle verification failed.")
 
 
 @main.command()

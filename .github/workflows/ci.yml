@@ -38,6 +38,12 @@ jobs:
       - name: Run unit tests
         run: pytest
 
+      - name: Run profile gate
+        run: python scripts/run_profile_gate.py
+
+      - name: Run specimen gate
+        run: python scripts/run_specimen_gate.py
+
   postgres-integration:
     name: PostgreSQL Integration
     runs-on: ubuntu-latest

@@ -103,6 +103,69 @@ pip install -e ".[dev,langchain,sql]"
 agent-evidence schema
 ```
 
+## Agent Evidence Profile v0.1 MVP
+
+The current MVP path is an integrity-verifiable evidence bundle with offline
+verification. It is implemented as an Agent Evidence Profile that keeps one
+LangChain-first integration path and leaves room for later OpenInference /
+OpenTelemetry compatibility mappings.
+
+AEP v0.1 is an integrity-verifiable evidence profile, not a non-repudiation
+system.
+
+AEP is an integrity-verifiable evidence profile for autonomous agent runs, with
+offline verification and runtime provenance capture.
+
+Generate the first bundle:
+
+```bash
+python integrations/langchain/export_evidence.py
+agent-evidence verify-bundle --bundle-dir integrations/langchain/langchain-evidence-bundle
+```
+
+Run the gate against one valid and one tampered fixture:
+
+```bash
+python scripts/run_profile_gate.py
+```
+
+## Automaton Sidecar Exporter
+
+The next read-only path is a Conway-neutral Automaton sidecar/exporter. It
+reads `state.db`, git history, and persisted on-chain references, then emits an
+AEP bundle plus `fdo-stub.json` and `erc8004-validation-stub.json`.
+
+```bash
+agent-evidence export automaton \
+  --state-db /path/to/state.db \
+  --repo /path/to/state/repo \
+  --runtime-root /path/to/automaton-checkout \
+  --out ./automaton-aep-bundle
+```
+
+`agent-evidence export automaton` has been validated against a live isolated-home
+Automaton run and remains marked experimental while the live data contract is
+still settling.
+
+When `--runtime-root` is provided, the exporter attempts to resolve
+`source_runtime_version`, `source_runtime_commit`, and `source_runtime_dirty`
+from the Automaton checkout without changing the export path.
+
+## Controlled Release Surface
+
+The current controlled specimen release is [v0.1-live-chain](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/README.md).
+It freezes:
+
+- AEP schema
+- verify CLI
+- LangChain exporter
+- Automaton exporter
+- live runbook
+- public live/tampered fixtures
+- AEP boundary statement
+
+The formal specimen release note is [RELEASE_NOTE.md](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/RELEASE_NOTE.md).
+
 ## CLI examples
 
 ```bash
