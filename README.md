@@ -100,6 +100,8 @@ specimen.
 
 中文：这个仓库还把当前原型冻结成一个可复现的会议样品。
 
+Artifact DOI: https://doi.org/10.5281/zenodo.19055948
+
 - Manifest: `release/specimen-manifest.md`
 - 中文：样品清单
 - CI baseline: `.github/workflows/prototype-check.yml`
@@ -167,6 +169,9 @@ from the Automaton checkout without changing the export path.
 ## Controlled Release Surface
 
 The current controlled specimen release is [v0.1-live-chain](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/README.md).
+Latest artifact release archived on Zenodo with DOI:
+https://doi.org/10.5281/zenodo.19055948
+
 It freezes:
 
 - AEP schema
