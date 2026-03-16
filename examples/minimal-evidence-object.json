@@ -1,0 +1,22 @@
+{
+  "object_type": "execution-evidence-object",
+  "agent_framework": "openai-agents",
+  "run_id": "run-minimal-001",
+  "steps": [
+    {
+      "step_id": "step-1",
+      "step_type": "tool.call",
+      "action": "weather.lookup",
+      "status": "completed"
+    }
+  ],
+  "hashes": {
+    "action_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000001",
+    "trace_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000002",
+    "proof_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000003"
+  },
+  "context": {
+    "scenario": "minimal-demo"
+  },
+  "timestamp": "2026-03-16T00:00:00Z"
+}

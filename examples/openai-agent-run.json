@@ -1,0 +1,25 @@
+{
+  "agent_framework": "openai-agents",
+  "run_id": "run-weather-demo-001",
+  "agent_id": "weather-assistant",
+  "timestamp": "2026-03-16T10:00:00Z",
+  "context": {
+    "user_request": "What is the weather in Vienna today?",
+    "source": "poster-demo"
+  },
+  "steps": [
+    {
+      "id": "span-1",
+      "type": "tool.call",
+      "name": "weather.lookup",
+      "status": "completed",
+      "input": {
+        "city": "Vienna"
+      },
+      "output": {
+        "temperature_c": 18,
+        "condition": "clear"
+      }
+    }
+  ]
+}
