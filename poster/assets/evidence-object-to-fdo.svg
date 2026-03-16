@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#111111" />
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #111111; stroke-width: 2; }
+      .label { font: 24px Helvetica, Arial, sans-serif; fill: #111111; }
+      .small { font: 18px Helvetica, Arial, sans-serif; fill: #333333; }
+      .arrow-line { stroke: #111111; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="box" x="40" y="90" width="250" height="110" rx="8" />
+  <rect class="box" x="350" y="40" width="150" height="70" rx="8" />
+  <rect class="box" x="350" y="130" width="150" height="70" rx="8" />
+  <rect class="box" x="350" y="220" width="150" height="70" rx="8" />
+  <rect class="box" x="560" y="85" width="170" height="120" rx="8" />
+  <rect class="box" x="790" y="90" width="320" height="110" rx="8" />
+
+  <text class="label" x="165" y="125" text-anchor="middle">Execution Evidence</text>
+  <text class="label" x="165" y="155" text-anchor="middle">Object</text>
+
+  <text class="label" x="425" y="83" text-anchor="middle">Identity</text>
+  <text class="label" x="425" y="173" text-anchor="middle">Metadata</text>
+  <text class="label" x="425" y="263" text-anchor="middle">Integrity +</text>
+  <text class="label" x="425" y="288" text-anchor="middle">provenance</text>
+
+  <text class="label" x="645" y="125" text-anchor="middle">FDO-style</text>
+  <text class="label" x="645" y="155" text-anchor="middle">object shell</text>
+  <text class="small" x="645" y="185" text-anchor="middle">wrapper layer</text>
+
+  <text class="label" x="950" y="125" text-anchor="middle">Object-facing digital</text>
+  <text class="label" x="950" y="155" text-anchor="middle">artifact for registry</text>
+
+  <path class="arrow-line" d="M290 145 L350 75" />
+  <path class="arrow-line" d="M290 145 L350 165" />
+  <path class="arrow-line" d="M290 145 L350 255" />
+  <path class="arrow-line" d="M500 145 L560 145" />
+  <path class="arrow-line" d="M730 145 L790 145" />
+</svg>

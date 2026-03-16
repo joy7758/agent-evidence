@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#111111" />
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #111111; stroke-width: 2; }
+      .label { font: 24px Helvetica, Arial, sans-serif; fill: #111111; }
+      .small { font: 18px Helvetica, Arial, sans-serif; fill: #333333; }
+      .arrow-line { stroke: #111111; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="box" x="60" y="40" width="220" height="70" rx="8" />
+  <rect class="box" x="60" y="125" width="220" height="70" rx="8" />
+  <rect class="box" x="60" y="210" width="220" height="70" rx="8" />
+  <rect class="box" x="390" y="95" width="300" height="130" rx="8" />
+  <rect class="box" x="800" y="95" width="300" height="130" rx="8" />
+
+  <text class="label" x="170" y="82" text-anchor="middle">OpenAI Agents</text>
+  <text class="label" x="170" y="167" text-anchor="middle">LangChain</text>
+  <text class="label" x="170" y="252" text-anchor="middle">CrewAI</text>
+
+  <text class="label" x="540" y="135" text-anchor="middle">Common evidence</text>
+  <text class="label" x="540" y="165" text-anchor="middle">object profile</text>
+  <text class="small" x="540" y="195" text-anchor="middle">shared object shape</text>
+
+  <text class="label" x="950" y="135" text-anchor="middle">Shared verification</text>
+  <text class="label" x="950" y="165" text-anchor="middle">logic</text>
+  <text class="small" x="950" y="195" text-anchor="middle">schema and integrity checks</text>
+
+  <path class="arrow-line" d="M280 75 L390 125" />
+  <path class="arrow-line" d="M280 160 L390 160" />
+  <path class="arrow-line" d="M280 245 L390 195" />
+  <path class="arrow-line" d="M690 160 L800 160" />
+</svg>

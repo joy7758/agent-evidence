@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="260" viewBox="0 0 1200 260">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#111111" />
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #111111; stroke-width: 2; }
+      .label { font: 24px Helvetica, Arial, sans-serif; fill: #111111; }
+      .caption { font: 18px Helvetica, Arial, sans-serif; fill: #333333; }
+      .arrow-line { stroke: #111111; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="box" x="40" y="80" width="170" height="80" rx="8" />
+  <rect class="box" x="270" y="80" width="170" height="80" rx="8" />
+  <rect class="box" x="500" y="80" width="220" height="80" rx="8" />
+  <rect class="box" x="780" y="80" width="160" height="80" rx="8" />
+  <rect class="box" x="1000" y="80" width="160" height="80" rx="8" />
+
+  <text class="label" x="125" y="115" text-anchor="middle">Agent run</text>
+  <text class="caption" x="125" y="142" text-anchor="middle">framework activity</text>
+
+  <text class="label" x="355" y="115" text-anchor="middle">Runtime events</text>
+  <text class="caption" x="355" y="142" text-anchor="middle">trace or callback data</text>
+
+  <text class="label" x="610" y="110" text-anchor="middle">Execution Evidence</text>
+  <text class="label" x="610" y="138" text-anchor="middle">Object</text>
+
+  <text class="label" x="860" y="115" text-anchor="middle">Verification</text>
+  <text class="caption" x="860" y="142" text-anchor="middle">schema and hashes</text>
+
+  <text class="label" x="1080" y="110" text-anchor="middle">Portable audit</text>
+  <text class="label" x="1080" y="138" text-anchor="middle">artifact</text>
+
+  <path class="arrow-line" d="M210 120 L270 120" />
+  <path class="arrow-line" d="M440 120 L500 120" />
+  <path class="arrow-line" d="M720 120 L780 120" />
+  <path class="arrow-line" d="M940 120 L1000 120" />
+</svg>
