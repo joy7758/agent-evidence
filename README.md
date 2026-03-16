@@ -49,6 +49,7 @@ Execution Evidence Object.
 - Example object: `examples/evidence-object-openai-run.json`
 - Verification script: `scripts/verify_evidence_object.py`
 - FDO mapping: `docs/fdo-mapping/execution-evidence-to-fdo.md`
+- Public positioning: `docs/outreach/public-positioning.md`
 
 Prototype verification:
 
