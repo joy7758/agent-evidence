@@ -1,0 +1,40 @@
+{
+  "object_type": "execution-evidence-object",
+  "agent_framework": "openai-agents",
+  "run_id": "run-weather-demo-001",
+  "steps": [
+    {
+      "step_id": "step-1",
+      "step_type": "tool.call",
+      "action": "weather.lookup",
+      "status": "completed",
+      "input_summary": {
+        "city": "Vienna"
+      },
+      "output_summary": {
+        "temperature_c": 18,
+        "condition": "clear"
+      }
+    },
+    {
+      "step_id": "step-2",
+      "step_type": "message.output",
+      "action": "respond.to.user",
+      "status": "completed",
+      "output_summary": {
+        "message": "It is 18C and clear in Vienna."
+      }
+    }
+  ],
+  "hashes": {
+    "action_hash": "sha256:361aceda3328057fc527c87c4617d5769ba973e8422c8effb8cfcc3927581421",
+    "trace_hash": "sha256:b282e43fc68352570050c61c6814ddb2f004c30bd12f778e0851f81ee93b7f86",
+    "proof_hash": "sha256:28b459efe2efaa890e6317f253b7e4948e0a9a19ce20939ba055cef3a8657a7c"
+  },
+  "context": {
+    "agent_id": "weather-assistant",
+    "source": "openai-agents",
+    "scenario": "weather-demo"
+  },
+  "timestamp": "2026-03-16T10:00:00Z"
+}

@@ -39,6 +39,23 @@ The project is organized so evidence capture stays modular:
 - `examples`: executable usage examples
 - `tests`: baseline regression coverage
 
+## Execution Evidence Object Prototype
+
+This repository now includes a standards proposal prototype for an
+Execution Evidence Object.
+
+- Spec: `spec/execution-evidence-object.md`
+- Schema: `schema/execution-evidence-object.schema.json`
+- Example object: `examples/evidence-object-openai-run.json`
+- Verification script: `scripts/verify_evidence_object.py`
+- FDO mapping: `docs/fdo-mapping/execution-evidence-to-fdo.md`
+
+Prototype verification:
+
+```bash
+python3 scripts/verify_evidence_object.py examples/evidence-object-openai-run.json
+```
+
 ## Quick start
 
 ```bash
