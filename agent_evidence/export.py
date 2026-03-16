@@ -12,6 +12,13 @@ from tempfile import TemporaryDirectory
 from typing import Any, Literal, Sequence
 from xml.etree import ElementTree as ET
 
+try:  # pragma: no cover - optional hardening dependency
+    from defusedxml import ElementTree as SafeET
+    from defusedxml.common import DefusedXmlException
+except ModuleNotFoundError:  # pragma: no cover - optional hardening dependency
+    SafeET = None
+    DefusedXmlException = None
+
 from pydantic import ConfigDict, Field
 
 from agent_evidence.crypto.chain import verify_chain
@@ -53,6 +60,12 @@ CSV_FIELDNAMES = [
 ]
 
 ARCHIVE_DESCRIPTOR_NAME = "package-manifest.json"
+DEFAULT_ARCHIVE_MAX_MEMBERS = 1_000
+DEFAULT_ARCHIVE_MAX_TOTAL_UNPACKED_BYTES = 100 * 1024 * 1024
+DEFAULT_ARCHIVE_MAX_MEMBER_BYTES = 50 * 1024 * 1024
+DEFAULT_ARCHIVE_MAX_ZIP_RATIO = 200.0
+_XML_PARSE_ERRORS = ((DefusedXmlException,) if DefusedXmlException else ()) + (ET.ParseError,)
+_CSV_FORMULA_PREFIXES = ("=", "+", "-", "@")
 
 
 @dataclass(frozen=True)
@@ -85,23 +98,36 @@ def _json_cell(value: Any) -> str:
     return json.dumps(to_jsonable(value), sort_keys=True, separators=(",", ":"), ensure_ascii=True)
 
 
-def _envelope_to_csv_row(envelope: EvidenceEnvelope) -> dict[str, str]:
+def _csv_safe_text(value: str) -> str:
+    text = value or ""
+    stripped = text.lstrip(" \t\r\n")
+    if stripped and stripped[0] in _CSV_FORMULA_PREFIXES:
+        return "\t" + text
+    return text
+
+
+def _envelope_to_csv_row(
+    envelope: EvidenceEnvelope,
+    *,
+    sanitize_for_spreadsheet: bool = True,
+) -> dict[str, str]:
     event = envelope.event
     context = event.context
     hashes = envelope.hashes
+    text = _csv_safe_text if sanitize_for_spreadsheet else (lambda value: value or "")
     return {
         "schema_version": envelope.schema_version,
         "event_id": event.event_id,
         "timestamp": event.timestamp.isoformat(),
-        "event_type": event.event_type,
-        "actor": event.actor,
-        "source": context.source,
-        "component": context.component or "",
-        "source_event_type": context.source_event_type or "",
-        "span_id": context.span_id or "",
-        "parent_span_id": context.parent_span_id or "",
+        "event_type": text(event.event_type),
+        "actor": text(event.actor),
+        "source": text(context.source),
+        "component": text(context.component or ""),
+        "source_event_type": text(context.source_event_type or ""),
+        "span_id": text(context.span_id or ""),
+        "parent_span_id": text(context.parent_span_id or ""),
         "ancestor_span_ids": _json_cell(context.ancestor_span_ids),
-        "name": context.name or "",
+        "name": text(context.name or ""),
         "tags": _json_cell(context.tags),
         "attributes": _json_cell(context.attributes),
         "inputs": _json_cell(event.inputs),
@@ -113,12 +139,18 @@ def _envelope_to_csv_row(envelope: EvidenceEnvelope) -> dict[str, str]:
     }
 
 
-def _csv_bytes(records: Sequence[EvidenceEnvelope]) -> bytes:
+def _csv_bytes(
+    records: Sequence[EvidenceEnvelope],
+    *,
+    sanitize_for_spreadsheet: bool = True,
+) -> bytes:
     buffer = io.StringIO(newline="")
     writer = csv.DictWriter(buffer, fieldnames=CSV_FIELDNAMES, lineterminator="\n")
     writer.writeheader()
     for envelope in records:
-        writer.writerow(_envelope_to_csv_row(envelope))
+        writer.writerow(
+            _envelope_to_csv_row(envelope, sanitize_for_spreadsheet=sanitize_for_spreadsheet)
+        )
     return buffer.getvalue().encode("utf-8")
 
 
@@ -172,8 +204,9 @@ def _xml_bytes(records: Sequence[EvidenceEnvelope]) -> bytes:
 
 def _xml_hash_rows(xml_bytes: bytes) -> list[dict[str, str]]:
     try:
-        root = ET.fromstring(xml_bytes)
-    except ET.ParseError as exc:
+        parser = SafeET if SafeET is not None else ET
+        root = parser.fromstring(xml_bytes)
+    except _XML_PARSE_ERRORS as exc:
         raise ValueError("artifact XML is not well-formed") from exc
     rows: list[dict[str, str]] = []
     for record_element in root.findall("record"):
@@ -262,6 +295,7 @@ def _verification_keys(
                 public_key_pem=public_key_pem,
                 key_id=key_id,
                 key_version=key_version,
+                is_direct=True,
             ),
         )
     return resolved_keys
@@ -372,6 +406,7 @@ def export_csv_bundle(
     output_path: str | Path,
     *,
     manifest_output_path: str | Path | None = None,
+    sanitize_for_spreadsheet: bool = True,
     filters: dict[str, Any] | None = None,
     private_key_pem: bytes | None = None,
     key_id: str | None = None,
@@ -383,7 +418,7 @@ def export_csv_bundle(
     minimum_valid_signatures: int | None = None,
     minimum_valid_signatures_by_role: dict[str, int] | None = None,
 ) -> ManifestDocument:
-    artifact_bytes = _csv_bytes(records)
+    artifact_bytes = _csv_bytes(records, sanitize_for_spreadsheet=sanitize_for_spreadsheet)
     output = Path(output_path)
     output.write_bytes(artifact_bytes)
 
@@ -456,6 +491,7 @@ def package_export_archive(
     archive_path: str | Path,
     *,
     export_format: Literal["json", "csv", "xml"],
+    sanitize_csv_for_spreadsheet: bool = True,
     filters: dict[str, Any] | None = None,
     private_key_pem: bytes | None = None,
     key_id: str | None = None,
@@ -497,6 +533,7 @@ def package_export_archive(
                 records,
                 artifact_path,
                 manifest_output_path=manifest_path,
+                sanitize_for_spreadsheet=sanitize_csv_for_spreadsheet,
                 filters=filters,
                 private_key_pem=private_key_pem,
                 key_id=key_id,
@@ -617,30 +654,74 @@ def _validated_archive_member_name(name: str) -> str:
 def _extract_archive_to_directory(
     archive_path: str | Path,
     output_dir: Path,
+    *,
+    max_members: int = DEFAULT_ARCHIVE_MAX_MEMBERS,
+    max_total_unpacked_bytes: int = DEFAULT_ARCHIVE_MAX_TOTAL_UNPACKED_BYTES,
+    max_member_bytes: int = DEFAULT_ARCHIVE_MAX_MEMBER_BYTES,
+    max_zip_ratio: float | None = DEFAULT_ARCHIVE_MAX_ZIP_RATIO,
 ) -> Literal["zip", "tar.gz"]:
     archive_format = _archive_format_for_path(archive_path)
     archive = Path(archive_path)
+
+    def copy_stream(source: Any, destination: Path, member_name: str) -> int:
+        copied = 0
+        with destination.open("wb") as handle:
+            while True:
+                chunk = source.read(1024 * 1024)
+                if not chunk:
+                    break
+                copied += len(chunk)
+                if copied > max_member_bytes:
+                    raise ValueError(f"archive member too large: {member_name}")
+                handle.write(chunk)
+        return copied
+
     if archive_format == "zip":
         with zipfile.ZipFile(archive, "r") as zip_handle:
+            members = 0
+            total_unpacked = 0
             for info in zip_handle.infolist():
                 if info.is_dir():
                     continue
+                members += 1
+                if members > max_members:
+                    raise ValueError("archive contains too many members")
                 member_name = _validated_archive_member_name(info.filename)
+                if info.file_size > max_member_bytes:
+                    raise ValueError(f"archive member too large: {member_name}")
+                if max_zip_ratio is not None and info.compress_size > 0:
+                    ratio = info.file_size / info.compress_size
+                    if ratio > max_zip_ratio:
+                        raise ValueError(
+                            f"archive member compression ratio too high: {member_name}"
+                        )
                 destination = output_dir / member_name
                 destination.parent.mkdir(parents=True, exist_ok=True)
-                destination.write_bytes(zip_handle.read(info.filename))
+                with zip_handle.open(info, "r") as source:
+                    total_unpacked += copy_stream(source, destination, member_name)
+                if total_unpacked > max_total_unpacked_bytes:
+                    raise ValueError("archive expands beyond allowed size")
     else:
         with tarfile.open(archive, "r:gz") as tar_handle:
+            members = 0
+            total_unpacked = 0
             for member in tar_handle.getmembers():
                 if not member.isfile():
                     continue
+                members += 1
+                if members > max_members:
+                    raise ValueError("archive contains too many members")
                 member_name = _validated_archive_member_name(member.name)
+                if member.size > max_member_bytes:
+                    raise ValueError(f"archive member too large: {member_name}")
                 extracted = tar_handle.extractfile(member)
                 if extracted is None:
                     continue
                 destination = output_dir / member_name
                 destination.parent.mkdir(parents=True, exist_ok=True)
-                destination.write_bytes(extracted.read())
+                total_unpacked += copy_stream(extracted, destination, member_name)
+                if total_unpacked > max_total_unpacked_bytes:
+                    raise ValueError("archive expands beyond allowed size")
     return archive_format
 
 
@@ -797,24 +878,13 @@ def _evaluate_signature_results(
         verification_keys=verification_keys,
     )
     if not resolved_verification_keys:
-        if (
-            minimum_valid_signatures is not None
-            or (document.manifest.signature_policy.minimum_valid_signatures is not None)
-            or required_role_signature_counts
-        ):
-            issues.append("verification keys are required to evaluate signature policy")
-            return (
-                [],
-                False,
-                required_signature_count,
-                0,
-                required_role_signature_counts,
-                {},
-                issues,
-            )
+        issues.append(
+            "verification keys are required to verify signatures "
+            "(provide --public-key or --keyring)"
+        )
         return (
             [],
-            None,
+            False,
             required_signature_count,
             0,
             required_role_signature_counts,
@@ -1060,11 +1130,22 @@ def verify_export_archive(
     verification_keys: Sequence[VerificationKey] | None = None,
     minimum_valid_signatures: int | None = None,
     minimum_valid_signatures_by_role: dict[str, int] | None = None,
+    max_members: int = DEFAULT_ARCHIVE_MAX_MEMBERS,
+    max_total_unpacked_bytes: int = DEFAULT_ARCHIVE_MAX_TOTAL_UNPACKED_BYTES,
+    max_member_bytes: int = DEFAULT_ARCHIVE_MAX_MEMBER_BYTES,
+    max_zip_ratio: float | None = DEFAULT_ARCHIVE_MAX_ZIP_RATIO,
 ) -> dict[str, Any]:
     with TemporaryDirectory(prefix="agent-evidence-verify-archive-") as temp_dir:
         temp_root = Path(temp_dir)
         try:
-            archive_format = _extract_archive_to_directory(archive_path, temp_root)
+            archive_format = _extract_archive_to_directory(
+                archive_path,
+                temp_root,
+                max_members=max_members,
+                max_total_unpacked_bytes=max_total_unpacked_bytes,
+                max_member_bytes=max_member_bytes,
+                max_zip_ratio=max_zip_ratio,
+            )
         except ValueError as exc:
             return {
                 "ok": False,

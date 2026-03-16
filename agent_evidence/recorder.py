@@ -100,10 +100,15 @@ class EvidenceRecorder:
             metadata=ensure_json_object(metadata),
         )
         event_hash = compute_hash(event.model_dump(mode="json"))
-        previous_event_hash = self.store.latest_event_hash()
+        latest_hashes = getattr(self.store, "latest_hashes", None)
+        if callable(latest_hashes):
+            previous_event_hash, previous_chain_hash = latest_hashes()
+        else:
+            previous_event_hash = self.store.latest_event_hash()
+            previous_chain_hash = self.store.latest_chain_hash()
         chain_hash = chain_digest_for_event(
             event_hash=event_hash,
-            previous_chain_hash=self.store.latest_chain_hash(),
+            previous_chain_hash=previous_chain_hash,
         )
         return EvidenceEnvelope(
             event=event,

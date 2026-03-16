@@ -17,6 +17,7 @@ def test_local_store_appends_chain(tmp_path: Path) -> None:
     assert records[0].hashes.chain_hash == first.hashes.chain_hash
     assert records[1].hashes.previous_event_hash == first.hashes.event_hash
     assert second.hashes.chain_hash == records[1].hashes.chain_hash
+    assert store.latest_hashes() == (second.hashes.event_hash, second.hashes.chain_hash)
 
 
 def test_verify_chain_detects_tampering(tmp_path: Path) -> None:

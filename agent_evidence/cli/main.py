@@ -33,7 +33,10 @@ from agent_evidence.storage.base import EvidenceStore
 def parse_json_option(raw: str | None) -> dict:
     if raw is None:
         return {}
-    value = json.loads(raw)
+    try:
+        value = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise click.BadParameter(f"Invalid JSON: {raw}") from exc
     if not isinstance(value, dict):
         raise click.BadParameter("Value must decode to a JSON object.")
     return value
@@ -163,6 +166,7 @@ def build_verification_keys(
                 public_key_pem=public_key.read_bytes(),
                 key_id=key_id,
                 key_version=key_version,
+                is_direct=True,
             ),
         )
     return verification_keys

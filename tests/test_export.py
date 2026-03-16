@@ -143,6 +143,49 @@ def test_export_json_bundle_and_verify_signature(tmp_path: Path) -> None:
     assert result["signature_verified"] is True
 
 
+def test_verify_signed_bundle_requires_verification_key(tmp_path: Path) -> None:
+    records, _ = build_records(tmp_path)
+    _, _, private_pem, _ = write_ed25519_keypair(tmp_path)
+    bundle_path = tmp_path / "signed-bundle.json"
+
+    export_json_bundle(records, bundle_path, private_key_pem=private_pem, key_id="test-key")
+
+    result = verify_json_bundle(bundle_path)
+
+    assert result["ok"] is False
+    assert result["signature_present"] is True
+    assert result["signature_verified"] is False
+    assert result["issues"] == [
+        "verification keys are required to verify signatures (provide --public-key or --keyring)"
+    ]
+
+
+def test_verify_signature_does_not_fall_back_to_anonymous_key(tmp_path: Path) -> None:
+    records, _ = build_records(tmp_path)
+    _, _, private_pem, public_pem = write_ed25519_keypair(tmp_path)
+    bundle_path = tmp_path / "identity-bound-bundle.json"
+
+    export_json_bundle(
+        records,
+        bundle_path,
+        private_key_pem=private_pem,
+        key_id="operations",
+        key_version="2026-q2",
+    )
+
+    result = verify_json_bundle(
+        bundle_path,
+        verification_keys=[VerificationKey(public_key_pem=public_pem)],
+    )
+
+    assert result["ok"] is False
+    assert result["verified_signature_count"] == 0
+    assert result["signature_verified"] is False
+    assert (
+        result["signature_results"][0]["error"] == "no verification key matched operations@2026-q2"
+    )
+
+
 def test_export_csv_bundle_detects_tampering(tmp_path: Path) -> None:
     records, _ = build_records(tmp_path)
     _, _, private_pem, public_pem = write_ed25519_keypair(tmp_path)
@@ -169,6 +212,22 @@ def test_export_csv_bundle_detects_tampering(tmp_path: Path) -> None:
     tampered = verify_csv_export(csv_path, manifest_path, public_key_pem=public_pem)
     assert tampered["ok"] is False
     assert "artifact_digest mismatch" in tampered["issues"]
+
+
+def test_export_csv_bundle_sanitizes_formula_cells_by_default(tmp_path: Path) -> None:
+    store = LocalEvidenceStore(tmp_path / "evidence.jsonl")
+    recorder = EvidenceRecorder(store)
+    recorder.record(
+        actor="planner",
+        event_type="=1+1",
+        context={"source": "cli", "component": "tool"},
+    )
+    csv_path = tmp_path / "formula.csv"
+
+    export_csv_bundle(store.list(), csv_path)
+
+    lines = csv_path.read_text(encoding="utf-8").splitlines()
+    assert lines[1].split(",")[3] == "\t=1+1"
 
 
 def test_export_xml_bundle_detects_tampering(tmp_path: Path) -> None:
@@ -234,6 +293,25 @@ def test_package_export_archive_zip_and_detect_tampering(tmp_path: Path) -> None
     tampered = verify_export_archive(archive_path, public_key_pem=public_pem)
     assert tampered["ok"] is False
     assert "artifact_digest mismatch" in tampered["issues"]
+
+
+def test_verify_export_archive_rejects_member_count_limit(tmp_path: Path) -> None:
+    records, _ = build_records(tmp_path)
+    _, _, private_pem, public_pem = write_ed25519_keypair(tmp_path)
+    archive_path = tmp_path / "bundle-package.zip"
+
+    package_export_archive(
+        records,
+        archive_path,
+        export_format="xml",
+        private_key_pem=private_pem,
+        key_id="archive-key",
+    )
+
+    result = verify_export_archive(archive_path, public_key_pem=public_pem, max_members=2)
+
+    assert result["ok"] is False
+    assert result["issues"] == ["archive contains too many members"]
 
 
 def test_cli_export_and_verify_bundle(tmp_path: Path) -> None:
@@ -419,6 +497,22 @@ def test_verify_json_bundle_accepts_legacy_signature_field(tmp_path: Path) -> No
     assert result["ok"] is True
     assert result["signature_count"] == 1
     assert result["signature_verified"] is True
+
+
+def test_recorder_prefers_atomic_latest_hashes_when_available() -> None:
+    class StoreStub:
+        def latest_hashes(self) -> tuple[str | None, str | None]:
+            return "prev-event", "prev-chain"
+
+        def latest_event_hash(self) -> str | None:
+            raise AssertionError("recorder should use latest_hashes")
+
+        def latest_chain_hash(self) -> str | None:
+            raise AssertionError("recorder should use latest_hashes")
+
+    envelope = EvidenceRecorder(StoreStub()).build(actor="planner", event_type="tool.call")
+
+    assert envelope.hashes.previous_event_hash == "prev-event"
 
 
 def test_cli_multisig_export_and_key_rotation_verification(tmp_path: Path) -> None:

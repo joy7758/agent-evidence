@@ -11,8 +11,12 @@ from agent_evidence.storage.base import EvidenceStore
 
 
 def _to_epoch_micros(value: datetime) -> int:
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
     normalized = value.astimezone(timezone.utc)
-    return int(normalized.timestamp() * 1_000_000)
+    epoch = datetime(1970, 1, 1, tzinfo=timezone.utc)
+    delta = normalized - epoch
+    return (delta.days * 86_400 + delta.seconds) * 1_000_000 + delta.microseconds
 
 
 class Base(DeclarativeBase):
@@ -95,20 +99,22 @@ class SqlEvidenceStore(EvidenceStore):
         return self.query()
 
     def latest_event_hash(self) -> str | None:
-        statement = select(EvidenceRecordRow.event_hash).order_by(
-            EvidenceRecordRow.timestamp_epoch_us.desc(),
-            EvidenceRecordRow.id.desc(),
-        )
-        with Session(self.engine) as session:
-            return session.execute(statement.limit(1)).scalar_one_or_none()
+        event_hash, _ = self.latest_hashes()
+        return event_hash
 
     def latest_chain_hash(self) -> str | None:
-        statement = select(EvidenceRecordRow.chain_hash).order_by(
-            EvidenceRecordRow.timestamp_epoch_us.desc(),
-            EvidenceRecordRow.id.desc(),
+        _, chain_hash = self.latest_hashes()
+        return chain_hash
+
+    def latest_hashes(self) -> tuple[str | None, str | None]:
+        statement = select(EvidenceRecordRow.event_hash, EvidenceRecordRow.chain_hash).order_by(
+            EvidenceRecordRow.id.desc()
         )
         with Session(self.engine) as session:
-            return session.execute(statement.limit(1)).scalar_one_or_none()
+            row = session.execute(statement.limit(1)).one_or_none()
+        if row is None:
+            return None, None
+        return row[0], row[1]
 
     def query(
         self,
@@ -129,10 +135,7 @@ class SqlEvidenceStore(EvidenceStore):
         offset: int | None = None,
         limit: int | None = None,
     ) -> list[EvidenceEnvelope]:
-        statement = select(EvidenceRecordRow).order_by(
-            EvidenceRecordRow.timestamp_epoch_us.asc(),
-            EvidenceRecordRow.id.asc(),
-        )
+        statement = select(EvidenceRecordRow).order_by(EvidenceRecordRow.id.asc())
         if event_type is not None:
             statement = statement.where(EvidenceRecordRow.event_type == event_type)
         if actor is not None:

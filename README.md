@@ -27,6 +27,18 @@ The current model treats each record as a semantic event envelope:
 - `hashes.previous_event_hash` links to the prior event
 - `hashes.chain_hash` provides a cumulative chain tip for integrity checks
 
+### Secure Serialization
+
+The evidence serialization layer implements:
+
+- default redaction of sensitive fields
+- maximum recursion depth
+- circular reference protection
+- object size limits
+
+These protections prevent evidence bundles from leaking secrets or causing
+serialization-based denial-of-service conditions.
+
 ## Why this shape
 
 The project is organized so evidence capture stays modular:
@@ -518,6 +530,9 @@ If neither is present, verification defaults to requiring every signature in
 the artifact to validate. If only role thresholds are present, the effective
 total threshold defaults to the sum of those role requirements.
 
+If a bundle carries signatures, verification is fail-closed: you must provide
+`--public-key` or `--keyring`, otherwise verification returns `ok=false`.
+
 Manifest signing uses Ed25519 PEM keys. To enable signing outside the dev
 environment:
 
@@ -578,9 +593,15 @@ Keyrings let `verify-export` resolve rotated keys by `key_id` and
 ```
 
 When you export CSV, Agent Evidence writes the CSV artifact and a manifest
-sidecar such as `evidence.csv.manifest.json`. `verify-export` validates the
-manifest summary, exported artifact digest, and every signature it can resolve
+sidecar such as `evidence.csv.manifest.json`. Spreadsheet-facing CSV exports
+sanitize cells that begin with formula prefixes such as `=`, `+`, `-`, or `@`
+to reduce formula injection risk during human review. `verify-export`
+validates the manifest summary, exported artifact digest, and every signature
 from a provided public key or keyring.
+
+Archive verification also enforces unpacking limits for member count, per-file
+size, and total unpacked size so untrusted `.zip` and `.tar.gz` bundles fail
+closed before full extraction.
 
 ## PostgreSQL integration validation
 

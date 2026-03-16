@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from pathlib import Path
 
 from click.testing import CliRunner
@@ -6,7 +7,7 @@ from click.testing import CliRunner
 from agent_evidence.cli.main import main
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage.local import LocalEvidenceStore
-from agent_evidence.storage.sql import SqlEvidenceStore
+from agent_evidence.storage.sql import SqlEvidenceStore, _to_epoch_micros
 
 
 def sqlite_url(path: Path) -> str:
@@ -34,6 +35,7 @@ def test_sql_store_appends_and_queries(tmp_path: Path) -> None:
     assert len(records) == 2
     assert store.latest_event_hash() == second.hashes.event_hash
     assert store.latest_chain_hash() == second.hashes.chain_hash
+    assert store.latest_hashes() == (second.hashes.event_hash, second.hashes.chain_hash)
 
     [tool_end] = store.query(event_type="tool.end")
     assert tool_end.event.outputs["status"] == "ok"
@@ -203,3 +205,8 @@ def test_cli_migrate_and_query_sqlite(tmp_path: Path) -> None:
     assert verified.exit_code == 0, verified.output
     verify_result = json.loads(verified.output)
     assert verify_result["ok"] is True
+
+
+def test_sql_store_epoch_micros_accepts_naive_datetime() -> None:
+    naive_value = datetime(2026, 1, 1, 0, 0, 0, 123456)
+    assert _to_epoch_micros(naive_value) == 1_767_225_600_123_456

@@ -20,6 +20,35 @@ class LocalEvidenceStore(EvidenceStore):
             handle.write(envelope.model_dump_json())
             handle.write("\n")
 
+    def _last_envelope(self) -> EvidenceEnvelope | None:
+        if not self.path.exists() or self.path.stat().st_size == 0:
+            return None
+
+        with self.path.open("rb") as handle:
+            position = handle.seek(0, 2)
+            while position > 0:
+                position -= 1
+                handle.seek(position)
+                byte = handle.read(1)
+                if byte not in {b"\n", b"\r"}:
+                    break
+            if position < 0:
+                return None
+
+            line_bytes = bytearray()
+            while position >= 0:
+                handle.seek(position)
+                byte = handle.read(1)
+                if byte == b"\n":
+                    break
+                if byte != b"\r":
+                    line_bytes.append(byte[0])
+                position -= 1
+
+        if not line_bytes:
+            return None
+        return EvidenceEnvelope.model_validate_json(bytes(reversed(line_bytes)).decode("utf-8"))
+
     def list(self) -> list[EvidenceEnvelope]:
         if not self.path.exists():
             return []
@@ -34,16 +63,18 @@ class LocalEvidenceStore(EvidenceStore):
         return records
 
     def latest_event_hash(self) -> str | None:
-        records = self.list()
-        if not records:
-            return None
-        return records[-1].hashes.event_hash
+        event_hash, _ = self.latest_hashes()
+        return event_hash
 
     def latest_chain_hash(self) -> str | None:
-        records = self.list()
-        if not records:
-            return None
-        return records[-1].hashes.chain_hash
+        _, chain_hash = self.latest_hashes()
+        return chain_hash
+
+    def latest_hashes(self) -> tuple[str | None, str | None]:
+        envelope = self._last_envelope()
+        if envelope is None:
+            return None, None
+        return envelope.hashes.event_hash, envelope.hashes.chain_hash
 
     def query(
         self,

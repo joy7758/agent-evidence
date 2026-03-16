@@ -24,6 +24,10 @@ class EvidenceStore(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def latest_hashes(self) -> tuple[str | None, str | None]:
+        raise NotImplementedError
+
+    @abstractmethod
     def query(
         self,
         *,

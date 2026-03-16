@@ -69,6 +69,7 @@ class VerificationKey(BaseModel):
     public_key_pem: bytes
     key_id: str | None = None
     key_version: str | None = None
+    is_direct: bool = False
 
 
 class SignaturePolicy(BaseModel):
@@ -285,11 +286,9 @@ def resolve_verification_key(
     if len(candidates) == 1:
         return candidates[0].public_key_pem, None
     if not candidates:
-        anonymous_keys = [
-            item for item in verification_keys if item.key_id is None and item.key_version is None
-        ]
-        if len(anonymous_keys) == 1:
-            return anonymous_keys[0].public_key_pem, None
+        direct_keys = [item for item in verification_keys if item.is_direct]
+        if len(direct_keys) == 1 and len(verification_keys) == 1:
+            return direct_keys[0].public_key_pem, None
     if not candidates:
         if signature_model.key_version is not None:
             return (

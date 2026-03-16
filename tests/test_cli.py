@@ -52,6 +52,29 @@ def test_cli_record_and_show(tmp_path: Path) -> None:
     assert result["ok"] is True
 
 
+def test_cli_record_rejects_invalid_json_option(tmp_path: Path) -> None:
+    store_path = tmp_path / "evidence.jsonl"
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main,
+        [
+            "record",
+            "--store",
+            str(store_path),
+            "--actor",
+            "planner",
+            "--event-type",
+            "tool.call",
+            "--input",
+            '{"prompt":',
+        ],
+    )
+
+    assert result.exit_code != 0
+    assert "Invalid JSON" in result.output
+
+
 def test_cli_export_automaton_help_marks_experimental() -> None:
     runner = CliRunner()
 
