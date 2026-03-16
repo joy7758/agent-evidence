@@ -3,6 +3,7 @@
 Capture autonomous agent execution as verifiable semantic events with JSONL,
 SQLite, and PostgreSQL storage backends.
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19055948.svg)](https://doi.org/10.5281/zenodo.19055948)
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
 ![Semantic Events](https://img.shields.io/badge/semantic%20events-v2.0.0-1f6feb)

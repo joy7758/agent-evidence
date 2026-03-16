@@ -4,6 +4,10 @@
 
 An integrity-verifiable evidence profile specimen for autonomous agent runs
 
+## Artifact DOI
+
+https://doi.org/10.5281/zenodo.19055948
+
 ## What this release is
 
 This release packages the first public, reproducible live-chain specimen of AEP (Agent Evidence Profile).
