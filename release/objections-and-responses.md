@@ -1,68 +1,21 @@
 # Objections and Responses
 
-## Isn’t this just logging or tracing?
+**English**  Objections and Responses
+**IPA**  /əbˈdʒekʃənz ənd rɪˈspɑːnsɪz/
+**中文发音**  奥布杰克申兹 安德 瑞斯旁瑟兹。
+**中文**  质疑与回应。
 
-No. Logging records events inside a runtime. This prototype packages execution
-evidence as a portable object with integrity checks.
+## Key Message / 核心说明
 
-## Why treat execution evidence as an object?
+**English**  This page gives short, direct answers to the most likely conference and reviewer questions.
+**IPA**  /ðɪs peɪdʒ ɡɪvz ʃɔːrt dəˈrekt ˈænsərz tuː ðə moʊst ˈlaɪkli ˈkɑːnfərəns ənd rɪˈvjuːər ˈkwestʃənz/
+**中文发音**  迪斯 佩奇 吉夫兹 肖特 德瑞克特 安瑟兹 图 德 某斯特 莱克利 康佛仁斯 安德 瑞维尤尔 奎斯陈兹。
+**中文**  这页给出最可能出现的会议与评审问题的简短直接回答。
 
-Because an object can be exported, verified, compared, and reused more cleanly
-than framework-native trace output.
-
-## What is verifiable today?
-
-The canonical specimen object is verifiable today through schema checks and hash
-recomputation.
-
-## Why is FDO relevant?
-
-Because FDO provides an object-oriented way to discuss identity, metadata,
-integrity, and provenance. Those are already visible in this specimen.
-
-## What is new beyond observability tooling?
-
-The new step is not another tracing tool. The new step is an object model for
-execution evidence.
-
-## How portable is it?
-
-The prototype already includes export examples for OpenAI Agents, LangChain,
-and CrewAI.
-
-## What is implemented now and what is future work?
-
-Implemented now:
-
-- spec
-- schema
-- example objects
-- verification
-- FDO-style wrapper example
-- cross-framework prototype exporters
-
-Future work:
-
-- stable conformance profile
-- broader interoperability checks
-- registry-facing packaging
-
-## What are the current limitations?
-
-The work is still a specimen, not a final standard. It is intentionally small
-and does not yet define production governance or community-approved profiles.
-
-## What would broader standardization require?
-
-Stable field rules, conformance tests, portability criteria, provenance
-requirements, and community review.
-
-## How should sensitive runtime content be handled?
-
-Sensitive content should be filtered or replaced before wider distribution. The
-current specimen focuses on object shape, integrity, and portability.
-
-## What this work does not claim
-
-It does not claim formal adoption, production registry deployment, or complete
-coverage of all runtime evidence use cases.
+## Common Questions / 常见问题
+- **EN**: It is not just logging, because the object is portable and verifiable.
+- **中文**：它不只是 logging，因为对象是可移植且可验证的。
+- **EN**: FDO matters because the object already has identity, metadata, integrity, and provenance-oriented structure.
+- **中文**：FDO 重要，因为对象已经具备身份、元数据、完整性和来源导向结构。
+- **EN**: What is implemented today is the specimen, not a final standard.
+- **中文**：今天实现的是样品，不是最终标准。

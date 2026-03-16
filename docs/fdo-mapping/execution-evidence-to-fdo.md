@@ -1,86 +1,37 @@
 # Execution Evidence to FDO
 
-## Evidence bundle identity
+**English**  Execution Evidence to FDO
+**IPA**  /ɪɡˈzekjuːʃən ˈevɪdəns tuː ˌef diː ˈoʊ/
+**中文发音**  伊格泽丘申 埃维登斯 图 艾弗迪欧。
+**中文**  执行证据到 FDO 的映射。
 
-An execution evidence bundle should be treated as a bounded object instance
-rather than only as an internal runtime export.
+## Key Message / 核心说明
 
-The bounded identity comes from:
+**English**  An execution evidence bundle can be interpreted as a digital object shell plus a bounded evidence payload.
+**IPA**  /æn ɪɡˈzekjuːʃən ˈevɪdəns ˈbʌndl kæn bi ɪnˈtɝːprətɪd æz ə ˈdɪdʒɪtəl ˈɑːbdʒekt ʃel plʌs ə ˈbaʊndɪd ˈevɪdəns ˈpeɪloʊd/
+**中文发音**  安 伊格泽丘申 埃维登斯 邦斗 坎 比 因特普瑞提德 艾兹 额 迪吉托 奥布杰克特 舍尔 普拉斯 额 邦迪德 埃维登斯 佩楼德。
+**中文**  一个执行证据包可以被解释为“数字对象外壳 + 有边界的证据载荷”。
 
-- `object_type`
-- `run_id`
-- `agent_framework`
-- hash-linked integrity material
+## Evidence Bundle Identity / 证据包身份
+- **EN**: Identity comes from `object_type`, `run_id`, `agent_framework`, and integrity fields.
+- **中文**：身份来自 `object_type`、`run_id`、`agent_framework` 和完整性字段。
 
-## Persistent identifier placeholder
+## Persistent Identifier Placeholder / 持久标识占位
+- **EN**: The current placeholder is `pid:pending/execution-evidence-object/<run_id>`.
+- **中文**：当前占位符是 `pid:pending/execution-evidence-object/<run_id>`。
 
-The current prototype does not assign a production identifier.
+## Metadata Layer / 元数据层
+- **EN**: Metadata comes from context, timestamp, framework, and step summary.
+- **中文**：元数据来自上下文、时间戳、框架信息和步骤摘要。
 
-A standards-facing placeholder can be represented as:
+## Integrity Layer / 完整性层
+- **EN**: `action_hash`, `trace_hash`, and `proof_hash` form the integrity layer.
+- **中文**：`action_hash`、`trace_hash` 和 `proof_hash` 构成完整性层。
 
-`pid:pending/execution-evidence-object/<run_id>`
+## Provenance Reference / 来源引用
+- **EN**: Runtime origin and agent identity form the provenance-oriented surface.
+- **中文**：运行来源和 agent 身份构成来源导向表面。
 
-This keeps the mapping discussion concrete without claiming registry-level
-allocation.
-
-## Metadata layer
-
-The metadata layer is formed from contextual runtime information such as:
-
-- execution context
-- agent framework
-- timestamp
-- step summaries
-
-This is the descriptive surface that helps an external reader interpret the
-object.
-
-## Integrity layer
-
-The integrity layer is formed from:
-
-- `action_hash`
-- `trace_hash`
-- `proof_hash`
-
-These fields allow the object to be checked as a stable evidence artifact
-rather than as an unstructured log dump.
-
-## Provenance reference
-
-Provenance-oriented reading comes from the agent and runtime origin fields,
-especially:
-
-- the framework origin
-- run identity
-- actor or agent references carried in the surrounding context
-
-## Mapping Table
-
-| Execution Evidence Field | FDO Concept |
-| --- | --- |
-| `run_id` | persistent identifier placeholder |
-| `object_type` | object class marker |
-| `steps` | object element set |
-| `hashes.action_hash` | integrity reference |
-| `hashes.trace_hash` | integrity reference |
-| `hashes.proof_hash` | verification proof surface |
-| `context` | metadata block |
-| `agent_framework` | provenance entity / runtime source |
-
-Examples:
-
-- `event_id` -> object element
-- `trace_hash` -> integrity reference
-- `context` -> metadata block
-- `agent_id` -> provenance entity
-
-## Diagram Description
-
-Agent Run
-→ Evidence Bundle
-→ Digital Object
-→ FDO Registry
-
-This diagram is intended as an interpretation path, not as a claim of formal
-registry integration.
+## Diagram Description / 图示说明
+- **EN**: Agent Run → Evidence Bundle → Digital Object → FDO Registry.
+- **中文**：Agent Run → Evidence Bundle → Digital Object → FDO Registry。

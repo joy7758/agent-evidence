@@ -1,15 +1,20 @@
-# Poster QR Targets
+# QR Targets
 
-## Primary QR targets
+**English**  QR Targets
+**IPA**  /kjuː ɑːr ˈtɑːrɡəts/
+**中文发音**  丘阿尔 塔格次。
+**中文**  二维码目标页。
 
-- `README.md` for repository entry
-- `docs/architecture/execution-evidence-object-one-page.md` for the fast
-  architecture explanation
-- `proposal/execution-evidence-object-proposal.md` for the standards proposal
-- `release/minimal-demo.md` for the shortest reproducible demo path
+## Primary Targets / 主目标
+- **EN**: README for repository entry.
+- **中文**：README 作为仓库入口。
+- **EN**: One-page architecture for 30-second understanding.
+- **中文**：一页架构页用于 30 秒理解。
+- **EN**: Proposal for standards readers.
+- **中文**：proposal 面向标准读者。
+- **EN**: Minimal demo for reproducible walkthrough.
+- **中文**：最小 demo 用于可复现演示。
 
-## Optional QR targets
-
-- `docs/outreach/public-positioning.md` for the public-facing summary
-- `docs/fdo-mapping/minimal-fdo-object-example.md` for the FDO-style wrapper
-- `release/specimen-manifest.md` for the frozen conference baseline
+## Optional Targets / 可选目标
+- **EN**: Public positioning, FDO-style object example, and specimen manifest.
+- **中文**：对外定位、FDO 风格对象示例和样品清单。

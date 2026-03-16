@@ -1,54 +1,41 @@
 # Standardization Roadmap
 
-## Stage 1: prototype specimen
+**English**  Standardization Roadmap
+**IPA**  /ˌstændərdəzaɪˈʃən ˈroʊdˌmæp/
+**中文发音**  斯坦德德泽申 柔德麦普。
+**中文**  标准化路线图。
 
-Current repository state:
+## Key Message / 核心说明
 
-- named object model
-- schema
-- verified examples
-- FDO-style mapping
-- cross-framework prototype exporters
+**English**  The current specimen is stage one of a longer path toward a future community profile.
+**IPA**  /ðə ˈkɝːənt ˈspesɪmən ɪz steɪdʒ wʌn əv ə ˈlɔːŋɡər pæθ təˈwɔːrd ə ˈfjuːtʃər kəˈmjuːnəti ˈproʊfaɪl/
+**中文发音**  德 柯润特 斯派西门 依兹 斯特奇 温 奥夫 额 朗格 帕斯 特沃德 额 费由彻 科缪尼提 普若法艾尔。
+**中文**  当前样品只是通向未来 community profile 的第一阶段。
 
-## Stage 2: stable object profile
+## Stage 1 / 第一阶段
+- **EN**: Prototype specimen.
+- **中文**：原型样品。
 
-Next goal:
+## Stage 2 / 第二阶段
+- **EN**: Stable object profile.
+- **中文**：稳定对象 profile。
 
-- freeze required fields
-- freeze core hash semantics
-- stabilize public positioning and specimen examples
+## Stage 3 / 第三阶段
+- **EN**: Cross-framework conformance profile.
+- **中文**：跨框架 conformance profile。
 
-## Stage 3: cross-framework conformance profile
+## Stage 4 / 第四阶段
+- **EN**: Persistent identifier binding.
+- **中文**：持久标识绑定。
 
-Next goal:
+## Stage 5 / 第五阶段
+- **EN**: Registry-facing packaging.
+- **中文**：面向注册系统的打包。
 
-- define a shared conformance profile
-- require compatible export behavior across frameworks
-- add repeatable interoperability checks
+## Stage 6 / 第六阶段
+- **EN**: Community draft standard.
+- **中文**：社区草案标准。
 
-## Stage 4: persistent identifier binding
-
-Next goal:
-
-- define how the object binds to persistent identifier workflows
-- clarify object identity versus runtime identity
-
-## Stage 5: registry-facing packaging
-
-Next goal:
-
-- define packaging rules for object wrapper, payload, integrity, and provenance
-- prepare registry-facing object bundles without claiming existing deployment
-
-## Stage 6: community draft standard
-
-Longer-term goal:
-
-- circulate a community draft
-- refine conformance requirements through external feedback
-- align terminology with broader digital object discussion
-
-## Scope note
-
-This roadmap is an evolution path for the current specimen. It does not imply
-formal endorsement by any standards body.
+## Scope Note / 范围说明
+- **EN**: This roadmap is realistic and does not imply formal endorsement.
+- **中文**：这条路线图是现实路径，不暗示任何正式背书。

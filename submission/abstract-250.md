@@ -1,22 +1,16 @@
 # Abstract 250
 
-AI agent runtimes produce large amounts of logs, traces, and callback data, but
-those records are usually tied to one framework and one debugging workflow.
-This repository proposes Execution Evidence Object as a portable and verifiable
-object model for AI runtime evidence. The prototype includes a named object
-definition, a JSON schema, canonical example objects, integrity verification, a
-human-readable demonstration flow, and cross-framework export prototypes for
-OpenAI Agents, LangChain, and CrewAI.
+**English**  Abstract 250
+**IPA**  /ˈæbstrækt tuː ˈfɪfti/
+**中文发音**  艾布斯踹克特 图 菲夫提。
+**中文**  250 词摘要。
 
-The contribution is not a claim of formal standard adoption. Instead, the
-repository presents a reproducible standards specimen that allows execution
-evidence to be discussed as a bounded digital object rather than only as raw
-runtime traces. The object model exposes identity, metadata, integrity hashes,
-and provenance-oriented context. A minimal FDO-style wrapper example shows how
-the verified evidence payload can be interpreted in object-oriented terms for
-future registry-facing discussion.
-
-The current state of the work is a stable proposal prototype and conference
-specimen. It demonstrates what is already implemented, what can be verified
-today, and how a community profile could evolve from the specimen without
-claiming existing standards-body endorsement.
+## Abstract / 摘要
+- **EN**: AI agent runtimes produce logs, traces, and callback data, but these outputs are usually tied to one framework.
+- **中文**：AI agent 运行时会产生日志、追踪和回调数据，但这些输出通常被单一框架绑定。
+- **EN**: Execution Evidence Object proposes a portable and verifiable object model for that runtime evidence.
+- **中文**：执行证据对象提出了一种面向这些运行时证据的可移植、可验证对象模型。
+- **EN**: The prototype already includes a named object, schema, example files, verification, a human-readable demo, and exporters for OpenAI Agents, LangChain, and CrewAI.
+- **中文**：原型已经包含命名对象、schema、示例文件、验证逻辑、可读 demo，以及面向 OpenAI Agents、LangChain 和 CrewAI 的导出器。
+- **EN**: The work does not claim formal adoption; it claims a reproducible standards specimen for discussion.
+- **中文**：这项工作不声称正式采纳，而是提供一个用于讨论的可复现标准样品。

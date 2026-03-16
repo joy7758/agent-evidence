@@ -1,20 +1,17 @@
 # Execution Evidence Object Prototype Overview
 
-Execution Evidence Object is a standards proposal prototype for AI runtime
-evidence.
+**English**  Execution Evidence Object Prototype Overview
+**IPA**  /ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt ˈproʊtətaɪp ˈoʊvərˌvjuː/
+**中文发音**  伊格泽丘申 埃维登斯 奥布杰克特 普若托泰普 欧沃维尤。
+**中文**  执行证据对象原型总览。
 
-This repository already includes:
+## Key Message / 核心说明
 
-- a named object model
-- a JSON schema
-- working example objects
-- integrity verification
-- FDO-style mapping
-- cross-framework export examples
+**English**  This repository is a standards specimen with object model, schema, examples, verification, and FDO-facing mapping.
+**IPA**  /ðɪs ˌrepəˈzɪtəri ɪz ə ˈstændərdz ˈspesɪmən wɪð ˈɑːbdʒekt ˈmɑːdl ˈskiːmə ɪɡˈzæmpəlz ˌverɪfɪˈkeɪʃən ənd ˌef diː ˈoʊ ˈfeɪsɪŋ ˈmæpɪŋ/
+**中文发音**  迪斯 瑞波泽特瑞 依兹 额 斯坦德兹 斯派西门 维兹 奥布杰克特 莫豆 斯基默 伊格赞普尔兹 维瑞菲凯申 安德 艾弗迪欧 费兴 麦平。
+**中文**  这个仓库是一个包含对象模型、schema、示例、验证和 FDO 面向映射的标准样品。
 
-Key entry points:
-
-- Proposal: `proposal/execution-evidence-object-proposal.md`
-- Spec: `spec/execution-evidence-object.md`
-- Schema: `schema/execution-evidence-object.schema.json`
-- Demo: `scripts/demo_execution_evidence_object.py`
+## What It Includes / 它包含什么
+- **EN**: Proposal, spec, schema, examples, demo, and mapping notes.
+- **中文**：提案、spec、schema、示例、demo 和映射说明。

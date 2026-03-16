@@ -1,65 +1,37 @@
 # Execution Evidence Object
 
-## Purpose
+**English**  Execution Evidence Object
+**IPA**  /ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt/
+**中文发音**  伊格泽丘申 埃维登斯 奥布杰克特。
+**中文**  执行证据对象。
 
-Execution Evidence Object defines a bounded evidence artifact for autonomous
-agent runs.
+## Key Message / 核心说明
 
-The goal is to turn runtime activity into a portable object that can be
-reviewed, verified, and discussed as a standards-oriented artifact rather than
-only as a toolkit export.
+**English**  Execution Evidence Object is a portable and verifiable object for AI runtime evidence.
+**IPA**  /ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt ɪz ə ˈpɔːrtəbəl ənd ˈverɪfaɪəbəl ˈɑːbdʒekt fɔːr eɪ aɪ ˈrʌnˌtaɪm ˈevɪdəns/
+**中文发音**  伊格泽丘申 埃维登斯 奥布杰克特 依兹 额 波特伯 安德 维瑞法耶伯 奥布杰克特 佛 诶艾 软泰姆 埃维登斯。
+**中文**  执行证据对象是一种面向 AI 运行时证据的可移植、可验证对象。
 
-## Object Identity
+## Purpose / 目的
+- **EN**: Turn runtime activity into a bounded object that can be exported, checked, and reused.
+- **中文**：把运行时活动压缩成一个有边界的对象，便于导出、校验和复用。
 
-The object is identified as an `execution-evidence-object`.
+## Object Identity / 对象身份
+- **EN**: The core identity fields are `object_type`, `agent_framework`, `run_id`, and `timestamp`.
+- **中文**：核心身份字段是 `object_type`、`agent_framework`、`run_id` 和 `timestamp`。
 
-Each object instance should carry:
+## Evidence Structure / 证据结构
+- **EN**: The object includes `steps`, `context`, and `hashes`.
+- **中文**：对象包含 `steps`、`context` 和 `hashes`。
 
-- a stable `object_type`
-- the originating `agent_framework`
-- a `run_id` that scopes the runtime session
-- a `timestamp` for export time
+## Integrity Verification / 完整性验证
+- **EN**: Integrity is checked through `action_hash`, `trace_hash`, and `proof_hash`.
+- **中文**：完整性通过 `action_hash`、`trace_hash` 和 `proof_hash` 来验证。
 
-## Evidence Structure
+## Runtime Export / 运行时导出
+- **EN**: The object is a post-run artifact, not a replacement for full observability.
+- **中文**：这个对象是运行结束后的构件，不是完整可观测系统的替代品。
 
-The core structure is intentionally small:
-
-- object identity fields
-- ordered execution `steps`
-- grouped `hashes`
-- runtime `context`
-
-This keeps the object readable enough for architecture discussion and concrete
-enough for validation.
-
-## Integrity Verification
-
-Integrity is expressed through three hash surfaces:
-
-- `action_hash` for the exported execution steps
-- `trace_hash` for the bounded run context
-- `proof_hash` for the integrity link between action and trace material
-
-The exact verification path is demonstrated by the prototype script under
-`scripts/verify_evidence_object.py`.
-
-## Runtime Export
-
-The object is intended to be exported after runtime execution completes.
-
-It does not replace detailed tracing or full observability systems.
-
-Instead, it provides a compact execution evidence object that can be carried
-between runtime, review, and standards-oriented discussion.
-
-## FDO Compatibility
-
-The object is designed to be readable as a candidate Digital Object surface:
-
-- object identity maps to object-level identity
-- context maps to metadata
-- hashes map to integrity references
-- runtime origin maps to provenance-oriented interpretation
-
-This repository treats the Execution Evidence Object as a standards proposal
-prototype rather than a finalized standard.
+## FDO Compatibility / FDO 兼容性
+- **EN**: The object can be discussed in FDO-facing terms through identity, metadata, integrity, and provenance.
+- **中文**：这个对象可以通过身份、元数据、完整性和来源信息，用 FDO 面向的方式来讨论。

@@ -41,15 +41,23 @@ The project is organized so evidence capture stays modular:
 
 ## Execution Evidence Object Prototype
 
-This repository now includes a standards proposal prototype for an
-Execution Evidence Object.
+**English**  This repository now includes a standards proposal prototype for an Execution Evidence Object.
+**IPA**  /ðɪs ˌrepəˈzɪtəri naʊ ɪnˈkluːdz ə ˈstændərdz prəˈpoʊzəl ˈproʊtətaɪp fɔːr ən ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt/
+**中文发音**  迪斯 瑞波泽特瑞 闹 因克路兹 额 斯坦德兹 普若波泽尔 普若托泰普 佛 安 伊格泽丘申 埃维登斯 奥布杰克特。
+**中文**  这个仓库现在包含一个“执行证据对象”的标准提案原型。
 
 - Spec: `spec/execution-evidence-object.md`
+- 中文：规范文档
 - Schema: `schema/execution-evidence-object.schema.json`
+- 中文：对象 schema
 - Example object: `examples/evidence-object-openai-run.json`
+- 中文：示例对象
 - Verification script: `scripts/verify_evidence_object.py`
+- 中文：验证脚本
 - FDO mapping: `docs/fdo-mapping/execution-evidence-to-fdo.md`
+- 中文：FDO 映射说明
 - Public positioning: `docs/outreach/public-positioning.md`
+- 中文：对外统一定位
 
 Prototype verification:
 
@@ -57,23 +65,34 @@ Prototype verification:
 python3 scripts/verify_evidence_object.py examples/evidence-object-openai-run.json
 ```
 
+中文：原型验证命令
+
 Human-readable prototype demo:
 
 ```bash
 python3 scripts/demo_execution_evidence_object.py
 ```
 
+中文：面向人类可读的原型演示命令
+
 The demo prints the loaded object, schema validation, integrity check,
 provenance summary, FDO mapping summary, and final result.
+
+中文：这个 demo 会输出对象加载、schema 验证、完整性检查、来源摘要、FDO 映射摘要和最终结果。
 
 ### Reproducible conference specimen
 
 This repository also freezes the current prototype as a reproducible conference
 specimen.
 
+中文：这个仓库还把当前原型冻结成一个可复现的会议样品。
+
 - Manifest: `release/specimen-manifest.md`
+- 中文：样品清单
 - CI baseline: `.github/workflows/prototype-check.yml`
+- 中文：CI 基线
 - Public positioning: `docs/outreach/public-positioning.md`
+- 中文：公开定位文档
 
 ## Quick start
 

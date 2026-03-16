@@ -1,16 +1,21 @@
 # Minimal Demo
 
-The smallest public demo path is:
+**English**  Minimal Demo
+**IPA**  /ˈmɪnɪməl ˈdemoʊ/
+**中文发音**  米尼默尔 代某。
+**中文**  最小演示。
 
-1. Inspect the example object:
-   `examples/evidence-object-openai-run.json`
-2. Verify the object:
-   `python3 scripts/verify_evidence_object.py examples/evidence-object-openai-run.json`
-3. Run the human-readable demo:
-   `python3 scripts/demo_execution_evidence_object.py`
+## Key Message / 核心说明
 
-This shows:
+**English**  The shortest demo path is inspect, verify, and explain.
+**IPA**  /ðə ʃɔːrtəst ˈdemoʊ pæθ ɪz ɪnˈspekt ˈverɪfaɪ ənd ɪkˈspleɪn/
+**中文发音**  德 肖特斯特 代某 帕斯 依兹 因斯派克特 维瑞法艾 安德 伊克斯普雷恩。
+**中文**  最短演示路径就是：查看、验证、解释。
 
-- what the object looks like
-- how integrity is checked
-- how the object maps toward an FDO-style shell
+## Steps / 步骤
+- **EN**: Open `examples/evidence-object-openai-run.json`.
+- **中文**：打开 `examples/evidence-object-openai-run.json`。
+- **EN**: Run `python3 scripts/verify_evidence_object.py examples/evidence-object-openai-run.json`.
+- **中文**：运行 `python3 scripts/verify_evidence_object.py examples/evidence-object-openai-run.json`。
+- **EN**: Run `python3 scripts/demo_execution_evidence_object.py`.
+- **中文**：运行 `python3 scripts/demo_execution_evidence_object.py`。

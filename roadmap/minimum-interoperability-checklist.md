@@ -1,38 +1,25 @@
 # Minimum Interoperability Checklist
 
-Use this checklist when evaluating whether a framework export is compatible with
-the current specimen profile.
+**English**  Minimum Interoperability Checklist
+**IPA**  /ˈmɪnɪməm ˌɪntərˌɑːpərəˈbɪləti ˈtʃeklɪst/
+**中文发音**  米尼默姆 因特欧佩若比利提 切克利斯特。
+**中文**  最小互操作检查清单。
 
-## Object shape
+## Key Message / 核心说明
 
-- exports `object_type` as `execution-evidence-object`
-- exports `agent_framework`
-- exports `run_id`
-- exports `steps` as an array
-- exports `context` as an object
-- exports `timestamp`
+**English**  Use this checklist to judge whether a framework export is compatible with the current specimen.
+**IPA**  /juːz ðɪs ˈtʃeklɪst tuː dʒʌdʒ ˈweðər ə ˈfreɪmwɝːk ˈekspɔːrt ɪz kəmˈpætəbəl wɪð ðə ˈkɝːənt ˈspesɪmən/
+**中文发音**  尤兹 迪斯 切克利斯特 图 贾治 维泽 额 弗瑞姆沃克 艾克斯坡特 依兹 康帕特伯 维兹 德 柯润特 斯派西门。
+**中文**  用这份清单判断一个框架导出是否与当前样品兼容。
 
-## Integrity
-
-- exports `action_hash`
-- exports `trace_hash`
-- exports `proof_hash`
-- passes hash recomputation with the shared verification logic
-
-## Portability
-
-- object can be saved as standalone JSON
-- object can be verified outside the original runtime
-- object does not require framework-private state to be interpreted
-
-## Provenance
-
-- runtime source is explicit
-- run identity is explicit
-- agent or actor reference is available when appropriate
-
-## FDO-style readiness
-
-- object can be wrapped with identity metadata
-- integrity fields can be surfaced outside the payload
-- provenance fields can be surfaced outside the payload
+## Checklist / 清单
+- **EN**: Object shape fields exist and match the profile.
+- **中文**：对象形状字段存在并匹配 profile。
+- **EN**: Integrity hashes exist and can be recomputed.
+- **中文**：完整性哈希存在且可重算。
+- **EN**: The object is readable outside the original runtime.
+- **中文**：对象在原始运行时之外仍可被读取。
+- **EN**: Runtime source and agent reference are explicit.
+- **中文**：运行来源和 agent 引用清晰明确。
+- **EN**: The object can be wrapped in an FDO-style shell.
+- **中文**：对象可以被包进一个 FDO 风格外壳中。

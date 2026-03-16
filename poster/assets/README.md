@@ -1,33 +1,25 @@
 # Poster Asset Notes
 
-## runtime-to-evidence-object.svg
+**English**  Poster Asset Notes
+**IPA**  /ˈpoʊstər ˈæset noʊts/
+**中文发音**  波斯特 艾赛特 诺茨。
+**中文**  海报资产说明。
 
-Use this figure near the top-left of the poster.
+## Key Message / 核心说明
 
-Purpose:
-show the shortest path from runtime activity to a portable audit artifact.
+**English**  These three figures explain flow, object structure, and cross-framework portability.
+**IPA**  /ðiːz θriː ˈfɪɡjərz ɪkˈspleɪn floʊ ˈɑːbdʒekt ˈstrʌktʃər ənd krɔːs ˈfreɪmwɝːk ˌpɔːrtəˈbɪləti/
+**中文发音**  迪兹 思瑞 菲格尤尔兹 伊克斯普雷恩 弗楼 奥布杰克特 斯特拉克彻 安德 克罗斯 弗瑞姆沃克 波特比利提。
+**中文**  这三张图分别解释流程、对象结构和跨框架可移植性。
 
-Suggested caption:
-From agent runtime activity to a verified Execution Evidence Object.
+## Figure 1 / 图一
+- **EN**: `runtime-to-evidence-object.svg` goes near the top-left and explains the main runtime-to-object path.
+- **中文**：`runtime-to-evidence-object.svg` 放在左上角，解释运行到对象的主路径。
 
-## evidence-object-to-fdo.svg
+## Figure 2 / 图二
+- **EN**: `evidence-object-to-fdo.svg` goes near the middle-right and explains the FDO-style shell.
+- **中文**：`evidence-object-to-fdo.svg` 放在中右位置，解释 FDO 风格外壳。
 
-Use this figure in the middle-right of the poster.
-
-Purpose:
-show how the bounded evidence payload becomes an FDO-style object shell through
-identity, metadata, integrity, and provenance surfaces.
-
-Suggested caption:
-How Execution Evidence Object is wrapped as an FDO-style digital object.
-
-## cross-framework-portability.svg
-
-Use this figure near the bottom-left of the poster.
-
-Purpose:
-show that OpenAI Agents, LangChain, and CrewAI can export toward one common
-object profile and one shared verification path.
-
-Suggested caption:
-Cross-framework portability through a shared evidence object profile.
+## Figure 3 / 图三
+- **EN**: `cross-framework-portability.svg` goes near the lower-left and explains shared export and shared verification.
+- **中文**：`cross-framework-portability.svg` 放在左下区域，解释共享导出和共享验证。

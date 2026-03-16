@@ -1,54 +1,29 @@
 # Reproducible Conference Specimen Manifest
 
-This manifest freezes the current Execution Evidence Object specimen as the
-conference baseline.
+**English**  Reproducible Conference Specimen Manifest
+**IPA**  /ˌriːprəˈduːsəbəl ˈkɑːnfərəns ˈspesɪmən ˈmænəˌfest/
+**中文发音**  瑞普若杜瑟伯 康佛仁斯 斯派西门 麦尼费斯特。
+**中文**  可复现会议样品清单。
 
-## Canonical prototype files
+## Key Message / 核心说明
 
-- `spec/execution-evidence-object.md`
-- `schema/execution-evidence-object.schema.json`
-- `proposal/execution-evidence-object-proposal.md`
-- `docs/architecture/execution-evidence-object.md`
-- `docs/architecture/execution-evidence-object-one-page.md`
-- `docs/fdo-mapping/execution-evidence-to-fdo.md`
-- `docs/fdo-mapping/minimal-fdo-object-example.md`
-- `docs/outreach/public-positioning.md`
+**English**  This manifest freezes the current prototype as the conference baseline.
+**IPA**  /ðɪs ˈmænəˌfest ˈfriːzɪz ðə ˈkɝːənt ˈproʊtətaɪp æz ðə ˈkɑːnfərəns ˈbeɪslaɪn/
+**中文发音**  迪斯 麦尼费斯特 弗瑞泽兹 德 柯润特 普若托泰普 艾兹 德 康佛仁斯 贝斯莱恩。
+**中文**  这个清单把当前原型冻结成会议基线。
 
-## Canonical example files
+## Canonical Files / 规范文件
+- **EN**: Spec, schema, proposal, one-page architecture, FDO mapping, and public positioning are canonical reading surfaces.
+- **中文**：spec、schema、proposal、一页架构、FDO 映射和对外定位是规范阅读面。
 
-- `examples/minimal-evidence-object.json`
-- `examples/evidence-object-openai-run.json`
-- `examples/fdo-style-execution-evidence-object.json`
+## Canonical Examples / 规范示例
+- **EN**: The minimal example, canonical specimen, and FDO-style wrapper example are the canonical data samples.
+- **中文**：最小示例、规范样品和 FDO 风格外壳示例是规范数据样本。
 
-## Canonical demo entrypoints
+## Verification Commands / 验证命令
+- **EN**: Run the verify script, the human-readable demo, and `py_compile`.
+- **中文**：运行 verify 脚本、human-readable demo 和 `py_compile`。
 
-- `scripts/verify_evidence_object.py`
-- `scripts/demo_execution_evidence_object.py`
-- `integrations/openai-agents/export_evidence.py`
-- `integrations/langchain/export_evidence.py`
-- `integrations/crewai/export_evidence.py`
-
-## Verification commands
-
-```bash
-python3 scripts/verify_evidence_object.py examples/evidence-object-openai-run.json
-python3 scripts/demo_execution_evidence_object.py
-python3 -m py_compile \
-  scripts/verify_evidence_object.py \
-  scripts/demo_execution_evidence_object.py \
-  integrations/openai-agents/export_evidence.py \
-  integrations/langchain/export_evidence.py \
-  integrations/crewai/export_evidence.py
-```
-
-## Expected outputs
-
-- `verify_evidence_object.py` prints `VERIFY_OK`
-- `demo_execution_evidence_object.py` prints:
-  - `Loaded object`
-  - `Schema validation`
-  - `Integrity check`
-  - `Provenance summary`
-  - `FDO mapping summary`
-  - `Final result`
-- `py_compile` finishes with no output and exit status `0`
+## Expected Outputs / 预期输出
+- **EN**: `VERIFY_OK`, readable demo sections, and silent `py_compile` success.
+- **中文**：`VERIFY_OK`、可读 demo 各区块，以及无输出的 `py_compile` 成功。

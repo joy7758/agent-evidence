@@ -1,76 +1,37 @@
 # Execution Evidence Object Proposal
 
-## 1 Motivation
+**English**  Execution Evidence Object Proposal
+**IPA**  /ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt prəˈpoʊzəl/
+**中文发音**  伊格泽丘申 埃维登斯 奥布杰克特 普若波泽尔。
+**中文**  执行证据对象提案。
 
-Current AI agent systems generate many traces, callbacks, logs, and export
-artifacts, but they rarely converge on a bounded execution evidence object that
-can be discussed as a standards-oriented unit.
+## Key Message / 核心说明
 
-Execution Evidence Object is proposed as that bounded unit.
+**English**  This repository presents a standards proposal specimen for execution evidence as a digital object.
+**IPA**  /ðɪs ˌrepəˈzɪtəri prɪˈzents ə ˈstændərdz prəˈpoʊzəl ˈspesɪmən fɔːr ɪɡˈzekjuːʃən ˈevɪdəns æz ə ˈdɪdʒɪtəl ˈɑːbdʒekt/
+**中文发音**  迪斯 瑞波泽特瑞 普瑞曾茨 额 斯坦德兹 普若波泽尔 斯派西门 佛 伊格泽丘申 埃维登斯 艾兹 额 迪吉托 奥布杰克特。
+**中文**  这个仓库把执行证据作为数字对象，呈现为一个标准提案样品。
 
-## 2 Problem in current AI agents
+## 1 Motivation / 动机
+- **EN**: AI runtimes need a portable object for evidence, not only logs and traces.
+- **中文**：AI 运行时需要一种可移植的证据对象，而不只是日志和追踪。
 
-Today most agent runtimes expose:
+## 2 Problem / 问题
+- **EN**: Current runtime outputs are hard to compare, verify, and reuse across frameworks.
+- **中文**：当前运行时输出很难跨框架比较、验证和复用。
 
-- framework-specific traces
-- callback streams
-- debugging logs
-- storage-specific exports
+## 3 Object Model / 对象模型
+- **EN**: The object model uses identity fields, steps, context, and integrity hashes.
+- **中文**：对象模型使用身份字段、步骤、上下文和完整性哈希。
 
-These are useful for engineering, but they do not automatically provide a
-portable object that is stable enough for verification, review, and
-standardization discussion.
+## 4 FDO Compatibility / FDO 兼容性
+- **EN**: The object can be wrapped and interpreted in FDO-facing terms.
+- **中文**：这个对象可以被包装，并以面向 FDO 的方式来解释。
 
-## 3 Evidence object model
+## 5 Prototype Implementation / 原型实现
+- **EN**: The repository already includes schema, example objects, verification, and framework exporters.
+- **中文**：仓库已经包含 schema、示例对象、验证逻辑和多框架导出器。
 
-The proposed object model includes:
-
-- `object_type`
-- `agent_framework`
-- `run_id`
-- `steps`
-- `hashes`
-- `context`
-- `timestamp`
-
-Reference material:
-
-- Schema: [schema/execution-evidence-object.schema.json](../schema/execution-evidence-object.schema.json)
-- Spec: [spec/execution-evidence-object.md](../spec/execution-evidence-object.md)
-- Minimal example: [examples/minimal-evidence-object.json](../examples/minimal-evidence-object.json)
-- OpenAI run example: [examples/evidence-object-openai-run.json](../examples/evidence-object-openai-run.json)
-
-## 4 FDO compatibility
-
-The object can be discussed as a Digital Object-oriented artifact through:
-
-- object identity
-- metadata context
-- integrity references
-- provenance-oriented runtime origin
-
-Reference mapping:
-
-- [docs/fdo-mapping/execution-evidence-to-fdo.md](../docs/fdo-mapping/execution-evidence-to-fdo.md)
-
-## 5 Prototype implementation
-
-This repository includes a minimal working prototype:
-
-- Verification script: [scripts/verify_evidence_object.py](../scripts/verify_evidence_object.py)
-- OpenAI Agents integration: [integrations/openai-agents](../integrations/openai-agents)
-- LangChain integration: [integrations/langchain](../integrations/langchain)
-- CrewAI integration: [integrations/crewai](../integrations/crewai)
-
-The goal is to show that different runtimes can export toward the same object
-shape.
-
-## 6 Future standardization path
-
-Near-term next steps are:
-
-- stabilize the object field set
-- clarify integrity and provenance requirements
-- compare export behavior across frameworks
-- refine FDO-facing mapping language
-- turn the prototype into a discussion-ready standards profile candidate
+## 6 Future Path / 后续路径
+- **EN**: The next step is a stable profile and a broader conformance layer.
+- **中文**：下一步是形成稳定 profile，并扩展到更广的 conformance 层。

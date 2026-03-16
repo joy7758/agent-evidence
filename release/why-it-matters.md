@@ -1,13 +1,17 @@
 # Why It Matters
 
-Most agent systems produce logs and traces, but logs and traces are usually tied
-to one runtime or one debugging workflow.
+**English**  Why It Matters
+**IPA**  /waɪ ɪt ˈmætərz/
+**中文发音**  怀 伊特 麦特尔兹。
+**中文**  为什么重要。
 
-Execution Evidence Object matters because it turns runtime evidence into:
+## Key Message / 核心说明
 
-- a named object
-- a bounded export
-- a verifiable sample
-- a cross-framework discussion surface
+**English**  Execution evidence matters when it becomes a portable object instead of framework-bound trace data.
+**IPA**  /ɪɡˈzekjuːʃən ˈevɪdəns ˈmætərz wen ɪt bɪˈkʌmz ə ˈpɔːrtəbəl ˈɑːbdʒekt ɪnˈsted əv ˈfreɪmwɝːk baʊnd treɪs ˈdeɪtə/
+**中文发音**  伊格泽丘申 埃维登斯 麦特尔兹 温 伊特 比卡姆兹 额 波特伯 奥布杰克特 因斯泰德 奥夫 弗瑞姆沃克 邦德 吹斯 得塔。
+**中文**  当执行证据变成可移植对象，而不是被框架绑定的 trace 数据时，它才真正重要。
 
-That makes it easier to compare runs, review outcomes, and discuss standards.
+## Why / 原因
+- **EN**: It supports comparison, verification, review, and later reuse.
+- **中文**：它支持比较、验证、审阅和后续复用。

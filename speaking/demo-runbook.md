@@ -1,70 +1,29 @@
 # Demo Runbook
 
-## Demo order
+**English**  Demo Runbook
+**IPA**  /ˈdemoʊ ˈrʌnˌbʊk/
+**中文发音**  代某 软布克。
+**中文**  演示运行手册。
 
-1. Verify the canonical object
-2. Run the human-readable prototype demo
-3. Preview the FDO-style object example
+## Key Message / 核心说明
 
-## Exact commands
+**English**  The short live demo should verify, explain, and stop before over-explaining.
+**IPA**  /ðə ʃɔːrt laɪv ˈdemoʊ ʃʊd ˈverɪfaɪ ɪkˈspleɪn ənd stɑːp bɪˈfɔːr ˌoʊvər ɪkˈspleɪnɪŋ/
+**中文发音**  德 肖特 莱夫 代某 休德 维瑞法艾 伊克斯普雷恩 安德 斯大普 比佛 欧沃 伊克斯普雷宁。
+**中文**  短现场 demo 应该做到验证、解释，然后在过度解释之前停下。
 
-```bash
-bash scripts/run_poster_demo.sh
-```
+## Demo Order / 演示顺序
+- **EN**: Verify the canonical object.
+- **中文**：先验证规范对象。
+- **EN**: Run the human-readable demo.
+- **中文**：再运行可读 demo。
+- **EN**: Preview the FDO-style wrapper.
+- **中文**：最后预览 FDO 风格外壳。
 
-## Expected outputs
+## What to Say / 该怎么说
+- **EN**: Say what the object is, what is verified, and why the FDO wrapper matters.
+- **中文**：讲清这个对象是什么、验证了什么、以及 FDO 外壳为什么重要。
 
-### Step 1: verification
-
-Expected line:
-
-`VERIFY_OK`
-
-What to say:
-
-This confirms that the specimen object matches the schema and passes integrity
-verification.
-
-### Step 2: human-readable demo
-
-Expected sections:
-
-- `Loaded object`
-- `Schema validation`
-- `Integrity check`
-- `Provenance summary`
-- `FDO mapping summary`
-- `Final result`
-
-What to say:
-
-This is the shortest human-readable explanation of what the object is, what is
-verified, and how it maps toward an FDO-style shell.
-
-### Step 3: FDO-style object preview
-
-Expected sections:
-
-- `object_id`
-- `pid_placeholder`
-- `integrity`
-- `provenance`
-
-What to say:
-
-This shows the outer object-facing wrapper. The evidence payload stays bounded,
-while the wrapper carries object identity and FDO-style reading surfaces.
-
-## What not to explain during a short demo
-
-- Do not explain every schema field
-- Do not explain framework-specific internals
-- Do not describe future registry deployment
-- Do not claim formal standard adoption
-
-Keep the demo focused on:
-
-- bounded object
-- verification
-- portability
-- FDO relevance
+## What Not to Say / 不要讲什么
+- **EN**: Do not explain every field, future registry deployment, or too many framework internals.
+- **中文**：不要展开每个字段，不要讲未来注册部署，也不要讲过多框架内部细节。
