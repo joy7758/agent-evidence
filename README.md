@@ -66,6 +66,15 @@ python3 scripts/demo_execution_evidence_object.py
 The demo prints the loaded object, schema validation, integrity check,
 provenance summary, FDO mapping summary, and final result.
 
+### Reproducible conference specimen
+
+This repository also freezes the current prototype as a reproducible conference
+specimen.
+
+- Manifest: `release/specimen-manifest.md`
+- CI baseline: `.github/workflows/prototype-check.yml`
+- Public positioning: `docs/outreach/public-positioning.md`
+
 ## Quick start
 
 ```bash

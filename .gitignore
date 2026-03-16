@@ -13,3 +13,8 @@ examples/**/*.evidence.jsonl
 examples/**/*.bundle.json
 examples/**/*.db
 outreach/
+# Keep the public positioning note tracked because it is part of the
+# conference specimen baseline and must remain reproducible.
+!docs/outreach/
+docs/outreach/*
+!docs/outreach/public-positioning.md

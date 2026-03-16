@@ -1,0 +1,43 @@
+name: Prototype Check
+
+on:
+  push:
+    branches:
+      - main
+      - feat/openai-agents-exporter
+  pull_request:
+
+jobs:
+  prototype-check:
+    name: Prototype Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Verify canonical evidence object
+        run: python3 scripts/verify_evidence_object.py examples/evidence-object-openai-run.json
+
+      - name: Run human-readable prototype demo
+        run: python3 scripts/demo_execution_evidence_object.py
+
+      - name: Check script syntax
+        run: |
+          python3 -m py_compile \
+            scripts/verify_evidence_object.py \
+            scripts/demo_execution_evidence_object.py \
+            integrations/openai-agents/export_evidence.py \
+            integrations/langchain/export_evidence.py \
+            integrations/crewai/export_evidence.py
