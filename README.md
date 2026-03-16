@@ -57,6 +57,15 @@ Prototype verification:
 python3 scripts/verify_evidence_object.py examples/evidence-object-openai-run.json
 ```
 
+Human-readable prototype demo:
+
+```bash
+python3 scripts/demo_execution_evidence_object.py
+```
+
+The demo prints the loaded object, schema validation, integrity check,
+provenance summary, FDO mapping summary, and final result.
+
 ## Quick start
 
 ```bash
