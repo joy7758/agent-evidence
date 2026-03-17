@@ -1,0 +1,22 @@
+{
+  "bundle": {
+    "bundle_id": "bundle-minimal-001",
+    "bundle_type": "runtime-evidence-bundle"
+  },
+  "steps": [
+    {
+      "step_id": "step-1",
+      "step_type": "chain.start",
+      "status": "completed"
+    },
+    {
+      "step_id": "step-2",
+      "step_type": "tool.end",
+      "status": "completed"
+    }
+  ],
+  "hashes": {
+    "step_hash": "sha256:45839c366c0e2ccdb1f3c0f43a306a780416cdec4d55bf9bc298500fece7ce63",
+    "bundle_hash": "sha256:3759d86c7ec22406a5e6c90540f30e59f27db44fa71cb61c164039d34dddd38b"
+  }
+}

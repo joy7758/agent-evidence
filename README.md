@@ -72,6 +72,13 @@ The project is organized so evidence capture stays modular:
 - Public positioning: `docs/outreach/public-positioning.md`
 - 中文：对外统一定位
 
+### Minimal runtime evidence contract
+
+For the external-first callback-based export path:
+
+- [Minimal Runtime Evidence Export Contract](docs/contracts/runtime-evidence-export-contract.md)
+- [Minimal Runtime Evidence Bundle Example](examples/runtime-evidence/runtime-evidence-bundle.minimal.json)
+
 Prototype verification:
 
 ```bash
