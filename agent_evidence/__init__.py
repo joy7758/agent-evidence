@@ -1,6 +1,15 @@
 """Public package API for Agent Evidence."""
 
 from .aep import EvidenceBundleBuilder, verify_bundle
+from .anchor import (
+    AnchorRecord,
+    anchor_manifest_document,
+    create_anchor_record,
+    default_anchor_path,
+    manifest_document_digest,
+    verify_anchor_record,
+    verify_anchor_record_file,
+)
 from .export import (
     export_csv_bundle,
     export_json_bundle,
@@ -34,14 +43,21 @@ __all__ = [
     "LocalEvidenceStore",
     "ManifestDocument",
     "ManifestSignature",
+    "AnchorRecord",
     "SignaturePolicy",
     "SignerConfig",
     "VerificationKey",
+    "anchor_manifest_document",
+    "create_anchor_record",
+    "default_anchor_path",
     "export_csv_bundle",
     "export_json_bundle",
     "export_xml_bundle",
+    "manifest_document_digest",
     "open_store",
     "package_export_archive",
+    "verify_anchor_record",
+    "verify_anchor_record_file",
     "verify_bundle",
     "verify_csv_export",
     "verify_export_archive",

@@ -7,6 +7,7 @@ from click.testing import CliRunner
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
+from agent_evidence.anchor import default_anchor_path
 from agent_evidence.cli.main import main
 from agent_evidence.export import (
     default_manifest_path,
@@ -141,6 +142,67 @@ def test_export_json_bundle_and_verify_signature(tmp_path: Path) -> None:
     assert result["signature_count"] == 1
     assert result["signature_present"] is True
     assert result["signature_verified"] is True
+
+
+def test_export_json_bundle_writes_anchor_and_verifies(tmp_path: Path) -> None:
+    records, _ = build_records(tmp_path)
+    _, _, private_pem, public_pem = write_ed25519_keypair(tmp_path)
+    bundle_path = tmp_path / "anchored-bundle.json"
+    anchor_path = tmp_path / "anchored-bundle.anchor.json"
+
+    export_json_bundle(
+        records,
+        bundle_path,
+        private_key_pem=private_pem,
+        key_id="anchor-key",
+        anchor_output_path=anchor_path,
+        anchor_id="anchor-001",
+    )
+
+    anchor_payload = json.loads(anchor_path.read_text(encoding="utf-8"))
+    assert anchor_payload["anchor_type"] == "local_timestamp"
+    assert anchor_payload["anchor_id"] == "anchor-001"
+    assert anchor_payload["manifest_digest"].startswith("sha256:")
+
+    result = verify_json_bundle(
+        bundle_path,
+        public_key_pem=public_pem,
+        anchor_path=anchor_path,
+    )
+
+    assert result["ok"] is True
+    assert result["anchor_verified"] is True
+    assert result["anchor_result"]["anchor_type"] == "local_timestamp"
+
+
+def test_verify_json_bundle_anchor_detects_manifest_tampering(tmp_path: Path) -> None:
+    records, _ = build_records(tmp_path)
+    _, _, private_pem, public_pem = write_ed25519_keypair(tmp_path)
+    bundle_path = tmp_path / "tampered-anchor-bundle.json"
+    anchor_path = tmp_path / "tampered-anchor-bundle.anchor.json"
+
+    export_json_bundle(
+        records,
+        bundle_path,
+        private_key_pem=private_pem,
+        key_id="anchor-key",
+        anchor_output_path=anchor_path,
+    )
+
+    payload = json.loads(bundle_path.read_text(encoding="utf-8"))
+    payload["manifest"]["generated_at"] = "2030-01-01T00:00:00+00:00"
+    bundle_path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+
+    result = verify_json_bundle(
+        bundle_path,
+        public_key_pem=public_pem,
+        anchor_path=anchor_path,
+    )
+
+    assert result["ok"] is False
+    assert result["signature_verified"] is False
+    assert result["anchor_verified"] is False
+    assert "anchor: manifest_digest does not match the signed manifest document" in result["issues"]
 
 
 def test_verify_signed_bundle_requires_verification_key(tmp_path: Path) -> None:
@@ -359,6 +421,58 @@ def test_cli_export_and_verify_bundle(tmp_path: Path) -> None:
     verify_result = json.loads(verified.output)
     assert verify_result["ok"] is True
     assert verify_result["signature_count"] == 1
+    assert verify_result["signature_verified"] is True
+
+
+def test_cli_export_and_verify_bundle_with_anchor(tmp_path: Path) -> None:
+    records, store = build_records(tmp_path)
+    runner = CliRunner()
+    private_path, public_path, _, _ = write_ed25519_keypair(tmp_path)
+    bundle_path = tmp_path / "cli-anchored-bundle.json"
+
+    exported = runner.invoke(
+        main,
+        [
+            "export",
+            "--store",
+            str(store.path),
+            "--format",
+            "json",
+            "--output",
+            str(bundle_path),
+            "--actor",
+            "planner",
+            "--private-key",
+            str(private_path),
+            "--key-id",
+            "cli-anchor-key",
+            "--anchor",
+        ],
+    )
+    assert exported.exit_code == 0, exported.output
+    export_result = json.loads(exported.output)
+    anchor_path = Path(export_result["anchor_output"])
+    assert anchor_path == default_anchor_path(bundle_path)
+    assert anchor_path.exists()
+    assert export_result["anchor_type"] == "local_timestamp"
+    assert export_result["record_count"] == len(records)
+
+    verified = runner.invoke(
+        main,
+        [
+            "verify-export",
+            "--bundle",
+            str(bundle_path),
+            "--public-key",
+            str(public_path),
+            "--anchor",
+            str(anchor_path),
+        ],
+    )
+    assert verified.exit_code == 0, verified.output
+    verify_result = json.loads(verified.output)
+    assert verify_result["ok"] is True
+    assert verify_result["anchor_verified"] is True
     assert verify_result["signature_verified"] is True
 
 

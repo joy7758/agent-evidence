@@ -237,7 +237,10 @@ agent-evidence query \
 agent-evidence export \
   --store ./data/evidence.jsonl \
   --format json \
-  --output ./exports/evidence.bundle.json
+  --output ./exports/evidence.bundle.json \
+  --private-key ./keys/manifest-private.pem \
+  --key-id evidence-demo \
+  --anchor
 
 agent-evidence export \
   --store ./data/evidence.jsonl \
@@ -275,7 +278,8 @@ agent-evidence export \
 
 agent-evidence verify-export \
   --bundle ./exports/evidence.bundle.json \
-  --public-key ./keys/manifest-public.pem
+  --public-key ./keys/manifest-public.pem \
+  --anchor ./exports/evidence.bundle.anchor.json
 
 agent-evidence verify-export \
   --bundle ./exports/evidence.multisig.json \
@@ -545,6 +549,12 @@ total threshold defaults to the sum of those role requirements.
 If a bundle carries signatures, verification is fail-closed: you must provide
 `--public-key` or `--keyring`, otherwise verification returns `ok=false`.
 
+Signatures are necessary, but not sufficient, if you want an external evidence
+path. A signer can prove that a manifest was signed, but a signer alone does
+not create an immutable witness that the signed manifest existed at a specific
+time. If an operator can regenerate both the export and the signature, they can
+still produce a fresh self-consistent bundle.
+
 Manifest signing uses Ed25519 PEM keys. To enable signing outside the dev
 environment:
 
@@ -610,6 +620,54 @@ sanitize cells that begin with formula prefixes such as `=`, `+`, `-`, or `@`
 to reduce formula injection risk during human review. `verify-export`
 validates the manifest summary, exported artifact digest, and every signature
 from a provided public key or keyring.
+
+### Detached anchors
+
+Agent Evidence now supports a minimal detached anchor layer on top of the
+signed manifest:
+
+- `manifest_digest`
+- `anchor_type`
+- `anchored_at`
+- `anchor_payload`
+- optional `anchor_id`
+
+Use `--anchor` during export to emit a detached anchor record. The current
+backend is `local_timestamp`, which hashes the signed manifest document
+(`manifest + signatures`) and writes a local timestamp record such as
+`evidence.bundle.anchor.json`.
+
+```bash
+agent-evidence export \
+  --store ./data/evidence.jsonl \
+  --format json \
+  --output ./exports/evidence.bundle.json \
+  --private-key ./keys/manifest-private.pem \
+  --key-id evidence-demo \
+  --anchor
+
+agent-evidence verify-export \
+  --bundle ./exports/evidence.bundle.json \
+  --public-key ./keys/manifest-public.pem \
+  --anchor ./exports/evidence.bundle.anchor.json
+```
+
+When `--anchor` is present, `verify-export` checks three layers together:
+
+- the export artifact or bundle
+- the manifest signatures
+- the detached anchor record against the signed manifest digest
+
+Current limitation: `local_timestamp` is locally verifiable, but it is not a
+WORM or third-party timestamping system. It gives Agent Evidence a detached
+external anchor interface and verification path, but it does not yet provide
+immutability guarantees comparable to S3 Object Lock, append-only WORM storage,
+or a remote timestamp authority.
+
+The anchor abstraction is intentionally backend-oriented so future
+implementations can keep the same manifest-digest contract while swapping in
+stronger backends such as S3 Object Lock or other immutable/WORM timestamp
+anchors.
 
 Archive verification also enforces unpacking limits for member count, per-file
 size, and total unpacked size so untrusted `.zip` and `.tar.gz` bundles fail

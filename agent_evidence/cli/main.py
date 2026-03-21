@@ -10,6 +10,7 @@ import click
 from pydantic import ValidationError
 
 from agent_evidence.aep import load_bundle_payload, verify_bundle
+from agent_evidence.anchor import default_anchor_path
 from agent_evidence.crypto.chain import verify_chain
 from agent_evidence.export import (
     default_manifest_path,
@@ -443,6 +444,10 @@ def _export_records_impl(
     signature_metadata: str | None,
     signed_at: str | None,
     archive_format: str | None,
+    should_anchor: bool,
+    anchor_output: Path | None,
+    anchor_type: str,
+    anchor_id: str | None,
     required_signatures: int | None,
     required_signature_roles: tuple[str, ...],
     signer_config_paths: tuple[Path, ...],
@@ -501,6 +506,15 @@ def _export_records_impl(
         raise click.ClickException(
             "--archive-format tar.gz requires an output path ending in .tar.gz or .tgz."
         )
+    resolved_anchor_output: Path | None = anchor_output
+    if should_anchor or anchor_output is not None:
+        if archive_format is not None:
+            anchor_target = output_path
+        elif export_format == "json":
+            anchor_target = manifest_output or output_path
+        else:
+            anchor_target = manifest_output or default_manifest_path(output_path)
+        resolved_anchor_output = anchor_output or default_anchor_path(anchor_target)
     signer_configs = build_signer_configs(
         private_key=private_key,
         key_id=key_id,
@@ -522,11 +536,18 @@ def _export_records_impl(
             signer_configs=signer_configs,
             minimum_valid_signatures=required_signatures,
             minimum_valid_signatures_by_role=role_thresholds,
+            anchor_output_path=resolved_anchor_output,
+            anchor_type=anchor_type,
+            anchor_id=anchor_id,
         )
         click.echo(
             json.dumps(
                 {
                     "archive_format": archive_format,
+                    "anchor_output": str(resolved_anchor_output)
+                    if resolved_anchor_output
+                    else None,
+                    "anchor_type": anchor_type if resolved_anchor_output else None,
                     "format": export_format,
                     "output": str(output_path),
                     "artifact_path": package_result["artifact_path"],
@@ -552,6 +573,9 @@ def _export_records_impl(
             minimum_valid_signatures=required_signatures,
             minimum_valid_signatures_by_role=role_thresholds,
             manifest_output_path=manifest_output,
+            anchor_output_path=resolved_anchor_output,
+            anchor_type=anchor_type,
+            anchor_id=anchor_id,
         )
         signature_count = len(bundle.signatures)
     elif export_format == "csv":
@@ -564,6 +588,9 @@ def _export_records_impl(
             signer_configs=signer_configs,
             minimum_valid_signatures=required_signatures,
             minimum_valid_signatures_by_role=role_thresholds,
+            anchor_output_path=resolved_anchor_output,
+            anchor_type=anchor_type,
+            anchor_id=anchor_id,
         )
         signature_count = len(manifest_document.signatures)
     else:
@@ -576,12 +603,17 @@ def _export_records_impl(
             signer_configs=signer_configs,
             minimum_valid_signatures=required_signatures,
             minimum_valid_signatures_by_role=role_thresholds,
+            anchor_output_path=resolved_anchor_output,
+            anchor_type=anchor_type,
+            anchor_id=anchor_id,
         )
         signature_count = len(manifest_document.signatures)
 
     click.echo(
         json.dumps(
             {
+                "anchor_output": str(resolved_anchor_output) if resolved_anchor_output else None,
+                "anchor_type": anchor_type if resolved_anchor_output else None,
                 "format": export_format,
                 "output": str(output_path),
                 "manifest_output": str(manifest_path) if manifest_path is not None else None,
@@ -627,6 +659,15 @@ def _export_records_impl(
 @click.option("--signature-metadata")
 @click.option("--signed-at")
 @click.option("--archive-format", type=click.Choice(["zip", "tar.gz"]))
+@click.option("--anchor", "should_anchor", is_flag=True)
+@click.option("--anchor-output", type=click.Path(dir_okay=False, path_type=Path))
+@click.option(
+    "--anchor-type",
+    type=click.Choice(["local_timestamp"]),
+    default="local_timestamp",
+    show_default=True,
+)
+@click.option("--anchor-id")
 @click.option("--required-signatures", type=click.IntRange(min=1))
 @click.option("--required-signature-role", "required_signature_roles", multiple=True)
 @click.option(
@@ -650,6 +691,10 @@ def export_command(
     signature_metadata: str | None,
     signed_at: str | None,
     archive_format: str | None,
+    should_anchor: bool,
+    anchor_output: Path | None,
+    anchor_type: str,
+    anchor_id: str | None,
     required_signatures: int | None,
     required_signature_roles: tuple[str, ...],
     signer_config_paths: tuple[Path, ...],
@@ -693,6 +738,10 @@ def export_command(
         signature_metadata=signature_metadata,
         signed_at=signed_at,
         archive_format=archive_format,
+        should_anchor=should_anchor,
+        anchor_output=anchor_output,
+        anchor_type=anchor_type,
+        anchor_id=anchor_id,
         required_signatures=required_signatures,
         required_signature_roles=required_signature_roles,
         signer_config_paths=signer_config_paths,
@@ -784,6 +833,9 @@ def export_automaton_command(
 @click.option("--csv", "csv_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
 @click.option("--xml", "xml_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
 @click.option(
+    "--anchor", "anchor_path", type=click.Path(exists=True, dir_okay=False, path_type=Path)
+)
+@click.option(
     "--manifest",
     "manifest_path",
     type=click.Path(exists=True, dir_okay=False, path_type=Path),
@@ -805,6 +857,7 @@ def verify_export_command(
     bundle: Path | None,
     csv_path: Path | None,
     xml_path: Path | None,
+    anchor_path: Path | None,
     manifest_path: Path | None,
     public_key: Path | None,
     key_id: str | None,
@@ -855,6 +908,7 @@ def verify_export_command(
             verification_keys=verification_keys,
             minimum_valid_signatures=required_signatures,
             minimum_valid_signatures_by_role=role_thresholds or None,
+            anchor_path=anchor_path,
         )
     elif bundle is not None:
         result = verify_json_bundle(
@@ -862,6 +916,7 @@ def verify_export_command(
             verification_keys=verification_keys,
             minimum_valid_signatures=required_signatures,
             minimum_valid_signatures_by_role=role_thresholds or None,
+            anchor_path=anchor_path,
         )
     elif csv_path is not None:
         result = verify_csv_export(
@@ -870,6 +925,7 @@ def verify_export_command(
             verification_keys=verification_keys,
             minimum_valid_signatures=required_signatures,
             minimum_valid_signatures_by_role=role_thresholds or None,
+            anchor_path=anchor_path,
         )
     else:
         result = verify_xml_export(
@@ -878,6 +934,7 @@ def verify_export_command(
             verification_keys=verification_keys,
             minimum_valid_signatures=required_signatures,
             minimum_valid_signatures_by_role=role_thresholds or None,
+            anchor_path=anchor_path,
         )
 
     click.echo(json.dumps(result, indent=2, sort_keys=True))

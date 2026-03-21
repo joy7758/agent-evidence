@@ -21,6 +21,10 @@ except ModuleNotFoundError:  # pragma: no cover - optional hardening dependency
 
 from pydantic import ConfigDict, Field
 
+from agent_evidence.anchor import (
+    anchor_manifest_document,
+    verify_anchor_record_file,
+)
 from agent_evidence.crypto.chain import verify_chain
 from agent_evidence.crypto.hashing import canonical_json_bytes, compute_hash, sha256_hex
 from agent_evidence.manifest import (
@@ -310,6 +314,29 @@ def write_manifest_document(document: ManifestDocument, output_path: str | Path)
     Path(output_path).write_text(_json_text(document.model_dump(mode="json")), encoding="utf-8")
 
 
+def _json_bundle_manifest_document(document: JsonBundleDocument) -> ManifestDocument:
+    return ManifestDocument(manifest=document.manifest, signatures=document.signatures)
+
+
+def _write_anchor_document(
+    document: ManifestDocument,
+    *,
+    anchor_output_path: str | Path | None = None,
+    anchor_type: str = "local_timestamp",
+    anchor_id: str | None = None,
+    manifest_locator: str | None = None,
+) -> None:
+    if anchor_output_path is None:
+        return
+    anchor_manifest_document(
+        document,
+        anchor_output_path,
+        anchor_type=anchor_type,
+        anchor_id=anchor_id,
+        manifest_locator=manifest_locator,
+    )
+
+
 def _archive_format_for_path(archive_path: str | Path) -> Literal["zip", "tar.gz"]:
     archive_name = Path(archive_path).name.lower()
     if archive_name.endswith(".zip"):
@@ -370,6 +397,9 @@ def export_json_bundle(
     minimum_valid_signatures: int | None = None,
     minimum_valid_signatures_by_role: dict[str, int] | None = None,
     manifest_output_path: str | Path | None = None,
+    anchor_output_path: str | Path | None = None,
+    anchor_type: str = "local_timestamp",
+    anchor_id: str | None = None,
 ) -> JsonBundleDocument:
     records_payload = _records_payload(records)
     manifest = _build_manifest(
@@ -398,6 +428,17 @@ def export_json_bundle(
     Path(output_path).write_text(_json_text(bundle.model_dump(mode="json")), encoding="utf-8")
     if manifest_output_path is not None:
         write_manifest_document(manifest_document, manifest_output_path)
+    _write_anchor_document(
+        manifest_document,
+        anchor_output_path=anchor_output_path,
+        anchor_type=anchor_type,
+        anchor_id=anchor_id,
+        manifest_locator=(
+            Path(manifest_output_path).name
+            if manifest_output_path is not None
+            else f"{Path(output_path).name}#manifest"
+        ),
+    )
     return bundle
 
 
@@ -417,10 +458,14 @@ def export_csv_bundle(
     signer_configs: Sequence[SignerConfig] | None = None,
     minimum_valid_signatures: int | None = None,
     minimum_valid_signatures_by_role: dict[str, int] | None = None,
+    anchor_output_path: str | Path | None = None,
+    anchor_type: str = "local_timestamp",
+    anchor_id: str | None = None,
 ) -> ManifestDocument:
     artifact_bytes = _csv_bytes(records, sanitize_for_spreadsheet=sanitize_for_spreadsheet)
     output = Path(output_path)
     output.write_bytes(artifact_bytes)
+    resolved_manifest_path = Path(manifest_output_path or default_manifest_path(output))
 
     manifest = _build_manifest(
         records,
@@ -440,7 +485,14 @@ def export_csv_bundle(
         signature_metadata=signature_metadata,
         signer_configs=signer_configs,
     )
-    write_manifest_document(document, manifest_output_path or default_manifest_path(output))
+    write_manifest_document(document, resolved_manifest_path)
+    _write_anchor_document(
+        document,
+        anchor_output_path=anchor_output_path,
+        anchor_type=anchor_type,
+        anchor_id=anchor_id,
+        manifest_locator=resolved_manifest_path.name,
+    )
     return document
 
 
@@ -459,10 +511,14 @@ def export_xml_bundle(
     signer_configs: Sequence[SignerConfig] | None = None,
     minimum_valid_signatures: int | None = None,
     minimum_valid_signatures_by_role: dict[str, int] | None = None,
+    anchor_output_path: str | Path | None = None,
+    anchor_type: str = "local_timestamp",
+    anchor_id: str | None = None,
 ) -> ManifestDocument:
     artifact_bytes = _xml_bytes(records)
     output = Path(output_path)
     output.write_bytes(artifact_bytes)
+    resolved_manifest_path = Path(manifest_output_path or default_manifest_path(output))
 
     manifest = _build_manifest(
         records,
@@ -482,7 +538,14 @@ def export_xml_bundle(
         signature_metadata=signature_metadata,
         signer_configs=signer_configs,
     )
-    write_manifest_document(document, manifest_output_path or default_manifest_path(output))
+    write_manifest_document(document, resolved_manifest_path)
+    _write_anchor_document(
+        document,
+        anchor_output_path=anchor_output_path,
+        anchor_type=anchor_type,
+        anchor_id=anchor_id,
+        manifest_locator=resolved_manifest_path.name,
+    )
     return document
 
 
@@ -502,6 +565,9 @@ def package_export_archive(
     signer_configs: Sequence[SignerConfig] | None = None,
     minimum_valid_signatures: int | None = None,
     minimum_valid_signatures_by_role: dict[str, int] | None = None,
+    anchor_output_path: str | Path | None = None,
+    anchor_type: str = "local_timestamp",
+    anchor_id: str | None = None,
 ) -> dict[str, Any]:
     archive_format = _archive_format_for_path(archive_path)
     artifact_name, manifest_name = _packaged_export_names(archive_path, export_format)
@@ -527,9 +593,10 @@ def package_export_archive(
                 minimum_valid_signatures_by_role=minimum_valid_signatures_by_role,
                 manifest_output_path=manifest_path,
             )
+            manifest_document = _json_bundle_manifest_document(bundle)
             signature_count = len(bundle.signatures)
         elif export_format == "csv":
-            document = export_csv_bundle(
+            manifest_document = export_csv_bundle(
                 records,
                 artifact_path,
                 manifest_output_path=manifest_path,
@@ -545,9 +612,9 @@ def package_export_archive(
                 minimum_valid_signatures=minimum_valid_signatures,
                 minimum_valid_signatures_by_role=minimum_valid_signatures_by_role,
             )
-            signature_count = len(document.signatures)
+            signature_count = len(manifest_document.signatures)
         else:
-            document = export_xml_bundle(
+            manifest_document = export_xml_bundle(
                 records,
                 artifact_path,
                 manifest_output_path=manifest_path,
@@ -562,7 +629,15 @@ def package_export_archive(
                 minimum_valid_signatures=minimum_valid_signatures,
                 minimum_valid_signatures_by_role=minimum_valid_signatures_by_role,
             )
-            signature_count = len(document.signatures)
+            signature_count = len(manifest_document.signatures)
+
+        _write_anchor_document(
+            manifest_document,
+            anchor_output_path=anchor_output_path,
+            anchor_type=anchor_type,
+            anchor_id=anchor_id,
+            manifest_locator=f"{Path(archive_path).name}:{manifest_name}",
+        )
 
         descriptor = PackagedExportDescriptor(
             archive_format=archive_format,
@@ -600,6 +675,7 @@ def package_export_archive(
         "archive_path": str(archive_path),
         "export_format": export_format,
         "artifact_path": artifact_name,
+        "anchor_path": str(anchor_output_path) if anchor_output_path is not None else None,
         "manifest_path": manifest_name,
         "record_count": len(records),
         "signature_count": signature_count,
@@ -938,8 +1014,10 @@ def verify_json_bundle(
     verification_keys: Sequence[VerificationKey] | None = None,
     minimum_valid_signatures: int | None = None,
     minimum_valid_signatures_by_role: dict[str, int] | None = None,
+    anchor_path: str | Path | None = None,
 ) -> dict[str, Any]:
     document = JsonBundleDocument.model_validate_json(Path(bundle_path).read_text(encoding="utf-8"))
+    manifest_document = _json_bundle_manifest_document(document)
     records_payload = _records_payload(document.records)
     event_hashes = [record.hashes.event_hash for record in document.records]
     chain_hashes = [record.hashes.chain_hash for record in document.records]
@@ -970,9 +1048,18 @@ def verify_json_bundle(
         minimum_valid_signatures_by_role=minimum_valid_signatures_by_role,
     )
     issues.extend(signature_issues)
+    anchor_result = (
+        verify_anchor_record_file(anchor_path, manifest_document)
+        if anchor_path is not None
+        else None
+    )
+    if anchor_result is not None:
+        issues.extend(f"anchor: {issue}" for issue in anchor_result["issues"])
 
     return {
         "ok": not issues,
+        "anchor_result": anchor_result,
+        "anchor_verified": anchor_result["ok"] if anchor_result is not None else None,
         "format": "json",
         "record_count": len(document.records),
         "latest_chain_hash": document.manifest.latest_chain_hash,
@@ -999,6 +1086,7 @@ def verify_csv_export(
     verification_keys: Sequence[VerificationKey] | None = None,
     minimum_valid_signatures: int | None = None,
     minimum_valid_signatures_by_role: dict[str, int] | None = None,
+    anchor_path: str | Path | None = None,
 ) -> dict[str, Any]:
     csv_bytes = Path(csv_path).read_bytes()
     document = ManifestDocument.model_validate_json(Path(manifest_path).read_text(encoding="utf-8"))
@@ -1034,9 +1122,16 @@ def verify_csv_export(
         minimum_valid_signatures_by_role=minimum_valid_signatures_by_role,
     )
     issues.extend(signature_issues)
+    anchor_result = (
+        verify_anchor_record_file(anchor_path, document) if anchor_path is not None else None
+    )
+    if anchor_result is not None:
+        issues.extend(f"anchor: {issue}" for issue in anchor_result["issues"])
 
     return {
         "ok": not issues,
+        "anchor_result": anchor_result,
+        "anchor_verified": anchor_result["ok"] if anchor_result is not None else None,
         "format": "csv",
         "record_count": len(rows),
         "latest_chain_hash": document.manifest.latest_chain_hash,
@@ -1063,6 +1158,7 @@ def verify_xml_export(
     verification_keys: Sequence[VerificationKey] | None = None,
     minimum_valid_signatures: int | None = None,
     minimum_valid_signatures_by_role: dict[str, int] | None = None,
+    anchor_path: str | Path | None = None,
 ) -> dict[str, Any]:
     xml_bytes = Path(xml_path).read_bytes()
     document = ManifestDocument.model_validate_json(Path(manifest_path).read_text(encoding="utf-8"))
@@ -1102,9 +1198,16 @@ def verify_xml_export(
         minimum_valid_signatures_by_role=minimum_valid_signatures_by_role,
     )
     issues.extend(signature_issues)
+    anchor_result = (
+        verify_anchor_record_file(anchor_path, document) if anchor_path is not None else None
+    )
+    if anchor_result is not None:
+        issues.extend(f"anchor: {issue}" for issue in anchor_result["issues"])
 
     return {
         "ok": not issues,
+        "anchor_result": anchor_result,
+        "anchor_verified": anchor_result["ok"] if anchor_result is not None else None,
         "format": "xml",
         "record_count": len(rows),
         "latest_chain_hash": document.manifest.latest_chain_hash,
@@ -1130,6 +1233,7 @@ def verify_export_archive(
     verification_keys: Sequence[VerificationKey] | None = None,
     minimum_valid_signatures: int | None = None,
     minimum_valid_signatures_by_role: dict[str, int] | None = None,
+    anchor_path: str | Path | None = None,
     max_members: int = DEFAULT_ARCHIVE_MAX_MEMBERS,
     max_total_unpacked_bytes: int = DEFAULT_ARCHIVE_MAX_TOTAL_UNPACKED_BYTES,
     max_member_bytes: int = DEFAULT_ARCHIVE_MAX_MEMBER_BYTES,
@@ -1208,6 +1312,7 @@ def verify_export_archive(
             "verification_keys": verification_keys,
             "minimum_valid_signatures": minimum_valid_signatures,
             "minimum_valid_signatures_by_role": minimum_valid_signatures_by_role,
+            "anchor_path": anchor_path,
         }
         if descriptor.export_format == "json":
             result = verify_json_bundle(artifact_path, **verify_kwargs)
