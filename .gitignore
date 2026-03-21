@@ -12,7 +12,7 @@ examples/*.db
 examples/**/*.evidence.jsonl
 examples/**/*.bundle.json
 examples/**/*.db
-outreach/
+research/release-materials/outreach/
 # Keep the public positioning note tracked because it is part of the
 # conference specimen baseline and must remain reproducible.
 !docs/outreach/
