@@ -19,6 +19,20 @@ about autonomous agent execution. It provides structured evidence records,
 deterministic hashing, append-only local storage, signed export bundles, and a
 small CLI for inspection and export.
 
+## Why this is not just tracing
+
+Tracing and logs help operators inspect a run. Agent Evidence packages runtime
+events into portable artifacts that another party can verify later, including
+offline.
+
+Evidence path:
+
+`runtime events -> evidence bundle -> signed manifest -> detached anchor (when present) -> offline verify`
+
+This repository implements the bundle, manifest, signatures, and offline
+verification steps. External anchoring is out of scope for AEP v0.1 and is not
+enabled by default.
+
 The toolkit now supports two storage modes:
 
 - append-only local JSONL files
@@ -42,6 +56,19 @@ The evidence serialization layer implements:
 
 These protections prevent evidence bundles from leaking secrets or causing
 serialization-based denial-of-service conditions.
+
+## Fastest proof
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev,langchain,sql]"
+python integrations/langchain/export_evidence.py
+agent-evidence verify-bundle --bundle-dir integrations/langchain/langchain-evidence-bundle
+```
+
+This runs the documented LangChain exporter and verifies the emitted bundle
+offline.
 
 ## Why this shape
 

@@ -19,6 +19,18 @@ Agent Evidence 是一个用于捕获可验证证据的最小 Python 工具包
 确定性哈希、仅附加本地存储、签名导出包和
 用于检查和导出的小型 CLI。
 
+## 为什么这不只是 tracing
+
+Tracing 和 logs 主要帮助操作者检查一次运行。Agent Evidence 把运行时
+事件打包成可移植工件，让另一方之后可以验证，而且可以离线验证。
+
+证据路径：
+
+`runtime events -> evidence bundle -> signed manifest -> detached anchor (when present) -> offline verify`
+
+这个仓库当前实现了 bundle、manifest、signatures 和 offline verification
+这些步骤。外部 anchoring 不在 AEP v0.1 的范围内，默认也不会启用。
+
 该工具包现在支持两种存储模式：
 
 - 仅附加本地 JSONL 文件
@@ -42,6 +54,18 @@ Agent Evidence 是一个用于捕获可验证证据的最小 Python 工具包
 
 这些保护措施可以防止证据包泄露秘密或导致
 基于序列化的拒绝服务条件。
+
+## 最快的 proof
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev,langchain,sql]"
+python integrations/langchain/export_evidence.py
+agent-evidence verify-bundle --bundle-dir integrations/langchain/langchain-evidence-bundle
+```
+
+这会运行仓库里已经文档化的 LangChain exporter，并对生成的 bundle 做离线验证。
 
 ## 为什么是这个形状
 
