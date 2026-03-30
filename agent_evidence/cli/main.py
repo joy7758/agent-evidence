@@ -25,6 +25,7 @@ from agent_evidence.export import (
 from agent_evidence.integrations import export_automaton_bundle
 from agent_evidence.manifest import SignaturePolicy, SignerConfig, VerificationKey
 from agent_evidence.models import EvidenceEnvelope
+from agent_evidence.oap import validate_profile_file
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage import migrate_records, open_store
 from agent_evidence.storage.base import EvidenceStore
@@ -370,6 +371,25 @@ def verify(store_target: str) -> None:
     click.echo(json.dumps(result, indent=2, sort_keys=True))
     if issues:
         raise click.ClickException("Evidence chain verification failed.")
+
+
+@main.command(name="validate-profile")
+@click.argument("profile_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option(
+    "--schema",
+    "schema_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+)
+def validate_profile_command(profile_path: Path, schema_path: Path | None) -> None:
+    """Validate the operation accountability profile JSON file."""
+
+    try:
+        report = validate_profile_file(profile_path, schema_path=schema_path)
+    except ValueError as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(report, indent=2, sort_keys=True))
+    if not report["ok"]:
+        raise SystemExit(1)
 
 
 @main.command()
