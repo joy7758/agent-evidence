@@ -1,4 +1,5 @@
 import asyncio
+import importlib.util
 from pathlib import Path
 from uuid import uuid4
 
@@ -14,6 +15,21 @@ from agent_evidence.integrations import (
 )
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage.local import LocalEvidenceStore
+
+
+def _load_langchain_minimal_example():
+    example_path = (
+        Path(__file__).resolve().parents[1] / "examples" / "langchain_minimal_evidence.py"
+    )
+    spec = importlib.util.spec_from_file_location(
+        "langchain_minimal_evidence_example",
+        example_path,
+    )
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def test_callback_handler_records_chain_and_tool_runs(tmp_path: Path) -> None:
@@ -179,3 +195,17 @@ def test_callback_handler_writes_digest_only_profile_bundle(tmp_path: Path) -> N
         record for record in payload["records"] if record["event_type"] == "tool.end"
     )
     assert tool_record["payload"]["attributes"]["openinference"]["span_kind"] == "TOOL"
+
+
+def test_langchain_minimal_evidence_example_smoke(tmp_path: Path) -> None:
+    module = _load_langchain_minimal_example()
+
+    summary = module.run_example(tmp_path / "langchain-minimal-evidence")
+
+    assert summary["ok"] is True
+    assert summary["record_count"] >= 6
+    assert Path(summary["store_path"]).exists()
+    assert Path(summary["bundle_path"]).exists()
+    assert Path(summary["manifest_path"]).exists()
+    assert Path(summary["public_key_path"]).exists()
+    assert summary["verify_result"]["ok"] is True

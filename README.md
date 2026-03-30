@@ -70,6 +70,9 @@ agent-evidence verify-bundle --bundle-dir integrations/langchain/langchain-evide
 This runs the documented LangChain exporter and verifies the emitted bundle
 offline.
 
+For a smaller callback/export recipe aimed at external readers, see
+`docs/cookbooks/langchain_minimal_evidence.md`.
+
 ## Why this shape
 
 The project is organized so evidence capture stays modular:
