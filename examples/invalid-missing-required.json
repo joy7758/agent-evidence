@@ -1,0 +1,110 @@
+{
+  "actor": {
+    "id": "actor:metadata-enricher",
+    "name": "metadata-enricher",
+    "runtime": "openai-agents",
+    "type": "agent"
+  },
+  "constraints": [
+    {
+      "description": "Only approved metadata fields may be added.",
+      "id": "constraint:approved-fields"
+    },
+    {
+      "description": "The note body must remain unchanged.",
+      "id": "constraint:no-content-rewrite"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:operation-log-001",
+        "digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "locator": "urn:demo:operation-log-001",
+        "type": "execution-log"
+      }
+    ],
+    "id": "evidence:metadata-enrich-001",
+    "integrity": {
+      "artifacts_digest": "sha256:d0470d93af9a5d6df99bf51369de7656ae8c84e8c65e9c1301cf6b095ea5010d",
+      "references_digest": "sha256:60ae1db47aa67231dd84e0c77a7d5a5a470e7f4474bee9922fb2a78499f75dfc",
+      "statement_digest": "sha256:a1ed81dc475aa6c0c82e30487c48c4ec31a800869220aeedfa871ebc03928a89"
+    },
+    "operation_ref": "op:metadata-enrich-001",
+    "policy_ref": "policy:approved-metadata-v1",
+    "references": [
+      {
+        "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "locator": "urn:demo:client-note-001",
+        "object_id": "obj:client-note-001",
+        "ref_id": "ref:input-note",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "locator": "urn:demo:client-note-001-derived",
+        "object_id": "obj:client-note-001-derived",
+        "ref_id": "ref:output-note",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:client-note-001"
+  },
+  "operation": {
+    "description": "Add approved metadata tags to one client note object.",
+    "id": "op:metadata-enrich-001",
+    "input_refs": [
+      "ref:input-note"
+    ],
+    "output_refs": [
+      "ref:output-note"
+    ],
+    "policy_ref": "policy:approved-metadata-v1",
+    "result": {
+      "status": "succeeded",
+      "summary": "one derived note object emitted"
+    },
+    "subject_ref": "obj:client-note-001",
+    "type": "metadata.enrich"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:approved-fields",
+      "constraint:no-content-rewrite"
+    ],
+    "id": "policy:approved-metadata-v1",
+    "name": "approved-metadata-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:metadata-enricher",
+    "id": "prov:metadata-enrich-001",
+    "input_refs": [
+      "ref:input-note"
+    ],
+    "operation_ref": "op:metadata-enrich-001",
+    "output_refs": [
+      "ref:output-note"
+    ],
+    "subject_ref": "obj:client-note-001"
+  },
+  "statement_id": "eeoap:metadata-demo-001",
+  "subject": {
+    "digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "id": "obj:client-note-001",
+    "locator": "urn:demo:client-note-001",
+    "type": "fdo-record"
+  },
+  "timestamp": "2026-03-30T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:metadata-enrich-001",
+    "id": "validation:metadata-enrich-001",
+    "policy_ref": "policy:approved-metadata-v1",
+    "provenance_ref": "prov:metadata-enrich-001",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

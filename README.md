@@ -122,6 +122,57 @@ pip install -e ".[dev,langchain,sql]"
 agent-evidence schema
 ```
 
+## Current v0.1 package
+
+The current minimal handoff package is
+`Execution Evidence and Operation Accountability Profile v0.1`.
+
+Start here for the current v0.1 path:
+
+- Spec: `spec/execution-evidence-operation-accountability-profile-v0.1.md`
+- Schema: `schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
+- Validator CLI: `agent-evidence validate-profile <file>`
+- Examples: `examples/README.md`
+- Demo: `demo/README.md`
+- Status and acceptance: `docs/STATUS.md`, `docs/ACCEPTANCE-CHECKLIST.md`
+- Submission handoff: `submission/package-manifest.md`, `submission/final-handoff.md`
+
+Historical `Execution Evidence Object` and `Agent Evidence Profile` surfaces
+remain in this repository, but they are not the primary v0.1 package path.
+
+## Minimal v0.1 walkthrough
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+```
+
+Validate the minimal valid and invalid examples:
+
+```bash
+agent-evidence validate-profile examples/minimal-valid-evidence.json
+agent-evidence validate-profile examples/invalid-missing-required.json
+agent-evidence validate-profile examples/invalid-unclosed-reference.json
+agent-evidence validate-profile examples/invalid-policy-link-broken.json
+```
+
+Run the minimal demo:
+
+```bash
+python3 demo/run_operation_accountability_demo.py
+```
+
+Expected result:
+
+- the valid example returns JSON with `"ok": true`
+- each invalid example returns JSON with `"ok": false` and one primary error code
+- the demo writes artifacts under `demo/artifacts/` and ends with one `PASS` summary line
+
+Known environment note:
+
+- the repository `.venv` may show one `langchain_core` warning under Python 3.14 during broader test runs; it does not affect the minimal profile, validator, or demo path
+
 ## Agent Evidence Profile v0.1 MVP
 
 The current MVP path is an integrity-verifiable evidence bundle with offline

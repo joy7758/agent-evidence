@@ -20,6 +20,7 @@ from .manifest import (
     VerificationKey,
 )
 from .models import EvidenceContext, EvidenceEnvelope, EvidenceEvent, EvidenceHashes
+from .oap import validate_profile_file, with_recomputed_integrity
 from .recorder import EvidenceRecorder
 from .storage import LocalEvidenceStore, open_store
 
@@ -42,11 +43,13 @@ __all__ = [
     "export_xml_bundle",
     "open_store",
     "package_export_archive",
+    "validate_profile_file",
     "verify_bundle",
     "verify_csv_export",
     "verify_export_archive",
     "verify_json_bundle",
     "verify_xml_export",
+    "with_recomputed_integrity",
 ]
 
 try:
