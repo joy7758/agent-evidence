@@ -7,7 +7,7 @@
 使用 JSONL 将自主代理执行捕获为可验证的语义事件，
 SQLite 和 PostgreSQL 存储后端。
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19055948.svg)](https://doi.org/10.5281/zenodo.19055948)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19334062.svg)](https://doi.org/10.5281/zenodo.19334062)
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
 ![语义事件](https://img.shields.io/badge/semantic%20events-v2.0.0-1f6feb)
@@ -128,7 +128,9 @@ python3 scripts/demo_execution_evidence_object.py
 
 中文：这个仓库还把当前原型冻结成一个可复现的会议样品。
 
-工件 DOI：https://doi.org/10.5281/zenodo.19055948
+这条 specimen 路径属于历史样品表面，保留其原始 DOI。
+
+历史样品 DOI：https://doi.org/10.5281/zenodo.19055948
 
 - 舱单：`release/specimen-manifest.md`
 - 中文：样品清单
@@ -145,6 +147,29 @@ source .venv/bin/activate
 pip install -e ".[dev,langchain,sql]"
 agent-evidence schema
 ```
+
+## 当前 OAP v0.1 package
+
+当前最小 handoff package 是
+`Execution Evidence and Operation Accountability Profile v0.1`。
+
+它冻结在 GitHub Release `v0.2.0` 中。
+
+当前 package DOI：https://doi.org/10.5281/zenodo.19334062
+
+该 release 中冻结的 package 版本仍为 `v0.1`。
+
+当前主路径入口：
+
+- 规范：`spec/execution-evidence-operation-accountability-profile-v0.1.md`
+- JSON Schema：`schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
+- Validator CLI：`agent-evidence validate-profile <file>`
+- 样例：`examples/README.md`
+- Demo：`demo/README.md`
+- 状态与验收：`docs/STATUS.md`、`docs/ACCEPTANCE-CHECKLIST.md`
+
+历史 `Execution Evidence Object` 与 `Agent Evidence Profile` 表面仍保留在仓库中，
+但它们不是当前论文工件 package 的主路径。
 
 ## 特工证据配置文件 v0.1 MVP
 
@@ -196,8 +221,8 @@ agent-evidence export automaton \
 
 ## 受控释放表面
 
-当前受控样本释放是[v0.1-live-chain](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/README.md)。
-最新的工件版本通过 DOI 存档在 Zenodo 上：
+历史受控样本释放是[v0.1-live-chain](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/README.md)。
+该历史样品轨道在 Zenodo 上保留原始 DOI：
 https://doi.org/10.5281/zenodo.19055948
 
 它冻结了：
