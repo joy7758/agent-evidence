@@ -1,0 +1,198 @@
+{
+  "checker_name": "reference_validator",
+  "corpus_size": 19,
+  "source_note": "derived from current frozen matrix and current specimen table",
+  "results": [
+    {
+      "file_path": "examples/minimal-valid-evidence.json",
+      "specimen_or_case_id": "minimal-valid-evidence",
+      "intended_class_or_role": "existing valid anchor",
+      "checker_name": "reference_validator",
+      "pass_fail": "PASS",
+      "issue_labels": [],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "examples/valid-retention-review-evidence.json",
+      "specimen_or_case_id": "valid-retention-review-evidence",
+      "intended_class_or_role": "existing valid anchor",
+      "checker_name": "reference_validator",
+      "pass_fail": "PASS",
+      "issue_labels": [],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "examples/invalid-missing-required.json",
+      "specimen_or_case_id": "invalid-missing-required",
+      "intended_class_or_role": "existing invalid anchor",
+      "checker_name": "reference_validator",
+      "pass_fail": "FAIL",
+      "issue_labels": [
+        "schema_violation"
+      ],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "examples/invalid-unclosed-reference.json",
+      "specimen_or_case_id": "invalid-unclosed-reference",
+      "intended_class_or_role": "existing invalid anchor",
+      "checker_name": "reference_validator",
+      "pass_fail": "FAIL",
+      "issue_labels": [
+        "unresolved_output_ref"
+      ],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "examples/invalid-policy-link-broken.json",
+      "specimen_or_case_id": "invalid-policy-link-broken",
+      "intended_class_or_role": "existing invalid anchor",
+      "checker_name": "reference_validator",
+      "pass_fail": "FAIL",
+      "issue_labels": [
+        "unresolved_evidence_policy_ref"
+      ],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "examples/invalid-provenance-output-mismatch.json",
+      "specimen_or_case_id": "invalid-provenance-output-mismatch",
+      "intended_class_or_role": "existing invalid anchor",
+      "checker_name": "reference_validator",
+      "pass_fail": "FAIL",
+      "issue_labels": [
+        "provenance_output_refs_mismatch"
+      ],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "examples/invalid-validation-provenance-link-broken.json",
+      "specimen_or_case_id": "invalid-validation-provenance-link-broken",
+      "intended_class_or_role": "existing invalid anchor",
+      "checker_name": "reference_validator",
+      "pass_fail": "FAIL",
+      "issue_labels": [
+        "unresolved_validation_provenance_ref"
+      ],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "paper/flagship/assets/specimens/scenario_03_access_decision_valid.json",
+      "specimen_or_case_id": "scenario_03_access_decision_valid",
+      "intended_class_or_role": "valid scenario anchor",
+      "checker_name": "reference_validator",
+      "pass_fail": "PASS",
+      "issue_labels": [],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "paper/flagship/assets/specimens/scenario_03_access_decision_invalid_missing_policy_linkage.json",
+      "specimen_or_case_id": "scenario_03_access_decision_invalid_missing_policy_linkage",
+      "intended_class_or_role": "broken policy linkage",
+      "checker_name": "reference_validator",
+      "pass_fail": "FAIL",
+      "issue_labels": [
+        "unresolved_policy_ref"
+      ],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "paper/flagship/assets/specimens/scenario_04_object_derivation_handoff_valid.json",
+      "specimen_or_case_id": "scenario_04_object_derivation_handoff_valid",
+      "intended_class_or_role": "valid scenario anchor",
+      "checker_name": "reference_validator",
+      "pass_fail": "PASS",
+      "issue_labels": [],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "paper/flagship/assets/specimens/scenario_04_object_derivation_handoff_invalid_broken_evidence_continuity.json",
+      "specimen_or_case_id": "scenario_04_object_derivation_handoff_invalid_broken_evidence_continuity",
+      "intended_class_or_role": "broken evidence continuity",
+      "checker_name": "reference_validator",
+      "pass_fail": "FAIL",
+      "issue_labels": [
+        "unresolved_output_ref"
+      ],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "paper/flagship/assets/specimens/scenario_05_failed_or_denied_operation_valid.json",
+      "specimen_or_case_id": "scenario_05_failed_or_denied_operation_valid",
+      "intended_class_or_role": "valid scenario anchor",
+      "checker_name": "reference_validator",
+      "pass_fail": "PASS",
+      "issue_labels": [],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "paper/flagship/assets/specimens/scenario_05_failed_or_denied_operation_invalid_missing_outcome.json",
+      "specimen_or_case_id": "scenario_05_failed_or_denied_operation_invalid_missing_outcome",
+      "intended_class_or_role": "missing outcome",
+      "checker_name": "reference_validator",
+      "pass_fail": "FAIL",
+      "issue_labels": [
+        "schema_violation"
+      ],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "paper/flagship/assets/specimens/scenario_06_missing_identity_binding_invalid.json",
+      "specimen_or_case_id": "scenario_06_missing_identity_binding_invalid",
+      "intended_class_or_role": "missing/broken identity binding",
+      "checker_name": "reference_validator",
+      "pass_fail": "FAIL",
+      "issue_labels": [
+        "unresolved_actor_ref"
+      ],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "paper/flagship/assets/specimens/scenario_07_temporal_inconsistency_invalid.json",
+      "specimen_or_case_id": "scenario_07_temporal_inconsistency_invalid",
+      "intended_class_or_role": "temporal inconsistency",
+      "checker_name": "reference_validator",
+      "pass_fail": "PASS",
+      "issue_labels": [],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "paper/flagship/assets/specimens/scenario_08_implementation_coupled_evidence_invalid.json",
+      "specimen_or_case_id": "scenario_08_implementation_coupled_evidence_invalid",
+      "intended_class_or_role": "implementation-coupled evidence",
+      "checker_name": "reference_validator",
+      "pass_fail": "PASS",
+      "issue_labels": [],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "paper/flagship/assets/specimens/scenario_09_missing_target_binding_invalid.json",
+      "specimen_or_case_id": "scenario_09_missing_target_binding_invalid",
+      "intended_class_or_role": "missing/broken target binding",
+      "checker_name": "reference_validator",
+      "pass_fail": "FAIL",
+      "issue_labels": [
+        "unresolved_subject_ref"
+      ],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "paper/flagship/assets/specimens/scenario_10_ambiguous_operation_semantics_invalid.json",
+      "specimen_or_case_id": "scenario_10_ambiguous_operation_semantics_invalid",
+      "intended_class_or_role": "ambiguous operation semantics",
+      "checker_name": "reference_validator",
+      "pass_fail": "PASS",
+      "issue_labels": [],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    },
+    {
+      "file_path": "paper/flagship/assets/specimens/scenario_11_outcome_unverifiability_invalid.json",
+      "specimen_or_case_id": "scenario_11_outcome_unverifiability_invalid",
+      "intended_class_or_role": "outcome unverifiability",
+      "checker_name": "reference_validator",
+      "pass_fail": "PASS",
+      "issue_labels": [],
+      "source_note": "derived from paper/flagship/assets/run_archive/04_pass_fail_matrix.md"
+    }
+  ]
+}

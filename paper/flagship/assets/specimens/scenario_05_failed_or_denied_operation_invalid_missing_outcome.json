@@ -1,0 +1,119 @@
+{
+  "actor": {
+    "id": "actor:publication-gatekeeper",
+    "name": "publication-gatekeeper",
+    "runtime": "langchain",
+    "type": "agent"
+  },
+  "constraints": [
+    {
+      "description": "Publication release requires explicit approval before external distribution.",
+      "id": "constraint:approval-required"
+    },
+    {
+      "description": "Release candidates containing sensitive fields must be denied until remediation.",
+      "id": "constraint:sensitive-fields-block"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:publication-denial-report-205",
+        "digest": "sha256:8585858585858585858585858585858585858585858585858585858585858585",
+        "locator": "urn:dataspace:publication-denial-report-205",
+        "type": "denial-report"
+      }
+    ],
+    "id": "evidence:publication-release-205",
+    "integrity": {
+      "artifacts_digest": "sha256:850a3d0ecaff7ae1bfa2c92c57c3cfd2dd5fea7186a631aafb48765a1718896b",
+      "references_digest": "sha256:81ecbd3aad277ad51b545c6b3a9ab75a32421bc8e35585bd7e9292b3c18b2275",
+      "statement_digest": "sha256:c0eceeaed055db7620426341749d8a74f0622e6df1e5286c6098e03beb4a9b84"
+    },
+    "operation_ref": "op:publication-release-205",
+    "policy_ref": "policy:publication-release-v1",
+    "references": [
+      {
+        "digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+        "locator": "urn:dataspace:release-candidate-205",
+        "object_id": "obj:release-candidate-205",
+        "ref_id": "ref:input-release-candidate",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:6565656565656565656565656565656565656565656565656565656565656565",
+        "locator": "urn:dataspace:release-request-205",
+        "object_id": "obj:release-request-205",
+        "ref_id": "ref:input-release-request",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:7575757575757575757575757575757575757575757575757575757575757575",
+        "locator": "urn:dataspace:release-denial-205",
+        "object_id": "obj:release-denial-205",
+        "ref_id": "ref:output-denial-record",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:release-candidate-205"
+  },
+  "operation": {
+    "description": "Review one publication release request and emit one denial record.",
+    "id": "op:publication-release-205",
+    "input_refs": [
+      "ref:input-release-candidate",
+      "ref:input-release-request"
+    ],
+    "output_refs": [
+      "ref:output-denial-record"
+    ],
+    "policy_ref": "policy:publication-release-v1",
+    "result": {
+      "status": "failed"
+    },
+    "subject_ref": "obj:release-candidate-205",
+    "type": "publication.release.review"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:approval-required",
+      "constraint:sensitive-fields-block"
+    ],
+    "id": "policy:publication-release-v1",
+    "name": "publication-release-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:publication-gatekeeper",
+    "id": "prov:publication-release-205",
+    "input_refs": [
+      "ref:input-release-candidate",
+      "ref:input-release-request"
+    ],
+    "operation_ref": "op:publication-release-205",
+    "output_refs": [
+      "ref:output-denial-record"
+    ],
+    "subject_ref": "obj:release-candidate-205"
+  },
+  "statement_id": "eeoap:publication-release-205",
+  "subject": {
+    "digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+    "id": "obj:release-candidate-205",
+    "locator": "urn:dataspace:release-candidate-205",
+    "type": "fdo-record"
+  },
+  "timestamp": "2026-03-31T12:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:publication-release-205",
+    "id": "validation:publication-release-205",
+    "method": "schema+reference+consistency",
+    "policy_ref": "policy:publication-release-v1",
+    "provenance_ref": "prov:publication-release-205",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}
