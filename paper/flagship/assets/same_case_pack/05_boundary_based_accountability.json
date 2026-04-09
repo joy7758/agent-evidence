@@ -1,0 +1,120 @@
+{
+  "actor": {
+    "id": "actor:retention-reviewer",
+    "name": "retention-reviewer",
+    "runtime": "langchain",
+    "type": "agent"
+  },
+  "constraints": [
+    {
+      "description": "Only approved retention classes may be assigned.",
+      "id": "constraint:retention-catalog"
+    },
+    {
+      "description": "Restricted datasets require review escalation before finalization.",
+      "id": "constraint:restricted-escalation"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:retention-review-report-001",
+        "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "locator": "urn:demo:retention-review-report-001",
+        "type": "review-report"
+      }
+    ],
+    "id": "evidence:retention-review-001",
+    "integrity": {
+      "artifacts_digest": "sha256:2936486dc48d6bcbae80fba552d53ab30118749cbc4413ee95779f98ec3c90f8",
+      "references_digest": "sha256:527e9c56c937b5c43508536fa29d55a3475d13b74b79057bf9c7473b31ae89e0",
+      "statement_digest": "sha256:5a82ede2e09a59c5bf9db93dee6cb4553223f2be25ed9a3b96ff3d3fcd3c0cb9"
+    },
+    "operation_ref": "op:retention-review-001",
+    "policy_ref": "policy:retention-review-v1",
+    "references": [
+      {
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "locator": "urn:demo:dataset-package-042",
+        "object_id": "obj:dataset-package-042",
+        "ref_id": "ref:input-dataset",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "locator": "urn:demo:retention-ticket-042",
+        "object_id": "obj:retention-ticket-042",
+        "ref_id": "ref:input-retention-ticket",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "locator": "urn:demo:retention-decision-042",
+        "object_id": "obj:retention-decision-042",
+        "ref_id": "ref:output-retention-decision",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:dataset-package-042"
+  },
+  "operation": {
+    "description": "Review one dataset package and emit one retention decision.",
+    "id": "op:retention-review-001",
+    "input_refs": [
+      "ref:input-dataset",
+      "ref:input-retention-ticket"
+    ],
+    "output_refs": [
+      "ref:output-retention-decision"
+    ],
+    "policy_ref": "policy:retention-review-v1",
+    "result": {
+      "status": "succeeded",
+      "summary": "one retention decision object emitted"
+    },
+    "subject_ref": "obj:dataset-package-042",
+    "type": "retention.review"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:retention-catalog",
+      "constraint:restricted-escalation"
+    ],
+    "id": "policy:retention-review-v1",
+    "name": "retention-review-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:retention-reviewer",
+    "id": "prov:retention-review-001",
+    "input_refs": [
+      "ref:input-dataset",
+      "ref:input-retention-ticket"
+    ],
+    "operation_ref": "op:retention-review-001",
+    "output_refs": [
+      "ref:output-retention-decision"
+    ],
+    "subject_ref": "obj:dataset-package-042"
+  },
+  "statement_id": "eeoap:retention-review-001",
+  "subject": {
+    "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "id": "obj:dataset-package-042",
+    "locator": "urn:demo:dataset-package-042",
+    "type": "fdo-record"
+  },
+  "timestamp": "2026-03-31T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:retention-review-001",
+    "id": "validation:retention-review-001",
+    "method": "schema+reference+consistency",
+    "policy_ref": "policy:retention-review-v1",
+    "provenance_ref": "prov:retention-review-001",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

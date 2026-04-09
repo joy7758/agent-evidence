@@ -1,0 +1,111 @@
+{
+  "actor": {
+    "id": "actor:handoff-deriver",
+    "name": "handoff-deriver",
+    "runtime": "automaton",
+    "type": "agent"
+  },
+  "constraints": [
+    {
+      "description": "Only approved package transformations may be used for handoff.",
+      "id": "constraint:approved-transform"
+    },
+    {
+      "description": "Every handoff must emit a portable receipt artifact.",
+      "id": "constraint:handoff-registration"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:handoff-receipt-108",
+        "digest": "sha256:3838383838383838383838383838383838383838383838383838383838383838",
+        "locator": "urn:dataspace:handoff-receipt-108",
+        "type": "handoff-receipt"
+      }
+    ],
+    "id": "evidence:derive-handoff-108",
+    "integrity": {
+      "references_digest": "sha256:b5eddb8f607674d93fc12b7143af0559ef6b4525d8b9ee927c5ea9f66de595b4",
+      "artifacts_digest": "sha256:28b080ed4c7f4e3e1e29b2dbac0d40f7ea936320449093f6aa4a051d97279dd3",
+      "statement_digest": "sha256:90f653396d40d500038a2d17d8ec4bcedb43879404bbf788b055351e7e41fc94"
+    },
+    "operation_ref": "op:derive-handoff-108",
+    "policy_ref": "policy:derive-handoff-v1",
+    "references": [
+      {
+        "digest": "sha256:1818181818181818181818181818181818181818181818181818181818181818",
+        "locator": "urn:dataspace:source-package-108",
+        "object_id": "obj:source-package-108",
+        "ref_id": "ref:input-source-package",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:1818181818181818181818181818181818181818181818181818181818181818",
+        "locator": "urn:dataspace:source-package-108",
+        "object_id": "obj:source-package-108",
+        "ref_id": "ref:output-derived-package",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:source-package-108"
+  },
+  "operation": {
+    "description": "Derive one package summary object and hand it off to an external space.",
+    "id": "op:derive-handoff-108",
+    "input_refs": [
+      "ref:input-source-package"
+    ],
+    "output_refs": [
+      "ref:output-derived-package"
+    ],
+    "policy_ref": "policy:derive-handoff-v1",
+    "result": {
+      "status": "succeeded",
+      "summary": "one derived handoff package emitted"
+    },
+    "subject_ref": "obj:source-package-108",
+    "type": "object.derive.handoff"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:approved-transform",
+      "constraint:handoff-registration"
+    ],
+    "id": "policy:derive-handoff-v1",
+    "name": "derive-handoff-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:handoff-deriver",
+    "id": "prov:derive-handoff-1111",
+    "input_refs": [
+      "ref:input-source-package"
+    ],
+    "operation_ref": "op:derive-handoff-108",
+    "output_refs": [
+      "ref:output-derived-package"
+    ],
+    "subject_ref": "obj:source-package-108"
+  },
+  "statement_id": "eeoap:derive-handoff-1111",
+  "subject": {
+    "digest": "sha256:1818181818181818181818181818181818181818181818181818181818181818",
+    "id": "obj:source-package-108",
+    "locator": "urn:dataspace:source-package-108",
+    "type": "fdo-record"
+  },
+  "timestamp": "2026-03-31T08:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:derive-handoff-108",
+    "id": "validation:derive-handoff-1111",
+    "method": "schema+reference+consistency",
+    "policy_ref": "policy:derive-handoff-v1",
+    "provenance_ref": "prov:derive-handoff-1111",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

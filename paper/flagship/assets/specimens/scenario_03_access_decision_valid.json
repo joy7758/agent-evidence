@@ -1,0 +1,120 @@
+{
+  "actor": {
+    "id": "actor:access-decision-agent",
+    "name": "access-decision-agent",
+    "runtime": "openai-agents",
+    "type": "agent"
+  },
+  "constraints": [
+    {
+      "description": "Access decisions must remain within approved request scopes.",
+      "id": "constraint:request-scope-check"
+    },
+    {
+      "description": "Restricted datasets require recorded consent or approved clearance.",
+      "id": "constraint:consent-or-clearance"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:access-review-log-077",
+        "digest": "sha256:c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7",
+        "locator": "urn:dataspace:access-review-log-077",
+        "type": "decision-log"
+      }
+    ],
+    "id": "evidence:access-decision-077",
+    "integrity": {
+      "artifacts_digest": "sha256:22492c1684316e10cbe302e6b7ade963932bf85b8cdc8009f0c9651112c7adfb",
+      "references_digest": "sha256:a4a4aab7389dfa24b5ceec73d91fd280c3e430c7739655f176d2ac4e8d9bdec1",
+      "statement_digest": "sha256:6bd0ba8539a32c8896d37668bf9fb5e6432cd81e9bb3ba437f1418ef45ddb57e"
+    },
+    "operation_ref": "op:access-decision-077",
+    "policy_ref": "policy:access-decision-v1",
+    "references": [
+      {
+        "digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "locator": "urn:dataspace:restricted-dataset-077",
+        "object_id": "obj:restricted-dataset-077",
+        "ref_id": "ref:input-dataset",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:1212121212121212121212121212121212121212121212121212121212121212",
+        "locator": "urn:dataspace:access-request-077",
+        "object_id": "obj:access-request-077",
+        "ref_id": "ref:input-access-request",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7",
+        "locator": "urn:dataspace:access-decision-077",
+        "object_id": "obj:access-decision-077",
+        "ref_id": "ref:output-access-decision",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:restricted-dataset-077"
+  },
+  "operation": {
+    "description": "Evaluate one access request and emit one access decision record.",
+    "id": "op:access-decision-077",
+    "input_refs": [
+      "ref:input-dataset",
+      "ref:input-access-request"
+    ],
+    "output_refs": [
+      "ref:output-access-decision"
+    ],
+    "policy_ref": "policy:access-decision-v1",
+    "result": {
+      "status": "succeeded",
+      "summary": "one access decision record emitted"
+    },
+    "subject_ref": "obj:restricted-dataset-077",
+    "type": "access.decide"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:request-scope-check",
+      "constraint:consent-or-clearance"
+    ],
+    "id": "policy:access-decision-v1",
+    "name": "access-decision-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:access-decision-agent",
+    "id": "prov:access-decision-077",
+    "input_refs": [
+      "ref:input-dataset",
+      "ref:input-access-request"
+    ],
+    "operation_ref": "op:access-decision-077",
+    "output_refs": [
+      "ref:output-access-decision"
+    ],
+    "subject_ref": "obj:restricted-dataset-077"
+  },
+  "statement_id": "eeoap:access-decision-077",
+  "subject": {
+    "digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+    "id": "obj:restricted-dataset-077",
+    "locator": "urn:dataspace:restricted-dataset-077",
+    "type": "fdo-record"
+  },
+  "timestamp": "2026-04-01T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:access-decision-077",
+    "id": "validation:access-decision-077",
+    "method": "schema+reference+consistency",
+    "policy_ref": "policy:access-decision-v1",
+    "provenance_ref": "prov:access-decision-077",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

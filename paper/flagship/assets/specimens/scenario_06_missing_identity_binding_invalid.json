@@ -1,0 +1,106 @@
+{
+  "actor": {
+    "id": "actor:curation-agent",
+    "name": "curation-agent",
+    "runtime": "openai-agents",
+    "type": "agent"
+  },
+  "constraints": [
+    {
+      "description": "Only approved curation tags may be attached.",
+      "id": "constraint:approved-tags"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:curation-log-601",
+        "digest": "sha256:6363636363636363636363636363636363636363636363636363636363636363",
+        "locator": "urn:boundary:curation-log-601",
+        "type": "execution-log"
+      }
+    ],
+    "id": "evidence:curation-enrich-601",
+    "integrity": {
+      "artifacts_digest": "sha256:3380c802a54c0ae38555c0fb8e2d27d7e25ef49c2ca6877fd81999298f306d7d",
+      "references_digest": "sha256:729855c1784245760eff6b4bdd94fae937202781610465d72d89c234ab53f3f9",
+      "statement_digest": "sha256:b10190ee5238818fbe4f21ab606cbf1223e03cd28a2e2ab0987467daf55230a8"
+    },
+    "operation_ref": "op:curation-enrich-601",
+    "policy_ref": "policy:curation-policy-v1",
+    "references": [
+      {
+        "digest": "sha256:6161616161616161616161616161616161616161616161616161616161616161",
+        "locator": "urn:boundary:curation-note-601",
+        "object_id": "obj:curation-note-601",
+        "ref_id": "ref:input-note",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:6262626262626262626262626262626262626262626262626262626262626262",
+        "locator": "urn:boundary:curation-note-601-curated",
+        "object_id": "obj:curation-note-601-curated",
+        "ref_id": "ref:output-note",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:curation-note-601"
+  },
+  "operation": {
+    "description": "Attach one approved curation tag to one note object.",
+    "id": "op:curation-enrich-601",
+    "input_refs": [
+      "ref:input-note"
+    ],
+    "output_refs": [
+      "ref:output-note"
+    ],
+    "policy_ref": "policy:curation-policy-v1",
+    "result": {
+      "status": "succeeded",
+      "summary": "one curated note object emitted"
+    },
+    "subject_ref": "obj:curation-note-601",
+    "type": "metadata.enrich"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:approved-tags"
+    ],
+    "id": "policy:curation-policy-v1",
+    "name": "curation-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:missing-curation-agent",
+    "id": "prov:curation-enrich-606",
+    "input_refs": [
+      "ref:input-note"
+    ],
+    "operation_ref": "op:curation-enrich-601",
+    "output_refs": [
+      "ref:output-note"
+    ],
+    "subject_ref": "obj:curation-note-601"
+  },
+  "statement_id": "eeoap:boundary-stress-606",
+  "subject": {
+    "digest": "sha256:6161616161616161616161616161616161616161616161616161616161616161",
+    "id": "obj:curation-note-601",
+    "locator": "urn:boundary:curation-note-601",
+    "type": "fdo-record"
+  },
+  "timestamp": "2026-03-31T09:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:curation-enrich-601",
+    "id": "validation:curation-enrich-606",
+    "method": "schema+reference+consistency",
+    "policy_ref": "policy:curation-policy-v1",
+    "provenance_ref": "prov:curation-enrich-606",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}
