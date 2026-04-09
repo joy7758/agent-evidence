@@ -1,0 +1,34 @@
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{Current implementation support for limited evidence of basic portability.}
+\label{tab:portability}
+\begin{tabularx}{\linewidth}{P{0.18\linewidth}YYY}
+\toprule
+Dimension & Evidence now available & What this supports & What it still does not support \\
+\midrule
+Context diversity &
+Valid example V1 represents metadata enrichment; valid example V2 represents retention review &
+The same minimal profile also holds in a second controlled context, supporting basic portability evidence &
+It does not support broad cross-framework validation or broad extrapolation across operation types \\
+Input / output linkage pattern diversity &
+One valid example is single input / single output; the other is two inputs / one output &
+The minimal profile is not confined to one I/O linkage pattern &
+It does not support complex object graphs, multi-step workflows, or multi-agent orchestration \\
+Same validator path reuse &
+Both valid examples use the same profile identity and the same validator path &
+The same validation path can be reused in the second context &
+It does not support claims about convergence across independent implementations \\
+Same core field model reuse &
+Both valid examples reuse the same \texttt{operation / policy / provenance / evidence / validation} core &
+The minimal field model remains stable in the second context &
+It does not support a claim that this field model covers all FDO-based agent-system needs \\
+Current external-validity limit &
+The implementation still has 2 valid examples, 1 core demo, and a single implementation stack &
+The paper can state a restrained second-context validity result &
+It does not support broad claims across runtimes, implementations, or ecosystems \\
+\bottomrule
+\end{tabularx}
+\end{table}

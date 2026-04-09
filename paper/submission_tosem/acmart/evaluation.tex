@@ -1,0 +1,63 @@
+\section{Evaluation}
+
+\subsection{Evaluation Goals and Research Questions}
+
+The evaluation in this paper is intentionally restrained. It does not report large-scale benchmarks, framework comparisons, or user studies, because the current implementation does not provide evidence for those claims. Instead, the evaluation asks a smaller set of questions that match the paper's scope as a methodology-, validator-, and artifact-oriented software engineering study.
+
+The first question is whether the current implementation exercises the profile boundary through controlled passing and failing examples. The second is whether the validator currently provides detectable and inspectable failure categories rather than opaque rejection. The third is whether the implementation supports a limited portability claim for the same minimal profile across more than one context. The fourth is what this evidence does not yet establish.
+
+Under this framing, the evaluation is closer to conformance checking, boundary coverage inspection, diagnostic usefulness, and artifact sanity checking than to a broad empirical performance study. That limitation is not hidden; it is part of the paper's methodological position \cite{knublauch2017shacl,wright2022jsonschemavalidation}.
+
+\subsection{Boundary Coverage over Valid and Invalid Examples}
+
+The current implementation provides a compact but structured validation boundary: 2 valid examples and 5 invalid examples. The valid examples show passing conditions for the profile. The invalid examples show controlled violations in which each file is designed to break one primary rule. This setup is central to the evaluation because it lets the paper talk about the behavior of the validator at the boundary of the method rather than only in a nominal success path.
+
+\input{tables/table3_validation_summary}
+
+Table~\ref{tab:validation-summary} summarizes the currently grounded example set and the current evidence source for each case. Valid example V1 uses a metadata enrichment context with a single input and a single output. Valid example V2 uses a retention review context with two inputs and one decision output. Both are important because they show that the same minimal profile can pass in more than one controlled context.
+
+The five invalid examples cover a small but meaningful range of failure modes. Invalid example I1 breaks required-field completeness by removing \texttt{validation.method}. I2 breaks reference closure by introducing an unresolved output reference. I3 breaks policy/evidence linkage consistency. I4 breaks a provenance/operation cross-field binding. I5 breaks validation/provenance reference closure. Because these failures are single-rule violations, they help keep the main failure category readable and tied to the design of the profile.
+
+This example design does not establish exhaustive failure coverage. It does, however, support the narrower claim that the implementation currently exercises the main validation surface through both passing and failing cases. That distinction matters. The paper is not arguing that every possible failure has been enumerated. It is arguing that the boundary of the current method is concrete enough to be probed and reported.
+
+\subsection{Failure Detectability and Diagnostic Usefulness}
+
+Boundary coverage is only useful if failures are detectable and interpretable. In the current implementation, the validator supports that requirement in two ways: through structured reports and through explicit main error codes.
+
+The automated test path checks that the two valid examples pass and that each invalid example fails with its expected primary code. The currently exercised codes include schema violation, unresolved output reference, unresolved evidence-policy reference, provenance/output mismatch, and unresolved validation-provenance reference. This does not prove a complete failure taxonomy, but it does show that the implementation already associates controlled failure modes with stable diagnostic labels.
+
+The command-line path strengthens this point because validation is not confined to internal function calls. The validator returns a machine-readable JSON report and supports non-zero exit behavior on failure. In other words, the failure diagnostics are not merely implementation details inside the test suite; they are exposed through the reference command surface. Table~\ref{tab:validation-summary} captures this distinction by recording whether the current evidence for each example comes from tests, command-line use, or both.
+
+The current implementation also includes a runnable demo path. The demo is not a separate evaluation benchmark, but it matters because it closes the loop from object load or creation through profile precheck, operation execution, evidence generation, and final validation output. In the evaluation context, that demo helps show that the validator is integrated into a method path rather than attached as an isolated checker.
+
+Taken together, these materials support a modest diagnostic claim: the current implementation can not only reject malformed or inconsistent statements, but can do so in a way that remains inspectable through stage-level reporting, explicit primary codes, and human-readable summaries. The evaluation does not claim that these diagnostics have been validated through usability studies or external reviewer trials. It claims only that the current implementation already exposes a readable diagnostic surface.
+
+\subsection{Comparative Case Observation}
+
+The paper includes one qualitative comparative observation based on a single implementation-grounded scenario: the retention review case represented by valid example V2. This comparison is not an experiment. It is a structural contrast used to anchor the paper's method discussion and the qualitative claims summarized in Table~\ref{tab:method-comparison}.
+
+\input{tables/table1_method_comparison}
+
+In that scenario, ordinary logs can record events, messages, and execution fragments \cite{oliner2012loganalysis}, but they do not by themselves form a stable accountability statement. Provenance-oriented representations can describe linkage among objects more clearly \cite{moreau2013provdm}, but they do not necessarily carry an explicit policy basis, a minimal evidence block, and a fixed validation path in the same local statement. Policy-oriented representations can describe the governing rule basis \cite{iannella2018odrl}, but in the setting studied here they do not by themselves establish a minimal executed operation-accountability object because policy, provenance, evidence, and validation remain unbound.
+
+The minimal verifiable profile proposed in this paper does not invalidate those partial views. Rather, it binds the minimum accountability conditions that those views leave separated: operation, policy, provenance, evidence, and validation. The evaluation claim is therefore limited and qualitative. The current implementation supports a structural comparison showing why the method is different from ordinary logs, provenance-only expressions, and policy-only expressions. It does not support an experimental superiority claim over any of them.
+
+\subsection{Limited Evidence for Basic Portability}
+
+The current implementation includes only modest portability evidence, and the paper should state that directly. The relevant evidence comes from the two valid examples, which reuse the same profile model and the same validator path while differing in context and reference pattern.
+
+\input{tables/table4_portability_mini_matrix}
+
+Table~\ref{tab:portability} bounds the portability claim. The first point is context diversity: one valid example represents metadata enrichment, while the second represents retention review. The second point is linkage-pattern diversity: one valid example uses a single-input/single-output pattern, and the other uses a two-input/one-output pattern. The third point is validator reuse: both examples pass under the same profile identity and the same validation path. The fourth point is field-model reuse: both examples preserve the same core organization of operation, policy, provenance, evidence, and validation.
+
+What this supports is a narrow claim of basic portability evidence. The same minimal profile is not confined to one hand-crafted passing case. It can also pass in a second controlled context with a different input/output linkage pattern. That is useful evidence for the paper because it reduces the risk that the method appears tailored to a single illustrative example.
+
+What this evidence does not support is equally important. It does not establish broad cross-framework validation. It does not establish convergence across multiple independent implementations. It does not establish support for large workflow graphs, complex object networks, or multi-agent coordination. The point of Table~\ref{tab:portability} is therefore not to inflate the portability claim, but to stabilize it at the level the implementation can actually support.
+
+\subsection{Current Evaluation Limits}
+
+The current evaluation remains bounded by the implementation that realizes the method. First, all evidence comes from one implementation stack. That strengthens internal consistency but limits external validity. Second, the implementation includes only one core demo path, even though the example set now contains two passing contexts. Third, the comparison to logs, provenance-only representations, and policy-only representations is structural and scenario-grounded rather than experimental. Fourth, the evaluation does not include performance results, user studies, or broad framework comparisons.
+
+These limits should not be blurred in the submission draft. The current evidence supports the following narrow claims: the profile boundary is exercised through 2 valid and 5 invalid examples; the validator exposes explicit failure diagnostics; the CLI and test path make those diagnostics reproducible; the demo closes the minimal loop; and the second valid example provides limited evidence for basic portability. The current evidence does not support claims of broad portability, industrial deployment, empirical superiority over alternative approaches, or large-scale operational validation.
+
+In summary, the evaluation supports a small but coherent argument. The current implementation evidence covers conformance, boundary-oriented example coverage, diagnosable failure cases, a runnable validation path, and limited second-context reuse. These results support the paper's methodological, validation, and artifact claims. They do not support a broader empirical generalization, and the paper states that limit explicitly.

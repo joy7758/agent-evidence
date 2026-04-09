@@ -1,0 +1,26 @@
+%% Figure 2 shows the minimal verifiable operation accountability profile, with operation as the accountability center and policy/provenance/evidence/validation arranged around it.
+flowchart TB
+    subgraph PROFILE["Minimal Verifiable Operation Accountability Profile"]
+        direction TB
+
+        subgraph TOP[" "]
+            direction LR
+            POLICY["policy<br/>explicit governing rule binding"]
+            PROV["provenance<br/>actor / subject / input-output linkage"]
+            VALID["validation<br/>validator path / status"]
+        end
+
+        OP["operation<br/>accountability center"]
+        EVID["evidence<br/>references / artifacts / digests"]
+
+        POLICY -->|"governs"| OP
+        PROV -->|"links context to"| OP
+        OP -->|"emits"| EVID
+        EVID -->|"supports"| VALID
+        VALID -. "checks" .-> OP
+    end
+
+    classDef center fill:#ffd166,stroke:#333,stroke-width:3px,color:#111;
+    classDef side fill:#f5f5f5,stroke:#666,stroke-width:1px,color:#111;
+    class OP center;
+    class POLICY,PROV,EVID,VALID side;

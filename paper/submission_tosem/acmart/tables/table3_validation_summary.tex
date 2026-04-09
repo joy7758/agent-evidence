@@ -1,0 +1,56 @@
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{Validation-facing summary of the currently grounded examples.}
+\label{tab:validation-summary}
+\begin{tabularx}{\linewidth}{P{0.14\linewidth}P{0.10\linewidth}YP{0.11\linewidth}P{0.20\linewidth}P{0.10\linewidth}}
+\toprule
+Example & Role & Scenario / failure mode & Expected result & Expected primary diagnostic label & Evidence source \\
+\midrule
+V1 &
+valid &
+Metadata enrichment; single input / single output &
+pass &
+--- &
+both \\
+V2 &
+valid &
+Retention review; two inputs / one decision output &
+pass &
+--- &
+both \\
+I1 &
+invalid &
+Required-field completeness failure; removes \texttt{validation.method} &
+fail &
+schema violation &
+test \\
+I2 &
+invalid &
+Output-reference closure failure &
+fail &
+unresolved output reference &
+test \\
+I3 &
+invalid &
+Policy / evidence linkage inconsistency &
+fail &
+unresolved evidence-policy reference &
+test \\
+I4 &
+invalid &
+Provenance / output cross-field mismatch &
+fail &
+provenance / output mismatch &
+test \\
+I5 &
+invalid &
+Validation / provenance closure failure &
+fail &
+unresolved validation-provenance reference &
+test \\
+\bottomrule
+\end{tabularx}
+\end{table}
