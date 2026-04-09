@@ -1,0 +1,50 @@
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{Artifact status for the blinded review package.}
+\label{tab:artifact-status}
+\begin{tabularx}{\linewidth}{P{1.8cm}P{1.55cm}YY}
+\toprule
+Artifact item & Current status & Evidence in review package & Note \\
+\midrule
+Profile specification &
+Available &
+Versioned profile specification &
+Defines the minimal operation-accountability profile \\
+JSON Schema &
+Available &
+Schema for the same profile version &
+Supports structural conformance checks \\
+Valid examples &
+Available; 2 &
+Two passing examples in distinct contexts &
+Supports second-context validity evidence, but not a broad portability claim \\
+Invalid examples &
+Available; 5 &
+Five single-rule failing examples &
+Strengthens boundary coverage without claiming exhaustiveness \\
+Reference validator &
+Available &
+Executable reference checker &
+Implements staged profile-aware validation \\
+CLI surface &
+Available &
+Command-line validation entry point &
+Exposes the same validation path used in review checks \\
+Tests &
+Available &
+Automated validation tests &
+Current review build recheck has passed \\
+Single-chain demo &
+Available &
+Runnable demonstration script &
+Closes the minimal method loop \\
+Frozen review package &
+Available &
+Blinded review-package surface &
+Public release and archive identifiers are withheld for anonymous review \\
+\bottomrule
+\end{tabularx}
+\end{table}

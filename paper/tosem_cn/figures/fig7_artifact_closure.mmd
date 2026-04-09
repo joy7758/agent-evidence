@@ -1,0 +1,11 @@
+%% Figure 7 shows the reproducible artifact closure from profile specification to release/DOI, emphasizing the packaged and replayable chain of artifacts.
+flowchart LR
+    subgraph PKG["Reproducible Artifact Package"]
+        direction LR
+        SPEC["profile spec"] --> SCHEMA["JSON Schema"] --> EXAMPLES["valid / invalid<br/>examples"] --> VALIDATOR["reference<br/>validator"] --> CLI["CLI"] --> TESTS["tests"] --> DEMO["single-chain<br/>demo"] --> RELEASE["release /<br/>DOI"]
+    end
+
+    classDef package fill:#f7fafc,stroke:#4a5568,stroke-width:1px,color:#111;
+    classDef final fill:#ffe8cc,stroke:#c05621,stroke-width:3px,color:#111;
+    class SPEC,SCHEMA,EXAMPLES,VALIDATOR,CLI,TESTS,DEMO package;
+    class RELEASE final;

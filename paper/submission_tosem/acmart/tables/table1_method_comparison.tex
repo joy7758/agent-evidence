@@ -1,0 +1,61 @@
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{Qualitative comparison of partial capability holders against the proposed minimal profile from the paper's problem perspective.}
+\label{tab:method-comparison}
+\begin{tabularx}{\linewidth}{P{1.65cm}YYYYYYY}
+\toprule
+Method &
+Explicit operation unit &
+Policy binding &
+Provenance / object linkage &
+Minimal execution evidence &
+External validation path &
+Stable failure categories &
+Portable standalone profile \\
+\midrule
+Ordinary logs &
+Records events, but usually not an explicit accountability unit &
+Usually weak or external &
+Weak; often fragmentary context &
+No; usually dispersed logs &
+Usually none &
+Usually none &
+No \\
+Provenance-only approaches &
+Possible, but usually not operation-centered &
+Usually weak or external &
+Yes &
+Possible, but not necessarily a minimal evidence block &
+Usually not fixed &
+Usually not fixed &
+Usually no \\
+Policy-oriented approaches &
+Usually no &
+Yes &
+Weak; often no object-level execution link &
+No &
+Often depends on external implementation &
+Usually not fixed &
+No \\
+Audit trails &
+Possible &
+Possible &
+Possible &
+Possible, but not necessarily a minimal portable object &
+Possible, but often system-dependent &
+Possible, but not necessarily stable &
+Usually no \\
+Our method &
+Yes; operation-centered &
+Yes; bound to the current execution &
+Yes &
+Yes; reduced to a minimal evidence block &
+Yes &
+Yes &
+Yes \\
+\bottomrule
+\end{tabularx}
+\end{table}

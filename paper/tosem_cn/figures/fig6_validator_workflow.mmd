@@ -1,0 +1,30 @@
+%% Figure 6 shows the two-layer validator workflow: structural conformance first, then accountability conformance, ending in error classification and pass/fail with a main error code.
+flowchart TD
+    INPUT["input instance"]
+
+    subgraph L1["Layer 1: structural conformance"]
+        STRUCT["schema / structural checks"]
+    end
+
+    subgraph L2["Layer 2: accountability conformance"]
+        IDENT["responsibility-point identification"]
+        REL["cross-field relation checks"]
+        CLOSE["closure / completeness checks"]
+    end
+
+    ERR["error classification"]
+    RESULT["pass / fail<br/>main error code"]
+
+    INPUT --> STRUCT --> IDENT --> REL --> CLOSE --> ERR --> RESULT
+
+    STRUCT -. "structural failure" .-> ERR
+    IDENT -. "accountability failure" .-> ERR
+    REL -. "accountability failure" .-> ERR
+    CLOSE -. "accountability failure" .-> ERR
+
+    classDef layer1 fill:#dceeff,stroke:#2b6cb0,stroke-width:1px,color:#111;
+    classDef layer2 fill:#e6ffed,stroke:#2f855a,stroke-width:1px,color:#111;
+    classDef terminal fill:#fff4e5,stroke:#b7791f,stroke-width:2px,color:#111;
+    class STRUCT layer1;
+    class IDENT,REL,CLOSE layer2;
+    class INPUT,ERR,RESULT terminal;

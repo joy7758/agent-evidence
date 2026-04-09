@@ -1,0 +1,58 @@
+\documentclass[acmsmall,review,anonymous]{acmart}
+
+% Review-oriented ACM journal scaffold.
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setcopyright{none}
+% Anonymous review scaffold: keep author fields anonymous until the non-anonymous version.
+\settopmatter{printacmref=false}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+
+% Replace the publication metadata only in the non-anonymous submission-system version.
+\acmJournal{TOSEM}
+\acmYear{2026}
+\copyrightyear{2026}
+\acmVolume{0}
+\acmNumber{0}
+\acmArticle{0}
+\acmMonth{0}
+
+\title{A Minimal Verifiable Profile for Operation Accountability in FDO-Based Agent Systems}
+
+% Replace these anonymous fields only in the non-anonymous version.
+\author{Anonymous Author(s)}
+\affiliation{%
+  \institution{Anonymous Institution(s)}
+  \country{Anonymous}
+}
+\email{anonymous@example.com}
+
+\begin{document}
+
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+
+% Recheck the final CCS terms once more before upload.
+\input{ccs_keywords}
+\keywords{FDO-based agent systems, operation accountability, minimal verifiable profile, profile-aware validation, provenance, policy, artifact package}
+
+\maketitle
+
+\input{intro}
+\input{methods}
+\input{evaluation}
+\input{related_work}
+\input{discussion}
+\input{conclusion}
+
+\section*{Artifact Availability}
+\input{artifact_note}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

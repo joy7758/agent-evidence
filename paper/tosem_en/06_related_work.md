@@ -1,0 +1,35 @@
+# Related Work
+
+## 1. Ordinary Logs and Audit Trails
+
+Ordinary logs and audit trails are natural comparison points because they already play an important role in software operations. Logs are useful for debugging, observability, and post hoc reconstruction of runtime behavior. Audit trails can go further by collecting structured records of actions, timestamps, and actors within an application or platform boundary. For many engineering tasks, these materials are entirely appropriate [@kent2006sp80092; @oliner2012loganalysis].
+
+The problem addressed in this paper, however, is narrower and more specific. A single operation accountability statement must remain inspectable outside the original runtime context. In the retention review scenario used elsewhere in the paper, logs can record that a review occurred, which files or objects were touched, and which components emitted output. Audit trails can often do more, especially when an application already maintains structured action histories. Yet neither logs nor audit trails necessarily reduce the event into one local object that explicitly binds the operation, the governing policy basis, the relevant input and output references, the supporting evidence, and the validation path.
+
+This distinction is why the paper treats logs and audit trails as partial capability holders rather than as strawman alternatives. They can preserve useful execution traces and operational history. What they do not necessarily provide is the same minimal accountability object targeted here: one statement that can be checked as a self-contained unit by an external validator. Table 1 summarizes that difference at the method level, while the retention review comparison provides a scenario-grounded reading of it.
+
+## 2. Provenance-Oriented Approaches
+
+Provenance-oriented approaches are closer to the present work because they already focus on linkage among entities, activities, and derived objects. In the current problem setting, provenance is essential: without an explicit link between the operation, the subject, and the referenced inputs and outputs, an accountability statement risks becoming only a descriptive wrapper around unrelated metadata [@moreau2013provdm; @herschel2017surveyprovenance].
+
+At the same time, provenance alone is not the same thing as operation accountability in the sense defined by this paper. Provenance can explain how objects are related, how outputs derive from inputs, and how an action participates in a chain of derivation. That is valuable, and the present profile depends on it. But provenance-oriented representations do not necessarily carry the full minimum set of conditions that this paper keeps together in one statement. In particular, they may leave the governing policy basis external, treat evidence artifacts as surrounding context rather than as part of the statement core, or omit an explicit validation object and validator path.
+
+The current method therefore does not compete with provenance as such. It relies on provenance as one of its five core components. The point of difference is compositional: provenance is necessary but not sufficient for the minimal accountability object proposed here. The paper's contribution is to keep provenance fixed together with policy, evidence, and validation so that the statement can be independently checked as one unit rather than reconstructed across several surfaces.
+
+## 3. Policy-Oriented Approaches
+
+Policy-oriented approaches address a different but closely related problem. They can define what is allowed, what constraints apply, and what rule basis governs a given class of operations [@iannella2018odrl; @hu2014abac]. In the retention review scenario, this corresponds to statements about approved retention classes, escalation rules, and other rule-level conditions under which the operation should be performed.
+
+From the perspective of this paper, policy information is indispensable but incomplete when used alone. A policy can describe what should happen, but it does not by itself establish what did happen in one concrete operation. In the setting studied here, a policy-oriented representation therefore does not by itself establish a minimal executed operation-accountability object, because policy, provenance, evidence, and validation remain unbound.
+
+This is why the proposed profile treats policy as a first-class component rather than as external documentation. The method does not diminish the role of policy. It narrows it and binds it to one operation statement so that a review can inspect the policy basis and the executed statement in the same object. In the comparative case logic used in this paper, policy-only representations remain partial capability holders because they do not by themselves form the same minimal accountability unit.
+
+## 4. Profile-, Conformance-, and Validation-Oriented Approaches
+
+The closest conceptual neighbors to this paper are profile-, conformance-, and validation-oriented approaches. These approaches matter because the present work does not stop at data modeling. It also defines what a conforming statement must contain and how non-conforming statements should fail [@atkinson2019profiles; @knublauch2017shacl; @wright2022jsonschemavalidation].
+
+A profile-oriented view matters here because the paper is not proposing an unconstrained JSON format. It fixes a narrow object model, a fixed identity and version, and a defined set of field relationships. A conformance-oriented view matters because the method requires statements to be checked against more than a structural schema. A validation-oriented view matters because the repository includes a concrete reference validator and a CLI path rather than only a specification document.
+
+This is also where the paper differs from generic schema checking. A schema can enforce field presence and field shape, but it does not automatically enforce the full local semantics of the profile. In the current repository, the validator checks structural conformance, reference closure, cross-field consistency, and explicit failure reporting. That design places the work closer to profile-aware conformance checking than to generic document validation [@wright2022jsonschema; @wright2022jsonschemavalidation].
+
+The paper's claim remains narrow. It does not claim to settle a general theory of profile conformance for all FDO-based systems. It claims that, for one operation accountability statement, a minimal verifiable profile and a profile-aware validator can be specified, implemented, and packaged together. In relation to the other categories discussed above, the contribution is therefore not that policy, provenance, logs, or audit trails are unnecessary. The contribution is that the current repository binds the minimum needed slices of these concerns into one accountability object that can be checked, reproduced, and archived as a software artifact.
