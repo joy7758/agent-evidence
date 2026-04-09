@@ -10,8 +10,15 @@ from agent_evidence.oap import validate_profile_file
 EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
 
 
-def test_valid_operation_accountability_profile_passes() -> None:
-    report = validate_profile_file(EXAMPLES / "minimal-valid-evidence.json")
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "minimal-valid-evidence.json",
+        "valid-retention-review-evidence.json",
+    ],
+)
+def test_valid_operation_accountability_profile_passes(filename: str) -> None:
+    report = validate_profile_file(EXAMPLES / filename)
 
     assert report["ok"] is True
     assert report["issue_count"] == 0
@@ -23,6 +30,12 @@ def test_valid_operation_accountability_profile_passes() -> None:
         ("invalid-missing-required.json", "schema_violation", 1),
         ("invalid-unclosed-reference.json", "unresolved_output_ref", 1),
         ("invalid-policy-link-broken.json", "unresolved_evidence_policy_ref", 1),
+        ("invalid-provenance-output-mismatch.json", "provenance_output_refs_mismatch", 1),
+        (
+            "invalid-validation-provenance-link-broken.json",
+            "unresolved_validation_provenance_ref",
+            1,
+        ),
     ],
 )
 def test_invalid_operation_accountability_profiles_fail(

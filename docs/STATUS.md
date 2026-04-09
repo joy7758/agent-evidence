@@ -14,6 +14,7 @@
 - M3 样例集：已完成
 - M4 validator 与 CLI：已完成
 - M5 demo 与文稿：已完成
+- M7 旗舰论文规划包：已完成
 
 ## 当前落地产物
 - profile 规范：`spec/execution-evidence-operation-accountability-profile-v0.1.md`
@@ -99,3 +100,63 @@
   - 是否通过：通过
 - 仍残留的问题：
   - `.venv` 的 Python 3.14 环境 warning 仍存在，但不影响本轮交付判断
+
+## M6 TOSEM 中文论文工作区
+- 状态：已完成
+- 产出目录：`paper/tosem_cn/`
+- 产出文件：
+  - `00_title_abstract_keywords.md`
+  - `01_outline.md`
+  - `02_introduction.md`
+  - `03_problem_and_design_goals.md`
+  - `04_minimal_profile.md`
+  - `05_validation_model_and_validator.md`
+  - `06_artifact_package.md`
+  - `07_evaluation.md`
+  - `08_discussion_limits_threats.md`
+  - `09_related_work_scaffold.md`
+  - `10_conclusion.md`
+  - `manuscript_cn.md`
+  - `todo_evidence_gaps.md`
+- 写作锚点：
+  - profile spec：`spec/execution-evidence-operation-accountability-profile-v0.1.md`
+  - JSON Schema：`schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
+  - examples：`examples/README.md` 与 1 个 valid / 3 个 invalid 样例
+  - validator：`agent_evidence/oap.py`
+  - CLI：`agent_evidence/cli/main.py`
+  - tests：`tests/test_operation_accountability_profile.py`
+  - demo：`demo/README.md`、`demo/scenario.md`、`demo/run_operation_accountability_demo.py`
+- 本轮额外核验：
+  - 本地 `git tag` 可见 `v0.2.0`
+  - `git show v0.2.0` 可见该 tag 冻结了 OAP v0.1 package
+  - GitHub Release API 可见公开 release `Agent Evidence v0.2.0`
+  - DataCite API 可见 Zenodo DOI `10.5281/zenodo.19334062`
+- 投稿前待补：
+  - 若后续继续扩大 release / DOI 同步面，需要逐项判断其他历史 specimen 材料是否保留旧 DOI `10.5281/zenodo.19055948`
+  - related work 正式引文
+  - 面向论文正文的图表、表格与 artifact appendix 组织
+
+## M7 旗舰论文规划包
+- 状态：已完成
+- 产出目录：`paper/flagship/`
+- 产出文件：
+  - `00_master_positioning.md`
+  - `01_tosem_vs_flagship_split.md`
+  - `02_minimal_verification_boundary.md`
+  - `03_failure_taxonomy_v1.md`
+  - `04_evidence_gap_checklist.md`
+  - `05_titles_abstract_outline.md`
+  - `06_six_month_roadmap.md`
+  - `WORKLOG.md`
+- 本轮定位结论：
+  - TOSEM 稿件继续作为当前 research line 的最小实现、stake-in-the-ground 与 smallest verifiable artifact
+  - 旗舰论文不再重复“能否实现 profile / validator / artifact package”，而是上移为“为何 operation accountability 必须被定义为 first-class verification boundary”
+- 本轮术语策略：
+  - 继续复用仓库当前主术语：`operation accountability statement`、`minimal verifiable profile`、`profile-aware validator`、`policy / provenance / evidence / validation`
+  - `machine-actionable object systems` 仅作为旗舰论文的总括性 framing，不替代仓库当前 `FDO-based agent systems` 表述
+  - `STAP / data space` 在本轮规划中只作为后续 external validation 目标语境，不写成当前仓库已完成证据
+- 本轮仍待后续补强的旗舰证据：
+  - 独立 checker
+  - 更完整 failure taxonomy 覆盖
+  - 多场景外部有效性
+  - 更强的 logs / provenance / policy / audit trail 同案比较

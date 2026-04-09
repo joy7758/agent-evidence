@@ -20,3 +20,8 @@ outreach/
 docs/outreach/*
 !docs/outreach/public-positioning.md
 !docs/outreach/langchain_forum_cookbook_reply.md
+
+# Private submission-sync bundle and local-only notes
+paper/flagship/private_repo_bundle/
+paper/flagship/submission_private_contact_local.txt
+paper/flagship/private_repo_sync_note.local.txt

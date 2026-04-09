@@ -7,7 +7,7 @@
 Capture autonomous agent execution as verifiable semantic events with JSONL,
 SQLite, and PostgreSQL storage backends.
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19055948.svg)](https://doi.org/10.5281/zenodo.19055948)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19334062.svg)](https://doi.org/10.5281/zenodo.19334062)
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
 ![Semantic Events](https://img.shields.io/badge/semantic%20events-v2.0.0-1f6feb)
@@ -134,7 +134,9 @@ specimen.
 
 中文：这个仓库还把当前原型冻结成一个可复现的会议样品。
 
-Artifact DOI: https://doi.org/10.5281/zenodo.19055948
+This specimen track is historical and keeps its original DOI.
+
+Historical specimen DOI: https://doi.org/10.5281/zenodo.19055948
 
 - Manifest: `release/specimen-manifest.md`
 - 中文：样品清单
@@ -156,6 +158,12 @@ agent-evidence schema
 
 The current minimal handoff package is
 `Execution Evidence and Operation Accountability Profile v0.1`.
+
+It is frozen in GitHub Release `v0.2.0`.
+
+Current package DOI: https://doi.org/10.5281/zenodo.19334062
+
+The package version inside that release remains `v0.1`.
 
 Start here for the current v0.1 path:
 
@@ -253,8 +261,8 @@ from the Automaton checkout without changing the export path.
 
 ## Controlled Release Surface
 
-The current controlled specimen release is [v0.1-live-chain](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/README.md).
-Latest artifact release archived on Zenodo with DOI:
+The historical controlled specimen release is [v0.1-live-chain](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/README.md).
+The historical specimen archive for that track remains on Zenodo with DOI:
 https://doi.org/10.5281/zenodo.19055948
 
 It freezes:
