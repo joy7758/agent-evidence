@@ -1,15 +1,15 @@
 # Minimal FDO-style Object Example
 
+Historical note: this example preserves older FDO-style wrapper wording from
+the `Execution Evidence Object` line. It is supporting lineage material, not
+the current primary repository entry.
+
 **English**  Minimal FDO-style Object Example
-**IPA**  /ˈmɪnɪməl ˌef diː ˈoʊ staɪl ˈɑːbdʒekt ɪɡˈzæmpəl/
-**中文发音**  米尼默尔 艾弗迪欧 斯泰尔 奥布杰克特 伊格赞普尔。
 **中文**  最小 FDO 风格对象示例。
 
 ## Key Message / 核心说明
 
 **English**  The FDO-style example keeps the verified evidence payload inside a wrapper with identity, integrity, and provenance.
-**IPA**  /ðə ˌef diː ˈoʊ staɪl ɪɡˈzæmpəl kiːps ðə ˈverɪfaɪd ˈevɪdəns ˈpeɪloʊd ɪnˈsaɪd ə ˈræpər wɪð aɪˈdentəti ɪnˈteɡrəti ənd ˈprɑːvənəns/
-**中文发音**  德 艾弗迪欧 斯泰尔 伊格赞普尔 凯普斯 德 维瑞法艾德 埃维登斯 佩楼德 因赛德 额 瑞泼 维兹 艾丹提提 因泰格若提 安德 普若文嫩斯。
 **中文**  这个 FDO 风格示例把已验证的证据载荷放进一个带身份、完整性和来源信息的外壳里。
 
 ## What Comes from the Evidence Object / 哪些部分来自证据对象

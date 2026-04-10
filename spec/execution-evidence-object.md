@@ -1,15 +1,15 @@
 # Execution Evidence Object
 
+Historical note: this document records the earlier `Execution Evidence Object`
+surface. The current primary repository entry is Agent Evidence / AEP v0.1 in
+the root README, current package spec, examples, and demo.
+
 **English**  Execution Evidence Object
-**IPA**  /ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt/
-**中文发音**  伊格泽丘申 埃维登斯 奥布杰克特。
 **中文**  执行证据对象。
 
 ## Key Message / 核心说明
 
 **English**  Execution Evidence Object is a portable and verifiable object for AI runtime evidence.
-**IPA**  /ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt ɪz ə ˈpɔːrtəbəl ənd ˈverɪfaɪəbəl ˈɑːbdʒekt fɔːr eɪ aɪ ˈrʌnˌtaɪm ˈevɪdəns/
-**中文发音**  伊格泽丘申 埃维登斯 奥布杰克特 依兹 额 波特伯 安德 维瑞法耶伯 奥布杰克特 佛 诶艾 软泰姆 埃维登斯。
 **中文**  执行证据对象是一种面向 AI 运行时证据的可移植、可验证对象。
 
 ## Purpose / 目的
