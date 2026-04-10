@@ -1,15 +1,15 @@
 # Execution Evidence Object One-Page Overview
 
+Historical note: this one-page overview belongs to the earlier
+`Execution Evidence Object` surface. Treat it as lineage material; use Agent
+Evidence / AEP v0.1 as the current primary entry.
+
 **English**  Execution Evidence Object One-Page Overview
-**IPA**  /ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt wʌn peɪdʒ ˈoʊvərˌvjuː/
-**中文发音**  伊格泽丘申 埃维登斯 奥布杰克特 温 佩奇 欧沃维尤。
 **中文**  执行证据对象一页总览。
 
 ## Key Message / 核心说明
 
 **English**  Execution Evidence Object turns runtime activity into a portable and verifiable object.
-**IPA**  /ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt tɝːnz ˈrʌnˌtaɪm ækˈtɪvəti ˈɪntuː ə ˈpɔːrtəbəl ənd ˈverɪfaɪəbəl ˈɑːbdʒekt/
-**中文发音**  伊格泽丘申 埃维登斯 奥布杰克特 特恩兹 软泰姆 艾克提维提 因图 额 波特伯 安德 维瑞法耶伯 奥布杰克特。
 **中文**  执行证据对象把运行时活动变成一个可移植、可验证的对象。
 
 ## TODO Asset / 待放入图片

@@ -1,15 +1,15 @@
 # Execution Evidence Object Proposal
 
+Historical note: this proposal belongs to the earlier `Execution Evidence
+Object` surface. It remains for lineage and proposal history; use Agent
+Evidence / AEP v0.1 as the current primary repository entry.
+
 **English**  Execution Evidence Object Proposal
-**IPA**  /ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt prəˈpoʊzəl/
-**中文发音**  伊格泽丘申 埃维登斯 奥布杰克特 普若波泽尔。
 **中文**  执行证据对象提案。
 
 ## Key Message / 核心说明
 
 **English**  This repository presents a standards proposal specimen for execution evidence as a digital object.
-**IPA**  /ðɪs ˌrepəˈzɪtəri prɪˈzents ə ˈstændərdz prəˈpoʊzəl ˈspesɪmən fɔːr ɪɡˈzekjuːʃən ˈevɪdəns æz ə ˈdɪdʒɪtəl ˈɑːbdʒekt/
-**中文发音**  迪斯 瑞波泽特瑞 普瑞曾茨 额 斯坦德兹 普若波泽尔 斯派西门 佛 伊格泽丘申 埃维登斯 艾兹 额 迪吉托 奥布杰克特。
 **中文**  这个仓库把执行证据作为数字对象，呈现为一个标准提案样品。
 
 ## 1 Motivation / 动机
