@@ -11,7 +11,6 @@ verification.
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
 ![Semantic Events](https://img.shields.io/badge/semantic%20events-v2.0.0-1f6feb)
-![Storage](https://img.shields.io/badge/storage-JSONL%20%7C%20SQLite%20%7C%20Postgres-0a7b83)
 ![Status](https://img.shields.io/badge/status-experimental-orange)
 
 Agent Evidence is the concrete execution-evidence entry point for the Digital
@@ -69,6 +68,11 @@ Start here for the current v0.1 path:
 - Demo: [demo/README.md](demo/README.md)
 - Status and acceptance: `docs/STATUS.md`, `docs/ACCEPTANCE-CHECKLIST.md`
 - Submission handoff: `submission/package-manifest.md`, `submission/final-handoff.md`
+
+Implementation note: JSONL, SQLite, and PostgreSQL backends remain available,
+but they are subordinate to the evidence-entry role of this repository.
+
+![Storage](https://img.shields.io/badge/storage-JSONL%20%7C%20SQLite%20%7C%20Postgres-0a7b83)
 
 ### Minimal v0.1 walkthrough
 
