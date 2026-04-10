@@ -1,8 +1,13 @@
 # Operation Accountability Statement Examples
 
-These examples target
-`execution-evidence-operation-accountability-profile@0.1` and are intended to
-produce one validation report per file.
+These examples are the current primary example surface for
+`execution-evidence-operation-accountability-profile@0.1`.
+
+They belong to the current Agent Evidence / AEP v0.1 path rather than the older
+`Execution Evidence Object` top-level surface. Historical naming and prototype
+materials remain documented in [docs/lineage.md](../docs/lineage.md).
+
+Each file is intended to produce one validation report.
 
 ## Files
 

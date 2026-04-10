@@ -4,8 +4,7 @@
 
 # 代理证据
 
-使用 JSONL 将自主代理执行捕获为可验证的语义事件，
-SQLite 和 PostgreSQL 存储后端。
+使用 JSONL、SQLite 和 PostgreSQL 等后端，把自主 agent 执行捕获为可验证的语义事件。
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19334062.svg)](https://doi.org/10.5281/zenodo.19334062)
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
@@ -14,10 +13,106 @@ SQLite 和 PostgreSQL 存储后端。
 ![存储](https://img.shields.io/badge/storage-JSONL%20%7C%20SQLite%20%7C%20Postgres-0a7b83)
 ![状态](https://img.shields.io/badge/status-experimental-orange)
 
-Agent Evidence 是一个用于捕获可验证证据的最小 Python 工具包
-关于自主代理执行。它提供结构化的证据记录，
-确定性哈希、仅附加本地存储、签名导出包和
-用于检查和导出的小型 CLI。
+Agent Evidence 是 Digital Biosphere Architecture 的具体 execution-evidence 主入口。
+
+它把 agent/runtime 执行打包成可离线验证的证据 bundle。它不是完整的架构总仓，不是 audit control plane，也不只是 tracing 或 logging。要看系统上下文，请先去 [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)；要走最短演练路径，请看 [verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo)；要做执行后审阅，请看 [aro-audit](https://github.com/joy7758/aro-audit)。
+
+## 角色
+
+`agent-evidence` 是具体的 execution-evidence 入口，用来把 agent/runtime 的执行过程打包成可移植、可离线验证的证据包。
+
+## 不是这个仓库
+
+- 不是完整的架构总仓
+- 不是 audit control plane
+- 不只是 tracing 或 logging
+- 不是 walkthrough demo
+- 不是 execution-integrity kernel
+
+## 从这里开始
+
+- architecture context -> [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
+- 当前主 package -> `spec/execution-evidence-operation-accountability-profile-v0.1.md`、`schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
+- 当前可运行入口 -> [examples/README.md](examples/README.md)、[demo/README.md](demo/README.md)、`agent-evidence validate-profile <file>`
+- 历史脉络 -> [docs/lineage.md](docs/lineage.md)
+- walkthrough -> [verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo)
+- post-execution review -> [aro-audit](https://github.com/joy7758/aro-audit)
+
+## 最快证明
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev,langchain,sql]"
+python integrations/langchain/export_evidence.py
+agent-evidence verify-bundle --bundle-dir integrations/langchain/langchain-evidence-bundle
+```
+
+这条路径会运行仓库中现成的 LangChain exporter，并对生成的 bundle 做离线验证。
+
+如果你想看一个更短的 callback/export 示例，可直接读
+`docs/cookbooks/langchain_minimal_evidence.md`。
+
+## 当前 v0.1 package
+
+当前主 package surface 是
+`Execution Evidence and Operation Accountability Profile v0.1`。
+
+它冻结在 GitHub Release `v0.2.0` 中。
+
+当前 package DOI：https://doi.org/10.5281/zenodo.19334062
+
+该 release 内部冻结的 package 版本仍是 `v0.1`。
+
+当前 v0.1 路径从这里开始：
+
+- 规范：`spec/execution-evidence-operation-accountability-profile-v0.1.md`
+- Schema：`schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
+- Validator CLI：`agent-evidence validate-profile <file>`
+- Examples：[examples/README.md](examples/README.md)
+- Demo：[demo/README.md](demo/README.md)
+- 状态与验收：`docs/STATUS.md`、`docs/ACCEPTANCE-CHECKLIST.md`
+- 提交交付：`submission/package-manifest.md`、`submission/final-handoff.md`
+
+### Minimal v0.1 walkthrough
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+```
+
+验证最小 valid / invalid 样例：
+
+```bash
+agent-evidence validate-profile examples/minimal-valid-evidence.json
+agent-evidence validate-profile examples/invalid-missing-required.json
+agent-evidence validate-profile examples/invalid-unclosed-reference.json
+agent-evidence validate-profile examples/invalid-policy-link-broken.json
+```
+
+运行最小 demo：
+
+```bash
+python3 demo/run_operation_accountability_demo.py
+```
+
+预期结果：
+
+- valid 样例返回 JSON，其中 `"ok": true`
+- 每个 invalid 样例返回 JSON，其中 `"ok": false`，并给出一个主错误码
+- demo 会把工件写到 `demo/artifacts/`，最后输出一行 `PASS` 摘要
+
+已知环境说明：
+
+- 仓库 `.venv` 在 Python 3.14 下跑更大范围测试时，可能出现一条 `langchain_core` warning；它不影响最小 profile、validator 或 demo 路径
+
+## 历史脉络
+
+历史上的 `Execution Evidence Object`、较早的 `Agent Evidence Profile` 命名、旧版 FDO mapping 表述以及会议样品说明仍然保留在仓库里，但它们已经不是当前主入口。历史脉络请统一看 [docs/lineage.md](docs/lineage.md)。
+
+历史样品轨道继续保留原始 DOI：
+https://doi.org/10.5281/zenodo.19055948
 
 ## 为什么这不只是 tracing
 
@@ -41,105 +136,33 @@ Tracing 和 logs 主要帮助操作者检查一次运行。Agent Evidence 把运
 - `event.event_type` 与框架无关，例如 `chain.start` 或 `tool.end`
 - `event.context.source_event_type` 保留原始框架事件名称
 - `hashes.previous_event_hash` 链接到先前的事件
-- `hashes.chain_hash` 提供累积链提示用于完整性检查
+- `hashes.chain_hash` 提供累积链 tip 以做完整性检查
 
 ### 安全序列化
 
-证据序列化层实现：
+证据序列化层实现了：
 
-- 敏感字段的默认编辑
+- 敏感字段默认脱敏
 - 最大递归深度
 - 循环引用保护
 - 对象大小限制
 
-这些保护措施可以防止证据包泄露秘密或导致
-基于序列化的拒绝服务条件。
-
-## 最快的 proof
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev,langchain,sql]"
-python integrations/langchain/export_evidence.py
-agent-evidence verify-bundle --bundle-dir integrations/langchain/langchain-evidence-bundle
-```
-
-这会运行仓库里已经文档化的 LangChain exporter，并对生成的 bundle 做离线验证。
+这些保护可以避免证据 bundle 泄露敏感信息，也能减少序列化层面的拒绝服务风险。
 
 ## 为什么是这个形状
 
-该项目的组织方式使证据捕获保持模块化：
+该项目的组织方式让证据捕获保持模块化：
 
-- `agent_evidence`：核心模型和记录器逻辑
-- `agent_evidence/crypto`：规范哈希和链助手
-- `agent_evidence/storage`：仅附加本地存储后端
-- `agent_evidence/integrations`：外部代理框架的适配器
-- `agent_evidence/cli`：命令行入口点
-- `agent_evidence/schema`：持久信封的 JSON 模式
-- `examples`：可执行使用示例
-- `tests`：基线回归覆盖率
+- `agent_evidence`：核心模型与记录逻辑
+- `agent_evidence/crypto`：规范哈希与链式辅助工具
+- `agent_evidence/storage`：仅追加的本地存储后端
+- `agent_evidence/integrations`：外部 agent framework 适配器
+- `agent_evidence/cli`：命令行入口
+- `agent_evidence/schema`：持久化 envelope 的 JSON Schema
+- `examples`：可执行示例
+- `tests`：基线回归覆盖
 
-## 执行证据对象原型
-
-**英语** 此仓库现在包含执行证据对象的标准提案原型。
-**国际音标** /ðɪs ˌrepəˈzɪtəri naʊ ɪnˈkluːdz ə ˈstændərdz prəˈpoʊzəl ˈproʊtətaɪp fɔːr ən ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt/
-**中文发音**  迪斯 瑞波泽特瑞 闹 因克路兹 额 斯坦德兹 普若波泽尔 普若托泰普 佛 安 伊格泽丘申 埃维登斯 奥布杰克特。
-**中文**  这个仓库现在包含一个“执行证据对象”的标准提案原型。
-
-- 规格：`spec/execution-evidence-object.md`
-- 中文：规范文档
-- 架构：`schema/execution-evidence-object.schema.json`
-- 中文：对象模式
-- 示例对象：`examples/evidence-object-openai-run.json`
-- 中文：示例对象
-- 验证脚本：`scripts/verify_evidence_object.py`
-- 中文：验证脚本
-- FDO 映射：`docs/fdo-mapping/execution-evidence-to-fdo.md`
-- 中文：FDO映射说明
-- 公开定位：`docs/outreach/public-positioning.md`
-- 中文：对外统一定位
-
-原型验证：
-
-```bash
-python3 scripts/verify_evidence_object.py examples/evidence-object-openai-run.json
-```
-
-中文：原型验证命令
-
-人类可读的原型演示：
-
-```bash
-python3 scripts/demo_execution_evidence_object.py
-```
-
-中文：面向人类可读的原型演示命令
-
-该演示打印加载的对象、模式验证、完整性检查、
-出处摘要、FDO 映射摘要和最终结果。
-
-中文：该演示会输出对象加载、模式验证、缺陷检查、来源摘要、FDO映射摘要和最终结果。
-
-### 可复制的会议样本
-
-该仓库还将当前原型冻结为可复制的会议
-标本。
-
-中文：这个仓库还把当前原型冻结成一个可复现的会议样品。
-
-这条 specimen 路径属于历史样品表面，保留其原始 DOI。
-
-历史样品 DOI：https://doi.org/10.5281/zenodo.19055948
-
-- 舱单：`release/specimen-manifest.md`
-- 中文：样品清单
-- CI 基线：`.github/workflows/prototype-check.yml`
-- 中文：CI基线
-- 公开定位：`docs/outreach/public-positioning.md`
-- 中文：公开定位文档
-
-## 快速启动
+## 快速开始
 
 ```bash
 python3 -m venv .venv
@@ -148,50 +171,20 @@ pip install -e ".[dev,langchain,sql]"
 agent-evidence schema
 ```
 
-## 当前 OAP v0.1 package
+## Agent Evidence Profile v0.1 MVP
 
-当前最小 handoff package 是
-`Execution Evidence and Operation Accountability Profile v0.1`。
+当前 MVP 路径是一条具备完整性验证能力、支持离线校验的证据 bundle 路径。它作为 Agent Evidence Profile 实现，先保留一条 LangChain-first 集成面，并为后续 OpenInference / OpenTelemetry 兼容映射留出空间。
 
-它冻结在 GitHub Release `v0.2.0` 中。
+AEP v0.1 是完整性可验证的证据 profile，不是不可否认系统。
 
-当前 package DOI：https://doi.org/10.5281/zenodo.19334062
-
-该 release 中冻结的 package 版本仍为 `v0.1`。
-
-当前主路径入口：
-
-- 规范：`spec/execution-evidence-operation-accountability-profile-v0.1.md`
-- JSON Schema：`schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
-- Validator CLI：`agent-evidence validate-profile <file>`
-- 样例：`examples/README.md`
-- Demo：`demo/README.md`
-- 状态与验收：`docs/STATUS.md`、`docs/ACCEPTANCE-CHECKLIST.md`
-
-历史 `Execution Evidence Object` 与 `Agent Evidence Profile` 表面仍保留在仓库中，
-但它们不是当前论文工件 package 的主路径。
-
-## 特工证据配置文件 v0.1 MVP
-
-当前的 MVP 路径是一个可完整性验证的离线证据捆绑包
-确认。它是作为一个代理证据配置文件来实现的，该配置文件保留了一个
-LangChain-先行集成路径，为后续OpenInference留出空间 /
-OpenTelemetry 兼容性映射。
-
-AEP v0.1 是可完整性验证的证据配置文件，而不是不可否认性
-系统。
-
-AEP 是用于自主代理运行的可完整性验证的证据配置文件，
-离线验证和运行时来源捕获。
-
-生成第一个包：
+AEP 面向自主 agent run，强调离线验证和运行时 provenance 捕获。
 
 ```bash
 python integrations/langchain/export_evidence.py
 agent-evidence verify-bundle --bundle-dir integrations/langchain/langchain-evidence-bundle
 ```
 
-针对一个有效的和一个被篡改的固定装置运行门：
+针对一个 valid fixture 和一个 tampered fixture 跑 gate：
 
 ```bash
 python scripts/run_profile_gate.py
@@ -221,7 +214,8 @@ agent-evidence export automaton \
 
 ## 受控释放表面
 
-历史受控样本释放是[v0.1-live-chain](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/README.md)。
+位于 [v0.1-live-chain](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/README.md) 的受控样品发布属于历史 lineage surface，并不是当前主入口。
+
 该历史样品轨道在 Zenodo 上保留原始 DOI：
 https://doi.org/10.5281/zenodo.19055948
 
@@ -234,6 +228,8 @@ https://doi.org/10.5281/zenodo.19055948
 - 实时运行手册
 - 公共带电/被篡改的固定装置
 - AEP 边界声明
+
+它与当前 Agent Evidence / AEP v0.1 package 路径的关系，统一见 [docs/lineage.md](docs/lineage.md)。
 
 正式的样本发布说明是[RELEASE_NOTE.md](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/RELEASE_NOTE.md)。
 

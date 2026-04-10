@@ -4,7 +4,7 @@
 
 # Agent Evidence
 
-Capture autonomous agent execution as verifiable semantic events with JSONL,
+Package agent/runtime execution as verifiable evidence bundles with JSONL,
 SQLite, and PostgreSQL storage backends.
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19334062.svg)](https://doi.org/10.5281/zenodo.19334062)
@@ -14,10 +14,121 @@ SQLite, and PostgreSQL storage backends.
 ![Storage](https://img.shields.io/badge/storage-JSONL%20%7C%20SQLite%20%7C%20Postgres-0a7b83)
 ![Status](https://img.shields.io/badge/status-experimental-orange)
 
-Agent Evidence is a minimal Python toolkit for capturing verifiable evidence
-about autonomous agent execution. It provides structured evidence records,
-deterministic hashing, append-only local storage, signed export bundles, and a
-small CLI for inspection and export.
+Agent Evidence is the concrete execution-evidence entry point for the Digital
+Biosphere Architecture.
+
+It packages agent/runtime execution into verifiable evidence bundles for offline
+verification. It is not the full architecture hub, not the audit control plane,
+and not just tracing or logging. For system context, start with
+[digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture);
+for the shortest walkthrough, see
+[verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo); for
+post-execution review, see
+[aro-audit](https://github.com/joy7758/aro-audit).
+
+## Role
+
+`agent-evidence` is the concrete execution-evidence entry point for packaging
+agent/runtime execution into portable bundles that another party can verify
+offline.
+
+## Not this repo
+
+- not the full architecture hub
+- not the audit control plane
+- not just tracing or logging
+- not the walkthrough demo
+- not the execution-integrity kernel
+
+## Start here
+
+- architecture context -> [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
+- current primary package -> `spec/execution-evidence-operation-accountability-profile-v0.1.md`, `schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
+- current runnable surfaces -> [examples/README.md](examples/README.md), [demo/README.md](demo/README.md), `agent-evidence validate-profile <file>`
+- historical lineage -> [docs/lineage.md](docs/lineage.md)
+- walkthrough -> [verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo)
+- post-execution review -> [aro-audit](https://github.com/joy7758/aro-audit)
+
+## Fastest proof
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev,langchain,sql]"
+python integrations/langchain/export_evidence.py
+agent-evidence verify-bundle --bundle-dir integrations/langchain/langchain-evidence-bundle
+```
+
+This runs the documented LangChain exporter and verifies the emitted bundle
+offline.
+
+For a smaller callback/export recipe aimed at external readers, see
+`docs/cookbooks/langchain_minimal_evidence.md`.
+
+## Current v0.1 package
+
+The current primary package surface is
+`Execution Evidence and Operation Accountability Profile v0.1`.
+
+It is frozen in GitHub Release `v0.2.0`.
+
+Current package DOI: https://doi.org/10.5281/zenodo.19334062
+
+The package version inside that release remains `v0.1`.
+
+Start here for the current v0.1 path:
+
+- Spec: `spec/execution-evidence-operation-accountability-profile-v0.1.md`
+- Schema: `schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
+- Validator CLI: `agent-evidence validate-profile <file>`
+- Examples: [examples/README.md](examples/README.md)
+- Demo: [demo/README.md](demo/README.md)
+- Status and acceptance: `docs/STATUS.md`, `docs/ACCEPTANCE-CHECKLIST.md`
+- Submission handoff: `submission/package-manifest.md`, `submission/final-handoff.md`
+
+### Minimal v0.1 walkthrough
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+```
+
+Validate the minimal valid and invalid examples:
+
+```bash
+agent-evidence validate-profile examples/minimal-valid-evidence.json
+agent-evidence validate-profile examples/invalid-missing-required.json
+agent-evidence validate-profile examples/invalid-unclosed-reference.json
+agent-evidence validate-profile examples/invalid-policy-link-broken.json
+```
+
+Run the minimal demo:
+
+```bash
+python3 demo/run_operation_accountability_demo.py
+```
+
+Expected result:
+
+- the valid example returns JSON with `"ok": true`
+- each invalid example returns JSON with `"ok": false` and one primary error code
+- the demo writes artifacts under `demo/artifacts/` and ends with one `PASS` summary line
+
+Known environment note:
+
+- the repository `.venv` may show one `langchain_core` warning under Python 3.14 during broader test runs; it does not affect the minimal profile, validator, or demo path
+
+## Historical lineage
+
+Historical `Execution Evidence Object`, older `Agent Evidence Profile` wording,
+legacy FDO mapping language, and conference-specimen notes
+remain in this repository, but they are no longer the primary entry surface.
+Use [docs/lineage.md](docs/lineage.md) for the historical map and retained
+paths.
+
+The historical specimen track still keeps its original DOI:
+https://doi.org/10.5281/zenodo.19055948
 
 ## Why this is not just tracing
 
@@ -57,22 +168,6 @@ The evidence serialization layer implements:
 These protections prevent evidence bundles from leaking secrets or causing
 serialization-based denial-of-service conditions.
 
-## Fastest proof
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev,langchain,sql]"
-python integrations/langchain/export_evidence.py
-agent-evidence verify-bundle --bundle-dir integrations/langchain/langchain-evidence-bundle
-```
-
-This runs the documented LangChain exporter and verifies the emitted bundle
-offline.
-
-For a smaller callback/export recipe aimed at external readers, see
-`docs/cookbooks/langchain_minimal_evidence.md`.
-
 ## Why this shape
 
 The project is organized so evidence capture stays modular:
@@ -86,65 +181,6 @@ The project is organized so evidence capture stays modular:
 - `examples`: executable usage examples
 - `tests`: baseline regression coverage
 
-## Execution Evidence Object Prototype
-
-**English**  This repository now includes a standards proposal prototype for an Execution Evidence Object.
-**IPA**  /ðɪs ˌrepəˈzɪtəri naʊ ɪnˈkluːdz ə ˈstændərdz prəˈpoʊzəl ˈproʊtətaɪp fɔːr ən ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt/
-**中文发音**  迪斯 瑞波泽特瑞 闹 因克路兹 额 斯坦德兹 普若波泽尔 普若托泰普 佛 安 伊格泽丘申 埃维登斯 奥布杰克特。
-**中文**  这个仓库现在包含一个“执行证据对象”的标准提案原型。
-
-- Spec: `spec/execution-evidence-object.md`
-- 中文：规范文档
-- Schema: `schema/execution-evidence-object.schema.json`
-- 中文：对象 schema
-- Example object: `examples/evidence-object-openai-run.json`
-- 中文：示例对象
-- Verification script: `scripts/verify_evidence_object.py`
-- 中文：验证脚本
-- FDO mapping: `docs/fdo-mapping/execution-evidence-to-fdo.md`
-- 中文：FDO 映射说明
-- Public positioning: `docs/outreach/public-positioning.md`
-- 中文：对外统一定位
-
-Prototype verification:
-
-```bash
-python3 scripts/verify_evidence_object.py examples/evidence-object-openai-run.json
-```
-
-中文：原型验证命令
-
-Human-readable prototype demo:
-
-```bash
-python3 scripts/demo_execution_evidence_object.py
-```
-
-中文：面向人类可读的原型演示命令
-
-The demo prints the loaded object, schema validation, integrity check,
-provenance summary, FDO mapping summary, and final result.
-
-中文：这个 demo 会输出对象加载、schema 验证、完整性检查、来源摘要、FDO 映射摘要和最终结果。
-
-### Reproducible conference specimen
-
-This repository also freezes the current prototype as a reproducible conference
-specimen.
-
-中文：这个仓库还把当前原型冻结成一个可复现的会议样品。
-
-This specimen track is historical and keeps its original DOI.
-
-Historical specimen DOI: https://doi.org/10.5281/zenodo.19055948
-
-- Manifest: `release/specimen-manifest.md`
-- 中文：样品清单
-- CI baseline: `.github/workflows/prototype-check.yml`
-- 中文：CI 基线
-- Public positioning: `docs/outreach/public-positioning.md`
-- 中文：公开定位文档
-
 ## Quick start
 
 ```bash
@@ -153,63 +189,6 @@ source .venv/bin/activate
 pip install -e ".[dev,langchain,sql]"
 agent-evidence schema
 ```
-
-## Current v0.1 package
-
-The current minimal handoff package is
-`Execution Evidence and Operation Accountability Profile v0.1`.
-
-It is frozen in GitHub Release `v0.2.0`.
-
-Current package DOI: https://doi.org/10.5281/zenodo.19334062
-
-The package version inside that release remains `v0.1`.
-
-Start here for the current v0.1 path:
-
-- Spec: `spec/execution-evidence-operation-accountability-profile-v0.1.md`
-- Schema: `schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
-- Validator CLI: `agent-evidence validate-profile <file>`
-- Examples: `examples/README.md`
-- Demo: `demo/README.md`
-- Status and acceptance: `docs/STATUS.md`, `docs/ACCEPTANCE-CHECKLIST.md`
-- Submission handoff: `submission/package-manifest.md`, `submission/final-handoff.md`
-
-Historical `Execution Evidence Object` and `Agent Evidence Profile` surfaces
-remain in this repository, but they are not the primary v0.1 package path.
-
-## Minimal v0.1 walkthrough
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-```
-
-Validate the minimal valid and invalid examples:
-
-```bash
-agent-evidence validate-profile examples/minimal-valid-evidence.json
-agent-evidence validate-profile examples/invalid-missing-required.json
-agent-evidence validate-profile examples/invalid-unclosed-reference.json
-agent-evidence validate-profile examples/invalid-policy-link-broken.json
-```
-
-Run the minimal demo:
-
-```bash
-python3 demo/run_operation_accountability_demo.py
-```
-
-Expected result:
-
-- the valid example returns JSON with `"ok": true`
-- each invalid example returns JSON with `"ok": false` and one primary error code
-- the demo writes artifacts under `demo/artifacts/` and ends with one `PASS` summary line
-
-Known environment note:
-
-- the repository `.venv` may show one `langchain_core` warning under Python 3.14 during broader test runs; it does not affect the minimal profile, validator, or demo path
 
 ## Agent Evidence Profile v0.1 MVP
 
@@ -261,7 +240,9 @@ from the Automaton checkout without changing the export path.
 
 ## Controlled Release Surface
 
-The historical controlled specimen release is [v0.1-live-chain](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/README.md).
+The controlled specimen release at [v0.1-live-chain](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/README.md)
+is a historical lineage surface, not the current primary entry.
+
 The historical specimen archive for that track remains on Zenodo with DOI:
 https://doi.org/10.5281/zenodo.19055948
 
@@ -274,6 +255,9 @@ It freezes:
 - live runbook
 - public live/tampered fixtures
 - AEP boundary statement
+
+See [docs/lineage.md](docs/lineage.md) for how this historical surface relates
+to the current Agent Evidence / AEP v0.1 package path.
 
 The formal specimen release note is [RELEASE_NOTE.md](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/RELEASE_NOTE.md).
 

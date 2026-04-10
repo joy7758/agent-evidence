@@ -1,41 +1,30 @@
 # Public Positioning
 
-**English**  Public Positioning
-**IPA**  /ˈpʌblɪk pəˈzɪʃənɪŋ/
-**中文发音**  帕布利克 破齐申宁。
-**中文**  对外统一定位。
+## Current Primary Entry / 当前主入口
 
-## One-sentence Definition / 一句话定义
+**EN**: Agent Evidence is the concrete execution-evidence entry point for the Digital Biosphere Architecture. It packages agent/runtime execution into verifiable evidence bundles for offline verification.
+**中文**：Agent Evidence 是 Digital Biosphere Architecture 的具体 execution-evidence 入口，用来把 agent/runtime 执行打包成可离线验证的证据 bundle。
 
-**English**  Execution Evidence Object is a portable, verifiable object model for AI runtime evidence.
-**IPA**  /ɪɡˈzekjuːʃən ˈevɪdəns ˈɑːbdʒekt ɪz ə ˈpɔːrtəbəl ˈverɪfaɪəbəl ˈɑːbdʒekt ˈmɑːdl fɔːr eɪ aɪ ˈrʌnˌtaɪm ˈevɪdəns/
-**中文发音**  伊格泽丘申 埃维登斯 奥布杰克特 依兹 额 波特伯 维瑞法耶伯 奥布杰克特 莫豆 佛 诶艾 软泰姆 埃维登斯。
-**中文**  执行证据对象是一种面向 AI 运行时证据的可移植、可验证对象模型。
+For system context, start with [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture). For the shortest walkthrough, use [verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo). For post-execution review, use [aro-audit](https://github.com/joy7758/aro-audit).
 
-## What Problem It Solves / 它解决什么问题
-- **EN**: It turns runtime output from hard-to-reuse traces into a bounded object.
-- **中文**：它把难以复用的运行时追踪，转成一个有边界的对象。
+## One-Sentence Definition / 一句话定义
 
-## Why It Is Different from Logs and Traces / 为什么不同于日志和追踪
-- **EN**: Logs stay inside the runtime; the object is exported, verified, and reused outside the runtime.
-- **中文**：日志停留在运行时内部；对象则可以在运行时之外被导出、验证和复用。
+- **EN**: Agent Evidence turns runtime output into portable, verifiable evidence bundles for offline verification.
+- **中文**：Agent Evidence 把运行时输出变成可移植、可验证、可离线校验的证据 bundle。
 
-## Why It Matters for AI Agents / 为什么对 AI agent 重要
-- **EN**: It helps answer what happened, what can be reviewed, and what can be verified after a run.
-- **中文**：它帮助回答一次运行之后到底发生了什么、什么可以被审阅、什么可以被验证。
+## What It Is Not / 它不是什么
 
-## Why It Is Relevant to FDO / 为什么与 FDO 相关
-- **EN**: It gives runtime evidence an object-facing shape with identity, metadata, integrity, and provenance.
-- **中文**：它让运行时证据具备面向对象的身份、元数据、完整性和来源结构。
+- **EN**: It is not the architecture hub, not the audit control plane, and not just tracing/logging.
+- **中文**：它不是架构总仓，不是审计控制平面，也不只是 tracing/logging。
 
-## Short Version for Forum Replies / 论坛短回复版
-- **EN**: Execution Evidence Object is a portable and verifiable object for AI runtime evidence.
-- **中文**：执行证据对象是一种面向 AI 运行时证据的可移植、可验证对象。
+## Why It Matters / 为什么重要
 
-## Short Version for Poster / 海报短句版
-- **EN**: Execution evidence should be a first-class digital object for AI runtimes.
-- **中文**：执行证据应该成为 AI 运行时中的一等数字对象。
+- **EN**: It answers what happened during an agent run, what can be handed off, and what another party can verify later without relying on the original runtime.
+- **中文**：它回答一次 agent run 中到底发生了什么、哪些东西可以被交付出去，以及脱离原始运行时之后他人还能验证什么。
 
-## Short Version for Competition or Funding / 比赛或申报短句版
-- **EN**: This project presents a standards prototype for portable and verifiable AI runtime evidence.
-- **中文**：这个项目展示了一个面向 AI 运行时可移植、可验证证据的标准原型。
+## Historical Lineage / 历史脉络
+
+- **EN**: Earlier repository surfaces used `Execution Evidence Object` and older `Agent Evidence Profile` wording as top-line labels. Those materials are retained, but they are now historical rather than primary.
+- **中文**：仓库早期曾把 `Execution Evidence Object` 和较早版本的 `Agent Evidence Profile` 作为一级表述。相关材料仍然保留，但现在已经降级为历史脉络，而非主入口。
+
+See [docs/lineage.md](../lineage.md) for the retained historical paths and file map.
