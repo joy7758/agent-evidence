@@ -4,8 +4,8 @@
 
 # Agent Evidence
 
-Package agent/runtime execution as verifiable evidence bundles with JSONL,
-SQLite, and PostgreSQL storage backends.
+Concrete execution-evidence entry for verifiable AI agent runs with offline
+verification.
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19334062.svg)](https://doi.org/10.5281/zenodo.19334062)
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
@@ -48,22 +48,6 @@ offline.
 - historical lineage -> [docs/lineage.md](docs/lineage.md)
 - walkthrough -> [verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo)
 - post-execution review -> [aro-audit](https://github.com/joy7758/aro-audit)
-
-## Fastest proof
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev,langchain,sql]"
-python integrations/langchain/export_evidence.py
-agent-evidence verify-bundle --bundle-dir integrations/langchain/langchain-evidence-bundle
-```
-
-This runs the documented LangChain exporter and verifies the emitted bundle
-offline.
-
-For a smaller callback/export recipe aimed at external readers, see
-`docs/cookbooks/langchain_minimal_evidence.md`.
 
 ## Current v0.1 package
 
@@ -129,6 +113,22 @@ paths.
 
 The historical specimen track still keeps its original DOI:
 https://doi.org/10.5281/zenodo.19055948
+
+## Fastest proof
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev,langchain,sql]"
+python integrations/langchain/export_evidence.py
+agent-evidence verify-bundle --bundle-dir integrations/langchain/langchain-evidence-bundle
+```
+
+This runs the documented LangChain exporter and verifies the emitted bundle
+offline.
+
+For a smaller callback/export recipe aimed at external readers, see
+`docs/cookbooks/langchain_minimal_evidence.md`.
 
 ## Why this is not just tracing
 
