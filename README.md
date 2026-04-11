@@ -82,13 +82,19 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
+The commands below assume the active environment exposes `agent-evidence` on
+`PATH`. If you are using the repository virtualenv directly, run
+`.venv/bin/agent-evidence ...` instead.
+
 Validate the minimal valid and invalid examples:
 
 ```bash
 agent-evidence validate-profile examples/minimal-valid-evidence.json
+agent-evidence validate-profile examples/valid-trust-binding-evidence.json
 agent-evidence validate-profile examples/invalid-missing-required.json
 agent-evidence validate-profile examples/invalid-unclosed-reference.json
 agent-evidence validate-profile examples/invalid-policy-link-broken.json
+agent-evidence validate-profile examples/invalid-trust-binding-digest-mismatch.json
 ```
 
 Run the minimal demo:
@@ -147,6 +153,11 @@ Evidence path:
 This repository implements the bundle, manifest, signatures, and offline
 verification steps. External anchoring is out of scope for AEP v0.1 and is not
 enabled by default.
+
+Optional trust bindings are a different concept from manifest signatures. In
+the current profile they appear as `validation.trust_bindings[]`, which only
+points to an external verification source. They do not replace local signing,
+and the validator only checks that the local target and digest are consistent.
 
 The toolkit now supports two storage modes:
 
@@ -618,6 +629,12 @@ total threshold defaults to the sum of those role requirements.
 
 If a bundle carries signatures, verification is fail-closed: you must provide
 `--public-key` or `--keyring`, otherwise verification returns `ok=false`.
+
+Manifest signatures are the repository's built-in verification mechanism.
+Optional trust bindings or trust anchors are separate external proof pointers.
+They may be attached at the profile layer with `validation.trust_bindings[]`,
+but they are not required for `export`, `verify-export`, or
+`validate-profile`.
 
 Manifest signing uses Ed25519 PEM keys. To enable signing outside the dev
 environment:

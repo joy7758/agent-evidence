@@ -33,6 +33,10 @@ LangChain callback events
 If you need detached anchoring, treat the signed bundle and manifest as an
 external handoff point. That step is not verified by this repo today.
 
+If you later add profile-level `validation.trust_bindings[]`, treat them as
+optional pointers to an external trust source. They are not the same thing as
+the manifest signatures verified by `verify-export`.
+
 ## 4) Prerequisites
 
 ```bash
@@ -40,6 +44,9 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[langchain,signing]"
 ```
+
+The commands below assume `agent-evidence` is available on `PATH`. If you are
+using the repository virtualenv directly, run `.venv/bin/agent-evidence ...`.
 
 No model API key is required. The example uses deterministic local runnables and
 a mocked model callback event.
@@ -94,6 +101,9 @@ agent-evidence verify-export \
 ```
 
 You should get `ok: true` plus signature verification details.
+
+That verification step covers the local signed export. It does not verify any
+external trust anchor or transparency log entry.
 
 ## 8) Boundaries / what this is not
 

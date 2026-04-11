@@ -6,6 +6,7 @@ Command:
 
 ```bash
 agent-evidence validate-profile examples/minimal-valid-evidence.json
+agent-evidence validate-profile examples/valid-trust-binding-evidence.json
 ```
 
 Expected summary:
@@ -58,6 +59,20 @@ Expected summary:
 - primary error code: `unresolved_evidence_policy_ref`
 - failure reason: `evidence.policy_ref` does not resolve to `policy.id`
 
+### Trust binding digest mismatch
+
+Command:
+
+```bash
+agent-evidence validate-profile examples/invalid-trust-binding-digest-mismatch.json
+```
+
+Expected summary:
+
+- JSON output includes `"ok": false`
+- primary error code: `trust_binding_target_digest_mismatch`
+- failure reason: `validation.trust_bindings[0].target_digest` does not match the resolved local target
+
 ## Demo Script
 
 Command:
@@ -86,3 +101,4 @@ Expected end state:
 - `schema_violation`: required field or field shape does not satisfy the schema
 - `unresolved_output_ref`: an operation output ref does not resolve to `evidence.references[].ref_id`
 - `unresolved_evidence_policy_ref`: `evidence.policy_ref` does not resolve to `policy.id`
+- `trust_binding_target_digest_mismatch`: a trust binding points to the right local target but carries the wrong digest

@@ -15,6 +15,7 @@ EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
     [
         "minimal-valid-evidence.json",
         "valid-retention-review-evidence.json",
+        "valid-trust-binding-evidence.json",
     ],
 )
 def test_valid_operation_accountability_profile_passes(filename: str) -> None:
@@ -34,6 +35,11 @@ def test_valid_operation_accountability_profile_passes(filename: str) -> None:
         (
             "invalid-validation-provenance-link-broken.json",
             "unresolved_validation_provenance_ref",
+            1,
+        ),
+        (
+            "invalid-trust-binding-digest-mismatch.json",
+            "trust_binding_target_digest_mismatch",
             1,
         ),
     ],

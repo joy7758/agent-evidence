@@ -19,6 +19,10 @@ It is intentionally narrow. It covers only:
 It does not attempt to define a general registry, a full governance platform,
 or a full cryptographic trust fabric.
 
+This profile may optionally carry external trust bindings, but those bindings
+are only pointers to an external verification source. They are not the same as
+the local manifest-signing flow implemented elsewhere in this repository.
+
 ## 2. Core Object Model
 
 One operation accountability statement consists of the following top-level
@@ -93,12 +97,26 @@ The minimal required fields are:
 The profile keeps optional fields to a minimum:
 
 - `operation.description`
+- `validation.trust_bindings[]`
 
 The required locator fields remain flexible in value shape:
 
 - `subject.locator` may be a URI, path, or persistent identifier placeholder
 - `evidence.references[].locator` may be a URI, path, or persistent identifier placeholder
 - `evidence.artifacts[].locator` may be a URI, path, or persistent identifier placeholder
+
+When present, each `validation.trust_bindings[]` entry is one optional external
+verification hook. The shape is intentionally generic so it can point to
+different trust systems such as Sigstore, Notary v2, KERI, or a future
+registry-specific verifier without forcing any of them into the core profile.
+
+The minimal suggested fields are:
+
+- `binding_id`: local identifier for the binding entry
+- `mechanism`: free-text trust mechanism label, for example `sigstore`
+- `target_ref`: local target this binding covers
+- `target_digest`: digest expected by the external trust system
+- `locator`: URI or other pointer to the external proof material
 
 No optional extension fields are required for conformance in v0.1.
 
@@ -121,6 +139,12 @@ The minimum link rules are:
 - `validation.evidence_ref` must equal `evidence.id`
 - `validation.provenance_ref` must equal `provenance.id`
 - `validation.policy_ref` must equal `policy.id`
+- if `validation.trust_bindings[]` is present, every `target_ref` must resolve
+  either to `statement_id` or to one `evidence.artifacts[].artifact_id`
+- if a trust binding targets `statement_id`, `target_digest` must equal
+  `evidence.integrity.statement_digest`
+- if a trust binding targets an artifact, `target_digest` must equal that
+  artifact's `digest`
 
 ## 6. Compliance Conditions
 
@@ -142,6 +166,12 @@ following hold:
 10. `evidence.integrity.statement_digest` equals the canonical digest of the
     statement core: `actor`, `subject`, `operation`, `policy`, `constraints`,
     and `provenance`.
+11. If `validation.trust_bindings[]` is present, each trust binding resolves to
+    a local statement or artifact target and carries the matching local digest.
+
+The profile does not require the validator to verify the external system named
+by `validation.trust_bindings[]`. In v0.1, the validator only checks that the
+binding is well-formed and internally consistent with the local statement.
 
 ## 7. Failure Conditions
 
@@ -154,6 +184,8 @@ Validation fails when at least one of the following occurs:
 - an output ref points to a non-output evidence reference
 - `policy`, `provenance`, and `evidence` do not agree on the linked entities
 - any integrity digest fails recomputation
+- a trust binding points to a target that is not defined locally
+- a trust binding carries a digest that does not match the resolved local target
 
 ## 8. Minimal JSON Expression Suggestion
 
@@ -250,7 +282,17 @@ Validation fails when at least one of the following occurs:
     "policy_ref": "policy:approved-metadata-v1",
     "validator": "agent-evidence validate-profile",
     "method": "schema+reference+consistency",
-    "status": "verifiable"
+    "status": "verifiable",
+    "trust_bindings": [
+      {
+        "binding_id": "trust:sigstore-demo-001",
+        "mechanism": "sigstore",
+        "proof_type": "transparency-log-entry",
+        "target_ref": "eeoap:demo-001",
+        "target_digest": "sha256:<same as statement_digest>",
+        "locator": "https://rekor.example.com/api/v1/log/entries/demo-001"
+      }
+    ]
   }
 }
 ```

@@ -56,3 +56,18 @@
   - 明确提出 minimal verification boundary、failure taxonomy、external validation agenda
   - 保持 Chinese-first、plain language、结构紧凑
   - 不修改现有 `paper/submission_tosem/`、blind package 或 review artifacts
+
+## M8 可选 trust binding 扩展
+- 输入：
+  - 当前 OAP v0.1 spec/schema/validator/examples/demo
+  - README 与 cookbook 中现有签名、离线验证、detached anchor 说明
+- 输出：
+  - `validation.trust_bindings[]` 可选字段
+  - 对应 schema 与 validator 校验
+  - 1 个 valid trust-binding 样例与 1 个 single-failure invalid 样例
+  - README / cookbook / demo / STATUS 中的边界澄清
+- 验收条件：
+  - trust binding 明确是可选外部验证挂接点，不是强制签名系统
+  - 支持多个机制标签，不内置绑定任何单一信任系统
+  - validator 只检查本地目标引用与 digest 一致性，不伪装成外部系统验证器
+  - 最小 demo 与既有 local signing / verify-export 路径保持不变

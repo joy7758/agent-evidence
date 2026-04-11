@@ -435,6 +435,51 @@
             "verifiable",
             "unverifiable"
           ]
+        },
+        "trust_bindings": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "binding_id",
+              "mechanism",
+              "target_ref",
+              "target_digest",
+              "locator"
+            ],
+            "properties": {
+              "binding_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "mechanism": {
+                "type": "string",
+                "minLength": 1
+              },
+              "proof_type": {
+                "type": "string",
+                "minLength": 1
+              },
+              "target_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "target_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "locator": {
+                "type": "string",
+                "minLength": 1
+              },
+              "verifier_hint": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
         }
       }
     }

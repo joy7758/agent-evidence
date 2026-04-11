@@ -377,6 +377,53 @@ def _validate_integrity(profile: dict[str, Any]) -> list[dict[str, str]]:
     return issues
 
 
+def _trust_binding_targets(profile: dict[str, Any]) -> dict[str, str]:
+    targets = {
+        profile["statement_id"]: recompute_integrity(profile)["statement_digest"],
+    }
+    for artifact in profile["evidence"]["artifacts"]:
+        targets[artifact["artifact_id"]] = artifact["digest"]
+    return targets
+
+
+def _validate_trust_bindings(profile: dict[str, Any]) -> list[dict[str, str]]:
+    bindings = profile["validation"].get("trust_bindings") or []
+    if not bindings:
+        return []
+
+    issues = _duplicate_ids(
+        [binding["binding_id"] for binding in bindings],
+        "trust",
+        "duplicate_trust_binding_id",
+        "validation.trust_bindings",
+    )
+    targets = _trust_binding_targets(profile)
+
+    for index, binding in enumerate(bindings):
+        target_ref = binding["target_ref"]
+        if target_ref not in targets:
+            issues.append(
+                _issue(
+                    "trust",
+                    "unresolved_trust_binding_target_ref",
+                    f"validation.trust_bindings[{index}].target_ref",
+                    "trust binding target_ref must resolve to statement_id or "
+                    "evidence.artifacts[].artifact_id.",
+                )
+            )
+            continue
+        if binding["target_digest"] != targets[target_ref]:
+            issues.append(
+                _issue(
+                    "trust",
+                    "trust_binding_target_digest_mismatch",
+                    f"validation.trust_bindings[{index}].target_digest",
+                    "trust binding target_digest does not match the resolved local target.",
+                )
+            )
+    return issues
+
+
 def build_validation_report(
     profile: dict[str, Any],
     *,
@@ -388,6 +435,7 @@ def build_validation_report(
     reference_issues: list[dict[str, str]] = []
     consistency_issues: list[dict[str, str]] = []
     integrity_issues: list[dict[str, str]] = []
+    trust_issues: list[dict[str, str]] = []
 
     if not schema_issues:
         reference_issues = _validate_reference_closure(profile)
@@ -395,12 +443,20 @@ def build_validation_report(
         consistency_issues = _validate_link_consistency(profile)
     if not schema_issues and not reference_issues and not consistency_issues:
         integrity_issues = _validate_integrity(profile)
+    if (
+        not schema_issues
+        and not reference_issues
+        and not consistency_issues
+        and not integrity_issues
+    ):
+        trust_issues = _validate_trust_bindings(profile)
 
     stages = [
         {"name": "schema", "ok": not schema_issues, "issues": schema_issues},
         {"name": "references", "ok": not reference_issues, "issues": reference_issues},
         {"name": "consistency", "ok": not consistency_issues, "issues": consistency_issues},
         {"name": "integrity", "ok": not integrity_issues, "issues": integrity_issues},
+        {"name": "trust", "ok": not trust_issues, "issues": trust_issues},
     ]
     issues = [issue for stage in stages for issue in stage["issues"]]
     report = {

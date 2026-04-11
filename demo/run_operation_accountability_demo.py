@@ -167,11 +167,25 @@ def build_statement(
             "provenance_ref": "prov:metadata-enrich-001",
             "policy_ref": "policy:approved-metadata-v1",
             "validator": "agent-evidence validate-profile",
-            "method": "schema+reference+consistency",
+            "method": "schema+reference+consistency+trust-binding",
             "status": "verifiable",
         },
     }
-    return with_recomputed_integrity(statement)
+    statement = with_recomputed_integrity(statement)
+    statement["validation"]["trust_bindings"] = [
+        {
+            "binding_id": "trust:sigstore-demo-001",
+            "mechanism": "sigstore",
+            "proof_type": "transparency-log-entry",
+            "target_ref": statement["statement_id"],
+            "target_digest": statement["evidence"]["integrity"]["statement_digest"],
+            "locator": "https://rekor.example.com/api/v1/log/entries/demo-001",
+            "verifier_hint": (
+                "Recompute evidence.integrity.statement_digest before external verification."
+            ),
+        }
+    ]
+    return statement
 
 
 def main() -> int:

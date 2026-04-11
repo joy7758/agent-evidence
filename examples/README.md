@@ -18,6 +18,11 @@ Each file is intended to produce one validation report.
   - Passes the same profile checks in a second context:
     one dataset package subject, two input references, and one retention decision output.
   - Main value: second-context validity evidence for the same minimal profile.
+- `valid-trust-binding-evidence.json`
+  - Passes the same local profile checks while also carrying one optional
+    `validation.trust_bindings[]` entry.
+  - Main value: shows how to point to an external trust source without making
+    that source mandatory for local conformance.
 - `invalid-missing-required.json`
   - Fails because `validation.method` is intentionally removed.
   - Main broken rule: required field completeness.
@@ -37,15 +42,27 @@ Each file is intended to produce one validation report.
   - Fails because `validation.provenance_ref` points to
     `prov:missing-metadata-enrich-001`, which is not defined locally.
   - Main broken rule: validation/provenance reference closure.
+- `invalid-trust-binding-digest-mismatch.json`
+  - Fails because `validation.trust_bindings[0].target_digest` does not match
+    the local digest of the target statement.
+  - Main broken rule: trust-binding/local-target consistency.
+
+Command note:
+
+- The commands below assume `agent-evidence` is installed in the active environment.
+- If you are using the repository virtualenv directly, run
+  `.venv/bin/agent-evidence ...` instead.
 
 ## Validate
 
 ```bash
 agent-evidence validate-profile examples/minimal-valid-evidence.json
 agent-evidence validate-profile examples/valid-retention-review-evidence.json
+agent-evidence validate-profile examples/valid-trust-binding-evidence.json
 agent-evidence validate-profile examples/invalid-missing-required.json
 agent-evidence validate-profile examples/invalid-unclosed-reference.json
 agent-evidence validate-profile examples/invalid-policy-link-broken.json
 agent-evidence validate-profile examples/invalid-provenance-output-mismatch.json
 agent-evidence validate-profile examples/invalid-validation-provenance-link-broken.json
+agent-evidence validate-profile examples/invalid-trust-binding-digest-mismatch.json
 ```

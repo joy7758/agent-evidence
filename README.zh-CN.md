@@ -70,13 +70,18 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
+下面的命令默认假设当前激活环境已经把 `agent-evidence` 放进了 `PATH`。
+如果你直接使用仓库内的虚拟环境，请改用 `.venv/bin/agent-evidence ...`。
+
 验证最小 valid / invalid 样例：
 
 ```bash
 agent-evidence validate-profile examples/minimal-valid-evidence.json
+agent-evidence validate-profile examples/valid-trust-binding-evidence.json
 agent-evidence validate-profile examples/invalid-missing-required.json
 agent-evidence validate-profile examples/invalid-unclosed-reference.json
 agent-evidence validate-profile examples/invalid-policy-link-broken.json
+agent-evidence validate-profile examples/invalid-trust-binding-digest-mismatch.json
 ```
 
 运行最小 demo：
@@ -128,6 +133,10 @@ Tracing 和 logs 主要帮助操作者检查一次运行。Agent Evidence 把运
 
 这个仓库当前实现了 bundle、manifest、signatures 和 offline verification
 这些步骤。外部 anchoring 不在 AEP v0.1 的范围内，默认也不会启用。
+
+可选的 trust binding 和 manifest 签名不是一回事。当前 profile 中它表现为
+`validation.trust_bindings[]`，只用于指向外部验证来源，不替代本地签名。
+当前 validator 只检查本地 target 和 digest 是否一致，不校验外部系统本身。
 
 该工具包现在支持两种存储模式：
 

@@ -14,6 +14,7 @@
 - M3 样例集：已完成
 - M4 validator 与 CLI：已完成
 - M5 demo 与文稿：已完成
+- M8 可选 trust binding 扩展：已完成
 - M7 旗舰论文规划包：已完成
 
 ## 当前落地产物
@@ -23,6 +24,7 @@
 - validator：`agent_evidence/oap.py` 与 CLI 命令 `agent-evidence validate-profile <file>`
 - demo：`demo/run_operation_accountability_demo.py`
 - 文稿：`docs/research-brief-zh.md`、`docs/abstract-en.md`
+- 可选 trust-binding 扩展：`validation.trust_bindings[]`、对应样例与说明文档
 
 ## 已验证结果
 - `./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py` 通过
@@ -30,6 +32,8 @@
 - `python3 demo/run_operation_accountability_demo.py` 通过
 - `validate-profile` 对 valid 样例返回 `ok: true`
 - `validate-profile` 对 invalid 样例返回 `ok: false` 且带明确 error code
+- `validate-profile` 对 trust-binding valid 样例返回 `ok: true`
+- `validate-profile` 对 trust-binding invalid 样例返回 `ok: false` 且主错误码为 `trust_binding_target_digest_mismatch`
 
 ## 术语与命名统一结果
 - profile 正式名称统一为 `Execution Evidence and Operation Accountability Profile v0.1`
@@ -75,6 +79,33 @@
 ## 本轮仍残留的问题
 - `.venv` 的 Python 3.14 环境会带出一条 `langchain_core` warning。
 - 仓库内仍保留历史 `Execution Evidence Object` / `Agent Evidence Profile` 资料；本轮没有重写这些既有表面，只通过 README 和状态文档把 v0.1 最小路径与其分开说明。
+
+## M8 可选 trust binding 扩展
+- 状态：已完成
+- 本轮新增或更新：
+  - spec：为 `validation.trust_bindings[]` 增加可选外部验证挂接位
+  - schema：新增 trust binding 结构定义
+  - validator：新增本地 target closure 与 digest 一致性校验
+  - examples：新增 `valid-trust-binding-evidence.json` 与 `invalid-trust-binding-digest-mismatch.json`
+  - demo：最小 demo 增加 1 个 trust binding 占位示例
+  - docs：README、中文 README、cookbook、demo 说明补齐“trust binding 不是本地签名系统”边界
+- 本轮边界结论：
+  - trust binding 是可选 external verification hook，不是 mandatory signing system
+  - 当前 validator 只验证本地 target / digest 一致性，不验证外部透明日志、registry 或第三方信任服务
+  - `export` / `verify-export` 继续以本仓库内建 manifest signing 为主，不依赖 trust binding
+- 本轮核验：
+  - 命令：`./.venv/bin/python -m pytest tests/test_operation_accountability_profile.py`
+    - 结果：`10 passed, 1 warning in 0.61s`
+    - 是否通过：通过
+  - 命令：`./.venv/bin/agent-evidence validate-profile examples/valid-trust-binding-evidence.json`
+    - 结果：`ok: true`
+    - 是否通过：通过
+  - 命令：`./.venv/bin/agent-evidence validate-profile examples/invalid-trust-binding-digest-mismatch.json`
+    - 结果：`ok: false`，primary error code `trust_binding_target_digest_mismatch`
+    - 是否通过：通过
+  - 命令：`python3 demo/run_operation_accountability_demo.py`
+    - 结果：demo 闭环执行完成，末尾输出 `PASS execution-evidence-operation-accountability-profile@0.1 ...`
+    - 是否通过：通过
 
 ## 第三轮发布前复验
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
