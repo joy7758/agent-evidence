@@ -88,6 +88,7 @@ fragment 导出路径。
 - `gradle.properties`
 - `BOUNDARY.md`
 - `EVENT_SCOPE.md`
+- `RUNTIME_WIRING_SAMPLE.md`
 - `src/main/java/...`
 - `src/main/resources/META-INF/services/org.eclipse.edc.spi.system.ServiceExtension`
 
@@ -152,6 +153,9 @@ fragment 导出路径。
 之间的配置流转是否稳定。
 
 这样做的价值是：先把 augmentation layer 的运行时装配边界钉住，再决定后面是否值得补一个单独的 runtime sample。
+
+如果只想看最小配置和最小事件流转，可以直接看
+[RUNTIME_WIRING_SAMPLE.md](RUNTIME_WIRING_SAMPLE.md)。
 
 ## 官方参考
 

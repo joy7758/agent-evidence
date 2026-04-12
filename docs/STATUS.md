@@ -261,6 +261,29 @@
   - `./gradlew test`：通过
   - `git diff --check`：待提交前复验
 
+## M17 EDC Java runtime-facing sample note
+- 状态：已完成
+- 定位结论：
+  - 这轮不新增新的 runtime 工程，只把当前已验证的 wiring 路径收成一份可读样例文档，并用对应测试把文档样例跑通。
+  - 目标是让读者直接看懂 `config -> wiring -> publish -> output/no-output`，而不是继续扩 exporter 或事件范围。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/RUNTIME_WIRING_SAMPLE.md`
+  - `spikes/edc-java-extension/src/test/java/.../AgentEvidenceRuntimeWiringSampleTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../support/RuntimeWiringTestSupport.java`
+  - `spikes/edc-java-extension/src/test/java/.../AgentEvidenceEdcExtensionSmokeTest.java`
+  - `spikes/edc-java-extension/src/main/java/.../AgentEvidenceEdcExtension.java`
+  - `spikes/edc-java-extension/README.md`
+- 本轮收敛结果：
+  - 最小 runtime wiring 样例现在同时覆盖 `filesystem` 和 `noop` 两条路径
+  - `registerMinimalControlPlaneSubscribers(...)` 让 extension 内部注册链和样例测试共用同一份最小 family 注册逻辑
+  - 文档样例不新增 exporter 类型，不新增事件类型，也不下沉 signing / verification / anchor
+- 本轮核验：
+  - `./gradlew test --tests org.agentevidence.edc.spike.AgentEvidenceRuntimeWiringSampleTest`：通过
+  - `./gradlew test --tests org.agentevidence.edc.spike.AgentEvidenceEdcExtensionSmokeTest`：通过
+  - `./gradlew compileJava`：通过
+  - `./gradlew test`：通过
+  - `git diff --check`：通过
+
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
   - 结果：`All checks passed!`

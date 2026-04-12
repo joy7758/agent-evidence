@@ -225,3 +225,18 @@
   - 不新增 exporter 类型、事件类型或 sample 工程
   - `./gradlew compileJava` 与 `./gradlew test` 通过
   - 保持 augmentation layer 边界，不下沉 signing、verification、anchor 或 persistence
+
+## M17 EDC Java runtime-facing sample note
+- 输入：
+  - 已完成的 minimal runtime wiring
+  - 当前 smoke test 与真实 payload fixtures
+  - 现有 exporter handoff 与 EventRouter 注册路径
+- 输出：
+  - 一份最小 runtime-facing 样例文档
+  - 与样例路径直接对应的轻量测试
+  - 复用的 runtime wiring 测试支撑类
+- 验收条件：
+  - 样例文档只覆盖现有 `filesystem` / `noop` 行为
+  - 样例测试能直接跑通 `config -> wiring -> publish -> output/no-output`
+  - 不新增 exporter 类型、事件类型或 runtime 工程
+  - `./gradlew compileJava` 与 `./gradlew test` 通过

@@ -2,6 +2,7 @@ package org.agentevidence.edc.spike;
 
 import org.agentevidence.edc.spike.grouping.AgentEvidenceGroupingStrategy;
 import org.agentevidence.edc.spike.mapper.AgentEvidenceEventMapper;
+import org.agentevidence.edc.spike.subscriber.ControlPlaneEvidenceSubscriber;
 import org.agentevidence.edc.spike.writer.AgentEvidenceExporterConfiguration;
 import org.agentevidence.edc.spike.writer.ConfigurableEvidenceEnvelopeWriterFactory;
 import org.eclipse.edc.connector.controlplane.asset.spi.event.AssetEvent;
@@ -66,11 +67,7 @@ public class AgentEvidenceEdcExtension implements ServiceExtension {
 
         // Async registration keeps the first spike focused on low-friction export.
         // TODO: evaluate registerSync(...) once the writer moves to an outbox or staged local store.
-        eventRouter.register(AssetEvent.class, wiring.subscriber());
-        eventRouter.register(PolicyDefinitionEvent.class, wiring.subscriber());
-        eventRouter.register(ContractDefinitionEvent.class, wiring.subscriber());
-        eventRouter.register(ContractNegotiationEvent.class, wiring.subscriber());
-        eventRouter.register(TransferProcessEvent.class, wiring.subscriber());
+        registerMinimalControlPlaneSubscribers(eventRouter, wiring.subscriber());
 
         extensionMonitor.info("Using agent-evidence exporter type '" + wiring.exporterConfiguration().normalizedExporterType() + "'");
         extensionMonitor.info("Registered control-plane event subscribers for agent-evidence spike");
@@ -85,5 +82,16 @@ public class AgentEvidenceEdcExtension implements ServiceExtension {
             Monitor extensionMonitor
     ) {
         return AgentEvidenceRuntimeWiring.from(context, extensionMonitor, exporterFactory);
+    }
+
+    static void registerMinimalControlPlaneSubscribers(
+            EventRouter eventRouter,
+            ControlPlaneEvidenceSubscriber subscriber
+    ) {
+        eventRouter.register(AssetEvent.class, subscriber);
+        eventRouter.register(PolicyDefinitionEvent.class, subscriber);
+        eventRouter.register(ContractDefinitionEvent.class, subscriber);
+        eventRouter.register(ContractNegotiationEvent.class, subscriber);
+        eventRouter.register(TransferProcessEvent.class, subscriber);
     }
 }
