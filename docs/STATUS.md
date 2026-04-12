@@ -404,6 +404,24 @@
   - `./gradlew test`：通过
   - `git diff --check`：通过
 
+## M23 startup failure triage recipe
+- 状态：已完成
+- 定位结论：
+  - 这轮不再改 startup 行为，只补一份最小排障配方。
+  - 目标是让使用者在看到 failure 摘要后，能快速判断问题属于 runtime 端口、runtime classpath，还是 exporter 配置。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/FAILURE_TRIAGE_RECIPE.md`
+  - `spikes/edc-java-extension/README.md`
+  - `spikes/edc-java-extension/STARTUP_FAILURE_CONTRACT.md`
+  - `spikes/edc-java-extension/runtime-module-sample/README.md`
+- 本轮收敛结果：
+  - triage recipe 只覆盖已固定的三类 startup failure
+  - triage recipe 明确给出最短排障顺序、Quick Lookup 表和每类失败的最小修复动作
+  - 文档继续保持 augmentation layer 边界，不扩 exporter、事件范围或 runtime 功能
+- 本轮核验：
+  - `git diff --check`：通过
+  - 本轮仅文档更新，未改代码路径，因此未额外重跑 Gradle 测试
+
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
   - 结果：`All checks passed!`

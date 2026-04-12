@@ -316,3 +316,17 @@
   - 端口占用时，startup smoke 能输出稳定的端口冲突错误摘要
   - `./gradlew compileJava`、`./gradlew :runtime-module-sample:test`、`./gradlew test` 通过
   - 不新增 exporter 类型、事件类型或 connector/runtime 产品化功能
+
+## M23 startup failure triage recipe
+- 输入：
+  - 已完成的 startup failure contract
+  - 当前 `runtime-module-sample/run-startup-smoke.sh` 的三类已知失败摘要
+  - 当前 runtime module sample 的最小启动方式
+- 输出：
+  - `FAILURE_TRIAGE_RECIPE.md`
+  - README / runtime sample README 中的最小导航入口
+- 验收条件：
+  - 文档明确三类已知失败分别属于哪一层
+  - 文档给出最短排障顺序与最小修复动作
+  - 不新增 exporter、事件范围或代码路径
+  - `git diff --check` 通过

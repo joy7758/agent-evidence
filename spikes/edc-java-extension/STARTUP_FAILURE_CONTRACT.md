@@ -101,3 +101,6 @@ extension 初始化必须 fail-fast。
 - 用裁剪过的 launcher classpath 启动 runtime，验证 missing event SPI fail-fast
 
 这些测试只验证 startup 边界，不扩展新的 exporter、事件范围或 connector 功能。
+
+如果想看出错后的最小排障顺序，可以直接看
+[FAILURE_TRIAGE_RECIPE.md](FAILURE_TRIAGE_RECIPE.md)。

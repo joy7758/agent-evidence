@@ -140,6 +140,9 @@ REFRESH_INSTALL_DIST=0 runtime-module-sample/run-startup-smoke.sh
 具体契约见
 [../STARTUP_FAILURE_CONTRACT.md](../STARTUP_FAILURE_CONTRACT.md)。
 
+如果想看最短排障步骤，可以直接看
+[../FAILURE_TRIAGE_RECIPE.md](../FAILURE_TRIAGE_RECIPE.md)。
+
 ## 这轮实际验证了什么
 
 - runtime module build 能生成最小 launcher distribution

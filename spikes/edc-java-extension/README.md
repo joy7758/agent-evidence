@@ -91,6 +91,7 @@ fragment 导出路径。
 - `RUNTIME_WIRING_SAMPLE.md`
 - `RUNTIME_STARTUP_LOG_CONTRACT.md`
 - `STARTUP_FAILURE_CONTRACT.md`
+- `FAILURE_TRIAGE_RECIPE.md`
 - `runtime-module-sample/`
 - `src/main/java/...`
 - `src/main/resources/META-INF/services/org.eclipse.edc.spi.system.ServiceExtension`
@@ -171,6 +172,9 @@ fragment 导出路径。
 
 如果想看 startup 失败时的最小错误语义，可以直接看
 [STARTUP_FAILURE_CONTRACT.md](STARTUP_FAILURE_CONTRACT.md)。
+
+如果想看失败后应该先查哪一层、先改什么，可以直接看
+[FAILURE_TRIAGE_RECIPE.md](FAILURE_TRIAGE_RECIPE.md)。
 
 ## BaseRuntime Startup Configuration
 
