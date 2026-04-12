@@ -469,6 +469,28 @@
   - `./gradlew test`：通过
   - `git diff --check`：通过
 
+## M26 advanced runtime exporter integration
+- 状态：已完成
+- 定位结论：
+  - 这轮不扩 exporter 类型，也不扩事件范围。
+  - 目标只是让 runtime startup smoke 和 runtime-facing exporter integration 样例保持同一套配置流转语义。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/runtime-module-sample/run-startup-smoke.sh`
+  - `spikes/edc-java-extension/runtime-module-sample/src/test/java/.../AgentEvidenceRuntimeModuleIntegrationTest.java`
+  - `spikes/edc-java-extension/runtime-module-sample/RUNTIME_EXPORTER_INTEGRATION_SAMPLE.md`
+  - `spikes/edc-java-extension/runtime-module-sample/README.md`
+  - `spikes/edc-java-extension/README.md`
+  - `plans/implementation-plan.md`
+- 本轮收敛结果：
+  - startup smoke 现在会按 properties / `JAVA_OPTS` 推导 expected exporter 和 output-dir
+  - runtime integration tests 现在覆盖 noop sample properties startup
+  - runtime integration tests 现在覆盖 `JAVA_OPTS` 覆盖 exporter.type 与 output-dir
+  - runtime-facing 样例、README 和 smoke 脚本现在对 exporter 配置流转的理解一致
+- 本轮核验：
+  - `./gradlew :runtime-module-sample:test`：通过
+  - `./gradlew test`：通过
+  - `git diff --check`：通过
+
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
   - 结果：`All checks passed!`

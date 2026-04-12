@@ -169,6 +169,50 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
     }
 
     @Test
+    void shouldStartInstalledRuntimeWithNoopSampleProperties() throws Exception {
+        var logPath = tempDir.resolve("runtime-startup-noop-smoke.log");
+        var httpPort = findFreePort();
+        var moduleDir = resolveRuntimeModuleDirectory();
+        var noopProperties = moduleDir.resolve("src/main/resources/agent-evidence-runtime-noop.properties");
+        var result = runStartupSmoke(Map.of(
+                "LOG_PATH", logPath.toString(),
+                "RUNTIME_PROPERTIES_PATH", noopProperties.toString(),
+                "JAVA_OPTS", "-Dweb.http.port=" + httpPort
+        ));
+
+        assertEquals(0, result.exitCode());
+        assertTrue(result.output().contains("Runtime startup successful"));
+
+        var log = Files.readString(logPath);
+        assertTrue(log.contains("Using agent-evidence exporter type 'noop'"));
+        assertTrue(log.contains("Using agent-evidence output directory './runtime-module-sample/noop-output'"));
+        assertTrue(log.contains("Registered control-plane event subscribers for agent-evidence spike"));
+        assertTrue(log.matches("(?s).*Runtime .* ready.*"));
+    }
+
+    @Test
+    void shouldHonorExporterOverridesFromJavaOptsDuringStartupSmoke() throws Exception {
+        var logPath = tempDir.resolve("runtime-startup-override-smoke.log");
+        var httpPort = findFreePort();
+        var overrideOutputDir = "./runtime-module-sample/override-output";
+        var result = runStartupSmoke(Map.of(
+                "LOG_PATH", logPath.toString(),
+                "JAVA_OPTS", "-Dweb.http.port=" + httpPort
+                        + " -Dedc.agent-evidence.exporter.type=noop"
+                        + " -Dedc.agent-evidence.output-dir=" + overrideOutputDir
+        ));
+
+        assertEquals(0, result.exitCode());
+        assertTrue(result.output().contains("Runtime startup successful"));
+
+        var log = Files.readString(logPath);
+        assertTrue(log.contains("Using agent-evidence exporter type 'noop'"));
+        assertTrue(log.contains("Using agent-evidence output directory '" + overrideOutputDir + "'"));
+        assertTrue(log.contains("Registered control-plane event subscribers for agent-evidence spike"));
+        assertTrue(log.matches("(?s).*Runtime .* ready.*"));
+    }
+
+    @Test
     void shouldFailStartupSmokeWithClearInvalidExporterTypeMessage() throws Exception {
         var logPath = tempDir.resolve("runtime-startup-invalid-exporter.log");
         var propertiesPath = writeRuntimeProperties(

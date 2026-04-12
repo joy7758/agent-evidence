@@ -11,6 +11,9 @@ TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-120}"
 POLL_INTERVAL_SECONDS="${POLL_INTERVAL_SECONDS:-1}"
 REFRESH_INSTALL_DIST="${REFRESH_INSTALL_DIST:-1}"
 EFFECTIVE_WEB_PORT=""
+EFFECTIVE_EXPORTER_TYPE=""
+EFFECTIVE_OUTPUT_DIR_VALUE=""
+EFFECTIVE_OUTPUT_DIR_PATH=""
 
 if [[ -z "${JAVA_HOME:-}" ]] && [[ -d "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home" ]]; then
   export JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
@@ -41,6 +44,28 @@ read_configured_web_port() {
   if [[ -f "${PROPERTIES_PATH}" ]]; then
     sed -n "s/^web\\.http\\.port=\\([0-9][0-9]*\\)$/\\1/p" "${PROPERTIES_PATH}" | head -n 1
   fi
+}
+
+read_configured_setting() {
+  local key="$1"
+  if [[ -f "${PROPERTIES_PATH}" ]]; then
+    local line
+    line="$(grep -F "${key}=" "${PROPERTIES_PATH}" | head -n 1 || true)"
+    printf '%s' "${line#${key}=}"
+  fi
+}
+
+trim_value() {
+  local value="$1"
+  value="${value#"${value%%[![:space:]]*}"}"
+  value="${value%"${value##*[![:space:]]}"}"
+  printf '%s' "${value}"
+}
+
+normalize_exporter_type() {
+  local value
+  value="$(trim_value "$1")"
+  printf '%s' "${value}" | tr '[:upper:]' '[:lower:]'
 }
 
 find_free_port() {
@@ -89,6 +114,33 @@ if [[ -n "${JAVA_OPTS:-}" ]]; then
   JAVA_OPTS_VALUE="${JAVA_OPTS_VALUE} ${JAVA_OPTS}"
 fi
 
+configured_exporter_type="$(read_configured_setting 'edc.agent-evidence.exporter.type')"
+configured_output_dir="$(read_configured_setting 'edc.agent-evidence.output-dir')"
+
+if [[ "${JAVA_OPTS_VALUE}" =~ -Dedc\.agent-evidence\.exporter\.type=([^[:space:]]+) ]]; then
+  EFFECTIVE_EXPORTER_TYPE="$(normalize_exporter_type "${BASH_REMATCH[1]}")"
+elif [[ -n "${configured_exporter_type}" ]]; then
+  EFFECTIVE_EXPORTER_TYPE="$(normalize_exporter_type "${configured_exporter_type}")"
+else
+  EFFECTIVE_EXPORTER_TYPE="filesystem"
+fi
+
+if [[ "${JAVA_OPTS_VALUE}" =~ -Dedc\.agent-evidence\.output-dir=([^[:space:]]+) ]]; then
+  EFFECTIVE_OUTPUT_DIR_VALUE="$(trim_value "${BASH_REMATCH[1]}")"
+elif [[ -n "${configured_output_dir}" ]]; then
+  EFFECTIVE_OUTPUT_DIR_VALUE="$(trim_value "${configured_output_dir}")"
+else
+  EFFECTIVE_OUTPUT_DIR_VALUE="build/agent-evidence-spike"
+fi
+
+if [[ "${EFFECTIVE_OUTPUT_DIR_VALUE}" = /* ]]; then
+  EFFECTIVE_OUTPUT_DIR_PATH="${EFFECTIVE_OUTPUT_DIR_VALUE}"
+else
+  EFFECTIVE_OUTPUT_DIR_PATH="${EXTENSION_ROOT}/${EFFECTIVE_OUTPUT_DIR_VALUE#./}"
+fi
+
+rm -rf "${OUTPUT_DIR}" "${EFFECTIVE_OUTPUT_DIR_PATH}"
+
 (
   cd "${EXTENSION_ROOT}"
   JAVA_OPTS="${JAVA_OPTS_VALUE}" "${LAUNCHER_PATH}" >"${LOG_PATH}" 2>&1
@@ -99,9 +151,9 @@ deadline=$(( $(date +%s) + TIMEOUT_SECONDS ))
 
 while true; do
   if [[ -f "${LOG_PATH}" ]] \
-    && grep -q "Using agent-evidence exporter type 'filesystem'" "${LOG_PATH}" \
-    && grep -q "Using agent-evidence output directory" "${LOG_PATH}" \
-    && grep -q "Registered control-plane event subscribers for agent-evidence spike" "${LOG_PATH}" \
+    && grep -Fq "Using agent-evidence exporter type '${EFFECTIVE_EXPORTER_TYPE}'" "${LOG_PATH}" \
+    && grep -Fq "Using agent-evidence output directory '${EFFECTIVE_OUTPUT_DIR_VALUE}'" "${LOG_PATH}" \
+    && grep -Fq "Registered control-plane event subscribers for agent-evidence spike" "${LOG_PATH}" \
     && grep -Eq "Runtime .+ ready" "${LOG_PATH}"; then
     echo "Runtime startup successful"
     exit 0

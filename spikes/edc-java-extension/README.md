@@ -169,6 +169,9 @@ fragment 导出路径。
 如果想看 exporter 配置和事件处理如何在 runtime module 里装配到一起，可以直接看
 [runtime-module-sample/RUNTIME_EXPORTER_INTEGRATION_SAMPLE.md](runtime-module-sample/RUNTIME_EXPORTER_INTEGRATION_SAMPLE.md)。
 
+这份 runtime-facing 样例现在也覆盖了 `run-startup-smoke.sh` 如何按 properties / `JAVA_OPTS`
+自动识别 exporter 和 output-dir。
+
 如果想看带超时保护的真实启动验证，可以直接跑
 `runtime-module-sample/run-startup-smoke.sh`。
 

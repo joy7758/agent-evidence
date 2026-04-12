@@ -59,6 +59,24 @@
 - subscriber / mapper / grouping 链继续执行
 - 不写文件
 
+## Startup Smoke 也会跟着配置走
+
+`run-startup-smoke.sh` 现在不再把 `filesystem` 写死在成功条件里。
+
+它会先看：
+
+1. `RUNTIME_PROPERTIES_PATH` 指向的 properties
+2. `JAVA_OPTS` 里的 `-Dedc.agent-evidence.exporter.type=...`
+3. `JAVA_OPTS` 里的 `-Dedc.agent-evidence.output-dir=...`
+
+然后再决定 startup 时应该看到哪一种 exporter 和哪一个 output-dir。
+
+这意味着同一个 smoke 脚本现在可以直接验证：
+
+- 默认 `filesystem`
+- sample `noop` properties
+- `JAVA_OPTS` 覆盖 exporter / output-dir
+
 ## 最小运行方式
 
 Filesystem:
@@ -75,6 +93,22 @@ Noop:
 cd /Users/zhangbin/GitHub/agent-evidence-edc-java-spike/spikes/edc-java-extension
 JAVA_OPTS="-Dedc.fs.config=runtime-module-sample/src/main/resources/agent-evidence-runtime-noop.properties" \
 runtime-module-sample/build/install/runtime-module-sample/bin/runtime-module-sample
+```
+
+Noop startup smoke:
+
+```bash
+cd /Users/zhangbin/GitHub/agent-evidence-edc-java-spike/spikes/edc-java-extension
+RUNTIME_PROPERTIES_PATH=runtime-module-sample/src/main/resources/agent-evidence-runtime-noop.properties \
+runtime-module-sample/run-startup-smoke.sh
+```
+
+Override exporter from `JAVA_OPTS`:
+
+```bash
+cd /Users/zhangbin/GitHub/agent-evidence-edc-java-spike/spikes/edc-java-extension
+JAVA_OPTS="-Dedc.agent-evidence.exporter.type=noop -Dedc.agent-evidence.output-dir=./runtime-module-sample/override-output" \
+runtime-module-sample/run-startup-smoke.sh
 ```
 
 ## 对应验证

@@ -138,12 +138,18 @@ REFRESH_INSTALL_DIST=0 runtime-module-sample/run-startup-smoke.sh
 
 这条 smoke 的成功条件不是“进程永远跑着”，而是日志里出现：
 
-- `Using agent-evidence exporter type 'filesystem'`
-- `Using agent-evidence output directory './runtime-module-sample/output'`
+- `Using agent-evidence exporter type '<expected-exporter>'`
+- `Using agent-evidence output directory '<expected-output-dir>'`
 - `Registered control-plane event subscribers for agent-evidence spike`
 - `Runtime ... ready`
 
 满足这四个条件后，脚本会主动结束 runtime 进程并返回成功。
+
+这里的 `<expected-exporter>` 和 `<expected-output-dir>` 会按下面顺序推导：
+
+1. `JAVA_OPTS` 覆盖值
+2. `RUNTIME_PROPERTIES_PATH` 指向的 properties
+3. 默认值
 
 如果 startup 失败，脚本会尽量把已知失败面归一成稳定摘要：
 
@@ -156,6 +162,9 @@ REFRESH_INSTALL_DIST=0 runtime-module-sample/run-startup-smoke.sh
 
 如果想看最短排障步骤，可以直接看
 [../FAILURE_TRIAGE_RECIPE.md](../FAILURE_TRIAGE_RECIPE.md)。
+
+如果想看 exporter 配置和 startup smoke 如何一起流转，可以直接看
+[RUNTIME_EXPORTER_INTEGRATION_SAMPLE.md](RUNTIME_EXPORTER_INTEGRATION_SAMPLE.md)。
 
 ## 这轮实际验证了什么
 

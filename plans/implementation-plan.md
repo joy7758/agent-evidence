@@ -361,3 +361,18 @@
   - 同时提供 `filesystem` 与 `noop` 两个最小 properties 样例
   - runtime integration tests 使用 sample properties 验证 exporter 选择和事件流转
   - `./gradlew :runtime-module-sample:test`、`./gradlew test`、`git diff --check` 通过
+
+## M26 advanced runtime exporter integration
+- 输入：
+  - 已完成的 runtime exporter integration sample
+  - 当前 `run-startup-smoke.sh` 与 runtime integration tests
+  - 当前 `filesystem` / `noop` sample properties
+- 输出：
+  - 能按 properties / `JAVA_OPTS` 自适应 exporter 的 startup smoke
+  - 覆盖 noop startup 和 exporter override 的 runtime tests
+  - README / sample 文档的最小同步
+- 验收条件：
+  - startup smoke 不再把 `filesystem` 写死为唯一成功路径
+  - runtime tests 至少验证 noop sample properties startup
+  - runtime tests 至少验证 `JAVA_OPTS` 覆盖 exporter.type 与 output-dir
+  - `./gradlew :runtime-module-sample:test`、`./gradlew test`、`git diff --check` 通过
