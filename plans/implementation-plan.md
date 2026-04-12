@@ -56,3 +56,20 @@
   - 明确提出 minimal verification boundary、failure taxonomy、external validation agenda
   - 保持 Chinese-first、plain language、结构紧凑
   - 不修改现有 `paper/submission_tosem/`、blind package 或 review artifacts
+
+## M8 frozen EDC Java spike main-repo entry
+- 输入：
+  - 已冻结的 EDC Java spike tag：`edc-java-spike-freeze-v0.1`
+  - 当前主仓 README、`docs/STATUS.md` 与本计划文件
+  - freeze package 中的 summary / validated surfaces / handoff / runbook 文档
+- 输出：
+  - `docs/edc-java-spike/README.md`
+  - `README.md` 中的最小入口导航
+  - `docs/STATUS.md` 的入口整理里程碑
+  - 如有必要，本计划中的对应里程碑
+- 验收条件：
+  - 主仓新增一个克制的 EDC Java spike 入口页
+  - 所有 freeze package 链接都使用基于 tag `edc-java-spike-freeze-v0.1` 的稳定 GitHub 链接
+  - 明确说明当前应引用 freeze package，而不是把整条 Java spike 直接并入 `main`
+  - 不复制 `spikes/edc-java-extension/`，不合并 Java 代码，不新增运行时功能
+  - `git diff --check` 通过

@@ -15,6 +15,7 @@
 - M4 validator 与 CLI：已完成
 - M5 demo 与文稿：已完成
 - M7 旗舰论文规划包：已完成
+- M8 frozen EDC Java spike main-repo entry：已完成
 
 ## 当前落地产物
 - profile 规范：`spec/execution-evidence-operation-accountability-profile-v0.1.md`
@@ -160,3 +161,21 @@
   - 更完整 failure taxonomy 覆盖
   - 多场景外部有效性
   - 更强的 logs / provenance / policy / audit trail 同案比较
+
+## M8 frozen EDC Java spike main-repo entry
+- 状态：已完成
+- 定位结论：
+  - 这轮不是功能开发，也不是把整条 Java spike 并入主仓。
+  - 目标只是给已经冻结的 EDC Java spike 增加一个主仓可见、可稳定引用的入口。
+- 本轮新增或更新：
+  - `docs/edc-java-spike/README.md`
+  - `README.md`
+  - `docs/STATUS.md`
+  - `plans/implementation-plan.md`
+- 本轮收敛结果：
+  - 主仓现在能稳定指向 tag `edc-java-spike-freeze-v0.1` 下的 freeze package
+  - 入口页明确说明了这条 spike 验证了什么、为什么先停在 freeze package、以及为什么不直接 merge 整条 Java / Gradle spike
+  - 本轮没有复制 `spikes/edc-java-extension/`，没有合并 Java 代码，也没有引入新的 runtime 能力
+- 本轮核验：
+  - `git diff --check`：待提交前复验
+  - 本轮仅入口整理与文档更新，未改动 Python 主包或运行时代码，因此未额外重跑测试
