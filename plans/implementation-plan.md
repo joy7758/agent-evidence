@@ -71,3 +71,22 @@
   - 支持多个机制标签，不内置绑定任何单一信任系统
   - validator 只检查本地目标引用与 digest 一致性，不伪装成外部系统验证器
   - 最小 demo 与既有 local signing / verify-export 路径保持不变
+
+## M9 EDC augmentation 边界、最小 profile 草案与最小 demo 路径
+- 输入：
+  - 官方 EDC 文档中的 control plane、extensions、events / callbacks 材料
+  - 官方 DSP 规范中的 protocol scope 材料
+  - 当前仓库已有 `spec/`、`schema/`、`examples/`、`demo/`、`docs/` 结构
+- 输出：
+  - `docs/edc/EDC_AUGMENTATION_BOUNDARY.md`
+  - `docs/edc/edc_minimal_evidence_profile_draft.md`
+  - `docs/edc/edc_demo_minimal_path.md`
+  - `README.md` 最小导航入口
+  - `docs/STATUS.md` 里程碑记录
+- 验收条件：
+  - 明确 EDC 是 `agent-evidence` 的 execution-evidence augmentation layer，而不是新主线
+  - 明确 EDC 与 `agent-evidence` 的职责边界：前者负责 exchange / contract / transfer governance，后者负责执行证据
+  - 最小 profile 草案只保留独立验证所需字段，不带 secrets、privateProperties、内部实现细节
+  - 最小 demo 路径清楚描述 asset -> policy / contract definition -> contract agreement -> transfer process -> evidence bundle -> independent verify
+  - 明确首个推荐接入面是 control-plane event extension / exporter，而不是 persistence 或 data plane
+  - 仅引用官方 EDC / DSP 公开材料，不基于二手解读

@@ -15,6 +15,7 @@
 - M4 validator 与 CLI：已完成
 - M5 demo 与文稿：已完成
 - M8 可选 trust binding 扩展：已完成
+- M9 EDC augmentation 边界与最小接入文档：已完成
 - M7 旗舰论文规划包：已完成
 
 ## 当前落地产物
@@ -52,6 +53,32 @@
 - 不平行新建第二套工程。
 - 优先沿用现有 Python 包、CLI、tests、docs 结构。
 - 先交付最小闭环，再考虑更广映射。
+
+## M9 EDC augmentation 边界与最小接入文档
+- 状态：已完成
+- 定位结论：
+  - EDC 不是本仓库的新研究主线，不是替代品，也不是竞争关系。
+  - 在 dataspace / policy-governed data exchange 场景中，EDC 被定位为 `agent-evidence` 的 execution-evidence augmentation layer。
+  - EDC 负责 catalog、contract、transfer governance；`agent-evidence` 负责把执行过程打包成可独立验证的 evidence。
+- 本轮新增产物：
+  - `docs/edc/EDC_AUGMENTATION_BOUNDARY.md`
+  - `docs/edc/edc_minimal_evidence_profile_draft.md`
+  - `docs/edc/edc_demo_minimal_path.md`
+  - `README.md` 中新增最小导航入口 `EDC / Dataspace augmentation`
+  - `plans/implementation-plan.md` 同步新增 EDC augmentation 文档里程碑
+- 本轮边界收敛：
+  - 只做最小接入 demo 路径、最小 profile 草案、最小独立验证说明
+  - 首个推荐接入面是 control-plane event extension，不先改 persistence，也不先碰 data plane
+  - 不扩张成完整 EDC 平台、connector 产品、dataspace 全栈、通用 usage control 系统
+- 官方依据：
+  - EDC Control Plane 文档明确控制面负责 catalog、contract agreement、transfer governance，且 transfer 不直接发送数据
+  - EDC Extensions 文档明确运行时扩展入口为 `ServiceExtension`
+  - EDC Service Layers 文档明确 `EventRouter`、in-process events、callbacks 是官方事件接入面
+  - DSP 官方规范明确范围是 publish data、negotiate agreements、access data
+- 本轮核验：
+  - `git diff --check`：通过
+  - 文档引用来源：仅使用 EDC / DSP 官方公开文档链接
+  - 本轮未改动 Python 代码、schema、examples、tests，因此未额外运行代码路径测试
 
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`

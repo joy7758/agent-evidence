@@ -48,6 +48,14 @@ offline.
 - walkthrough -> [verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo)
 - post-execution review -> [aro-audit](https://github.com/joy7758/aro-audit)
 
+## EDC / Dataspace augmentation
+
+EDC is a scenario augmentation layer for `agent-evidence`, not a new mainline or a replacement surface.
+
+- boundary -> [docs/edc/EDC_AUGMENTATION_BOUNDARY.md](docs/edc/EDC_AUGMENTATION_BOUNDARY.md)
+- minimal profile draft -> [docs/edc/edc_minimal_evidence_profile_draft.md](docs/edc/edc_minimal_evidence_profile_draft.md)
+- minimal demo path -> [docs/edc/edc_demo_minimal_path.md](docs/edc/edc_demo_minimal_path.md)
+
 ## Current v0.1 package
 
 The current primary package surface is
