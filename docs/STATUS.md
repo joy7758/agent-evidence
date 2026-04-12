@@ -22,6 +22,7 @@
 - M13 EDC Java minimal-scope coverage and export contract tests：已完成
 - M14 EDC Java EventRouter registration smoke spike：已完成
 - M15 EDC Java configurable exporter handoff：已完成
+- M16 EDC Java minimal runtime wiring sample：已完成
 - M7 旗舰论文规划包：已完成
 
 ## 当前落地产物
@@ -240,6 +241,25 @@
   - `./gradlew compileJava`：通过
   - `./gradlew test`：通过
   - `git diff --check`：通过
+
+## M16 EDC Java minimal runtime wiring sample
+- 状态：已完成
+- 定位结论：
+  - 这轮不新增 sample 工程，只把 `config -> exporter -> writer -> subscriber` 这条最小运行时装配链显式化。
+  - 目标是验证 exporter 配置如何流转到 runtime wiring，而不是扩张事件范围或 exporter 类型。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/src/main/java/.../AgentEvidenceRuntimeWiring.java`
+  - `spikes/edc-java-extension/src/main/java/.../AgentEvidenceEdcExtension.java`
+  - `spikes/edc-java-extension/src/test/java/.../AgentEvidenceEdcExtensionSmokeTest.java`
+  - `spikes/edc-java-extension/README.md`
+- 本轮收敛结果：
+  - runtime wiring 现在显式包含 exporter 配置、writer 选择、subscriber 装配和可选 transaction handoff
+  - 默认 `filesystem` 与配置 `noop` 两条装配路径都已被直接验证
+  - 这轮没有新增 exporter 类型、事件类型或 runtime sample 工程
+- 本轮核验：
+  - `./gradlew compileJava`：通过
+  - `./gradlew test`：通过
+  - `git diff --check`：待提交前复验
 
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`

@@ -140,6 +140,19 @@ fragment 导出路径。
 
 这里故意不做 fallback。原因是 exporter 是 augmentation layer 和外部 evidence 层的运行时边界，配置写错时若静默回落，会让导出语义变得不明确。
 
+## Minimal Runtime Wiring
+
+这轮没有新增 sample 工程，只把最小运行时装配链显式收成一个小的 wiring 对象，用来验证：
+
+- `edc.agent-evidence.exporter.type`
+- `edc.agent-evidence.output-dir`
+- `ConfigurableEvidenceEnvelopeWriterFactory`
+- `ControlPlaneEvidenceSubscriber`
+
+之间的配置流转是否稳定。
+
+这样做的价值是：先把 augmentation layer 的运行时装配边界钉住，再决定后面是否值得补一个单独的 runtime sample。
+
 ## 官方参考
 
 - EDC Extension Model

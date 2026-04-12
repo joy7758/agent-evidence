@@ -1,6 +1,8 @@
 package org.agentevidence.edc.spike;
 
 import org.agentevidence.edc.spike.fixtures.ControlPlaneEventFixtures;
+import org.agentevidence.edc.spike.writer.FileSystemEvidenceEnvelopeWriter;
+import org.agentevidence.edc.spike.writer.NoOpEvidenceEnvelopeWriter;
 import org.eclipse.edc.connector.controlplane.asset.spi.event.AssetEvent;
 import org.eclipse.edc.connector.controlplane.contract.spi.event.contractdefinition.ContractDefinitionEvent;
 import org.eclipse.edc.connector.controlplane.contract.spi.event.contractnegotiation.ContractNegotiationEvent;
@@ -27,6 +29,9 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -54,6 +59,46 @@ class AgentEvidenceEdcExtensionSmokeTest {
                 eventRouter.asyncRegistrations()
         );
         assertTrue(eventRouter.syncRegistrations().isEmpty());
+    }
+
+    @Test
+    void shouldAssembleDefaultFilesystemRuntimeWiring() {
+        var eventRouter = new RecordingEventRouter();
+        var monitor = new RecordingMonitor();
+        var extension = new AgentEvidenceEdcExtension(eventRouter, monitor);
+        var context = new FakeServiceExtensionContext(Map.of(), Map.of(), monitor);
+
+        var wiring = extension.buildRuntimeWiring(context, monitor);
+
+        assertEquals(AgentEvidenceEdcExtension.DEFAULT_EXPORTER_TYPE, wiring.exporterConfiguration().normalizedExporterType());
+        assertEquals(AgentEvidenceEdcExtension.DEFAULT_OUTPUT_DIR, wiring.exporterConfiguration().outputDirectory());
+        assertInstanceOf(FileSystemEvidenceEnvelopeWriter.class, wiring.writer());
+        assertNotNull(wiring.mapper());
+        assertNotNull(wiring.groupingStrategy());
+        assertNotNull(wiring.subscriber());
+        assertNull(wiring.transactionContext());
+    }
+
+    @Test
+    void shouldAssembleNoopRuntimeWiringWhenConfigured() {
+        var eventRouter = new RecordingEventRouter();
+        var monitor = new RecordingMonitor();
+        var transactionContext = new RecordingTransactionContext();
+        var extension = new AgentEvidenceEdcExtension(eventRouter, monitor);
+        var context = new FakeServiceExtensionContext(
+                Map.of(
+                        AgentEvidenceEdcExtension.EXPORTER_TYPE, "noop",
+                        AgentEvidenceEdcExtension.OUTPUT_DIR, tempDir.resolve("ignored-output").toString()
+                ),
+                Map.of(TransactionContext.class, transactionContext),
+                monitor
+        );
+
+        var wiring = extension.buildRuntimeWiring(context, monitor);
+
+        assertEquals("noop", wiring.exporterConfiguration().normalizedExporterType());
+        assertInstanceOf(NoOpEvidenceEnvelopeWriter.class, wiring.writer());
+        assertEquals(transactionContext, wiring.transactionContext());
     }
 
     @Test

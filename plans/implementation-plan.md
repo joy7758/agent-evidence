@@ -210,3 +210,18 @@
   - 非法 exporter.type 采用 fail-fast，并有清晰错误
   - `./gradlew compileJava` 与 `./gradlew test` 通过
   - 不引入 runtime sample、schema JSON、persistence、data plane、signing、verification 逻辑
+
+## M16 EDC Java minimal runtime wiring sample
+- 输入：
+  - 已完成的 configurable exporter handoff
+  - 当前 `AgentEvidenceEdcExtension` 初始化链
+  - 现有 `ControlPlaneEvidenceSubscriber`、mapper、grouping、writer 装配路径
+- 输出：
+  - 显式的最小 runtime wiring 对象
+  - 对默认 `filesystem` 与配置 `noop` 两条装配路径的直接测试
+  - README 中一小节 runtime wiring 说明
+- 验收条件：
+  - 配置键流转到 exporter / writer / subscriber 装配链
+  - 不新增 exporter 类型、事件类型或 sample 工程
+  - `./gradlew compileJava` 与 `./gradlew test` 通过
+  - 保持 augmentation layer 边界，不下沉 signing、verification、anchor 或 persistence

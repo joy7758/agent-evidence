@@ -2,8 +2,6 @@ package org.agentevidence.edc.spike;
 
 import org.agentevidence.edc.spike.grouping.AgentEvidenceGroupingStrategy;
 import org.agentevidence.edc.spike.mapper.AgentEvidenceEventMapper;
-import org.agentevidence.edc.spike.subscriber.ControlPlaneEvidenceSubscriber;
-import org.agentevidence.edc.spike.writer.AgentEvidenceEnvelopeWriter;
 import org.agentevidence.edc.spike.writer.AgentEvidenceExporterConfiguration;
 import org.agentevidence.edc.spike.writer.ConfigurableEvidenceEnvelopeWriterFactory;
 import org.eclipse.edc.connector.controlplane.asset.spi.event.AssetEvent;
@@ -17,7 +15,6 @@ import org.eclipse.edc.spi.event.EventRouter;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
-import org.eclipse.edc.transaction.spi.TransactionContext;
 
 @Extension(value = AgentEvidenceEdcExtension.NAME)
 public class AgentEvidenceEdcExtension implements ServiceExtension {
@@ -65,29 +62,17 @@ public class AgentEvidenceEdcExtension implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         var extensionMonitor = resolveMonitor(context).withPrefix("AgentEvidenceEdcExtension");
-        var mapper = new AgentEvidenceEventMapper();
-        var groupingStrategy = new AgentEvidenceGroupingStrategy();
-        var exporterConfiguration = AgentEvidenceExporterConfiguration.from(context);
-        var writer = buildWriter(exporterConfiguration, extensionMonitor);
-
-        var transactionContext = optionalTransactionContext(context);
-        var subscriber = new ControlPlaneEvidenceSubscriber(
-                mapper,
-                groupingStrategy,
-                writer,
-                transactionContext,
-                extensionMonitor
-        );
+        var wiring = buildRuntimeWiring(context, extensionMonitor);
 
         // Async registration keeps the first spike focused on low-friction export.
         // TODO: evaluate registerSync(...) once the writer moves to an outbox or staged local store.
-        eventRouter.register(AssetEvent.class, subscriber);
-        eventRouter.register(PolicyDefinitionEvent.class, subscriber);
-        eventRouter.register(ContractDefinitionEvent.class, subscriber);
-        eventRouter.register(ContractNegotiationEvent.class, subscriber);
-        eventRouter.register(TransferProcessEvent.class, subscriber);
+        eventRouter.register(AssetEvent.class, wiring.subscriber());
+        eventRouter.register(PolicyDefinitionEvent.class, wiring.subscriber());
+        eventRouter.register(ContractDefinitionEvent.class, wiring.subscriber());
+        eventRouter.register(ContractNegotiationEvent.class, wiring.subscriber());
+        eventRouter.register(TransferProcessEvent.class, wiring.subscriber());
 
-        extensionMonitor.info("Using agent-evidence exporter type '" + exporterConfiguration.normalizedExporterType() + "'");
+        extensionMonitor.info("Using agent-evidence exporter type '" + wiring.exporterConfiguration().normalizedExporterType() + "'");
         extensionMonitor.info("Registered control-plane event subscribers for agent-evidence spike");
     }
 
@@ -95,17 +80,10 @@ public class AgentEvidenceEdcExtension implements ServiceExtension {
         return monitor != null ? monitor : context.getMonitor();
     }
 
-    private AgentEvidenceEnvelopeWriter buildWriter(
-            AgentEvidenceExporterConfiguration exporterConfiguration,
+    AgentEvidenceRuntimeWiring buildRuntimeWiring(
+            ServiceExtensionContext context,
             Monitor extensionMonitor
     ) {
-        return exporterFactory.create(exporterConfiguration, extensionMonitor);
-    }
-
-    private TransactionContext optionalTransactionContext(ServiceExtensionContext context) {
-        if (context.hasService(TransactionContext.class)) {
-            return context.getService(TransactionContext.class);
-        }
-        return null;
+        return AgentEvidenceRuntimeWiring.from(context, extensionMonitor, exporterFactory);
     }
 }
