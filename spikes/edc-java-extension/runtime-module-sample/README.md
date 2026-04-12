@@ -112,9 +112,20 @@ env JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home \
 TIMEOUT_SECONDS=60 runtime-module-sample/run-startup-smoke.sh
 ```
 
+脚本默认会先刷新一次 `:runtime-module-sample:installDist`，避免拿旧的 launcher 产物做 smoke。
+如果你明确知道当前 `installDist` 已经是新的，可以传：
+
+```bash
+REFRESH_INSTALL_DIST=0 runtime-module-sample/run-startup-smoke.sh
+```
+
+脚本默认还会自动挑一个空闲 `web.http.port`，避免本机已有进程占住 `19191`。
+只有在你显式传入 `JAVA_OPTS=-Dweb.http.port=...` 时，它才会使用你指定的端口。
+
 这条 smoke 的成功条件不是“进程永远跑着”，而是日志里出现：
 
 - `Using agent-evidence exporter type 'filesystem'`
+- `Using agent-evidence output directory './runtime-module-sample/output'`
 - `Registered control-plane event subscribers for agent-evidence spike`
 - `Runtime ... ready`
 

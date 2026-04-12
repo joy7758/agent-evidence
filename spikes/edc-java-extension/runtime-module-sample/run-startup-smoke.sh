@@ -9,6 +9,7 @@ LOG_PATH="${LOG_PATH:-${SCRIPT_DIR}/build/runtime-startup-smoke.log}"
 OUTPUT_DIR="${OUTPUT_DIR:-${SCRIPT_DIR}/output}"
 TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-120}"
 POLL_INTERVAL_SECONDS="${POLL_INTERVAL_SECONDS:-1}"
+REFRESH_INSTALL_DIST="${REFRESH_INSTALL_DIST:-1}"
 
 if [[ -z "${JAVA_HOME:-}" ]] && [[ -d "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home" ]]; then
   export JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
@@ -19,7 +20,7 @@ mkdir -p "$(dirname "${LOG_PATH}")"
 rm -f "${LOG_PATH}"
 rm -rf "${OUTPUT_DIR}"
 
-if [[ ! -x "${LAUNCHER_PATH}" ]]; then
+if [[ "${REFRESH_INSTALL_DIST}" == "1" ]] || [[ ! -x "${LAUNCHER_PATH}" ]]; then
   (
     cd "${EXTENSION_ROOT}"
     ./gradlew :runtime-module-sample:installDist >/dev/null
@@ -35,11 +36,24 @@ cleanup() {
   fi
 }
 
+find_free_port() {
+  python3 - <<'PY'
+import socket
+s = socket.socket()
+s.bind(("127.0.0.1", 0))
+print(s.getsockname()[1])
+s.close()
+PY
+}
+
 trap cleanup EXIT
 
 (
   cd "${EXTENSION_ROOT}"
   JAVA_OPTS_VALUE="-Dedc.fs.config=${PROPERTIES_PATH}"
+  if [[ "${JAVA_OPTS_VALUE} ${JAVA_OPTS:-}" != *"-Dweb.http.port="* ]]; then
+    JAVA_OPTS_VALUE="${JAVA_OPTS_VALUE} -Dweb.http.port=$(find_free_port)"
+  fi
   if [[ -n "${JAVA_OPTS:-}" ]]; then
     JAVA_OPTS_VALUE="${JAVA_OPTS_VALUE} ${JAVA_OPTS}"
   fi
@@ -52,6 +66,7 @@ deadline=$(( $(date +%s) + TIMEOUT_SECONDS ))
 while true; do
   if [[ -f "${LOG_PATH}" ]] \
     && grep -q "Using agent-evidence exporter type 'filesystem'" "${LOG_PATH}" \
+    && grep -q "Using agent-evidence output directory" "${LOG_PATH}" \
     && grep -q "Registered control-plane event subscribers for agent-evidence spike" "${LOG_PATH}" \
     && grep -Eq "Runtime .+ ready" "${LOG_PATH}"; then
     echo "Runtime startup successful"

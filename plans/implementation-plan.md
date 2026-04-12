@@ -285,3 +285,18 @@
   - 文档明确 `edc.fs.config`、`edc.agent-evidence.exporter.type`、`edc.agent-evidence.output-dir` 的角色
   - startup smoke 的成功条件与日志契约保持一致
   - 不新增 exporter 类型、事件类型或 runtime 功能
+
+## M21 runtime startup config visibility
+- 输入：
+  - 已完成的 runtime startup smoke 与 log contract
+  - 当前 `AgentEvidenceEdcExtension` startup info logs
+  - 当前 `run-startup-smoke.sh` 成功条件
+- 输出：
+  - startup 阶段显式输出 `output-dir` 的日志
+  - 收紧后的 startup smoke 与对应测试断言
+  - 与实际行为对齐后的 README / log contract 文案
+- 验收条件：
+  - startup 日志同时包含 exporter type 和 output directory
+  - `./gradlew :runtime-module-sample:test`、脚本手动运行、`./gradlew test` 通过
+  - 文档中的成功条件与脚本 / 测试实际断言一致
+  - 不新增 exporter 类型、事件类型或 runtime 功能

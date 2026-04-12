@@ -350,6 +350,32 @@
   - `git diff --check`：通过
   - 本轮仅文档更新，未改代码路径，因此未额外重跑测试
 
+## M21 runtime startup config visibility
+- 状态：已完成
+- 定位结论：
+  - 这轮不扩事件范围，也不扩 exporter 类型，只把 startup 阶段的配置可见性补完整。
+  - 目标是让 startup 日志在最小契约内同时暴露 exporter type、output directory、subscriber 注册和 runtime ready。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/src/main/java/.../AgentEvidenceEdcExtension.java`
+  - `spikes/edc-java-extension/src/test/java/.../AgentEvidenceEdcExtensionSmokeTest.java`
+  - `spikes/edc-java-extension/runtime-module-sample/src/test/java/.../AgentEvidenceRuntimeModuleIntegrationTest.java`
+  - `spikes/edc-java-extension/runtime-module-sample/run-startup-smoke.sh`
+  - `spikes/edc-java-extension/RUNTIME_STARTUP_LOG_CONTRACT.md`
+  - `spikes/edc-java-extension/README.md`
+  - `spikes/edc-java-extension/runtime-module-sample/README.md`
+- 预期收敛结果：
+  - startup 阶段显式打印 `edc.agent-evidence.output-dir`
+  - startup smoke 成功条件收紧为 `exporter type + output directory + subscriber registered + runtime ready`
+  - 文档契约和行为验证保持一致
+- 本轮核验：
+  - `./gradlew :runtime-module-sample:test`：通过
+  - `runtime-module-sample/run-startup-smoke.sh`：通过
+  - `./gradlew test`：通过
+  - `git diff --check`：通过
+- 本轮实际补充：
+  - `AgentEvidenceEdcExtension` startup info logs 现在显式输出 `output-dir`
+  - `run-startup-smoke.sh` 默认刷新 `installDist`，并在未显式传入 `web.http.port` 时自动选择空闲端口
+
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
   - 结果：`All checks passed!`

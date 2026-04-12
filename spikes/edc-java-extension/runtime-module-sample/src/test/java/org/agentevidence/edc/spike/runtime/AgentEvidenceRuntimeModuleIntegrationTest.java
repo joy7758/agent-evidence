@@ -112,6 +112,7 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
         assertTrue(Files.readString(agreementFile).contains("\"semanticEventType\":\"dataspace.contract.agreement.established\""));
         assertTrue(Files.readString(transferFile).contains("\"semanticEventType\":\"dataspace.transfer.started\""));
         assertTrue(monitor.infoMessages().stream().anyMatch(message -> message.contains("Using agent-evidence exporter type 'filesystem'")));
+        assertTrue(monitor.infoMessages().stream().anyMatch(message -> message.contains("Using agent-evidence output directory '" + outputDir)));
     }
 
     @Test
@@ -140,6 +141,7 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
         assertEquals(1, transactionContext.executeCount());
         assertTrue(Files.notExists(outputDir));
         assertTrue(monitor.infoMessages().stream().anyMatch(message -> message.contains("Using agent-evidence exporter type 'noop'")));
+        assertTrue(monitor.infoMessages().stream().anyMatch(message -> message.contains("Using agent-evidence output directory '" + outputDir)));
     }
 
     @Test
@@ -169,6 +171,7 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
 
         var log = Files.readString(logPath);
         assertTrue(log.contains("Using agent-evidence exporter type 'filesystem'"));
+        assertTrue(log.contains("Using agent-evidence output directory './runtime-module-sample/output'"));
         assertTrue(log.contains("Registered control-plane event subscribers for agent-evidence spike"));
         assertTrue(log.matches("(?s).*Runtime .* ready.*"));
     }

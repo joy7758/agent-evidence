@@ -121,6 +121,7 @@ class AgentEvidenceEdcExtensionSmokeTest {
         assertTrue(Files.readString(agreementFile).contains("\"effectiveOutputKey\":\"agreement-1\""));
         assertTrue(Files.readString(transferFile).contains("\"effectiveOutputKey\":\"tp-1\""));
         assertTrue(monitor.infoMessages().stream().anyMatch(it -> it.contains("Using agent-evidence exporter type 'filesystem'")));
+        assertTrue(monitor.infoMessages().stream().anyMatch(it -> it.contains("Using agent-evidence output directory '" + outputDir)));
         assertTrue(monitor.infoMessages().stream().anyMatch(it -> it.contains("Registered control-plane event subscribers")));
     }
 
@@ -146,6 +147,7 @@ class AgentEvidenceEdcExtensionSmokeTest {
         assertEquals(1, transactionContext.executeCount());
         assertTrue(Files.notExists(outputDir));
         assertTrue(monitor.infoMessages().stream().anyMatch(it -> it.contains("Using agent-evidence exporter type 'noop'")));
+        assertTrue(monitor.infoMessages().stream().anyMatch(it -> it.contains("Using agent-evidence output directory '" + outputDir)));
     }
 
     @Test

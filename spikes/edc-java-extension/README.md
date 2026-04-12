@@ -201,9 +201,10 @@ startup 阶段的最小日志要求已经单独收在
 这里只保留最短版本：
 
 1. 必须能看出当前 exporter 选择结果。
-2. 必须能看出 control-plane subscriber 已完成注册。
-3. 必须能看出 runtime 已经进入 `ready`。
-4. 如果启动失败，异常堆栈必须直接可见，不能只剩模糊退出码。
+2. 必须能看出当前 `output-dir` 配置。
+3. 必须能看出 control-plane subscriber 已完成注册。
+4. 必须能看出 runtime 已经进入 `ready`。
+5. 如果启动失败，异常堆栈必须直接可见，不能只剩模糊退出码。
 
 ## 官方参考
 
