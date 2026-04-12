@@ -111,3 +111,47 @@
   - 给出 negotiation / transfer 的最小状态链、哪些事件暂时不进最小 demo、以及两级去重策略
   - 推荐最终 bundle grouping key，并说明为什么
   - 不写 schema JSON，不写 Java 可运行代码
+
+## M11 EDC Java extension skeleton spike
+- 输入：
+  - M9 / M10 产出的边界文档、event sketch、event mapping、extension structure
+  - 官方 EDC Extension Model 文档
+  - 官方 EDC Samples 中 Java 17+ 的环境假设
+  - 官方 EDC 源码中 `ServiceExtension`、`EventRouter`、`EventEnvelope`、control-plane event family 相关类型
+- 输出：
+  - `spikes/edc-java-extension/README.md`
+  - `spikes/edc-java-extension/BOUNDARY.md`
+  - `spikes/edc-java-extension/EVENT_SCOPE.md`
+  - `spikes/edc-java-extension/settings.gradle.kts`
+  - `spikes/edc-java-extension/build.gradle.kts`
+  - `spikes/edc-java-extension/gradle.properties`
+  - `spikes/edc-java-extension/src/main/resources/META-INF/services/org.eclipse.edc.spi.system.ServiceExtension`
+  - `spikes/edc-java-extension/src/main/java/...` 最小 skeleton
+  - `README.md` 的最小导航更新
+  - `docs/STATUS.md` 里程碑记录
+- 验收条件：
+  - Java skeleton 位于独立 spike 目录，不混入 Python 主包
+  - 骨架明确包含 extension entry、mapper、grouping strategy、writer、model，并体现 `transfer_process_id` 是最终 grouping key
+  - provider file 路径正确，能够表达 EDC ServiceLoader 注册方式
+  - build 文件把 Java 17 与 EDC 版本占位独立出来
+  - 清楚区分哪些是实际骨架，哪些仍是 TODO / placeholder
+  - 不扩张成完整 connector、data plane 或 persistence 改造
+  - 如环境允许则至少验证 `gradle wrapper`、`./gradlew tasks --all`、`./gradlew compileJava`，并优先补到 `./gradlew test`
+  - 如环境不允许则明确说明卡点
+
+## M12 EDC Java real-payload subscriber / mapper refinement
+- 输入：
+  - M11 已完成的 compile-capable Java spike
+  - 本地已解析的 EDC `AssetCreated`、`PolicyDefinitionCreated`、`ContractNegotiationFinalized`、`TransferProcessStarted` 等 control-plane event builders
+  - 当前最小事件范围、grouping key、两级 dedup 设计
+- 输出：
+  - 使用真实 EDC builder payload 的 test fixtures
+  - 更新后的 mapper / grouping / subscriber / observed-event 轻量测试
+  - 必要的 test classpath 收敛
+  - `spikes/edc-java-extension/README.md` 与 `EVENT_SCOPE.md` 的最小同步
+- 验收条件：
+  - 测试不再依赖自定义假 event，而是使用真实 EDC control-plane event payload
+  - 至少验证 agreement / participant / transfer 相关字段抽取
+  - 至少验证 transfer `grouping key`、pre-transfer staging correlation 和两级 dedup
+  - `gradle test` 与 `./gradlew test` 通过
+  - 不把 spike 扩张成 connector runtime、persistence 或 data plane 改造

@@ -17,6 +17,8 @@
 - M8 可选 trust binding 扩展：已完成
 - M9 EDC augmentation 边界与最小接入文档：已完成
 - M10 EDC control-plane event extension 草图：已完成
+- M11 EDC Java extension skeleton spike：已完成
+- M12 EDC Java real-payload subscriber / mapper refinement：已完成
 - M7 旗舰论文规划包：已完成
 
 ## 当前落地产物
@@ -107,6 +109,63 @@
   - `git diff --check`：通过
   - 文档引用来源：仅使用 EDC / DSP 官方文档与官方仓库源码链接
   - 本轮未改动 Python 代码、schema、examples、tests，因此未额外运行代码路径测试
+
+## M11 EDC Java extension skeleton spike
+- 状态：已完成
+- 定位结论：
+  - 这轮只在独立 worktree 中完成 Java extension skeleton / spike，不碰原 Python 工作树。
+  - 这轮只验证 `ServiceExtension` + provider file + `EventRouter` subscriber + mapper / grouping / writer 的最小接入骨架。
+  - 这轮不把 signing、verification、anchor、persistence、data plane 下沉到 Java 侧。
+- 本轮新增产物：
+  - `spikes/edc-java-extension/README.md`
+  - `spikes/edc-java-extension/BOUNDARY.md`
+  - `spikes/edc-java-extension/EVENT_SCOPE.md`
+  - `spikes/edc-java-extension/settings.gradle.kts`
+  - `spikes/edc-java-extension/build.gradle.kts`
+  - `spikes/edc-java-extension/gradle.properties`
+  - `spikes/edc-java-extension/src/main/resources/META-INF/services/org.eclipse.edc.spi.system.ServiceExtension`
+  - `spikes/edc-java-extension/src/main/java/...` 下的 extension / subscriber / mapper / grouping / writer / model 骨架
+  - `README.md` 中新增 spike 导航
+  - `plans/implementation-plan.md` 同步新增 M11 里程碑
+- 本轮边界收敛：
+  - Java extension 侧只负责观察、归一化、分组和导出 evidence fragment
+  - Python `agent-evidence` 侧继续负责 schema、validator、manifest、signing、anchor、独立验证
+  - 最终 bundle grouping key 继续固定为 `transfer_process_id`
+  - `contract_agreement_id` 只作为 transfer 出现前的 staging correlation key
+- 本轮核验：
+  - `git diff --check`：通过
+  - 文档引用来源：仅使用官方 EDC 文档与官方样式
+  - Java 17：已安装并验证 `openjdk version "17.0.18"`
+  - Gradle：已安装并验证 `Gradle 9.4.1`
+  - `gradle wrapper`：通过
+  - `./gradlew tasks --all`：通过
+  - `./gradlew compileJava`：通过
+  - `./gradlew test`：通过
+  - 本轮最小可验证结果已从“结构骨架”推进到“compile-capable + lightweight tests”
+
+## M12 EDC Java real-payload subscriber / mapper refinement
+- 状态：已完成
+- 定位结论：
+  - 这轮不扩张 Java 功能边界，只把测试从自定义 stub event 推进到更贴近真实 EDC control-plane payload 的级别。
+  - 这轮继续只验证 control-plane augmentation path，不碰 persistence、data plane、signing、verification、anchor。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/src/test/java/.../fixtures/ControlPlaneEventFixtures.java`
+  - `spikes/edc-java-extension/src/test/java/.../ObservedControlPlaneEventTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../AgentEvidenceEventMapperTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../AgentEvidenceGroupingStrategyTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../ControlPlaneEvidenceSubscriberTest.java`
+  - `spikes/edc-java-extension/build.gradle.kts`
+  - `spikes/edc-java-extension/README.md`
+  - `spikes/edc-java-extension/EVENT_SCOPE.md`
+- 本轮收敛结果：
+  - mapper、grouping、subscriber 的轻量测试已改为使用 EDC 官方 event builders 构造的真实 payload
+  - `ContractNegotiationFinalized` 的 agreement / participant 提取已被显式验证
+  - `TransferProcessStarted` 的 transfer grouping 与 dedup 行为已被显式验证
+  - pre-transfer 阶段继续采用 `contract_agreement_id` 作为 staging correlation key，`effectiveOutputKey()` 在没有 `transfer_process_id` 时回落到 agreement
+- 本轮核验：
+  - `gradle test`：通过
+  - `./gradlew test`：通过
+  - `git diff --check`：通过
 
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
