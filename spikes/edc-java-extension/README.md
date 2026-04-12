@@ -184,6 +184,21 @@ fragment 导出路径。
 如果想看失败后应该先查哪一层、先改什么，可以直接看
 [FAILURE_TRIAGE_RECIPE.md](FAILURE_TRIAGE_RECIPE.md)。
 
+## Current spike status
+
+如果现在要快速判断这条 spike 是否应该继续扩张，先看：
+
+- [SPIKE_FREEZE_SUMMARY.md](SPIKE_FREEZE_SUMMARY.md)
+- [VALIDATED_SURFACES.md](VALIDATED_SURFACES.md)
+
+如果现在要对外解释这条 spike 的定位和后续方式，先看：
+
+- [UPSTREAM_HANDOFF_NOTE.md](UPSTREAM_HANDOFF_NOTE.md)
+
+如果现在要复现最小验证命令和 startup smoke，先看：
+
+- [TESTING_AND_RUNBOOK.md](TESTING_AND_RUNBOOK.md)
+
 ## BaseRuntime Startup Configuration
 
 当前 `runtime-module-sample` 用 `BaseRuntime` 作为最小 launcher。

@@ -376,3 +376,23 @@
   - runtime tests 至少验证 noop sample properties startup
   - runtime tests 至少验证 `JAVA_OPTS` 覆盖 exporter.type 与 output-dir
   - `./gradlew :runtime-module-sample:test`、`./gradlew test`、`git diff --check` 通过
+
+## M27 EDC Java spike freeze / handoff package
+- 输入：
+  - 已完成的 EDC Java spike 边界文档、mapping、skeleton、runtime wiring、startup smoke、failure contract、runtime-facing exporter integration
+  - 当前 `spikes/edc-java-extension/README.md`、运行样例与 failure docs
+  - 当前 `docs/STATUS.md` 与 `plans/implementation-plan.md`
+- 输出：
+  - `spikes/edc-java-extension/SPIKE_FREEZE_SUMMARY.md`
+  - `spikes/edc-java-extension/VALIDATED_SURFACES.md`
+  - `spikes/edc-java-extension/UPSTREAM_HANDOFF_NOTE.md`
+  - `spikes/edc-java-extension/TESTING_AND_RUNBOOK.md`
+  - `spikes/edc-java-extension/README.md` 的最小 freeze 导航
+  - `docs/STATUS.md` 与本计划中的 freeze / handoff 里程碑
+- 验收条件：
+  - 文档明确列出已经验证通过的能力面
+  - 文档明确列出刻意未做的内容，并说明为什么当前应先停止扩张
+  - 文档明确哪些结论足够稳可以对外说，哪些仍然只是 spike-level evidence
+  - runbook 收敛 compileJava、test、runtime-module-sample:test、run-startup-smoke.sh 的最短路径
+  - 本轮只交付 freeze / handoff 文档，不新增 runtime 功能
+  - `git diff --check` 通过

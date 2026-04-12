@@ -23,6 +23,17 @@
 - M14 EDC Java EventRouter registration smoke spike：已完成
 - M15 EDC Java configurable exporter handoff：已完成
 - M16 EDC Java minimal runtime wiring sample：已完成
+- M17 EDC Java runtime-facing sample note：已完成
+- M18 EDC Java runtime module integration sample：已完成
+- M19 EDC runtime startup smoke：已完成
+- M20 runtime startup log contract：已完成
+- M21 runtime startup config visibility：已完成
+- M22 startup failure contract：已完成
+- M23 startup failure triage recipe：已完成
+- M24 event subscriber / mapper validation and exporter config normalization：已完成
+- M25 runtime exporter integration sample：已完成
+- M26 advanced runtime exporter integration：已完成
+- M27 EDC Java spike freeze / handoff package：已完成
 - M7 旗舰论文规划包：已完成
 
 ## 当前落地产物
@@ -490,6 +501,28 @@
   - `./gradlew :runtime-module-sample:test`：通过
   - `./gradlew test`：通过
   - `git diff --check`：通过
+
+## M27 EDC Java spike freeze / handoff package
+- 状态：已完成
+- 定位结论：
+  - 这轮不再扩 EDC Java 功能，只把当前 spike 收成一个可交付、可解释、可引用的 freeze / handoff package。
+  - 目标是清楚说明已经验证了什么、明确没有做什么、以及为什么当前应当先停在这里。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/SPIKE_FREEZE_SUMMARY.md`
+  - `spikes/edc-java-extension/VALIDATED_SURFACES.md`
+  - `spikes/edc-java-extension/UPSTREAM_HANDOFF_NOTE.md`
+  - `spikes/edc-java-extension/TESTING_AND_RUNBOOK.md`
+  - `spikes/edc-java-extension/README.md`
+  - `docs/STATUS.md`
+  - `plans/implementation-plan.md`
+- 本轮收敛结果：
+  - freeze summary 明确收敛了已验证能力面、刻意未做内容和“为什么先停”
+  - validated surfaces 表格把 event registration、semantic mapping、grouping、dedup、exporter、runtime integration、startup smoke / failure contract 的证据链整理清楚
+  - upstream handoff note 把这条 spike 和 Python `agent-evidence` 主包的关系说清楚，并避免把 spike 误写成 EDC 产品线
+  - testing / runbook 收敛了 compile、test、runtime-module-sample:test、startup smoke 的最短执行路径
+- 本轮核验：
+  - `git diff --check`：待提交前复验
+  - 本轮仅文档与导航更新，未新增 runtime 能力，因此未额外重跑 Gradle 测试
 
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
