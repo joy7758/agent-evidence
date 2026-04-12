@@ -118,6 +118,10 @@ paths.
 The historical specimen track still keeps its original DOI:
 https://doi.org/10.5281/zenodo.19055948
 
+## EDC Java spike
+
+EDC Java spike 已冻结为可引用的 augmentation-layer validation artifact。主仓入口见 [docs/edc-java-spike/README.md](docs/edc-java-spike/README.md)，冻结 summary 见 [SPIKE_FREEZE_SUMMARY.md](https://github.com/joy7758/agent-evidence/blob/edc-java-spike-freeze-v0.1/spikes/edc-java-extension/SPIKE_FREEZE_SUMMARY.md)。
+
 ## Fastest proof
 
 ```bash
