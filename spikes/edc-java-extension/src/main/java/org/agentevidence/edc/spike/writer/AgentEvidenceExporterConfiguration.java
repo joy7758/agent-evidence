@@ -26,4 +26,11 @@ public record AgentEvidenceExporterConfiguration(
         }
         return exporterType.trim().toLowerCase(Locale.ROOT);
     }
+
+    public String normalizedOutputDirectory() {
+        if (outputDirectory == null || outputDirectory.isBlank()) {
+            return DEFAULT_OUTPUT_DIR;
+        }
+        return outputDirectory.trim();
+    }
 }

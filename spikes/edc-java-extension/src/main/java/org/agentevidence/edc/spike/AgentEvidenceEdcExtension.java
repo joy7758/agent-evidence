@@ -77,7 +77,7 @@ public class AgentEvidenceEdcExtension implements ServiceExtension {
             registerMinimalControlPlaneSubscribers(eventRouter, wiring.subscriber(), minimalControlPlaneEventFamilies());
 
             extensionMonitor.info("Using agent-evidence exporter type '" + wiring.exporterConfiguration().normalizedExporterType() + "'");
-            extensionMonitor.info("Using agent-evidence output directory '" + wiring.exporterConfiguration().outputDirectory() + "'");
+            extensionMonitor.info("Using agent-evidence output directory '" + wiring.exporterConfiguration().normalizedOutputDirectory() + "'");
             extensionMonitor.info("Registered control-plane event subscribers for agent-evidence spike");
         } catch (RuntimeException e) {
             extensionMonitor.severe(startupFailureMessage(e), e);

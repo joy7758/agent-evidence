@@ -5,8 +5,8 @@ import org.agentevidence.edc.spike.grouping.AgentEvidenceGroupingStrategy;
 import org.agentevidence.edc.spike.mapper.AgentEvidenceEventMapper;
 import org.agentevidence.edc.spike.model.BundleCorrelationContext;
 import org.agentevidence.edc.spike.model.EvidenceFragment;
+import org.agentevidence.edc.spike.support.RuntimeWiringTestSupport.RecordingMonitor;
 import org.agentevidence.edc.spike.writer.AgentEvidenceEnvelopeWriter;
-import org.eclipse.edc.spi.monitor.Monitor;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ControlPlaneEvidenceSubscriberTest {
     @Test
@@ -24,7 +25,7 @@ class ControlPlaneEvidenceSubscriberTest {
                 new AgentEvidenceGroupingStrategy(),
                 writer,
                 null,
-                new SilentMonitor()
+                new RecordingMonitor()
         );
 
         subscriber.on(ControlPlaneEventFixtures.assetCreatedEnvelope("env-asset-1", 1_712_780_800_000L));
@@ -46,7 +47,7 @@ class ControlPlaneEvidenceSubscriberTest {
                 new AgentEvidenceGroupingStrategy(),
                 writer,
                 null,
-                new SilentMonitor()
+                new RecordingMonitor()
         );
 
         subscriber.on(ControlPlaneEventFixtures.transferProcessStartedEnvelope("env-transfer-started", 1_712_780_802_000L));
@@ -55,6 +56,40 @@ class ControlPlaneEvidenceSubscriberTest {
         assertEquals("tp-1", writer.writes.get(0).correlationContext.finalBundleKey());
         assertEquals("agreement-1", writer.writes.get(0).correlationContext.stagingCorrelationKey());
         assertEquals("dataspace.transfer.started", writer.writes.get(0).fragment.semanticEventType());
+    }
+
+    @Test
+    void shouldIgnoreOutOfScopePayloadAndEmitDebugSignal() {
+        var writer = new RecordingWriter();
+        var monitor = new RecordingMonitor();
+        var subscriber = new ControlPlaneEvidenceSubscriber(
+                new AgentEvidenceEventMapper(),
+                new AgentEvidenceGroupingStrategy(),
+                writer,
+                null,
+                monitor
+        );
+
+        subscriber.on(ControlPlaneEventFixtures.transferProcessSuspendedEnvelope("env-transfer-suspended", 1_712_780_803_000L));
+
+        assertTrue(writer.writes.isEmpty());
+        assertTrue(monitor.debugMessages().stream().anyMatch(it -> it.contains("Ignoring out-of-scope control-plane event transfer.process.suspended")));
+    }
+
+    @Test
+    void shouldSwallowWriterFailureAndEmitWarning() {
+        var monitor = new RecordingMonitor();
+        var subscriber = new ControlPlaneEvidenceSubscriber(
+                new AgentEvidenceEventMapper(),
+                new AgentEvidenceGroupingStrategy(),
+                new FailingWriter(),
+                null,
+                monitor
+        );
+
+        subscriber.on(ControlPlaneEventFixtures.transferProcessStartedEnvelope("env-transfer-started", 1_712_780_804_000L));
+
+        assertTrue(monitor.warningMessages().stream().anyMatch(it -> it.contains("Failed to export evidence fragment for event transfer.process.started")));
     }
 
     private record RecordedWrite(BundleCorrelationContext correlationContext, EvidenceFragment fragment) {
@@ -69,6 +104,10 @@ class ControlPlaneEvidenceSubscriberTest {
         }
     }
 
-    private static class SilentMonitor implements Monitor {
+    private static class FailingWriter implements AgentEvidenceEnvelopeWriter {
+        @Override
+        public void write(BundleCorrelationContext correlationContext, EvidenceFragment fragment) throws IOException {
+            throw new IOException("disk-full");
+        }
     }
 }

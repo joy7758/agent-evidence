@@ -47,6 +47,7 @@ class AgentEvidenceRuntimeWiringSampleTest {
         var transferFile = outputDir.resolve("tp-1").resolve("evidence-fragments.jsonl");
 
         assertEquals("filesystem", wiring.exporterConfiguration().normalizedExporterType());
+        assertEquals(outputDir.toString(), wiring.exporterConfiguration().normalizedOutputDirectory());
         assertEquals(2, transactionContext.executeCount());
         assertTrue(Files.exists(agreementFile));
         assertTrue(Files.exists(transferFile));
@@ -81,6 +82,7 @@ class AgentEvidenceRuntimeWiringSampleTest {
         eventRouter.publish(ControlPlaneEventFixtures.transferProcessStartedEnvelope("sample-transfer-started", 1_712_780_902_000L));
 
         assertEquals("noop", wiring.exporterConfiguration().normalizedExporterType());
+        assertEquals(outputDir.toString(), wiring.exporterConfiguration().normalizedOutputDirectory());
         assertEquals(1, transactionContext.executeCount());
         assertTrue(Files.notExists(outputDir));
     }

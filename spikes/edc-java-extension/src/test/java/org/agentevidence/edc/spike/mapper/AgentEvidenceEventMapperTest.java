@@ -41,7 +41,11 @@ class AgentEvidenceEventMapperTest {
                 ControlPlaneEventFixtures.contractNegotiationRequestedEnvelope("env-neg-requested", 1_712_780_803_000L),
                 "dataspace.contract.negotiation.requested",
                 fragment -> {
+                    assertEquals("env-neg-requested", fragment.envelopeId());
+                    assertEquals("2024-04-10T20:26:43Z", fragment.observedAt().toString());
+                    assertEquals(ControlPlaneEventFixtures.PARTICIPANT_CONTEXT_ID, fragment.participantContextId());
                     assertEquals(ControlPlaneEventFixtures.CONTRACT_NEGOTIATION_ID, fragment.contractNegotiationId());
+                    assertEquals(ControlPlaneEventFixtures.PROTOCOL, fragment.protocol());
                     assertEquals(ControlPlaneEventFixtures.CONSUMER_ID, fragment.counterPartyId());
                 }
         );
@@ -76,6 +80,7 @@ class AgentEvidenceEventMapperTest {
                 "dataspace.transfer.started",
                 fragment -> {
                     assertEquals(ControlPlaneEventFixtures.TRANSFER_PROCESS_ID, fragment.transferProcessId());
+                    assertEquals(ControlPlaneEventFixtures.PROTOCOL, fragment.protocol());
                     assertEquals(ControlPlaneEventFixtures.TRANSFER_TYPE, fragment.transferType());
                 }
         );

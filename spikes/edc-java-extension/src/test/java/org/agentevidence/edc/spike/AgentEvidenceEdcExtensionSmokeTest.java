@@ -65,7 +65,7 @@ class AgentEvidenceEdcExtensionSmokeTest {
         var wiring = extension.buildRuntimeWiring(context, monitor);
 
         assertEquals(AgentEvidenceEdcExtension.DEFAULT_EXPORTER_TYPE, wiring.exporterConfiguration().normalizedExporterType());
-        assertEquals(AgentEvidenceEdcExtension.DEFAULT_OUTPUT_DIR, wiring.exporterConfiguration().outputDirectory());
+        assertEquals(AgentEvidenceEdcExtension.DEFAULT_OUTPUT_DIR, wiring.exporterConfiguration().normalizedOutputDirectory());
         assertInstanceOf(FileSystemEvidenceEnvelopeWriter.class, wiring.writer());
         assertNotNull(wiring.mapper());
         assertNotNull(wiring.groupingStrategy());
@@ -93,6 +93,27 @@ class AgentEvidenceEdcExtensionSmokeTest {
         assertEquals("noop", wiring.exporterConfiguration().normalizedExporterType());
         assertInstanceOf(NoOpEvidenceEnvelopeWriter.class, wiring.writer());
         assertEquals(transactionContext, wiring.transactionContext());
+    }
+
+    @Test
+    void shouldNormalizeExporterConfigurationBeforeBuildingRuntimeWiring() {
+        var eventRouter = new RecordingEventRouter();
+        var monitor = new RecordingMonitor();
+        var extension = new AgentEvidenceEdcExtension(eventRouter, monitor);
+        var context = new FakeServiceExtensionContext(
+                Map.of(
+                        AgentEvidenceEdcExtension.EXPORTER_TYPE, "  FILESYSTEM  ",
+                        AgentEvidenceEdcExtension.OUTPUT_DIR, "   "
+                ),
+                Map.of(),
+                monitor
+        );
+
+        var wiring = extension.buildRuntimeWiring(context, monitor);
+
+        assertEquals("filesystem", wiring.exporterConfiguration().normalizedExporterType());
+        assertEquals(AgentEvidenceEdcExtension.DEFAULT_OUTPUT_DIR, wiring.exporterConfiguration().normalizedOutputDirectory());
+        assertInstanceOf(FileSystemEvidenceEnvelopeWriter.class, wiring.writer());
     }
 
     @Test

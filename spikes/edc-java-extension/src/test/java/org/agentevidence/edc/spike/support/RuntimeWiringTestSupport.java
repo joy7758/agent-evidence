@@ -65,6 +65,8 @@ public final class RuntimeWiringTestSupport {
 
     public static final class RecordingMonitor implements Monitor {
         private final List<String> infoMessages = new ArrayList<>();
+        private final List<String> warningMessages = new ArrayList<>();
+        private final List<String> debugMessages = new ArrayList<>();
         private final List<String> severeMessages = new ArrayList<>();
 
         @Override
@@ -78,6 +80,16 @@ public final class RuntimeWiringTestSupport {
         }
 
         @Override
+        public void warning(String message, Throwable... errors) {
+            warningMessages.add(message);
+        }
+
+        @Override
+        public void debug(String message, Throwable... errors) {
+            debugMessages.add(message);
+        }
+
+        @Override
         public Monitor withPrefix(String prefix) {
             return this;
         }
@@ -88,6 +100,14 @@ public final class RuntimeWiringTestSupport {
 
         public List<String> severeMessages() {
             return severeMessages;
+        }
+
+        public List<String> warningMessages() {
+            return warningMessages;
+        }
+
+        public List<String> debugMessages() {
+            return debugMessages;
         }
     }
 

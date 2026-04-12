@@ -11,7 +11,7 @@ public class ConfigurableEvidenceEnvelopeWriterFactory {
         var exporterType = configuration.normalizedExporterType();
         return switch (exporterType) {
             case "filesystem" -> new FileSystemEvidenceEnvelopeWriter(
-                    Path.of(configuration.outputDirectory()),
+                    Path.of(configuration.normalizedOutputDirectory()),
                     monitor
             );
             case "noop", "disabled" -> new NoOpEvidenceEnvelopeWriter(monitor);

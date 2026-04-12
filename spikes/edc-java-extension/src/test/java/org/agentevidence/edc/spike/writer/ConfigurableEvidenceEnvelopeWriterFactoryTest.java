@@ -29,6 +29,10 @@ class ConfigurableEvidenceEnvelopeWriterFactoryTest {
                 NoOpEvidenceEnvelopeWriter.class,
                 factory.create(new AgentEvidenceExporterConfiguration("disabled", "build/test-export"), monitor)
         );
+        assertInstanceOf(
+                NoOpEvidenceEnvelopeWriter.class,
+                factory.create(new AgentEvidenceExporterConfiguration("  NoOp  ", "build/test-export"), monitor)
+        );
     }
 
     @Test

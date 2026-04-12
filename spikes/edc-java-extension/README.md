@@ -139,7 +139,9 @@ fragment 导出路径。
 当前行为约定如下：
 
 - 未配置 `exporter.type` 时，默认使用 `filesystem`
+- `exporter.type` 会先做 trim + lower-case 归一
 - `filesystem` 模式下，`output-dir` 必须生效
+- `output-dir` 为空白时会回落到默认目录
 - `noop` / `disabled` 模式下，subscriber / mapper / grouping 链继续执行，但不写文件
 - 遇到非法 exporter type 时直接 fail-fast
 

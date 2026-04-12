@@ -422,6 +422,32 @@
   - `git diff --check`：通过
   - 本轮仅文档更新，未改代码路径，因此未额外重跑 Gradle 测试
 
+## M24 event subscriber / mapper validation and exporter config normalization
+- 状态：已完成
+- 定位结论：
+  - 这轮不扩事件范围，也不扩 exporter 类型。
+  - 目标只是把 subscriber / mapper 的最小边界验证再压实一层，并把 exporter 配置流转收敛到更稳定的 normalization 行为。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/src/main/java/.../AgentEvidenceExporterConfiguration.java`
+  - `spikes/edc-java-extension/src/main/java/.../ConfigurableEvidenceEnvelopeWriterFactory.java`
+  - `spikes/edc-java-extension/src/main/java/.../AgentEvidenceEdcExtension.java`
+  - `spikes/edc-java-extension/src/test/java/.../writer/AgentEvidenceExporterConfigurationTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../writer/ConfigurableEvidenceEnvelopeWriterFactoryTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../AgentEvidenceEdcExtensionSmokeTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../AgentEvidenceRuntimeWiringSampleTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../mapper/AgentEvidenceEventMapperTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../subscriber/ControlPlaneEvidenceSubscriberTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../support/RuntimeWiringTestSupport.java`
+  - `spikes/edc-java-extension/README.md`
+- 本轮收敛结果：
+  - exporter.type 现在支持 trim + lower-case normalization
+  - 空白 output-dir 会回落到默认目录，并用于 writer 装配和 startup log
+  - mapper tests 现在显式验证 envelope metadata / protocol / participant context 等字段透传
+  - subscriber tests 现在显式验证 out-of-scope 事件忽略和 writer failure warning
+- 本轮核验：
+  - `./gradlew test`：通过
+  - `git diff --check`：通过
+
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
   - 结果：`All checks passed!`

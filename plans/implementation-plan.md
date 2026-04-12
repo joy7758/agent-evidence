@@ -330,3 +330,19 @@
   - 文档给出最短排障顺序与最小修复动作
   - 不新增 exporter、事件范围或代码路径
   - `git diff --check` 通过
+
+## M24 event subscriber / mapper validation and exporter config normalization
+- 输入：
+  - 已完成的 real-payload fixtures、subscriber / mapper tests 与 runtime wiring sample
+  - 当前 exporter handoff 的最小集合：`filesystem`、`noop`、`disabled`
+  - 当前 `AgentEvidenceExporterConfiguration`、`ControlPlaneEvidenceSubscriber` 与 `AgentEvidenceEventMapper`
+- 输出：
+  - 对 subscriber / mapper 边界的补充测试
+  - 对 exporter type / output-dir 的最小 normalization
+  - README / STATUS 中的最小同步说明
+- 验收条件：
+  - subscriber 至少验证 out-of-scope 事件忽略和 writer failure warning
+  - mapper 至少验证 envelope metadata / protocol 等关键字段透传
+  - exporter.type 支持 trim + lower-case normalization
+  - 空白 output-dir 回落到默认目录
+  - `./gradlew test` 与 `git diff --check` 通过
