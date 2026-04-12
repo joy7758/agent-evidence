@@ -59,6 +59,7 @@ EDC is a scenario augmentation layer for `agent-evidence`, not a new mainline or
 - event mapping -> [docs/edc/edc_event_to_evidence_mapping.md](docs/edc/edc_event_to_evidence_mapping.md)
 - extension structure -> [docs/edc/edc_extension_minimal_structure.md](docs/edc/edc_extension_minimal_structure.md)
 - Java extension spike -> [spikes/edc-java-extension/README.md](spikes/edc-java-extension/README.md)
+- runtime module sample -> [spikes/edc-java-extension/runtime-module-sample/README.md](spikes/edc-java-extension/runtime-module-sample/README.md)
 
 ## Current v0.1 package
 

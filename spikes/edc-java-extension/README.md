@@ -89,6 +89,7 @@ fragment 导出路径。
 - `BOUNDARY.md`
 - `EVENT_SCOPE.md`
 - `RUNTIME_WIRING_SAMPLE.md`
+- `runtime-module-sample/`
 - `src/main/java/...`
 - `src/main/resources/META-INF/services/org.eclipse.edc.spi.system.ServiceExtension`
 
@@ -156,6 +157,9 @@ fragment 导出路径。
 
 如果只想看最小配置和最小事件流转，可以直接看
 [RUNTIME_WIRING_SAMPLE.md](RUNTIME_WIRING_SAMPLE.md)。
+
+如果想看它如何被放进一个最小 runtime launcher，可以直接看
+[runtime-module-sample/README.md](runtime-module-sample/README.md)。
 
 ## 官方参考
 

@@ -284,6 +284,31 @@
   - `./gradlew test`：通过
   - `git diff --check`：通过
 
+## M18 EDC Java runtime module integration sample
+- 状态：已完成
+- 定位结论：
+  - 这轮补的是最小 launcher 子模块，用来说明如何把当前 extension 作为 runtime module 装进 EDC `BaseRuntime`。
+  - 目标不是跑完整 connector 场景，而是验证 runtime classpath、provider file、配置 handoff 和最小 control-plane event export 路径。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/settings.gradle.kts`
+  - `spikes/edc-java-extension/runtime-module-sample/build.gradle.kts`
+  - `spikes/edc-java-extension/runtime-module-sample/README.md`
+  - `spikes/edc-java-extension/runtime-module-sample/src/main/resources/agent-evidence-runtime.properties`
+  - `spikes/edc-java-extension/runtime-module-sample/src/test/java/.../AgentEvidenceRuntimeModuleIntegrationTest.java`
+  - `spikes/edc-java-extension/README.md`
+  - `README.md`
+- 预期收敛结果：
+  - runtime module 子项目使用 `BaseRuntime` 和最小 runtime 依赖
+  - 当前 spike extension 通过 `runtimeOnly(project(":"))` 被装进 launcher classpath
+  - 通过 `ServiceLoader` 和最小 publish 测试验证 runtime module integration
+  - 不引入新的 exporter 类型、事件类型、persistence 或 data plane
+- 本轮核验：
+  - `./gradlew :runtime-module-sample:test`：通过
+  - `./gradlew :runtime-module-sample:installDist`：通过
+  - `./gradlew test`：通过
+  - `jar tf runtime-module-sample/build/install/runtime-module-sample/lib/agent-evidence-edc-java-extension-spike-0.0.1-SPIKE.jar | rg "ServiceExtension|AgentEvidenceEdcExtension"`：通过
+  - `git diff --check`：通过
+
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
   - 结果：`All checks passed!`

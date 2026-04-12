@@ -240,3 +240,19 @@
   - 样例测试能直接跑通 `config -> wiring -> publish -> output/no-output`
   - 不新增 exporter 类型、事件类型或 runtime 工程
   - `./gradlew compileJava` 与 `./gradlew test` 通过
+
+## M18 EDC Java runtime module integration sample
+- 输入：
+  - 已完成的 runtime-facing wiring 样例
+  - 当前 `AgentEvidenceEdcExtension` provider file、exporter handoff 和 smoke tests
+  - EDC 官方 basic connector / extension loading 样式
+- 输出：
+  - 一个最小 runtime launcher 子模块
+  - launcher 级 README 和 properties 配置模板
+  - runtime module integration 轻量测试
+- 验收条件：
+  - launcher 子模块以 `BaseRuntime` 为 main class
+  - extension 通过 `runtimeOnly(project(":"))` 被装进 runtime module
+  - `ServiceLoader` 能发现 `AgentEvidenceEdcExtension`
+  - runtime module 级测试能验证 filesystem / noop handoff
+  - `./gradlew :runtime-module-sample:test`、`:runtime-module-sample:installDist` 与 `./gradlew test` 通过
