@@ -4,8 +4,7 @@
 
 # Agent Evidence
 
-Concrete execution-evidence entry for verifiable AI agent runs with offline
-verification.
+Agent Evidence is the concrete execution-evidence entry point for the Digital Biosphere Architecture.
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19334062.svg)](https://doi.org/10.5281/zenodo.19334062)
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
@@ -13,40 +12,34 @@ verification.
 ![Semantic Events](https://img.shields.io/badge/semantic%20events-v2.0.0-1f6feb)
 ![Status](https://img.shields.io/badge/status-experimental-orange)
 
-Agent Evidence is the concrete execution-evidence entry point for the Digital
-Biosphere Architecture.
+## Positioning
 
-It packages agent/runtime execution into verifiable evidence bundles for offline
-verification. It is not the full architecture hub, not the audit control plane,
-and not just tracing or logging. For system context, start with
-[digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture);
-for the shortest walkthrough, see
-[verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo); for
-post-execution review, see
-[aro-audit](https://github.com/joy7758/aro-audit).
-
-## Role
-
-`agent-evidence` is the concrete execution-evidence entry point for packaging
-agent/runtime execution into portable bundles that another party can verify
-offline.
-
-## Not this repo
-
-- not the full architecture hub
+- portable evidence bundles
+- independently verifiable execution evidence
+- not the architecture hub
 - not the audit control plane
-- not just tracing or logging
+- not just tracing / observability export
+
+## Navigation
+
+- Architecture hub -> [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
+- Demo walkthrough -> [verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo)
+- Audit control plane -> [aro-audit](https://github.com/joy7758/aro-audit)
+- EDC Java spike entry -> [docs/edc-java-spike/README.md](docs/edc-java-spike/README.md)
+
+## Agent Evidence Profile (AEP)
+
+The current primary package surface is the Agent Evidence Profile (AEP).
+
+Current subtitle: `Execution Evidence and Operation Accountability Profile v0.1`.
+
+## What this repo is not
+
+- not the architecture hub
+- not the audit control plane
+- not just tracing or observability export
 - not the walkthrough demo
 - not the execution-integrity kernel
-
-## Start here
-
-- architecture context -> [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
-- current primary package -> `spec/execution-evidence-operation-accountability-profile-v0.1.md`, `schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
-- current runnable surfaces -> [examples/README.md](examples/README.md), [demo/README.md](demo/README.md), `agent-evidence validate-profile <file>`
-- historical lineage -> [docs/lineage.md](docs/lineage.md)
-- walkthrough -> [verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo)
-- post-execution review -> [aro-audit](https://github.com/joy7758/aro-audit)
 
 ## Current v0.1 package
 
