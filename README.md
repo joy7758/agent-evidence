@@ -55,6 +55,9 @@ EDC is a scenario augmentation layer for `agent-evidence`, not a new mainline or
 - boundary -> [docs/edc/EDC_AUGMENTATION_BOUNDARY.md](docs/edc/EDC_AUGMENTATION_BOUNDARY.md)
 - minimal profile draft -> [docs/edc/edc_minimal_evidence_profile_draft.md](docs/edc/edc_minimal_evidence_profile_draft.md)
 - minimal demo path -> [docs/edc/edc_demo_minimal_path.md](docs/edc/edc_demo_minimal_path.md)
+- control-plane event sketch -> [docs/edc/edc_control_plane_event_extension_sketch.md](docs/edc/edc_control_plane_event_extension_sketch.md)
+- event mapping -> [docs/edc/edc_event_to_evidence_mapping.md](docs/edc/edc_event_to_evidence_mapping.md)
+- extension structure -> [docs/edc/edc_extension_minimal_structure.md](docs/edc/edc_extension_minimal_structure.md)
 
 ## Current v0.1 package
 

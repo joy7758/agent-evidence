@@ -61,6 +61,71 @@
 - 完整 usage control 执行系统
 - 全状态机、全协议、全后端一次打通
 
+## 这条 demo 路径在 control-plane event extension 视角下如何被观察
+
+| Demo step | EDC object / process | Observed control-plane event family | Generated evidence fragment | Final evidence bundle grouping key |
+| --- | --- | --- | --- | --- |
+| asset prepared | `Asset` | `AssetEvent`，最小看 `asset.created` | `dataspace.asset.registered`，带 `asset_id` | 先不单独成 bundle；作为后续 transfer bundle 的背景片段，靠 `asset_id` 关联 |
+| policy prepared | `PolicyDefinition` | `PolicyDefinitionEvent`，最小看 `policy.definition.created` | `dataspace.policy.definition.registered` | 先不单独成 bundle；靠 `policy_definition_id` 关联 |
+| contract definition prepared | `ContractDefinition` | `ContractDefinitionEvent`，最小看 `contract.definition.created` | `dataspace.contract.definition.bound` | 先不单独成 bundle；靠 `contract_definition_id` 关联 |
+| contract agreement established | `ContractNegotiation` -> `ContractAgreement` | `ContractNegotiationEvent`，最小看 `contract.negotiation.finalized` 或 `terminated` | `dataspace.contract.agreement.established` 或 `dataspace.contract.negotiation.terminated` | transfer 尚未出现前，可临时靠 `contract_agreement_id` 关联 |
+| transfer requested / started | `TransferProcess` | `TransferProcessEvent`，最小看 `transfer.process.requested`、`transfer.process.started` | `dataspace.transfer.requested`、`dataspace.transfer.started` | 从这里开始用 `transfer_process_id` 作为最终 bundle key |
+| transfer completed / terminated | `TransferProcess` terminal state | `TransferProcessEvent`，最小看 `transfer.process.completed` 或 `terminated` | `dataspace.transfer.completed` 或 `dataspace.transfer.terminated` | `transfer_process_id` |
+| bundle exported | augmentation exporter | 不是新 EDC 事件，而是 extension 内导出动作 | manifest、digest、signature count、anchor fields | `transfer_process_id` |
+
+## 推荐的 bundle grouping key
+
+如果只看“什么时候最容易先串起来”，`contract_agreement_id` 很诱人，因为
+agreement 比 transfer 更早出现。
+
+但如果看“最终 evidence bundle 应该描述什么”，我更推荐：
+
+`transfer_process_id`
+
+原因有三点：
+
+1. 一个 bundle 最终描述的是一条具体 execution path
+   transfer 才是最接近执行实例的对象。
+
+2. 一条 agreement 未来可能对应多条 transfer
+   如果直接用 `contract_agreement_id` 当最终 bundle key，后续容易把多次执行混在一起。
+
+3. transfer 事件天然提供 success / terminated 终点
+   用它做最终 key，更容易直接落到 `started_at`、`completed_at`、`terminated_at`。
+
+### 更稳的实际做法
+
+推荐采用两段式关联：
+
+- transfer 出现前：允许临时用 `contract_agreement_id` 做 staging correlation
+- transfer 出现后：把最终 bundle 固定到 `transfer_process_id`
+
+这意味着：
+
+- `contract_agreement_id` 是重要关联字段
+- `transfer_process_id` 才是最终 evidence bundle grouping key
+
+## 推荐的最小 demo 事件范围
+
+第一轮最小 demo 我建议只钉住下面这些事件：
+
+- `asset.created`
+- `policy.definition.created`
+- `contract.definition.created`
+- `contract.negotiation.requested`
+- `contract.negotiation.finalized`
+- `contract.negotiation.terminated`
+- `transfer.process.requested`
+- `transfer.process.started`
+- `transfer.process.completed`
+- `transfer.process.terminated`
+
+如果还想再缩一刀，最先可以删掉的是：
+
+- `contract.negotiation.requested`
+
+但我不建议第一轮就删，因为它能把“协商确实开始过”这一步补齐。
+
 ## 非常小的后续实现建议
 
 下一步最值得先做的是：

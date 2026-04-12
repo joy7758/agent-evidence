@@ -16,6 +16,7 @@
 - M5 demo 与文稿：已完成
 - M8 可选 trust binding 扩展：已完成
 - M9 EDC augmentation 边界与最小接入文档：已完成
+- M10 EDC control-plane event extension 草图：已完成
 - M7 旗舰论文规划包：已完成
 
 ## 当前落地产物
@@ -78,6 +79,33 @@
 - 本轮核验：
   - `git diff --check`：通过
   - 文档引用来源：仅使用 EDC / DSP 官方公开文档链接
+  - 本轮未改动 Python 代码、schema、examples、tests，因此未额外运行代码路径测试
+
+## M10 EDC control-plane event extension 草图
+- 状态：已完成
+- 定位结论：
+  - 第二轮只收敛 control-plane event extension 草图，不写 Java 可运行代码，不写 schema JSON，不碰 persistence / data plane。
+  - 首个推荐切口继续是 `ServiceExtension` + `EventRouter`，并按五个控制面事件族组织映射：asset、policy definition、contract definition、contract negotiation、transfer process。
+  - `EventEnvelope` 中的 `id` 和 `at` 是第一轮 evidence 去重与时间锚的基础，不能和 payload 语义字段混用。
+- 本轮新增产物：
+  - `docs/edc/edc_control_plane_event_extension_sketch.md`
+  - `docs/edc/edc_event_to_evidence_mapping.md`
+  - `docs/edc/edc_extension_minimal_structure.md`
+  - `docs/edc/edc_demo_minimal_path.md` 增补 control-plane event 观察视角、最小事件范围与 bundle grouping key
+  - `README.md` 增补第二轮 EDC 文档导航
+  - `plans/implementation-plan.md` 同步新增 M10 里程碑
+- 本轮推荐结果：
+  - 最小 demo 事件范围：`asset.created`、`policy.definition.created`、`contract.definition.created`、`contract.negotiation.requested|finalized|terminated`、`transfer.process.requested|started|completed|terminated`
+  - 最终 bundle grouping key：`transfer_process_id`
+  - `contract_agreement_id` 作为 transfer 出现前的 staging correlation key，而不是最终 bundle key
+- 官方依据：
+  - EDC contributor 文档明确区分 `Event` 与 `EventEnvelope`
+  - EDC contributor 文档明确 `EventRouter` 支持 in-process subscriber 与 callbacks
+  - 官方源码明确 `EventRouter` 具备 sync / async 两种注册方式，`EventRouterImpl` 先分发 sync，再分发 async
+  - 官方源码明确控制面存在五个直接可订阅的事件族，以及 negotiation / transfer 的具体事件名
+- 本轮核验：
+  - `git diff --check`：通过
+  - 文档引用来源：仅使用 EDC / DSP 官方文档与官方仓库源码链接
   - 本轮未改动 Python 代码、schema、examples、tests，因此未额外运行代码路径测试
 
 ## 本轮最小验证记录

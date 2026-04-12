@@ -90,3 +90,24 @@
   - 最小 demo 路径清楚描述 asset -> policy / contract definition -> contract agreement -> transfer process -> evidence bundle -> independent verify
   - 明确首个推荐接入面是 control-plane event extension / exporter，而不是 persistence 或 data plane
   - 仅引用官方 EDC / DSP 公开材料，不基于二手解读
+
+## M10 EDC control-plane event extension 草图与 event mapping
+- 输入：
+  - 官方 EDC adopter / contributor 文档中的 control plane、extensions、events / callbacks 材料
+  - 官方 EDC 仓库中 `ServiceExtension`、`EventRouter`、`EventSubscriber`、`EventEnvelope` 与 control-plane event family 源码
+  - M9 已产出的边界文档、最小 profile 草案、最小 demo 路径
+- 输出：
+  - `docs/edc/edc_control_plane_event_extension_sketch.md`
+  - `docs/edc/edc_event_to_evidence_mapping.md`
+  - `docs/edc/edc_extension_minimal_structure.md`
+  - `docs/edc/edc_demo_minimal_path.md` 的 event-extension 视角更新
+  - `README.md` 的最小导航补充
+  - `docs/STATUS.md` 里程碑记录
+- 验收条件：
+  - 明确当前只讨论 control plane，不碰 persistence store 改造，不碰 data plane / provisioner / connector 产品化
+  - 明确为什么首个推荐切口是 `ServiceExtension` + `EventRouter`
+  - 明确 `Event` 与 `EventEnvelope` 的职责区分，以及它们对 evidence 去重和时间锚的意义
+  - 覆盖 Asset、PolicyDefinition、ContractDefinition、ContractNegotiation、TransferProcess 五个事件面
+  - 给出 negotiation / transfer 的最小状态链、哪些事件暂时不进最小 demo、以及两级去重策略
+  - 推荐最终 bundle grouping key，并说明为什么
+  - 不写 schema JSON，不写 Java 可运行代码
