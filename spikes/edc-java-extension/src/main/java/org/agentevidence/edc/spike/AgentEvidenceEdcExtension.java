@@ -31,6 +31,14 @@ public class AgentEvidenceEdcExtension implements ServiceExtension {
     @Inject
     private Monitor monitor;
 
+    public AgentEvidenceEdcExtension() {
+    }
+
+    AgentEvidenceEdcExtension(EventRouter eventRouter, Monitor monitor) {
+        this.eventRouter = eventRouter;
+        this.monitor = monitor;
+    }
+
     @Override
     public String name() {
         return NAME;

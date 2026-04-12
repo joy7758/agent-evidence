@@ -20,6 +20,7 @@
 - M11 EDC Java extension skeleton spike：已完成
 - M12 EDC Java real-payload subscriber / mapper refinement：已完成
 - M13 EDC Java minimal-scope coverage and export contract tests：已完成
+- M14 EDC Java EventRouter registration smoke spike：已完成
 - M7 旗舰论文规划包：已完成
 
 ## 当前落地产物
@@ -190,6 +191,26 @@
 - 本轮核验：
   - `gradle test`：通过
   - `./gradlew test`：通过
+  - `git diff --check`：通过
+
+## M14 EDC Java EventRouter registration smoke spike
+- 状态：已完成
+- 定位结论：
+  - 这轮继续只验证 Java augmentation 接入面，不扩到真实 connector runtime。
+  - 目标是用 smoke test 验证 `AgentEvidenceEdcExtension.initialize()` 是否完成五类 control-plane family 的 `EventRouter` 注册，并把导出目录配置与 transaction handoff 传到 writer 链。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/src/main/java/.../AgentEvidenceEdcExtension.java`
+  - `spikes/edc-java-extension/src/test/java/.../AgentEvidenceEdcExtensionSmokeTest.java`
+  - `spikes/edc-java-extension/README.md`
+  - `plans/implementation-plan.md`
+- 本轮收敛结果：
+  - smoke test 已验证 `AssetEvent`、`PolicyDefinitionEvent`、`ContractDefinitionEvent`、`ContractNegotiationEvent`、`TransferProcessEvent` 五类 family 都通过异步 `register(...)` 注册
+  - smoke test 已验证自定义 `edc.agent-evidence.output-dir` 会进入 `FileSystemEvidenceEnvelopeWriter`
+  - smoke test 已验证 `TransactionContext` 存在时，导出写入会经过 transaction handoff
+  - smoke test 已验证发布真实 control-plane payload 后，会在配置目录下生成 agreement / transfer 对应的输出文件
+- 本轮核验：
+  - `gradle compileTestJava`：通过
+  - `gradle test --tests org.agentevidence.edc.spike.AgentEvidenceEdcExtensionSmokeTest`：通过
   - `git diff --check`：通过
 
 ## 本轮最小验证记录

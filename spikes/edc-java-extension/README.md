@@ -101,6 +101,7 @@ fragment 导出路径。
 - 轻量测试已经不再依赖自定义假事件，而是直接使用 EDC control-plane event builders 组装真实 payload
 - 最小事件范围的 10 个 control-plane event 已全部进入 real-payload 映射测试
 - `FileSystemEvidenceEnvelopeWriter` 与 `subscriber -> writer` 的导出契约已经进入最小文件输出验证
+- `AgentEvidenceEdcExtension` 的 `EventRouter` 注册与导出目录 handoff 已进入 smoke test 验证
 - `ServiceExtension -> EventRouter subscriber -> mapper -> grouping -> writer` 这条 Java 接入链在编译期与最小测试层面已经站住
 - 这仍然不是 connector 产品，也还没有验证真实 runtime 部署、persistence 或 data plane
 

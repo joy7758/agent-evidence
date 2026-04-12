@@ -173,3 +173,20 @@
   - transfer 阶段输出路径按 `transfer_process_id` 归组
   - `gradle test` 与 `./gradlew test` 通过
   - 不新增 persistence、data plane、signing、verification 逻辑
+
+## M14 EDC Java EventRouter registration smoke spike
+- 输入：
+  - 已完成的 Java extension skeleton、real-payload tests、writer/export contract tests
+  - `AgentEvidenceEdcExtension` 当前的 `initialize()`、`EventRouter` 注册逻辑与 `OUTPUT_DIR` 配置
+  - `TransactionContext` 的可选 handoff 路径
+- 输出：
+  - `AgentEvidenceEdcExtension` 的最小 smoke test
+  - 对 `EventRouter` family 注册、导出目录配置和 transaction handoff 的显式验证
+  - 只为测试注入所需的最小 extension 构造入口
+- 验收条件：
+  - 验证五类 control-plane family 都注册到 `EventRouter`
+  - 验证注册使用异步 `register(...)` 路径，而不是 `registerSync(...)`
+  - 验证自定义导出目录配置会传递到 writer 输出路径
+  - 验证存在 `TransactionContext` 时，导出写入经过 transaction handoff
+  - `gradle compileTestJava` 与 smoke test 通过
+  - 不引入真实 connector runtime、persistence 或 data plane
