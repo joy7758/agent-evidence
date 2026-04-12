@@ -19,6 +19,7 @@
 - M10 EDC control-plane event extension 草图：已完成
 - M11 EDC Java extension skeleton spike：已完成
 - M12 EDC Java real-payload subscriber / mapper refinement：已完成
+- M13 EDC Java minimal-scope coverage and export contract tests：已完成
 - M7 旗舰论文规划包：已完成
 
 ## 当前落地产物
@@ -162,6 +163,30 @@
   - `ContractNegotiationFinalized` 的 agreement / participant 提取已被显式验证
   - `TransferProcessStarted` 的 transfer grouping 与 dedup 行为已被显式验证
   - pre-transfer 阶段继续采用 `contract_agreement_id` 作为 staging correlation key，`effectiveOutputKey()` 在没有 `transfer_process_id` 时回落到 agreement
+- 本轮核验：
+  - `gradle test`：通过
+  - `./gradlew test`：通过
+  - `git diff --check`：通过
+
+## M13 EDC Java minimal-scope coverage and export contract tests
+- 状态：已完成
+- 定位结论：
+  - 这轮继续只在 Java augmentation spike 内收敛，不新增 connector runtime 路线。
+  - 目标是把最小事件范围的 10 个 control-plane event 全部推进到 real-payload 映射测试，并验证 `subscriber -> writer -> file output` 导出契约。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/src/test/java/.../AgentEvidenceEventMapperTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../FileSystemEvidenceEnvelopeWriterTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../ControlPlaneEvidenceSubscriberExportContractTest.java`
+  - `spikes/edc-java-extension/src/main/java/.../FileSystemEvidenceEnvelopeWriter.java`
+  - `spikes/edc-java-extension/README.md`
+  - `spikes/edc-java-extension/EVENT_SCOPE.md`
+  - `plans/implementation-plan.md`
+- 本轮收敛结果：
+  - 最小事件范围的 10 个 event 都已进入真实 EDC builder payload 测试
+  - writer 输出现在保留 provider / consumer / policy / contract / negotiation / protocol / transferType 等导出字段
+  - pre-transfer 阶段继续按 `contract_agreement_id` staging 输出
+  - transfer 阶段继续按 `transfer_process_id` 最终归组输出
+  - subscriber 端到端测试已验证 agreement 输出与 transfer 输出的分组边界，以及 requested 事件的 envelope / semantic 去重
 - 本轮核验：
   - `gradle test`：通过
   - `./gradlew test`：通过

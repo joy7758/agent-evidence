@@ -147,3 +147,24 @@
 这些测试现在直接使用 EDC 官方 control-plane event builders 生成 payload，而不是自定义 stub event。
 
 这说明当前事件范围不只是文档约定，也已经进入更贴近真实 payload 的最小可执行验证。
+
+## 当前最小覆盖深度
+
+当前 10 个最小事件都已经进入 real-payload 测试：
+
+- `asset.created`
+- `policy.definition.created`
+- `contract.definition.created`
+- `contract.negotiation.requested`
+- `contract.negotiation.finalized`
+- `contract.negotiation.terminated`
+- `transfer.process.requested`
+- `transfer.process.started`
+- `transfer.process.completed`
+- `transfer.process.terminated`
+
+同时，文件导出契约也已经被显式验证：
+
+- pre-transfer 事件会先落到 `contract_agreement_id` 对应的 staging 输出目录
+- transfer 事件会落到 `transfer_process_id` 对应的最终输出目录
+- 同一 transfer 链路内的多个 semantic fragments 会追加到同一个 `evidence-fragments.jsonl`

@@ -155,3 +155,21 @@
   - 至少验证 transfer `grouping key`、pre-transfer staging correlation 和两级 dedup
   - `gradle test` 与 `./gradlew test` 通过
   - 不把 spike 扩张成 connector runtime、persistence 或 data plane 改造
+
+## M13 EDC Java minimal-scope coverage and export contract tests
+- 输入：
+  - M12 已完成的真实 payload fixtures
+  - 当前 10 个最小 control-plane event 范围
+  - `FileSystemEvidenceEnvelopeWriter` 与 `ControlPlaneEvidenceSubscriber` 现有实现
+- 输出：
+  - 覆盖 10 个最小事件的 real-payload mapper tests
+  - `FileSystemEvidenceEnvelopeWriter` 的最小导出契约测试
+  - `subscriber -> writer -> file output` 的端到端导出契约测试
+  - 仅为导出契约所需的最小 writer 字段补充
+- 验收条件：
+  - 10 个最小事件都能通过真实 EDC builder payload 测试
+  - writer 输出保留最小导出契约所需的 correlation / semantic / domain 字段
+  - pre-transfer 阶段输出路径按 `contract_agreement_id` 回落
+  - transfer 阶段输出路径按 `transfer_process_id` 归组
+  - `gradle test` 与 `./gradlew test` 通过
+  - 不新增 persistence、data plane、signing、verification 逻辑
