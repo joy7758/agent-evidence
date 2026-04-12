@@ -448,6 +448,27 @@
   - `./gradlew test`：通过
   - `git diff --check`：通过
 
+## M25 runtime exporter integration sample
+- 状态：已完成
+- 定位结论：
+  - 这轮不新增 runtime 功能，只把现有 runtime module sample 进一步收敛成“配置和事件处理如何装配到 runtime”的最小示例。
+  - 目标是让 runtime-facing 例子、sample properties 和 integration tests 三者对齐。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/runtime-module-sample/src/main/resources/agent-evidence-runtime-noop.properties`
+  - `spikes/edc-java-extension/runtime-module-sample/RUNTIME_EXPORTER_INTEGRATION_SAMPLE.md`
+  - `spikes/edc-java-extension/runtime-module-sample/src/test/java/.../AgentEvidenceRuntimeModuleIntegrationTest.java`
+  - `spikes/edc-java-extension/runtime-module-sample/README.md`
+  - `spikes/edc-java-extension/README.md`
+  - `plans/implementation-plan.md`
+- 本轮收敛结果：
+  - runtime module 现在同时提供 `filesystem` 与 `noop` 两个 sample properties
+  - runtime integration tests 现在直接从 sample properties 构造 extension 上下文，再验证 exporter handoff 和事件输出 / 不输出
+  - exporter 配置流转和事件处理流转在 runtime-facing 样例、README 和测试里保持一致
+- 本轮核验：
+  - `./gradlew :runtime-module-sample:test`：通过
+  - `./gradlew test`：通过
+  - `git diff --check`：通过
+
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
   - 结果：`All checks passed!`

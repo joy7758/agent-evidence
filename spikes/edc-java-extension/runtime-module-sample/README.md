@@ -45,6 +45,8 @@ EDC 官方 adopter 文档把 extension 装配说得很清楚：
 
 - `build.gradle.kts`
 - `src/main/resources/agent-evidence-runtime.properties`
+- `src/main/resources/agent-evidence-runtime-noop.properties`
+- `RUNTIME_EXPORTER_INTEGRATION_SAMPLE.md`
 - `src/test/java/.../AgentEvidenceRuntimeModuleIntegrationTest.java`
 
 ## 最小配置
@@ -52,6 +54,7 @@ EDC 官方 adopter 文档把 extension 装配说得很清楚：
 默认 properties 文件：
 
 - [agent-evidence-runtime.properties](src/main/resources/agent-evidence-runtime.properties)
+- [agent-evidence-runtime-noop.properties](src/main/resources/agent-evidence-runtime-noop.properties)
 
 当前只固定两个 augmentation 相关配置：
 
@@ -61,7 +64,7 @@ EDC 官方 adopter 文档把 extension 装配说得很清楚：
 其中：
 
 - 不写 `exporter.type` 时，仍默认 `filesystem`
-- 可以用 JVM 参数覆盖成 `noop`
+- 也可以直接使用单独的 noop properties 样例
 
 同时，launcher 侧会显式把 control-plane event SPI 放进 runtime classpath。
 这是这轮 smoke 暴露出来的实际接入要求：extension jar 本身不是孤立运行的，它依赖这些 event family 类型在 runtime 启动期可见。
@@ -90,6 +93,17 @@ runtime-module-sample/build/install/runtime-module-sample/bin/runtime-module-sam
 ```bash
 JAVA_OPTS="-Dedc.fs.config=runtime-module-sample/src/main/resources/agent-evidence-runtime.properties -Dedc.agent-evidence.exporter.type=noop"
 ```
+
+也可以直接用 noop properties：
+
+```bash
+cd /Users/zhangbin/GitHub/agent-evidence-edc-java-spike/spikes/edc-java-extension
+JAVA_OPTS="-Dedc.fs.config=runtime-module-sample/src/main/resources/agent-evidence-runtime-noop.properties" \
+runtime-module-sample/build/install/runtime-module-sample/bin/runtime-module-sample
+```
+
+如果想看最小的配置 -> exporter -> subscriber -> writer 装配说明，可以直接看
+[RUNTIME_EXPORTER_INTEGRATION_SAMPLE.md](RUNTIME_EXPORTER_INTEGRATION_SAMPLE.md)。
 
 ## Runtime Startup Smoke
 
@@ -150,6 +164,7 @@ REFRESH_INSTALL_DIST=0 runtime-module-sample/run-startup-smoke.sh
 - 最小 config 能流转到 extension 初始化链
 - publish control-plane event 后，`filesystem` 会写出 fragment，`noop` 不写文件
 - 真实 runtime startup smoke 能在超时窗口内看到 extension 注册日志并安全退出
+- runtime integration tests 现在直接用 sample properties 验证 exporter 选择和事件流转
 
 另外，这轮也把 subscriber family 注册收成了按类名解析。
 目的不是“躲开类型系统”，而是减少 runtime startup 时对 event family 的过早静态链接，让 launcher classpath 负责最终提供这些类型。

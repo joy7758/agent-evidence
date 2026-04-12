@@ -346,3 +346,18 @@
   - exporter.type 支持 trim + lower-case normalization
   - 空白 output-dir 回落到默认目录
   - `./gradlew test` 与 `git diff --check` 通过
+
+## M25 runtime exporter integration sample
+- 输入：
+  - 已完成的 runtime module integration sample 与 exporter handoff
+  - 当前 `AgentEvidenceEdcExtension`、`AgentEvidenceRuntimeWiring`、`ControlPlaneEvidenceSubscriber`
+  - 当前 `filesystem` / `noop` 最小 exporter 集合
+- 输出：
+  - runtime-facing exporter integration 样例文档
+  - 一个单独的 noop runtime properties 样例
+  - 由 sample properties 驱动的 runtime integration tests
+- 验收条件：
+  - 文档明确说明 `edc.fs.config` -> properties -> extension -> subscriber / writer 的装配链
+  - 同时提供 `filesystem` 与 `noop` 两个最小 properties 样例
+  - runtime integration tests 使用 sample properties 验证 exporter 选择和事件流转
+  - `./gradlew :runtime-module-sample:test`、`./gradlew test`、`git diff --check` 通过

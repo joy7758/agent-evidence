@@ -76,7 +76,7 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
 
     @Test
     void shouldShipFilesystemDefaultRuntimePropertiesTemplate() throws Exception {
-        var properties = loadRuntimeProperties();
+        var properties = loadRuntimeProperties("agent-evidence-runtime.properties");
 
         assertEquals("19191", properties.getProperty("web.http.port"));
         assertEquals("/api", properties.getProperty("web.http.path"));
@@ -85,17 +85,25 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
     }
 
     @Test
-    void shouldInitializeDiscoveredExtensionAndWriteFragmentsInFilesystemMode() throws Exception {
+    void shouldShipNoopRuntimePropertiesTemplate() throws Exception {
+        var properties = loadRuntimeProperties("agent-evidence-runtime-noop.properties");
+
+        assertEquals("19191", properties.getProperty("web.http.port"));
+        assertEquals("/api", properties.getProperty("web.http.path"));
+        assertEquals("noop", properties.getProperty(EXPORTER_TYPE_KEY));
+        assertEquals("./runtime-module-sample/noop-output", properties.getProperty(OUTPUT_DIR_KEY));
+    }
+
+    @Test
+    void shouldInitializeDiscoveredExtensionAndWriteFragmentsFromFilesystemSampleProperties() throws Exception {
         var extension = loadExtensionInstance();
         var eventRouter = new RecordingEventRouter();
         var monitor = new RecordingMonitor();
         var transactionContext = new RecordingTransactionContext();
         var outputDir = tempDir.resolve("runtime-module-filesystem-output");
-        var context = new FakeServiceExtensionContext(
-                Map.of(OUTPUT_DIR_KEY, outputDir.toString()),
-                Map.of(TransactionContext.class, transactionContext),
-                monitor
-        );
+        var properties = loadRuntimeProperties("agent-evidence-runtime.properties");
+        properties.setProperty(OUTPUT_DIR_KEY, outputDir.toString());
+        var context = contextFromProperties(properties, transactionContext, monitor);
 
         inject(extension, "eventRouter", eventRouter);
         inject(extension, "monitor", monitor);
@@ -118,20 +126,15 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
     }
 
     @Test
-    void shouldInitializeDiscoveredExtensionAndSuppressOutputInNoopMode() throws Exception {
+    void shouldInitializeDiscoveredExtensionAndSuppressOutputFromNoopSampleProperties() throws Exception {
         var extension = loadExtensionInstance();
         var eventRouter = new RecordingEventRouter();
         var monitor = new RecordingMonitor();
         var transactionContext = new RecordingTransactionContext();
         var outputDir = tempDir.resolve("runtime-module-noop-output");
-        var context = new FakeServiceExtensionContext(
-                Map.of(
-                        EXPORTER_TYPE_KEY, "noop",
-                        OUTPUT_DIR_KEY, outputDir.toString()
-                ),
-                Map.of(TransactionContext.class, transactionContext),
-                monitor
-        );
+        var properties = loadRuntimeProperties("agent-evidence-runtime-noop.properties");
+        properties.setProperty(OUTPUT_DIR_KEY, outputDir.toString());
+        var context = contextFromProperties(properties, transactionContext, monitor);
 
         inject(extension, "eventRouter", eventRouter);
         inject(extension, "monitor", monitor);
@@ -259,7 +262,7 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
     }
 
     private Path writeRuntimeProperties(String fileName, Map<String, String> overrides) throws Exception {
-        var properties = loadRuntimeProperties();
+        var properties = loadRuntimeProperties("agent-evidence-runtime.properties");
         overrides.forEach(properties::setProperty);
         var path = tempDir.resolve(fileName);
         try (var writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
@@ -308,9 +311,23 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
                 .orElseThrow(() -> new IllegalStateException("AgentEvidenceEdcExtension not found on runtime classpath"));
     }
 
-    private Properties loadRuntimeProperties() throws IOException {
+    private FakeServiceExtensionContext contextFromProperties(
+            Properties properties,
+            RecordingTransactionContext transactionContext,
+            RecordingMonitor monitor
+    ) {
+        var settings = new LinkedHashMap<String, String>();
+        properties.forEach((key, value) -> settings.put(String.valueOf(key), String.valueOf(value)));
+        return new FakeServiceExtensionContext(
+                settings,
+                Map.of(TransactionContext.class, transactionContext),
+                monitor
+        );
+    }
+
+    private Properties loadRuntimeProperties(String resourceName) throws IOException {
         var properties = new Properties();
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream("agent-evidence-runtime.properties")) {
+        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourceName)) {
             assertNotNull(stream);
             properties.load(stream);
         }
