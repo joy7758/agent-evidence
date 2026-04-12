@@ -65,10 +65,16 @@ public final class RuntimeWiringTestSupport {
 
     public static final class RecordingMonitor implements Monitor {
         private final List<String> infoMessages = new ArrayList<>();
+        private final List<String> severeMessages = new ArrayList<>();
 
         @Override
         public void info(String message, Throwable... errors) {
             infoMessages.add(message);
+        }
+
+        @Override
+        public void severe(String message, Throwable... errors) {
+            severeMessages.add(message);
         }
 
         @Override
@@ -78,6 +84,10 @@ public final class RuntimeWiringTestSupport {
 
         public List<String> infoMessages() {
             return infoMessages;
+        }
+
+        public List<String> severeMessages() {
+            return severeMessages;
         }
     }
 

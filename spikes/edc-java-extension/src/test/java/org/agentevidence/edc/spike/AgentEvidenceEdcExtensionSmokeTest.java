@@ -18,6 +18,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -163,7 +164,27 @@ class AgentEvidenceEdcExtensionSmokeTest {
 
         var error = assertThrows(IllegalArgumentException.class, () -> extension.initialize(context));
 
-        assertTrue(error.getMessage().contains("Unsupported agent-evidence exporter type 's3'"));
+        assertTrue(error.getMessage().contains("Invalid exporter type 's3' specified for edc.agent-evidence.exporter.type"));
+        assertTrue(monitor.severeMessages().stream().anyMatch(it -> it.contains("Runtime initialization failed: Invalid exporter type 's3'")));
+        assertTrue(eventRouter.asyncRegistrations().isEmpty());
+    }
+
+    @Test
+    void shouldFailFastWhenRequiredEventSpiIsMissing() {
+        var eventRouter = new RecordingEventRouter();
+        var monitor = new RecordingMonitor();
+        var extension = new AgentEvidenceEdcExtension(eventRouter, monitor) {
+            @Override
+            List<String> minimalControlPlaneEventFamilies() {
+                return List.of("org.eclipse.edc.connector.controlplane.policy.spi.event.MissingPolicyEvent");
+            }
+        };
+        var context = new FakeServiceExtensionContext(Map.of(), Map.of(), monitor);
+
+        var error = assertThrows(IllegalStateException.class, () -> extension.initialize(context));
+
+        assertTrue(error.getMessage().contains("Missing Event SPI for 'org.eclipse.edc.connector.controlplane.policy.spi.event.MissingPolicyEvent'"));
+        assertTrue(monitor.severeMessages().stream().anyMatch(it -> it.contains("Runtime initialization failed: Missing Event SPI for 'org.eclipse.edc.connector.controlplane.policy.spi.event.MissingPolicyEvent'")));
         assertTrue(eventRouter.asyncRegistrations().isEmpty());
     }
 }

@@ -38,7 +38,9 @@ class ConfigurableEvidenceEnvelopeWriterFactoryTest {
                 () -> factory.create(new AgentEvidenceExporterConfiguration("s3", "build/test-export"), monitor)
         );
 
-        org.junit.jupiter.api.Assertions.assertTrue(error.getMessage().contains("Unsupported agent-evidence exporter type 's3'"));
+        org.junit.jupiter.api.Assertions.assertTrue(
+                error.getMessage().contains("Invalid exporter type 's3' specified for edc.agent-evidence.exporter.type")
+        );
     }
 
     private static class SilentMonitor implements Monitor {

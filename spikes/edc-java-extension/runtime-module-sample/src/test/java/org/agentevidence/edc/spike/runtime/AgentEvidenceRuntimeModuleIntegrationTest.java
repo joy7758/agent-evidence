@@ -23,6 +23,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.net.ServerSocket;
@@ -37,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -146,34 +148,71 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
 
     @Test
     void shouldStartInstalledRuntimeAndLogAgentEvidenceRegistration() throws Exception {
-        var moduleDir = resolveRuntimeModuleDirectory();
-        var smokeScript = moduleDir.resolve("run-startup-smoke.sh");
         var logPath = tempDir.resolve("runtime-startup-smoke.log");
         var httpPort = findFreePort();
+        var result = runStartupSmoke(Map.of(
+                "LOG_PATH", logPath.toString(),
+                "JAVA_OPTS", "-Dweb.http.port=" + httpPort
+        ));
 
-        var processBuilder = new ProcessBuilder("bash", smokeScript.toString());
-        processBuilder.directory(moduleDir.getParent().toFile());
-        processBuilder.environment().put("TIMEOUT_SECONDS", "60");
-        processBuilder.environment().put("LOG_PATH", logPath.toString());
-        processBuilder.environment().put("JAVA_HOME", System.getenv().getOrDefault("JAVA_HOME", "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"));
-        processBuilder.environment().put("JAVA_OPTS", "-Dweb.http.port=" + httpPort);
-
-        var existingPath = processBuilder.environment().getOrDefault("PATH", "");
-        var javaBin = processBuilder.environment().get("JAVA_HOME") + "/bin";
-        processBuilder.environment().put("PATH", javaBin + ":/opt/homebrew/bin:" + existingPath);
-
-        var process = processBuilder.start();
-        if (!process.waitFor(90, TimeUnit.SECONDS)) {
-            process.destroyForcibly();
-            fail("Runtime startup smoke did not exit within 90 seconds");
-        }
-        assertEquals(0, process.exitValue());
+        assertEquals(0, result.exitCode());
+        assertTrue(result.output().contains("Runtime startup successful"));
 
         var log = Files.readString(logPath);
         assertTrue(log.contains("Using agent-evidence exporter type 'filesystem'"));
         assertTrue(log.contains("Using agent-evidence output directory './runtime-module-sample/output'"));
         assertTrue(log.contains("Registered control-plane event subscribers for agent-evidence spike"));
         assertTrue(log.matches("(?s).*Runtime .* ready.*"));
+    }
+
+    @Test
+    void shouldFailStartupSmokeWithClearInvalidExporterTypeMessage() throws Exception {
+        var logPath = tempDir.resolve("runtime-startup-invalid-exporter.log");
+        var propertiesPath = writeRuntimeProperties(
+                "invalid-exporter.properties",
+                Map.of(EXPORTER_TYPE_KEY, "s3")
+        );
+
+        var result = runStartupSmoke(Map.of(
+                "LOG_PATH", logPath.toString(),
+                "RUNTIME_PROPERTIES_PATH", propertiesPath.toString()
+        ));
+
+        assertNotEquals(0, result.exitCode());
+        assertTrue(result.output().contains("Error: Invalid exporter type s3 specified."));
+        assertTrue(result.output().contains("Runtime initialization failed: Invalid exporter type 's3' specified for edc.agent-evidence.exporter.type"));
+    }
+
+    @Test
+    void shouldFailStartupSmokeWithClearPortConflictMessage() throws Exception {
+        var logPath = tempDir.resolve("runtime-startup-port-conflict.log");
+        try (var socket = new ServerSocket(0)) {
+            var result = runStartupSmoke(Map.of(
+                    "LOG_PATH", logPath.toString(),
+                    "JAVA_OPTS", "-Dweb.http.port=" + socket.getLocalPort()
+            ));
+
+            assertNotEquals(0, result.exitCode());
+            assertTrue(result.output().contains("Error: Port " + socket.getLocalPort() + " is already in use."));
+        }
+    }
+
+    @Test
+    void shouldFailStartupSmokeWithClearMissingEventSpiMessage() throws Exception {
+        var logPath = tempDir.resolve("runtime-startup-missing-spi.log");
+        var customLauncher = createLauncherWithoutJar("policy-spi");
+        var httpPort = findFreePort();
+
+        var result = runStartupSmoke(Map.of(
+                "LOG_PATH", logPath.toString(),
+                "LAUNCHER_PATH", customLauncher.toString(),
+                "REFRESH_INSTALL_DIST", "0",
+                "JAVA_OPTS", "-Dweb.http.port=" + httpPort
+        ));
+
+        assertNotEquals(0, result.exitCode());
+        assertTrue(result.output().contains("Error: Missing Event SPI for org.eclipse.edc.connector.controlplane.policy.spi.event.PolicyDefinitionEvent."));
+        assertTrue(result.output().contains("Runtime initialization failed: Missing Event SPI for 'org.eclipse.edc.connector.controlplane.policy.spi.event.PolicyDefinitionEvent'"));
     }
 
     private int findFreePort() throws IOException {
@@ -194,6 +233,73 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
         throw new IllegalStateException("Unable to locate runtime-module-sample directory from " + userDir);
     }
 
+    private SmokeRunResult runStartupSmoke(Map<String, String> overrides) throws Exception {
+        var moduleDir = resolveRuntimeModuleDirectory();
+        var smokeScript = moduleDir.resolve("run-startup-smoke.sh");
+
+        var processBuilder = new ProcessBuilder("bash", smokeScript.toString());
+        processBuilder.directory(moduleDir.getParent().toFile());
+        processBuilder.redirectErrorStream(true);
+        processBuilder.environment().put("TIMEOUT_SECONDS", "60");
+        processBuilder.environment().put("JAVA_HOME", System.getenv().getOrDefault("JAVA_HOME", "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"));
+        processBuilder.environment().putAll(overrides);
+
+        var existingPath = processBuilder.environment().getOrDefault("PATH", "");
+        var javaBin = processBuilder.environment().get("JAVA_HOME") + "/bin";
+        processBuilder.environment().put("PATH", javaBin + ":/opt/homebrew/bin:" + existingPath);
+
+        var process = processBuilder.start();
+        if (!process.waitFor(90, TimeUnit.SECONDS)) {
+            process.destroyForcibly();
+            fail("Runtime startup smoke did not exit within 90 seconds");
+        }
+
+        var output = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+        return new SmokeRunResult(process.exitValue(), output);
+    }
+
+    private Path writeRuntimeProperties(String fileName, Map<String, String> overrides) throws Exception {
+        var properties = loadRuntimeProperties();
+        overrides.forEach(properties::setProperty);
+        var path = tempDir.resolve(fileName);
+        try (var writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+            properties.store(writer, "test runtime properties");
+        }
+        return path;
+    }
+
+    private Path createLauncherWithoutJar(String excludedToken) throws Exception {
+        var moduleDir = resolveRuntimeModuleDirectory();
+        var installDir = moduleDir.resolve("build/install/runtime-module-sample");
+        var libDir = installDir.resolve("lib");
+        var launcherPath = tempDir.resolve("runtime-module-without-" + excludedToken + ".sh");
+        var script = """
+                #!/usr/bin/env bash
+                set -euo pipefail
+                LIB_DIR="%s"
+                JAVA_BIN="${JAVA_HOME:-}/bin/java"
+                if [[ ! -x "${JAVA_BIN}" ]]; then
+                  JAVA_BIN="java"
+                fi
+                CLASSPATH=""
+                while IFS= read -r -d '' jar; do
+                  name="$(basename "${jar}")"
+                  if [[ "${name}" == *"%s"* ]]; then
+                    continue
+                  fi
+                  if [[ -z "${CLASSPATH}" ]]; then
+                    CLASSPATH="${jar}"
+                  else
+                    CLASSPATH="${CLASSPATH}:${jar}"
+                  fi
+                done < <(find "${LIB_DIR}" -type f -name '*.jar' -print0 | sort -z)
+                exec "${JAVA_BIN}" ${JAVA_OPTS:-} -cp "${CLASSPATH}" org.eclipse.edc.boot.system.runtime.BaseRuntime
+                """.formatted(libDir, excludedToken);
+        Files.writeString(launcherPath, script, StandardCharsets.UTF_8);
+        launcherPath.toFile().setExecutable(true);
+        return launcherPath;
+    }
+
     private ServiceExtension loadExtensionInstance() {
         return ServiceLoader.load(ServiceExtension.class).stream()
                 .map(ServiceLoader.Provider::get)
@@ -209,6 +315,9 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
             properties.load(stream);
         }
         return properties;
+    }
+
+    private record SmokeRunResult(int exitCode, String output) {
     }
 
     private void inject(ServiceExtension extension, String fieldName, Object value) throws ReflectiveOperationException {

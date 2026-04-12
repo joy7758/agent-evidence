@@ -90,6 +90,7 @@ fragment 导出路径。
 - `EVENT_SCOPE.md`
 - `RUNTIME_WIRING_SAMPLE.md`
 - `RUNTIME_STARTUP_LOG_CONTRACT.md`
+- `STARTUP_FAILURE_CONTRACT.md`
 - `runtime-module-sample/`
 - `src/main/java/...`
 - `src/main/resources/META-INF/services/org.eclipse.edc.spi.system.ServiceExtension`
@@ -168,6 +169,9 @@ fragment 导出路径。
 如果想看 startup 日志最小契约，可以直接看
 [RUNTIME_STARTUP_LOG_CONTRACT.md](RUNTIME_STARTUP_LOG_CONTRACT.md)。
 
+如果想看 startup 失败时的最小错误语义，可以直接看
+[STARTUP_FAILURE_CONTRACT.md](STARTUP_FAILURE_CONTRACT.md)。
+
 ## BaseRuntime Startup Configuration
 
 当前 `runtime-module-sample` 用 `BaseRuntime` 作为最小 launcher。
@@ -205,6 +209,9 @@ startup 阶段的最小日志要求已经单独收在
 3. 必须能看出 control-plane subscriber 已完成注册。
 4. 必须能看出 runtime 已经进入 `ready`。
 5. 如果启动失败，异常堆栈必须直接可见，不能只剩模糊退出码。
+
+失败路径的最小错误语义单独收在
+[STARTUP_FAILURE_CONTRACT.md](STARTUP_FAILURE_CONTRACT.md)。
 
 ## 官方参考
 

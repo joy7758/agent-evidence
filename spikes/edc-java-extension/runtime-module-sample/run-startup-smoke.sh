@@ -10,6 +10,7 @@ OUTPUT_DIR="${OUTPUT_DIR:-${SCRIPT_DIR}/output}"
 TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-120}"
 POLL_INTERVAL_SECONDS="${POLL_INTERVAL_SECONDS:-1}"
 REFRESH_INSTALL_DIST="${REFRESH_INSTALL_DIST:-1}"
+EFFECTIVE_WEB_PORT=""
 
 if [[ -z "${JAVA_HOME:-}" ]] && [[ -d "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home" ]]; then
   export JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
@@ -36,6 +37,12 @@ cleanup() {
   fi
 }
 
+read_configured_web_port() {
+  if [[ -f "${PROPERTIES_PATH}" ]]; then
+    sed -n "s/^web\\.http\\.port=\\([0-9][0-9]*\\)$/\\1/p" "${PROPERTIES_PATH}" | head -n 1
+  fi
+}
+
 find_free_port() {
   python3 - <<'PY'
 import socket
@@ -46,17 +53,44 @@ s.close()
 PY
 }
 
+emit_failure_summary() {
+  local raw_port="${EFFECTIVE_WEB_PORT:-$(read_configured_web_port)}"
+  local port_label="${raw_port:-configured-port}"
+
+  if [[ -f "${LOG_PATH}" ]]; then
+    if grep -Eq "Address already in use|BindException|port[^[:alnum:]]+${port_label}[^[:alnum:]]+is already in use|Port ${port_label} is already in use" "${LOG_PATH}"; then
+      echo "Error: Port ${port_label} is already in use." >&2
+    elif grep -q "Missing Event SPI for '" "${LOG_PATH}"; then
+      local missing_spi
+      missing_spi="$(sed -n "s/.*Missing Event SPI for '\\([^']*\\)'.*/\\1/p" "${LOG_PATH}" | head -n 1)"
+      echo "Error: Missing Event SPI for ${missing_spi:-unknown-event-family}." >&2
+    elif grep -q "Invalid exporter type '" "${LOG_PATH}"; then
+      local invalid_exporter
+      invalid_exporter="$(sed -n "s/.*Invalid exporter type '\\([^']*\\)'.*/\\1/p" "${LOG_PATH}" | head -n 1)"
+      echo "Error: Invalid exporter type ${invalid_exporter:-unknown} specified." >&2
+    else
+      echo "Runtime initialization failed. See startup log for details." >&2
+    fi
+  else
+    echo "Runtime initialization failed before startup log was written." >&2
+  fi
+}
+
 trap cleanup EXIT
+
+JAVA_OPTS_VALUE="-Dedc.fs.config=${PROPERTIES_PATH}"
+if [[ "${JAVA_OPTS:-}" =~ -Dweb\.http\.port=([0-9]+) ]]; then
+  EFFECTIVE_WEB_PORT="${BASH_REMATCH[1]}"
+else
+  EFFECTIVE_WEB_PORT="$(find_free_port)"
+  JAVA_OPTS_VALUE="${JAVA_OPTS_VALUE} -Dweb.http.port=${EFFECTIVE_WEB_PORT}"
+fi
+if [[ -n "${JAVA_OPTS:-}" ]]; then
+  JAVA_OPTS_VALUE="${JAVA_OPTS_VALUE} ${JAVA_OPTS}"
+fi
 
 (
   cd "${EXTENSION_ROOT}"
-  JAVA_OPTS_VALUE="-Dedc.fs.config=${PROPERTIES_PATH}"
-  if [[ "${JAVA_OPTS_VALUE} ${JAVA_OPTS:-}" != *"-Dweb.http.port="* ]]; then
-    JAVA_OPTS_VALUE="${JAVA_OPTS_VALUE} -Dweb.http.port=$(find_free_port)"
-  fi
-  if [[ -n "${JAVA_OPTS:-}" ]]; then
-    JAVA_OPTS_VALUE="${JAVA_OPTS_VALUE} ${JAVA_OPTS}"
-  fi
   JAVA_OPTS="${JAVA_OPTS_VALUE}" "${LAUNCHER_PATH}" >"${LOG_PATH}" 2>&1
 ) &
 RUNTIME_PID=$!
@@ -74,7 +108,7 @@ while true; do
   fi
 
   if ! kill -0 "${RUNTIME_PID}" 2>/dev/null; then
-    echo "Runtime process exited before readiness checks passed" >&2
+    emit_failure_summary
     if [[ -f "${LOG_PATH}" ]]; then
       cat "${LOG_PATH}" >&2
     fi
@@ -84,6 +118,7 @@ while true; do
   if (( $(date +%s) >= deadline )); then
     echo "Runtime startup exceeded timeout of ${TIMEOUT_SECONDS} seconds" >&2
     if [[ -f "${LOG_PATH}" ]]; then
+      emit_failure_summary
       cat "${LOG_PATH}" >&2
     fi
     exit 1

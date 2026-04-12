@@ -300,3 +300,19 @@
   - `./gradlew :runtime-module-sample:test`、脚本手动运行、`./gradlew test` 通过
   - 文档中的成功条件与脚本 / 测试实际断言一致
   - 不新增 exporter 类型、事件类型或 runtime 功能
+
+## M22 startup failure contract
+- 输入：
+  - 已完成的 runtime startup smoke、startup log contract 与 config visibility 收敛
+  - 当前 extension 对 invalid exporter / missing event SPI 的 fail-fast 行为
+  - 当前 `run-startup-smoke.sh` 对 runtime 失败的处理路径
+- 输出：
+  - `STARTUP_FAILURE_CONTRACT.md`
+  - 统一后的 invalid exporter / missing event SPI / port conflict 错误语义
+  - 对应的 smoke / integration tests
+- 验收条件：
+  - 非法 `edc.agent-evidence.exporter.type` 继续 fail-fast，并有清晰错误
+  - 缺失 control-plane event SPI 时，startup 日志与脚本摘要都能指出缺失 family
+  - 端口占用时，startup smoke 能输出稳定的端口冲突错误摘要
+  - `./gradlew compileJava`、`./gradlew :runtime-module-sample:test`、`./gradlew test` 通过
+  - 不新增 exporter 类型、事件类型或 connector/runtime 产品化功能

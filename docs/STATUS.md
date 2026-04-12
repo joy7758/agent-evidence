@@ -376,6 +376,34 @@
   - `AgentEvidenceEdcExtension` startup info logs 现在显式输出 `output-dir`
   - `run-startup-smoke.sh` 默认刷新 `installDist`，并在未显式传入 `web.http.port` 时自动选择空闲端口
 
+## M22 startup failure contract
+- 状态：已完成
+- 定位结论：
+  - 这轮不扩 exporter、不扩事件范围，也不做新的 runtime sample。
+  - 目标只是把 startup 失败面收成稳定契约：端口占用、缺失 event SPI、非法 exporter.type。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/STARTUP_FAILURE_CONTRACT.md`
+  - `spikes/edc-java-extension/src/main/java/.../AgentEvidenceEdcExtension.java`
+  - `spikes/edc-java-extension/src/main/java/.../ConfigurableEvidenceEnvelopeWriterFactory.java`
+  - `spikes/edc-java-extension/runtime-module-sample/run-startup-smoke.sh`
+  - `spikes/edc-java-extension/src/test/java/.../AgentEvidenceEdcExtensionSmokeTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../ConfigurableEvidenceEnvelopeWriterFactoryTest.java`
+  - `spikes/edc-java-extension/runtime-module-sample/src/test/java/.../AgentEvidenceRuntimeModuleIntegrationTest.java`
+  - `spikes/edc-java-extension/README.md`
+  - `spikes/edc-java-extension/RUNTIME_STARTUP_LOG_CONTRACT.md`
+  - `spikes/edc-java-extension/runtime-module-sample/README.md`
+- 本轮收敛结果：
+  - invalid exporter 保持 fail-fast，不做 fallback
+  - missing event SPI 会在 extension 初始化时明确指出缺失的 control-plane event family，并写入 startup failure 日志
+  - port conflict 由 startup smoke 脚本归一成固定错误摘要，而不是只暴露底层 Jetty bind 异常
+  - runtime module integration tests 现在覆盖 invalid exporter、missing event SPI 和 port conflict 三类失败面
+- 本轮核验：
+  - `./gradlew compileJava`：通过
+  - `./gradlew :test --tests org.agentevidence.edc.spike.AgentEvidenceEdcExtensionSmokeTest --tests org.agentevidence.edc.spike.writer.ConfigurableEvidenceEnvelopeWriterFactoryTest`：通过
+  - `./gradlew :runtime-module-sample:test --tests org.agentevidence.edc.spike.runtime.AgentEvidenceRuntimeModuleIntegrationTest`：通过
+  - `./gradlew test`：通过
+  - `git diff --check`：通过
+
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
   - 结果：`All checks passed!`

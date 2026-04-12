@@ -69,15 +69,20 @@ public class AgentEvidenceEdcExtension implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         var extensionMonitor = resolveMonitor(context).withPrefix("AgentEvidenceEdcExtension");
-        var wiring = buildRuntimeWiring(context, extensionMonitor);
+        try {
+            var wiring = buildRuntimeWiring(context, extensionMonitor);
 
-        // Async registration keeps the first spike focused on low-friction export.
-        // TODO: evaluate registerSync(...) once the writer moves to an outbox or staged local store.
-        registerMinimalControlPlaneSubscribers(eventRouter, wiring.subscriber());
+            // Async registration keeps the first spike focused on low-friction export.
+            // TODO: evaluate registerSync(...) once the writer moves to an outbox or staged local store.
+            registerMinimalControlPlaneSubscribers(eventRouter, wiring.subscriber(), minimalControlPlaneEventFamilies());
 
-        extensionMonitor.info("Using agent-evidence exporter type '" + wiring.exporterConfiguration().normalizedExporterType() + "'");
-        extensionMonitor.info("Using agent-evidence output directory '" + wiring.exporterConfiguration().outputDirectory() + "'");
-        extensionMonitor.info("Registered control-plane event subscribers for agent-evidence spike");
+            extensionMonitor.info("Using agent-evidence exporter type '" + wiring.exporterConfiguration().normalizedExporterType() + "'");
+            extensionMonitor.info("Using agent-evidence output directory '" + wiring.exporterConfiguration().outputDirectory() + "'");
+            extensionMonitor.info("Registered control-plane event subscribers for agent-evidence spike");
+        } catch (RuntimeException e) {
+            extensionMonitor.severe(startupFailureMessage(e), e);
+            throw e;
+        }
     }
 
     private Monitor resolveMonitor(ServiceExtensionContext context) {
@@ -91,13 +96,23 @@ public class AgentEvidenceEdcExtension implements ServiceExtension {
         return AgentEvidenceRuntimeWiring.from(context, extensionMonitor, exporterFactory);
     }
 
+    List<String> minimalControlPlaneEventFamilies() {
+        return MINIMAL_CONTROL_PLANE_EVENT_FAMILIES;
+    }
+
     static void registerMinimalControlPlaneSubscribers(
             EventRouter eventRouter,
             ControlPlaneEvidenceSubscriber subscriber
     ) {
-        MINIMAL_CONTROL_PLANE_EVENT_FAMILIES.forEach(eventTypeName ->
-                eventRouter.register(resolveRequiredEventType(eventTypeName), subscriber)
-        );
+        registerMinimalControlPlaneSubscribers(eventRouter, subscriber, MINIMAL_CONTROL_PLANE_EVENT_FAMILIES);
+    }
+
+    static void registerMinimalControlPlaneSubscribers(
+            EventRouter eventRouter,
+            ControlPlaneEvidenceSubscriber subscriber,
+            List<String> eventTypeNames
+    ) {
+        eventTypeNames.forEach(eventTypeName -> eventRouter.register(resolveRequiredEventType(eventTypeName), subscriber));
     }
 
     @SuppressWarnings("unchecked")
@@ -109,7 +124,18 @@ public class AgentEvidenceEdcExtension implements ServiceExtension {
             }
             return (Class<? extends Event>) Class.forName(className, true, classLoader);
         } catch (ClassNotFoundException e) {
-            throw new IllegalStateException("Required control-plane event family not on runtime classpath: " + className, e);
+            throw new IllegalStateException(
+                    "Missing Event SPI for '" + className + "'. Ensure the required control-plane event SPI is on the runtime classpath.",
+                    e
+            );
         }
+    }
+
+    private String startupFailureMessage(RuntimeException e) {
+        var detail = e.getMessage();
+        if (detail == null || detail.isBlank()) {
+            detail = "unexpected runtime initialization failure";
+        }
+        return "Runtime initialization failed: " + detail;
     }
 }

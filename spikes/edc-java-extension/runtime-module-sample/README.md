@@ -129,7 +129,16 @@ REFRESH_INSTALL_DIST=0 runtime-module-sample/run-startup-smoke.sh
 - `Registered control-plane event subscribers for agent-evidence spike`
 - `Runtime ... ready`
 
-满足这三个条件后，脚本会主动结束 runtime 进程并返回成功。
+满足这四个条件后，脚本会主动结束 runtime 进程并返回成功。
+
+如果 startup 失败，脚本会尽量把已知失败面归一成稳定摘要：
+
+- `Error: Port <port> is already in use.`
+- `Error: Missing Event SPI for <event-family>.`
+- `Error: Invalid exporter type <value> specified.`
+
+具体契约见
+[../STARTUP_FAILURE_CONTRACT.md](../STARTUP_FAILURE_CONTRACT.md)。
 
 ## 这轮实际验证了什么
 

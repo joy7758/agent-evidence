@@ -69,6 +69,9 @@ startup smoke 当前只要求 startup 阶段先把 output directory 打出来，
 如果启动失败，则应直接保留异常堆栈，而不是吞掉错误。
 当前 smoke 也把这点当作契约的一部分：失败必须可见，不能只给一个模糊退出码。
 
+失败路径的最小错误语义单独收在
+[STARTUP_FAILURE_CONTRACT.md](STARTUP_FAILURE_CONTRACT.md)。
+
 ## Required Log Order
 
 当前最小启动顺序约定如下：
