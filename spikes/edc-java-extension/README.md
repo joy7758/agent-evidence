@@ -89,6 +89,7 @@ fragment 导出路径。
 - `BOUNDARY.md`
 - `EVENT_SCOPE.md`
 - `RUNTIME_WIRING_SAMPLE.md`
+- `RUNTIME_STARTUP_LOG_CONTRACT.md`
 - `runtime-module-sample/`
 - `src/main/java/...`
 - `src/main/resources/META-INF/services/org.eclipse.edc.spi.system.ServiceExtension`
@@ -163,6 +164,46 @@ fragment 导出路径。
 
 如果想看带超时保护的真实启动验证，可以直接跑
 `runtime-module-sample/run-startup-smoke.sh`。
+
+如果想看 startup 日志最小契约，可以直接看
+[RUNTIME_STARTUP_LOG_CONTRACT.md](RUNTIME_STARTUP_LOG_CONTRACT.md)。
+
+## BaseRuntime Startup Configuration
+
+当前 `runtime-module-sample` 用 `BaseRuntime` 作为最小 launcher。
+
+和 `agent-evidence` augmentation layer 直接相关的启动参数只有这几个：
+
+- `edc.agent-evidence.exporter.type`
+- `edc.agent-evidence.output-dir`
+- `edc.fs.config`
+
+它们各自负责：
+
+- `edc.agent-evidence.exporter.type`
+  - 选择 exporter
+  - 当前最小集合仍然只有 `filesystem`、`noop`、`disabled`
+- `edc.agent-evidence.output-dir`
+  - 指定 `filesystem` exporter 的输出目录
+- `edc.fs.config`
+  - 指向 runtime properties 文件，让 `BaseRuntime` 在启动时读到上面两个配置
+
+当前默认启动路径里，`agent-evidence-runtime.properties` 已显式固定：
+
+- `edc.agent-evidence.exporter.type=filesystem`
+- `edc.agent-evidence.output-dir=./runtime-module-sample/output`
+
+## BaseRuntime Log Expectations
+
+startup 阶段的最小日志要求已经单独收在
+[RUNTIME_STARTUP_LOG_CONTRACT.md](RUNTIME_STARTUP_LOG_CONTRACT.md)。
+
+这里只保留最短版本：
+
+1. 必须能看出当前 exporter 选择结果。
+2. 必须能看出 control-plane subscriber 已完成注册。
+3. 必须能看出 runtime 已经进入 `ready`。
+4. 如果启动失败，异常堆栈必须直接可见，不能只剩模糊退出码。
 
 ## 官方参考
 

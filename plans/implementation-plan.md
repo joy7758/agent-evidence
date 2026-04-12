@@ -271,3 +271,17 @@
   - 启动成功后脚本会主动结束 runtime，不留下悬挂进程
   - `./gradlew :runtime-module-sample:test`、脚本手动运行、`./gradlew test` 通过
   - 不新增 exporter 类型、事件类型或 connector 产品化结构
+
+## M20 runtime startup log contract
+- 输入：
+  - 已完成的 runtime startup smoke
+  - 当前 `AgentEvidenceEdcExtension` startup 日志
+  - 当前 `BaseRuntime` 最小启动参数与 properties 模板
+- 输出：
+  - 一份 startup 日志契约文档
+  - 主 README 中的 `BaseRuntime` 启动参数与日志预期说明
+- 验收条件：
+  - 文档明确 startup 阶段最小必需日志
+  - 文档明确 `edc.fs.config`、`edc.agent-evidence.exporter.type`、`edc.agent-evidence.output-dir` 的角色
+  - startup smoke 的成功条件与日志契约保持一致
+  - 不新增 exporter 类型、事件类型或 runtime 功能

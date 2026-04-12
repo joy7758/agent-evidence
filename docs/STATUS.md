@@ -334,6 +334,22 @@
   - `runtime-module-sample` launcher 显式补上 control-plane event SPI 到 runtime classpath
   - extension 的 minimal family 注册入口改成按类名解析，避免 runtime startup 对 event family 的过早静态链接
 
+## M20 runtime startup log contract
+- 状态：已完成
+- 定位结论：
+  - 这轮不再改 runtime 行为，只把 startup 阶段最小可观察信号写成明确契约。
+  - 目标是让 `BaseRuntime` 启动时，能清楚回答 extension 是否被加载、subscriber 是否已注册、runtime 是否真的 ready。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/RUNTIME_STARTUP_LOG_CONTRACT.md`
+  - `spikes/edc-java-extension/README.md`
+- 本轮收敛结果：
+  - startup 契约明确要求看到 exporter 选择日志、subscriber 注册日志和 `Runtime ... ready`
+  - `BaseRuntime` 启动参数说明明确固定 `edc.fs.config`、`edc.agent-evidence.exporter.type`、`edc.agent-evidence.output-dir`
+  - 文档明确把 startup 日志契约和 runtime startup smoke 的成功条件对齐
+- 本轮核验：
+  - `git diff --check`：通过
+  - 本轮仅文档更新，未改代码路径，因此未额外重跑测试
+
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
   - 结果：`All checks passed!`
