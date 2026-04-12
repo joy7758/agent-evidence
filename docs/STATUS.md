@@ -309,6 +309,31 @@
   - `jar tf runtime-module-sample/build/install/runtime-module-sample/lib/agent-evidence-edc-java-extension-spike-0.0.1-SPIKE.jar | rg "ServiceExtension|AgentEvidenceEdcExtension"`：通过
   - `git diff --check`：通过
 
+## M19 EDC runtime startup smoke
+- 状态：已完成
+- 定位结论：
+  - 这轮不是继续扩 launcher 功能，而是给 runtime module 补一个带超时保护的真实启动 smoke。
+  - 目标是验证 extension 不只是“在 classpath 里”，而是真的在 runtime 启动日志中完成加载和 subscriber 注册。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/runtime-module-sample/run-startup-smoke.sh`
+  - `spikes/edc-java-extension/runtime-module-sample/src/main/resources/agent-evidence-runtime.properties`
+  - `spikes/edc-java-extension/runtime-module-sample/src/test/java/.../AgentEvidenceRuntimeModuleIntegrationTest.java`
+  - `spikes/edc-java-extension/runtime-module-sample/build.gradle.kts`
+  - `spikes/edc-java-extension/runtime-module-sample/README.md`
+  - `spikes/edc-java-extension/.gitignore`
+- 预期收敛结果：
+  - 启动脚本有超时保护，并能在看到 `Runtime ... ready` 和 extension 注册日志后主动结束
+  - properties 模板显式固定 `filesystem` 和输出目录
+  - JUnit smoke 能直接执行启动脚本并验证关键日志
+- 本轮核验：
+  - `./gradlew :runtime-module-sample:test`：通过
+  - `runtime-module-sample/run-startup-smoke.sh`：通过
+  - `./gradlew test`：通过
+  - `git diff --check`：待提交前复验
+- 本轮实际补充：
+  - `runtime-module-sample` launcher 显式补上 control-plane event SPI 到 runtime classpath
+  - extension 的 minimal family 注册入口改成按类名解析，避免 runtime startup 对 event family 的过早静态链接
+
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`
   - 结果：`All checks passed!`

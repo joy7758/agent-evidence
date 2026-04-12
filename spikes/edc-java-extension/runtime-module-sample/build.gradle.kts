@@ -30,6 +30,11 @@ dependencies {
     implementation("$edcGroup:http:$edcVersion")
 
     runtimeOnly(project(":"))
+    runtimeOnly("$edcGroup:asset-spi:$edcVersion")
+    runtimeOnly("$edcGroup:policy-spi:$edcVersion")
+    runtimeOnly("$edcGroup:contract-spi:$edcVersion")
+    runtimeOnly("$edcGroup:transfer-spi:$edcVersion")
+    runtimeOnly("$edcGroup:transaction-spi:$edcVersion")
 
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -49,4 +54,5 @@ application {
 
 tasks.test {
     useJUnitPlatform()
+    dependsOn(tasks.installDist)
 }

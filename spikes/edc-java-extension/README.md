@@ -161,6 +161,9 @@ fragment 导出路径。
 如果想看它如何被放进一个最小 runtime launcher，可以直接看
 [runtime-module-sample/README.md](runtime-module-sample/README.md)。
 
+如果想看带超时保护的真实启动验证，可以直接跑
+`runtime-module-sample/run-startup-smoke.sh`。
+
 ## 官方参考
 
 - EDC Extension Model

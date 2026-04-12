@@ -256,3 +256,18 @@
   - `ServiceLoader` 能发现 `AgentEvidenceEdcExtension`
   - runtime module 级测试能验证 filesystem / noop handoff
   - `./gradlew :runtime-module-sample:test`、`:runtime-module-sample:installDist` 与 `./gradlew test` 通过
+
+## M19 EDC runtime startup smoke
+- 输入：
+  - 已完成的 runtime module integration sample
+  - 当前 `BaseRuntime` launcher、installDist 产物和 extension 注册日志
+  - exporter handoff 已固定为 `filesystem` / `noop`
+- 输出：
+  - 一个带超时保护的真实启动 smoke 脚本
+  - 一个直接执行启动脚本并检查日志的 JUnit smoke
+  - runtime properties 模板里的显式 `filesystem` 配置
+- 验收条件：
+  - 脚本能在超时窗口内等待 `Runtime ... ready` 与 extension 注册日志
+  - 启动成功后脚本会主动结束 runtime，不留下悬挂进程
+  - `./gradlew :runtime-module-sample:test`、脚本手动运行、`./gradlew test` 通过
+  - 不新增 exporter 类型、事件类型或 connector 产品化结构

@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,12 +33,13 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 class AgentEvidenceRuntimeModuleIntegrationTest {
@@ -76,8 +78,8 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
 
         assertEquals("19191", properties.getProperty("web.http.port"));
         assertEquals("/api", properties.getProperty("web.http.path"));
-        assertEquals("build/runtime-module-sample-output", properties.getProperty(OUTPUT_DIR_KEY));
-        assertFalse(properties.containsKey(EXPORTER_TYPE_KEY));
+        assertEquals("filesystem", properties.getProperty(EXPORTER_TYPE_KEY));
+        assertEquals("./runtime-module-sample/output", properties.getProperty(OUTPUT_DIR_KEY));
     }
 
     @Test
@@ -138,6 +140,55 @@ class AgentEvidenceRuntimeModuleIntegrationTest {
         assertEquals(1, transactionContext.executeCount());
         assertTrue(Files.notExists(outputDir));
         assertTrue(monitor.infoMessages().stream().anyMatch(message -> message.contains("Using agent-evidence exporter type 'noop'")));
+    }
+
+    @Test
+    void shouldStartInstalledRuntimeAndLogAgentEvidenceRegistration() throws Exception {
+        var moduleDir = resolveRuntimeModuleDirectory();
+        var smokeScript = moduleDir.resolve("run-startup-smoke.sh");
+        var logPath = tempDir.resolve("runtime-startup-smoke.log");
+        var httpPort = findFreePort();
+
+        var processBuilder = new ProcessBuilder("bash", smokeScript.toString());
+        processBuilder.directory(moduleDir.getParent().toFile());
+        processBuilder.environment().put("TIMEOUT_SECONDS", "60");
+        processBuilder.environment().put("LOG_PATH", logPath.toString());
+        processBuilder.environment().put("JAVA_HOME", System.getenv().getOrDefault("JAVA_HOME", "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"));
+        processBuilder.environment().put("JAVA_OPTS", "-Dweb.http.port=" + httpPort);
+
+        var existingPath = processBuilder.environment().getOrDefault("PATH", "");
+        var javaBin = processBuilder.environment().get("JAVA_HOME") + "/bin";
+        processBuilder.environment().put("PATH", javaBin + ":/opt/homebrew/bin:" + existingPath);
+
+        var process = processBuilder.start();
+        if (!process.waitFor(90, TimeUnit.SECONDS)) {
+            process.destroyForcibly();
+            fail("Runtime startup smoke did not exit within 90 seconds");
+        }
+        assertEquals(0, process.exitValue());
+
+        var log = Files.readString(logPath);
+        assertTrue(log.contains("Using agent-evidence exporter type 'filesystem'"));
+        assertTrue(log.contains("Registered control-plane event subscribers for agent-evidence spike"));
+        assertTrue(log.matches("(?s).*Runtime .* ready.*"));
+    }
+
+    private int findFreePort() throws IOException {
+        try (var socket = new ServerSocket(0)) {
+            return socket.getLocalPort();
+        }
+    }
+
+    private Path resolveRuntimeModuleDirectory() {
+        var userDir = Path.of(System.getProperty("user.dir"));
+        if (Files.exists(userDir.resolve("run-startup-smoke.sh"))) {
+            return userDir;
+        }
+        var nestedModuleDir = userDir.resolve("runtime-module-sample");
+        if (Files.exists(nestedModuleDir.resolve("run-startup-smoke.sh"))) {
+            return nestedModuleDir;
+        }
+        throw new IllegalStateException("Unable to locate runtime-module-sample directory from " + userDir);
     }
 
     private ServiceExtension loadExtensionInstance() {
