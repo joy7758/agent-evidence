@@ -17,6 +17,7 @@
 - 抽取 agreement / transfer / asset 等领域 id
 - 做两级去重入口
 - 生成 semantic evidence fragment
+- 选择最小 exporter 实现
 - 输出可交给 `agent-evidence` 的中间导出物
 
 这些职责都属于：
@@ -51,6 +52,7 @@
 - 能接收到 control-plane event
 - 能把 event 变成 semantic evidence fragment
 - 能把 fragment 带出 runtime
+- 能把 exporter 选择和 handoff 边界稳定交给外部 evidence 层
 
 一旦 fragment 已经成功带出 runtime，签名、anchor、独立验证就应该继续复用
 Python `agent-evidence` 侧，而不是在 Java 里重写一套。
@@ -86,6 +88,28 @@ EDC 官方文档已经明确：
 - provisioner
 - data plane signaling 深入集成
 - connector 产品化封装
+
+## 为什么这轮只做最小 exporter 集合
+
+因为这轮要压实的是“Java augmentation layer 如何把 fragments 带出 runtime”，不是“Java 侧最终怎么验证它们”。
+
+所以当前 exporter 只保留最小集合：
+
+- `filesystem`
+- `noop` / `disabled`
+
+这足够验证：
+
+- exporter 选择
+- 配置注入
+- output-dir handoff
+- no-output 边界
+
+但不会把 spike 扩张成：
+
+- queue / broker 集成
+- remote API exporter
+- signing / verification / anchor runtime
 
 ## 当前边界判断标准
 

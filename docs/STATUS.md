@@ -21,6 +21,7 @@
 - M12 EDC Java real-payload subscriber / mapper refinement：已完成
 - M13 EDC Java minimal-scope coverage and export contract tests：已完成
 - M14 EDC Java EventRouter registration smoke spike：已完成
+- M15 EDC Java configurable exporter handoff：已完成
 - M7 旗舰论文规划包：已完成
 
 ## 当前落地产物
@@ -211,6 +212,33 @@
 - 本轮核验：
   - `gradle compileTestJava`：通过
   - `gradle test --tests org.agentevidence.edc.spike.AgentEvidenceEdcExtensionSmokeTest`：通过
+  - `git diff --check`：通过
+
+## M15 EDC Java configurable exporter handoff
+- 状态：已完成
+- 定位结论：
+  - 这轮不做 runtime sample，不做 schema JSON，只把 Java augmentation layer 的 exporter 选择、配置注入和 handoff 边界固定下来。
+  - Java 侧继续只负责 fragments 导出，不负责 signing、verification、anchor。
+- 本轮新增或更新：
+  - `spikes/edc-java-extension/src/main/java/.../writer/AgentEvidenceExporterConfiguration.java`
+  - `spikes/edc-java-extension/src/main/java/.../writer/ConfigurableEvidenceEnvelopeWriterFactory.java`
+  - `spikes/edc-java-extension/src/main/java/.../writer/NoOpEvidenceEnvelopeWriter.java`
+  - `spikes/edc-java-extension/src/main/java/.../AgentEvidenceEdcExtension.java`
+  - `spikes/edc-java-extension/src/test/java/.../writer/ConfigurableEvidenceEnvelopeWriterFactoryTest.java`
+  - `spikes/edc-java-extension/src/test/java/.../AgentEvidenceEdcExtensionSmokeTest.java`
+  - `spikes/edc-java-extension/README.md`
+  - `spikes/edc-java-extension/BOUNDARY.md`
+  - `spikes/edc-java-extension/EVENT_SCOPE.md`
+  - `plans/implementation-plan.md`
+- 本轮收敛结果：
+  - exporter 选择层已固定为最小集合：`filesystem`、`noop`、`disabled`
+  - 未配置 `edc.agent-evidence.exporter.type` 时默认走 `filesystem`
+  - `noop` / `disabled` 模式下，subscriber / mapper / grouping 链继续执行，但不写文件
+  - 非法 exporter type 采用 fail-fast，不做 silent fallback
+  - extension smoke test 已验证 `EventRouter -> subscriber -> exporter selection -> output/no-output` 这条完整小链路
+- 本轮核验：
+  - `./gradlew compileJava`：通过
+  - `./gradlew test`：通过
   - `git diff --check`：通过
 
 ## 本轮最小验证记录

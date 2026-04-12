@@ -190,3 +190,23 @@
   - 验证存在 `TransactionContext` 时，导出写入经过 transaction handoff
   - `gradle compileTestJava` 与 smoke test 通过
   - 不引入真实 connector runtime、persistence 或 data plane
+
+## M15 EDC Java configurable exporter handoff
+- 输入：
+  - 已完成的 EventRouter registration smoke spike
+  - 当前 `AgentEvidenceEnvelopeWriter`、`FileSystemEvidenceEnvelopeWriter` 与 extension 初始化链
+  - 当前配置键 `edc.agent-evidence.output-dir`
+- 输出：
+  - 明确的 exporter selection / factory 层
+  - 最小 exporter 集合：`filesystem`、`noop` / `disabled`
+  - 统一配置键：`edc.agent-evidence.exporter.type`、`edc.agent-evidence.output-dir`
+  - 默认 exporter、noop 路径、非法 type fail-fast 的测试
+  - 文档中对 exporter handoff 边界的同步说明
+- 验收条件：
+  - `AgentEvidenceEnvelopeWriter` 继续作为核心 fragments 导出接口
+  - 未配置 exporter.type 时默认使用 `filesystem`
+  - `filesystem` 模式下 `output-dir` 生效
+  - `noop` / `disabled` 模式下链路继续执行但不写文件
+  - 非法 exporter.type 采用 fail-fast，并有清晰错误
+  - `./gradlew compileJava` 与 `./gradlew test` 通过
+  - 不引入 runtime sample、schema JSON、persistence、data plane、signing、verification 逻辑

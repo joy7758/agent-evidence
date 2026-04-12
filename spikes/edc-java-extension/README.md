@@ -10,6 +10,8 @@
 接入骨架是否顺手，是否足够承载后续的 control-plane event -> evidence
 fragment 导出路径。
 
+当前进一步收敛的重点是：把 exporter 选择和 handoff 边界固定下来，而不是继续扩张 runtime sample。
+
 ## 为什么先做 `ServiceExtension` + `EventRouter`
 
 因为这是 EDC 官方当前最稳的扩展面：
@@ -36,9 +38,15 @@ fragment 导出路径。
   - subscriber
   - mapper
   - grouping strategy
+  - exporter selection / factory
   - file-system writer
+  - no-op writer
 - bundle grouping key 以 `transfer_process_id` 为主的接口表达
 - `contract_agreement_id` 作为 transfer 出现前 staging correlation key 的表达
+- exporter 配置与 handoff：
+  - `filesystem` 作为默认 exporter
+  - `noop` / `disabled` 作为最小 no-output exporter
+  - 非法 exporter type 采用 fail-fast
 
 ## 这轮不验证什么
 
@@ -102,8 +110,35 @@ fragment 导出路径。
 - 最小事件范围的 10 个 control-plane event 已全部进入 real-payload 映射测试
 - `FileSystemEvidenceEnvelopeWriter` 与 `subscriber -> writer` 的导出契约已经进入最小文件输出验证
 - `AgentEvidenceEdcExtension` 的 `EventRouter` 注册与导出目录 handoff 已进入 smoke test 验证
+- exporter 选择已经固定为最小集合：
+  - `filesystem`
+  - `noop`
+  - `disabled`
+- 非法 `edc.agent-evidence.exporter.type` 不做 silent fallback，而是直接 fail-fast
 - `ServiceExtension -> EventRouter subscriber -> mapper -> grouping -> writer` 这条 Java 接入链在编译期与最小测试层面已经站住
 - 这仍然不是 connector 产品，也还没有验证真实 runtime 部署、persistence 或 data plane
+
+## 当前 exporter handoff 约定
+
+当前支持的 exporter 只有最小集合：
+
+- `filesystem`
+- `noop`
+- `disabled`
+
+相关配置键固定为：
+
+- `edc.agent-evidence.exporter.type`
+- `edc.agent-evidence.output-dir`
+
+当前行为约定如下：
+
+- 未配置 `exporter.type` 时，默认使用 `filesystem`
+- `filesystem` 模式下，`output-dir` 必须生效
+- `noop` / `disabled` 模式下，subscriber / mapper / grouping 链继续执行，但不写文件
+- 遇到非法 exporter type 时直接 fail-fast
+
+这里故意不做 fallback。原因是 exporter 是 augmentation layer 和外部 evidence 层的运行时边界，配置写错时若静默回落，会让导出语义变得不明确。
 
 ## 官方参考
 

@@ -3,7 +3,9 @@ package org.agentevidence.edc.spike;
 import org.agentevidence.edc.spike.grouping.AgentEvidenceGroupingStrategy;
 import org.agentevidence.edc.spike.mapper.AgentEvidenceEventMapper;
 import org.agentevidence.edc.spike.subscriber.ControlPlaneEvidenceSubscriber;
-import org.agentevidence.edc.spike.writer.FileSystemEvidenceEnvelopeWriter;
+import org.agentevidence.edc.spike.writer.AgentEvidenceEnvelopeWriter;
+import org.agentevidence.edc.spike.writer.AgentEvidenceExporterConfiguration;
+import org.agentevidence.edc.spike.writer.ConfigurableEvidenceEnvelopeWriterFactory;
 import org.eclipse.edc.connector.controlplane.asset.spi.event.AssetEvent;
 import org.eclipse.edc.connector.controlplane.contract.spi.event.contractdefinition.ContractDefinitionEvent;
 import org.eclipse.edc.connector.controlplane.contract.spi.event.contractnegotiation.ContractNegotiationEvent;
@@ -17,13 +19,13 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 
-import java.nio.file.Path;
-
 @Extension(value = AgentEvidenceEdcExtension.NAME)
 public class AgentEvidenceEdcExtension implements ServiceExtension {
     public static final String NAME = "Agent Evidence EDC control-plane extension spike";
-    public static final String OUTPUT_DIR = "edc.agent-evidence.output-dir";
-    public static final String DEFAULT_OUTPUT_DIR = "build/agent-evidence-spike";
+    public static final String EXPORTER_TYPE = AgentEvidenceExporterConfiguration.EXPORTER_TYPE;
+    public static final String OUTPUT_DIR = AgentEvidenceExporterConfiguration.OUTPUT_DIR;
+    public static final String DEFAULT_EXPORTER_TYPE = AgentEvidenceExporterConfiguration.DEFAULT_EXPORTER_TYPE;
+    public static final String DEFAULT_OUTPUT_DIR = AgentEvidenceExporterConfiguration.DEFAULT_OUTPUT_DIR;
 
     @Inject
     private EventRouter eventRouter;
@@ -31,12 +33,28 @@ public class AgentEvidenceEdcExtension implements ServiceExtension {
     @Inject
     private Monitor monitor;
 
+    private final ConfigurableEvidenceEnvelopeWriterFactory exporterFactory;
+
     public AgentEvidenceEdcExtension() {
+        this(new ConfigurableEvidenceEnvelopeWriterFactory());
     }
 
     AgentEvidenceEdcExtension(EventRouter eventRouter, Monitor monitor) {
+        this(eventRouter, monitor, new ConfigurableEvidenceEnvelopeWriterFactory());
+    }
+
+    AgentEvidenceEdcExtension(
+            EventRouter eventRouter,
+            Monitor monitor,
+            ConfigurableEvidenceEnvelopeWriterFactory exporterFactory
+    ) {
+        this(exporterFactory);
         this.eventRouter = eventRouter;
         this.monitor = monitor;
+    }
+
+    private AgentEvidenceEdcExtension(ConfigurableEvidenceEnvelopeWriterFactory exporterFactory) {
+        this.exporterFactory = exporterFactory;
     }
 
     @Override
@@ -46,13 +64,11 @@ public class AgentEvidenceEdcExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        var extensionMonitor = monitor.withPrefix("AgentEvidenceEdcExtension");
+        var extensionMonitor = resolveMonitor(context).withPrefix("AgentEvidenceEdcExtension");
         var mapper = new AgentEvidenceEventMapper();
         var groupingStrategy = new AgentEvidenceGroupingStrategy();
-        var writer = new FileSystemEvidenceEnvelopeWriter(
-                Path.of(context.getSetting(OUTPUT_DIR, DEFAULT_OUTPUT_DIR)),
-                extensionMonitor
-        );
+        var exporterConfiguration = AgentEvidenceExporterConfiguration.from(context);
+        var writer = buildWriter(exporterConfiguration, extensionMonitor);
 
         var transactionContext = optionalTransactionContext(context);
         var subscriber = new ControlPlaneEvidenceSubscriber(
@@ -71,7 +87,19 @@ public class AgentEvidenceEdcExtension implements ServiceExtension {
         eventRouter.register(ContractNegotiationEvent.class, subscriber);
         eventRouter.register(TransferProcessEvent.class, subscriber);
 
+        extensionMonitor.info("Using agent-evidence exporter type '" + exporterConfiguration.normalizedExporterType() + "'");
         extensionMonitor.info("Registered control-plane event subscribers for agent-evidence spike");
+    }
+
+    private Monitor resolveMonitor(ServiceExtensionContext context) {
+        return monitor != null ? monitor : context.getMonitor();
+    }
+
+    private AgentEvidenceEnvelopeWriter buildWriter(
+            AgentEvidenceExporterConfiguration exporterConfiguration,
+            Monitor extensionMonitor
+    ) {
+        return exporterFactory.create(exporterConfiguration, extensionMonitor);
     }
 
     private TransactionContext optionalTransactionContext(ServiceExtensionContext context) {

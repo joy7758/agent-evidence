@@ -168,3 +168,15 @@
 - pre-transfer 事件会先落到 `contract_agreement_id` 对应的 staging 输出目录
 - transfer 事件会落到 `transfer_process_id` 对应的最终输出目录
 - 同一 transfer 链路内的多个 semantic fragments 会追加到同一个 `evidence-fragments.jsonl`
+
+当前 exporter 选择不会改变事件范围本身。
+
+- `filesystem` 影响的是 fragments 写到哪里
+- `noop` / `disabled` 影响的是 fragments 是否真正落盘
+
+但两者都不改变：
+
+- 订阅哪些 control-plane event
+- semantic mapping 规则
+- grouping key
+- dedup 规则

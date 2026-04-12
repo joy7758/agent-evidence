@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AgentEvidenceEdcExtensionSmokeTest {
@@ -81,7 +82,49 @@ class AgentEvidenceEdcExtensionSmokeTest {
         assertTrue(Files.exists(transferFile));
         assertTrue(Files.readString(agreementFile).contains("\"effectiveOutputKey\":\"agreement-1\""));
         assertTrue(Files.readString(transferFile).contains("\"effectiveOutputKey\":\"tp-1\""));
+        assertTrue(monitor.infoMessages().stream().anyMatch(it -> it.contains("Using agent-evidence exporter type 'filesystem'")));
         assertTrue(monitor.infoMessages().stream().anyMatch(it -> it.contains("Registered control-plane event subscribers")));
+    }
+
+    @Test
+    void shouldRunSubscriberChainWithoutWritingFilesWhenNoopExporterIsConfigured() throws Exception {
+        var eventRouter = new RecordingEventRouter();
+        var monitor = new RecordingMonitor();
+        var transactionContext = new RecordingTransactionContext();
+        var outputDir = tempDir.resolve("noop-export-root");
+        var extension = new AgentEvidenceEdcExtension(eventRouter, monitor);
+        var context = new FakeServiceExtensionContext(
+                Map.of(
+                        AgentEvidenceEdcExtension.EXPORTER_TYPE, "noop",
+                        AgentEvidenceEdcExtension.OUTPUT_DIR, outputDir.toString()
+                ),
+                Map.of(TransactionContext.class, transactionContext),
+                monitor
+        );
+
+        extension.initialize(context);
+        eventRouter.publish(ControlPlaneEventFixtures.transferProcessStartedEnvelope("env-transfer-started", 1_712_780_802_000L));
+
+        assertEquals(1, transactionContext.executeCount());
+        assertTrue(Files.notExists(outputDir));
+        assertTrue(monitor.infoMessages().stream().anyMatch(it -> it.contains("Using agent-evidence exporter type 'noop'")));
+    }
+
+    @Test
+    void shouldFailFastWhenExporterTypeIsUnsupported() {
+        var eventRouter = new RecordingEventRouter();
+        var monitor = new RecordingMonitor();
+        var extension = new AgentEvidenceEdcExtension(eventRouter, monitor);
+        var context = new FakeServiceExtensionContext(
+                Map.of(AgentEvidenceEdcExtension.EXPORTER_TYPE, "s3"),
+                Map.of(),
+                monitor
+        );
+
+        var error = assertThrows(IllegalArgumentException.class, () -> extension.initialize(context));
+
+        assertTrue(error.getMessage().contains("Unsupported agent-evidence exporter type 's3'"));
+        assertTrue(eventRouter.asyncRegistrations().isEmpty());
     }
 
     private static final class RecordingEventRouter implements EventRouter {
