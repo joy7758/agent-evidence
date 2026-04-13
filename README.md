@@ -59,6 +59,7 @@ Start here for the current v0.1 path:
 - Validator CLI: `agent-evidence validate-profile <file>`
 - Examples: [examples/README.md](examples/README.md)
 - Demo: [demo/README.md](demo/README.md)
+- High-risk scenario entry: [docs/high-risk-scenario-entry.md](docs/high-risk-scenario-entry.md)
 - Status and acceptance: `docs/STATUS.md`, `docs/ACCEPTANCE-CHECKLIST.md`
 - Submission handoff: `submission/package-manifest.md`, `submission/final-handoff.md`
 
@@ -83,6 +84,20 @@ agent-evidence validate-profile examples/invalid-missing-required.json
 agent-evidence validate-profile examples/invalid-unclosed-reference.json
 agent-evidence validate-profile examples/invalid-policy-link-broken.json
 ```
+
+### High-risk scenario entry
+
+Use the first high-risk, reviewer-facing scenario as a discoverable entry point:
+
+```bash
+agent-evidence validate-profile examples/valid-high-risk-payment-review-evidence.json
+agent-evidence validate-profile examples/invalid-high-risk-unclosed-reference.json
+agent-evidence validate-profile examples/invalid-high-risk-policy-link-broken.json
+```
+
+This scenario keeps the current v0.1 boundary unchanged. It does not add a new
+platform, a payment engine, or a compliance control plane. It only adds one
+high-risk operation-accountability surface that can be reviewed independently.
 
 Run the minimal demo:
 
