@@ -15,6 +15,7 @@ EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
     [
         "minimal-valid-evidence.json",
         "valid-retention-review-evidence.json",
+        "valid-high-risk-payment-review-evidence.json",
         "valid-trust-binding-evidence.json",
     ],
 )
@@ -37,6 +38,12 @@ def test_valid_operation_accountability_profile_passes(filename: str) -> None:
             "unresolved_validation_provenance_ref",
             1,
         ),
+        ("invalid-high-risk-unclosed-reference.json", "unresolved_output_ref", 1),
+        (
+            "invalid-high-risk-policy-link-broken.json",
+            "unresolved_evidence_policy_ref",
+            1,
+        ),
         (
             "invalid-trust-binding-digest-mismatch.json",
             "trust_binding_target_digest_mismatch",
@@ -55,12 +62,19 @@ def test_invalid_operation_accountability_profiles_fail(
     assert expected_code in issue_codes
 
 
-def test_validate_profile_cli_command() -> None:
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "minimal-valid-evidence.json",
+        "valid-high-risk-payment-review-evidence.json",
+    ],
+)
+def test_validate_profile_cli_command(filename: str) -> None:
     runner = CliRunner()
 
     result = runner.invoke(
         main,
-        ["validate-profile", str(EXAMPLES / "minimal-valid-evidence.json")],
+        ["validate-profile", str(EXAMPLES / filename)],
     )
 
     assert result.exit_code == 0, result.output
