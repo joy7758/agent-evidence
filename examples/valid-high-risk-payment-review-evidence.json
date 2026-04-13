@@ -1,0 +1,120 @@
+{
+  "actor": {
+    "id": "actor:payment-reviewer",
+    "name": "payment-reviewer",
+    "runtime": "openai-agents",
+    "type": "agent"
+  },
+  "constraints": [
+    {
+      "id": "constraint:approved-review-codes",
+      "description": "Only approved payment-review decision codes may be assigned."
+    },
+    {
+      "id": "constraint:no-direct-settlement",
+      "description": "Flagged payments must not be settled directly by this operation."
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:payment-review-report-001",
+        "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "locator": "urn:demo:payment-review-report-001",
+        "type": "review-report"
+      }
+    ],
+    "id": "evidence:payment-review-001",
+    "integrity": {
+      "references_digest": "sha256:d45164cb5a7904af3e0f4c6b469d557d2169cae65e01b2a77c6b1f321e38248d",
+      "artifacts_digest": "sha256:b3d4643ff1a9ec504881fe2b826a19c586f48aeeb366dde766a01d849218aafa",
+      "statement_digest": "sha256:429e45523ff1cc7b16dc391ed94ed98f2ddbd60745c77a04d2489cbd30b6e868"
+    },
+    "operation_ref": "op:payment-review-001",
+    "policy_ref": "policy:payment-review-v1",
+    "references": [
+      {
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "locator": "urn:demo:payment-case-042",
+        "object_id": "obj:payment-case-042",
+        "ref_id": "ref:input-payment-case",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "locator": "urn:demo:risk-note-042",
+        "object_id": "obj:risk-note-042",
+        "ref_id": "ref:input-risk-note",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "locator": "urn:demo:payment-review-decision-042",
+        "object_id": "obj:payment-review-decision-042",
+        "ref_id": "ref:output-review-decision",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:payment-case-042"
+  },
+  "operation": {
+    "description": "Review one flagged payment case and emit one review decision.",
+    "id": "op:payment-review-001",
+    "input_refs": [
+      "ref:input-payment-case",
+      "ref:input-risk-note"
+    ],
+    "output_refs": [
+      "ref:output-review-decision"
+    ],
+    "policy_ref": "policy:payment-review-v1",
+    "result": {
+      "status": "succeeded",
+      "summary": "one payment review decision object emitted"
+    },
+    "subject_ref": "obj:payment-case-042",
+    "type": "payment.review"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:approved-review-codes",
+      "constraint:no-direct-settlement"
+    ],
+    "id": "policy:payment-review-v1",
+    "name": "payment-review-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:payment-reviewer",
+    "id": "prov:payment-review-001",
+    "input_refs": [
+      "ref:input-payment-case",
+      "ref:input-risk-note"
+    ],
+    "operation_ref": "op:payment-review-001",
+    "output_refs": [
+      "ref:output-review-decision"
+    ],
+    "subject_ref": "obj:payment-case-042"
+  },
+  "statement_id": "eeoap:payment-review-001",
+  "subject": {
+    "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "id": "obj:payment-case-042",
+    "locator": "urn:demo:payment-case-042",
+    "type": "fdo-record"
+  },
+  "timestamp": "2026-04-13T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:payment-review-001",
+    "id": "validation:payment-review-001",
+    "method": "schema+reference+consistency",
+    "policy_ref": "policy:payment-review-v1",
+    "provenance_ref": "prov:payment-review-001",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}
