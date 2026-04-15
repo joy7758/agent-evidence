@@ -25,119 +25,119 @@ for the shortest walkthrough, see
 post-execution review, see
 [aro-audit](https://github.com/joy7758/aro-audit).
 
-## Role
+## Research position
 
-`agent-evidence` is the concrete execution-evidence entry point for packaging
-agent/runtime execution into portable bundles that another party can verify
-offline.
+Agent Evidence makes one narrow claim: execution evidence and operation
+accountability form a first-class verification boundary for governable AI
+systems.
 
-## Not this repo
+This repository is the concrete execution-evidence entry in the Digital
+Biosphere Architecture. It packages operations into portable artifacts that
+another party can validate later, including offline. It is a method entry, not
+the architecture hub, not the audit control plane, and not a generic
+governance platform.
 
-- not the full architecture hub
-- not the audit control plane
-- not just tracing or logging
-- not the walkthrough demo
-- not the execution-integrity kernel
+## Canonical package
 
-## Start here
-
-- architecture context -> [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
-- current primary package -> `spec/execution-evidence-operation-accountability-profile-v0.1.md`, `schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
-- current runnable surfaces -> [examples/README.md](examples/README.md), [demo/README.md](demo/README.md), `agent-evidence validate-profile <file>`
-- historical lineage -> [docs/lineage.md](docs/lineage.md)
-- walkthrough -> [verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo)
-- post-execution review -> [aro-audit](https://github.com/joy7758/aro-audit)
-
-## EDC / Dataspace augmentation
-
-EDC is a scenario augmentation layer for `agent-evidence`, not a new mainline or a replacement surface.
-
-- boundary -> [docs/edc/EDC_AUGMENTATION_BOUNDARY.md](docs/edc/EDC_AUGMENTATION_BOUNDARY.md)
-- minimal profile draft -> [docs/edc/edc_minimal_evidence_profile_draft.md](docs/edc/edc_minimal_evidence_profile_draft.md)
-- minimal demo path -> [docs/edc/edc_demo_minimal_path.md](docs/edc/edc_demo_minimal_path.md)
-- control-plane event sketch -> [docs/edc/edc_control_plane_event_extension_sketch.md](docs/edc/edc_control_plane_event_extension_sketch.md)
-- event mapping -> [docs/edc/edc_event_to_evidence_mapping.md](docs/edc/edc_event_to_evidence_mapping.md)
-- extension structure -> [docs/edc/edc_extension_minimal_structure.md](docs/edc/edc_extension_minimal_structure.md)
-
-## Current v0.1 package
-
-The current primary package surface is
+The current canonical package is
 `Execution Evidence and Operation Accountability Profile v0.1`.
 
-It is frozen in GitHub Release `v0.2.0`.
+Package freeze:
+- GitHub Release: `v0.2.0`
+- DOI: [10.5281/zenodo.19334062](https://doi.org/10.5281/zenodo.19334062)
+- The frozen package version inside that release remains `v0.1`
 
-Current package DOI: https://doi.org/10.5281/zenodo.19334062
-
-The package version inside that release remains `v0.1`.
-
-Start here for the current v0.1 path:
-
+Core entry points:
 - Spec: `spec/execution-evidence-operation-accountability-profile-v0.1.md`
 - Schema: `schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
 - Validator CLI: `agent-evidence validate-profile <file>`
-- Examples: [examples/README.md](examples/README.md)
-- Demo: [demo/README.md](demo/README.md)
-- High-risk scenario entry: [docs/high-risk-scenario-entry.md](docs/high-risk-scenario-entry.md)
+- Examples: `examples/README.md`
+- Demo: `demo/README.md`
+- Reviewer-facing high-risk entry: `docs/high-risk-scenario-entry.md`
 - Status and acceptance: `docs/STATUS.md`, `docs/ACCEPTANCE-CHECKLIST.md`
 - Submission handoff: `submission/package-manifest.md`, `submission/final-handoff.md`
 
-Implementation note: JSONL, SQLite, and PostgreSQL backends remain available,
-but they are subordinate to the evidence-entry role of this repository.
+## Minimal v0.1 walkthrough
 
-![Storage](https://img.shields.io/badge/storage-JSONL%20%7C%20SQLite%20%7C%20Postgres-0a7b83)
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -e ".[dev]"
 
-### Minimal v0.1 walkthrough
+    agent-evidence validate-profile examples/minimal-valid-evidence.json
+    agent-evidence validate-profile examples/invalid-missing-required.json
+    agent-evidence validate-profile examples/invalid-unclosed-reference.json
+    agent-evidence validate-profile examples/invalid-policy-link-broken.json
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-```
+    agent-evidence validate-profile examples/valid-high-risk-payment-review-evidence.json
+    agent-evidence validate-profile examples/invalid-high-risk-unclosed-reference.json
+    agent-evidence validate-profile examples/invalid-high-risk-policy-link-broken.json
 
-The commands below assume the active environment exposes `agent-evidence` on
-`PATH`. If you are using the repository virtualenv directly, run
-`.venv/bin/agent-evidence ...` instead.
-
-Validate the minimal valid and invalid examples:
-
-```bash
-agent-evidence validate-profile examples/minimal-valid-evidence.json
-agent-evidence validate-profile examples/valid-trust-binding-evidence.json
-agent-evidence validate-profile examples/invalid-missing-required.json
-agent-evidence validate-profile examples/invalid-unclosed-reference.json
-agent-evidence validate-profile examples/invalid-policy-link-broken.json
-agent-evidence validate-profile examples/invalid-trust-binding-digest-mismatch.json
-```
-
-### High-risk scenario entry
-
-Use the first high-risk, reviewer-facing scenario as a discoverable entry point:
-
-```bash
-agent-evidence validate-profile examples/valid-high-risk-payment-review-evidence.json
-agent-evidence validate-profile examples/invalid-high-risk-unclosed-reference.json
-agent-evidence validate-profile examples/invalid-high-risk-policy-link-broken.json
-```
-
-This scenario keeps the current v0.1 boundary unchanged. It does not add a new
-platform, a payment engine, or a compliance control plane. It only adds one
-high-risk operation-accountability surface that can be reviewed independently.
-
-Run the minimal demo:
-
-```bash
-python3 demo/run_operation_accountability_demo.py
-```
+    python3 demo/run_operation_accountability_demo.py
 
 Expected result:
-
 - the valid example returns JSON with `"ok": true`
 - each invalid example returns JSON with `"ok": false` and one primary error code
 - the demo writes artifacts under `demo/artifacts/` and ends with one `PASS` summary line
 
 Known environment note:
-
 - the repository `.venv` may show one `langchain_core` warning under Python 3.14 during broader test runs; it does not affect the minimal profile, validator, or demo path
+
+## Research ledger
+
+Use the following files as the canonical project and paper ledger:
+
+- Project status and milestone ledger: `docs/STATUS.md`
+- Flagship paper worklog: `paper/flagship/WORKLOG.md`
+- Manuscript baselines: `submission/manuscript-baselines.md`
+- Claims-to-evidence map: `paper/flagship/13_claims_to_evidence_map.md`
+- Validation results table: `paper/flagship/18_validation_results_table.md`
+
+## Manuscript discipline
+
+Do not mix manuscript surfaces.
+
+- `B1-minimal-frozen`: `Execution Evidence and Operation Accountability Profile v0.1`; claim = minimal verification boundary
+- `B4-high-risk-current-main`: reviewer-facing high-risk scenario entry; best fit for future high-risk / compliance-interface manuscripts
+- `B2-extended-middle`: parked unless fully rewritten
+- `B3-aep-live-chain`: historical AEP runtime-evidence surface
+
+## What is established here
+
+This repository already establishes:
+- a minimal profile for execution evidence and operation accountability
+- a profile-aware validator with explicit error codes
+- a single-path demo
+- reviewer-facing scenario slices
+- a concrete manuscript-evidence mapping surface
+
+## Scope discipline
+
+This repo is:
+- the concrete execution-evidence entry
+- a minimal verification-boundary package
+- a validator / specimen / demo surface
+
+This repo is not:
+- the architecture hub
+- the audit control plane
+- the walkthrough demo
+- the execution-integrity kernel
+- a generic agent governance platform
+- a manifesto repository
+
+## Architecture navigation
+
+- Architecture hub -> `digital-biosphere-architecture`
+- Demo walkthrough -> `verifiable-agent-demo`
+- Audit control plane -> `aro-audit`
+- EDC Java spike entry -> `docs/edc/edc_extension_minimal_structure.md`
+- Historical map -> `docs/lineage.md`
+
+## Immediate next work
+
+- external-context evidence
+- third-party checker
+- manuscript assembly across introduction, discussion, and conclusion
 
 ## Historical lineage
 
