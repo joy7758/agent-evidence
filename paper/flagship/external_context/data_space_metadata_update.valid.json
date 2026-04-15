@@ -1,0 +1,111 @@
+{
+  "actor": {
+    "id": "actor:catalog-metadata-curator",
+    "name": "catalog-metadata-curator",
+    "runtime": "openai-agents",
+    "type": "agent"
+  },
+  "constraints": [
+    {
+      "description": "Only approved metadata fields may be corrected.",
+      "id": "constraint:approved-catalog-fields"
+    },
+    {
+      "description": "Record identity and object payload class must remain unchanged.",
+      "id": "constraint:no-record-reclassification"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:catalog-update-log-042",
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "locator": "urn:dataspace:catalog-update-log-042",
+        "type": "execution-log"
+      }
+    ],
+    "id": "evidence:catalog-metadata-update-042",
+    "integrity": {
+      "artifacts_digest": "sha256:497f5b2238d8f55e408b4fd8f19c2bd11494292540ba84687b81f3809b0fc66c",
+      "references_digest": "sha256:0d8ca3721f446cdc2943aeb73572fd14e1e626ba7f8cb31543d3a74e2292c7fc",
+      "statement_digest": "sha256:2e389071dfd03937d3faa5c5fd6ee3ac7fbf7c92f0462966e9c44b82c52e1dbe"
+    },
+    "operation_ref": "op:catalog-metadata-update-042",
+    "policy_ref": "policy:dataspace-catalog-metadata-v1",
+    "references": [
+      {
+        "digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "locator": "urn:dataspace:catalog-record-042",
+        "object_id": "obj:catalog-record-042",
+        "ref_id": "ref:input-catalog-record",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "locator": "urn:dataspace:catalog-record-042-corrected",
+        "object_id": "obj:catalog-record-042-corrected",
+        "ref_id": "ref:output-catalog-record",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:catalog-record-042"
+  },
+  "operation": {
+    "description": "Correct one approved metadata field in one data-space catalog record.",
+    "id": "op:catalog-metadata-update-042",
+    "input_refs": [
+      "ref:input-catalog-record"
+    ],
+    "output_refs": [
+      "ref:output-catalog-record"
+    ],
+    "policy_ref": "policy:dataspace-catalog-metadata-v1",
+    "result": {
+      "status": "succeeded",
+      "summary": "one corrected catalog record emitted"
+    },
+    "subject_ref": "obj:catalog-record-042",
+    "type": "metadata.update"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:approved-catalog-fields",
+      "constraint:no-record-reclassification"
+    ],
+    "id": "policy:dataspace-catalog-metadata-v1",
+    "name": "dataspace-catalog-metadata-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:catalog-metadata-curator",
+    "id": "prov:catalog-metadata-update-042",
+    "input_refs": [
+      "ref:input-catalog-record"
+    ],
+    "operation_ref": "op:catalog-metadata-update-042",
+    "output_refs": [
+      "ref:output-catalog-record"
+    ],
+    "subject_ref": "obj:catalog-record-042"
+  },
+  "statement_id": "eeoap:dataspace-catalog-update-042",
+  "subject": {
+    "digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+    "id": "obj:catalog-record-042",
+    "locator": "urn:dataspace:catalog-record-042",
+    "type": "fdo-catalog-record"
+  },
+  "timestamp": "2026-04-16T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:catalog-metadata-update-042",
+    "id": "validation:catalog-metadata-update-042",
+    "method": "schema+reference+consistency",
+    "policy_ref": "policy:dataspace-catalog-metadata-v1",
+    "provenance_ref": "prov:catalog-metadata-update-042",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

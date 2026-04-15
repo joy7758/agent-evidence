@@ -1,0 +1,31 @@
+{
+  "issue_count": 0,
+  "ok": true,
+  "profile": "execution-evidence-operation-accountability-profile@0.1",
+  "source": "paper/flagship/external_context/data_space_metadata_update.valid.json",
+  "stages": [
+    {
+      "issues": [],
+      "name": "schema",
+      "ok": true
+    },
+    {
+      "issues": [],
+      "name": "references",
+      "ok": true
+    },
+    {
+      "issues": [],
+      "name": "consistency",
+      "ok": true
+    },
+    {
+      "issues": [],
+      "name": "integrity",
+      "ok": true
+    }
+  ],
+  "summary": [
+    "PASS execution-evidence-operation-accountability-profile@0.1 paper/flagship/external_context/data_space_metadata_update.valid.json"
+  ]
+}
