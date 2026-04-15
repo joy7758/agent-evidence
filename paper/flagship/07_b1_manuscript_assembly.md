@@ -6,7 +6,7 @@ A Minimal Verification Boundary for Single-Operation Accountability
 
 ## Positioning
 
-This manuscript argues for one narrow result: single-operation accountability can be represented as a minimal verification boundary when execution evidence, policy binding, provenance closure, and validation outcome are compressed into one bounded profile. It does not attempt a larger governance or high-risk route. The contribution is valuable precisely because it isolates the smallest boundary that can still support offline review and independent checking.
+This manuscript argues for one narrow result: single-operation accountability can be represented as a minimal verification boundary when execution evidence, policy binding, provenance closure, and validation outcome are compressed into one bounded profile. It does not attempt a larger governance or high-risk route. The contribution is valuable precisely because it isolates the smallest boundary that can still support offline review and third-party inspection under the current validator path.
 
 ## Abstract
 
@@ -22,17 +22,17 @@ The manuscript stays narrow on purpose. It claims only what the repository alrea
 
 ## 2. Problem statement and design goal
 
-The design problem is under-bounding, not missing instrumentation. A single operation may be described across logs, policy references, and output artifacts, yet still fail to become an independently reviewable unit. Without a minimal profile, accountability remains descriptive rather than checkable. A reviewer can read evidence fragments, but cannot reliably decide whether the statement closes as an operation accountability object.
+The design problem is under-bounding, not missing instrumentation. A single operation may be described across logs, policy references, and output artifacts, yet still fail to become a stable review unit. Without a minimal profile, accountability remains descriptive rather than checkable. A reviewer can read evidence fragments, but cannot reliably decide whether the statement closes as an operation accountability object.
 
-The design goal in B1 is to define the smallest profile that still supports independent verification. The statement must be minimal, so it carries only what is required for one operation accountability unit. It must be verifiable, so a checker can classify it through explicit rules rather than narrative interpretation alone. It must be portable and offline-reviewable, so it can be moved outside the originating runtime. It must also be runtime-decoupled, because a boundary that only works inside one stack is not useful as external evidence. The design task is therefore not to capture everything that happened, but to capture enough to make one local accountability claim checkable.
+The design goal in B1 is to define the smallest profile that still supports profile-based checking under the current validator path. The statement must be minimal, so it carries only what is required for one operation accountability unit. It must be verifiable, so a checker can classify it through explicit rules rather than narrative interpretation alone. It must be portable and offline-reviewable, so it can be moved outside the originating runtime. It must also be runtime-decoupled, because a boundary that only works inside one stack is not useful as external evidence. The design task is therefore not to capture everything that happened, but to capture enough to make one local accountability claim checkable.
 
 ## 3. Minimal verification boundary
 
-The central claim of B1 is exact and limited: execution evidence and operation accountability should be treated as a minimal verification boundary. In this manuscript, that phrase means a bounded set of fields sufficient for a third party to decide whether one operation accountability statement is checkable without hidden runtime context. The boundary is not a replay of the original system. It is a local decision surface: does this statement close as a verifiable unit?
+The central claim of B1 is exact and limited: execution evidence and operation accountability should be treated as a minimal verification boundary. In this manuscript, that phrase means a bounded set of fields sufficient for a third party to inspect one operation accountability statement under the current validator path without hidden runtime context. The boundary is not a replay of the original system. It is a local decision surface: does this statement close as a verifiable unit?
 
 Within that boundary are the profile parts that carry the accountability claim: `operation`, `policy`, `provenance`, `evidence`, and `validation`. Around them sit only the supporting elements needed to bind the statement locally, such as actor, subject, constraints, timestamps, and profile identity. `Operation` states what was done. `Policy` anchors why the operation is governed in the stated way. `Provenance` closes the relation among actor, subject, and referenced inputs or outputs. `Evidence` links the statement to inspectable artifacts and digests. `Validation` records how the statement is checked and what outcome the checker returns. The boundary is minimal because each part serves one external judgment: the statement is complete enough, or it is not.
 
-Just as important is what remains outside the boundary. This manuscript does not absorb full workflow models, broader governance controls, or larger reviewer-facing routes. Those may matter elsewhere, but they are not necessary to establish the present claim. If they are imported here, the argument loses proportionality. B1 matters precisely because it keeps the boundary narrow enough to validate directly while still being strong enough to support independent review.
+Just as important is what remains outside the boundary. This manuscript does not absorb full workflow models, broader governance controls, or larger reviewer-facing routes. Those may matter elsewhere, but they are not necessary to establish the present claim. If they are imported here, the argument loses proportionality. B1 matters precisely because it keeps the boundary narrow enough to validate directly while still being strong enough to support third-party inspection.
 
 ## 4. Profile, validator, and artifact package
 
@@ -48,7 +48,7 @@ The validator's error-code behavior is central to that claim. A profile-aware va
 
 ## 6. Discussion, limits, and next evidence
 
-The limits are substantive and should be stated directly. This manuscript does not provide broad external validation. It does not yet provide an independent checker. It also does not attempt a larger governance or high-risk route. The repository supports a bounded profile and validator path, and the baseline of `1 valid / 3 invalid / 1 demo` is enough to support a minimal artifact claim, but not enough to justify stronger generalization.
+The limits are substantive and should be stated directly. This manuscript provides no broad external validation. There is no independent checker yet. It also does not attempt a larger governance or high-risk route. The repository supports a bounded profile and validator path, and the baseline of `1 valid / 3 invalid / 1 demo` is enough to support a minimal artifact claim, but not enough to justify stronger generalization.
 
 Those limits also define the next evidence. External-context evidence would test whether the same boundary holds outside the current example family. A third-party checker would reduce dependence on a single implementation and strengthen the claim that the boundary is stable under more than one validation path. Further refinement of the manuscript can sharpen argument and presentation, but it should not enlarge the claim beyond the implemented package. These remain next steps because the repository does not yet present them as completed results.
 
