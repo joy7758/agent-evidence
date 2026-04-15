@@ -53,7 +53,6 @@
 ## 投稿状态同步
 - `Execution Evidence as a Verifiable Workflow Object: A Minimal Profile and Validator for Operation Accountability` — venue `The Journal of Systems & Software`；manuscript ID `JSSOFTWARE-S-26-00981`；当前状态 `rejected`；备注：已拒稿，不再作为在审稿件统计
 - `A Minimal Verifiable Profile and Validator Path for Single-Operation Accountability in FDO and Data-Space Settings` — venue `SIDS 2026 (IEEE MDM 2026 workshop)`；当前状态 `withdrawn`；备注：已撤回，不再作为在审稿件统计
-- 上述两条仅作历史状态同步，不计入当前在审稿件或 live submission 统计。
 
 ## 本轮最小验证记录
 - 命令：`./.venv/bin/ruff check agent_evidence/oap.py agent_evidence/cli/main.py demo/run_operation_accountability_demo.py tests/test_operation_accountability_profile.py`

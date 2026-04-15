@@ -29,11 +29,5 @@
 
 ## Live submission status sync
 
-These manuscript baselines are not the live-submission ledger, but the current
-repository-facing submission status sync is:
-
 - `Execution Evidence as a Verifiable Workflow Object: A Minimal Profile and Validator for Operation Accountability` — venue `The Journal of Systems & Software`; manuscript ID `JSSOFTWARE-S-26-00981`; status `rejected`; note: JSS: rejected; no longer counted as an active submission
 - `A Minimal Verifiable Profile and Validator Path for Single-Operation Accountability in FDO and Data-Space Settings` — venue `SIDS 2026 (IEEE MDM 2026 workshop)`; status `withdrawn`; note: SIDS 2026: withdrawn; no longer counted as an active submission
-
-This sync does not change `B1-minimal-frozen`, `B2-extended-middle`,
-`B3-aep-live-chain`, or `B4-high-risk-current-main`.
