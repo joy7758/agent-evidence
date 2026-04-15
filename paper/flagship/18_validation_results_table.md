@@ -2,6 +2,8 @@
 
 这张表是 reviewer-facing 的简明结果截面。它只汇总旗舰包新增的 specimen slice；完整 19-file corpus 仍以 `paper/flagship/assets/run_archive/04_pass_fail_matrix.md` 为准，对应的 machine-readable mirror 见 `paper/flagship/assets/run_archive/json/comparison_matrix.json`。其中 `agreement` 指 pass/fail 一致，`boundary-level divergence` 指差异直接落在 verification boundary 的覆盖面上，而不是随机实现噪音。
 
+下面的主表仍然是 canonical flagship validation slice。其后的 supplementary note 和 rows 只用于接入 paper-facing supporting evidence，not counted in canonical B1 minimal-frozen rows.
+
 | specimen/scenario | intended class | reference validator | independent checker | agreement/divergence note |
 | --- | --- | --- | --- | --- |
 | `scenario_03_access_decision_valid.json` | valid scenario anchor | PASS | PASS | agreement |
@@ -16,3 +18,14 @@
 | `scenario_09_missing_target_binding_invalid.json` | missing/broken target binding | FAIL (`unresolved_subject_ref`) | FAIL (`broken_target_binding`) | agreement, label-layer difference |
 | `scenario_10_ambiguous_operation_semantics_invalid.json` | ambiguous operation semantics | PASS | FAIL (`ambiguous_operation_semantics`) | boundary-level divergence |
 | `scenario_11_outcome_unverifiability_invalid.json` | outcome unverifiability | PASS | FAIL (`outcome_unverifiable`) | boundary-level divergence |
+
+## Supplementary B1 Supporting Rows
+
+These rows are supplementary, paper-facing, and not counted in canonical B1 minimal-frozen counts.
+
+| supplementary item | checker path | result | note |
+| --- | --- | --- | --- |
+| `external_context/data_space_metadata_update.valid.json` | current validator path | PASS (`ok=true`) | supplementary external-context evidence beyond the original minimal example family |
+| `examples/minimal-valid-evidence.json` | repo-local second checker | PASS (`ok=true`) | supplementary checker surface, canonical valid anchor |
+| `examples/invalid-unclosed-reference.json` | repo-local second checker | FAIL (`ok=false`) | supplementary checker surface, canonical invalid anchor |
+| `external_context/data_space_metadata_update.valid.json` | repo-local second checker | PASS (`ok=true`) | supplementary checker surface applied to the external-context specimen |
