@@ -1,0 +1,14 @@
+{
+  "checker": "repo-local-second-checker@0.1",
+  "issue_count": 1,
+  "issues": [
+    {
+      "code": "unresolved_output_ref",
+      "message": "operation output ref does not resolve to evidence.references[].ref_id.",
+      "path": "operation.output_refs[0]",
+      "stage": "closure"
+    }
+  ],
+  "ok": false,
+  "source": "examples/invalid-unclosed-reference.json"
+}
