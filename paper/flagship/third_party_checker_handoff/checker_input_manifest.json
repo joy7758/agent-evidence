@@ -1,0 +1,52 @@
+{
+  "canonical_b1": {
+    "intended_use": "Minimum canonical inputs for independent re-checking of the B1 minimal-frozen line.",
+    "inputs": [
+      {
+        "path": "examples/minimal-valid-evidence.json",
+        "role": "canonical_valid_specimen"
+      },
+      {
+        "path": "examples/invalid-missing-required.json",
+        "role": "canonical_invalid_specimen"
+      },
+      {
+        "path": "examples/invalid-unclosed-reference.json",
+        "role": "canonical_invalid_specimen"
+      },
+      {
+        "path": "examples/invalid-policy-link-broken.json",
+        "role": "canonical_invalid_specimen"
+      },
+      {
+        "path": "spec/execution-evidence-operation-accountability-profile-v0.1.md",
+        "role": "canonical_profile_spec"
+      },
+      {
+        "path": "schema/execution-evidence-operation-accountability-profile-v0.1.schema.json",
+        "role": "canonical_profile_schema"
+      }
+    ]
+  },
+  "supplementary": {
+    "intended_use": "Optional supplementary inputs for boundary-stability and checker-diversity re-checking. These remain supplementary and do not change canonical B1 counts.",
+    "inputs": [
+      {
+        "path": "paper/flagship/external_context/data_space_metadata_update.valid.json",
+        "role": "supplementary_external_context_specimen"
+      },
+      {
+        "path": "paper/flagship/second_checker/reports/minimal-valid.report.json",
+        "role": "supplementary_second_checker_report"
+      },
+      {
+        "path": "paper/flagship/second_checker/reports/invalid-unclosed-reference.report.json",
+        "role": "supplementary_second_checker_report"
+      },
+      {
+        "path": "paper/flagship/second_checker/reports/external-context-valid.report.json",
+        "role": "supplementary_second_checker_report"
+      }
+    ]
+  }
+}
