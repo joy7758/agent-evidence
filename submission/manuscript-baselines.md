@@ -26,3 +26,8 @@
 - counts: `3 valid / 7 invalid`
 - claim: reviewer-facing high-risk scenario entry
 - best fit: future AI Act / high-risk / compliance-interface manuscripts
+
+## Live submission status sync
+
+- `Execution Evidence as a Verifiable Workflow Object: A Minimal Profile and Validator for Operation Accountability` — venue `The Journal of Systems & Software`; manuscript ID `JSSOFTWARE-S-26-00981`; status `rejected`; note: JSS: rejected; no longer counted as an active submission
+- `A Minimal Verifiable Profile and Validator Path for Single-Operation Accountability in FDO and Data-Space Settings` — venue `SIDS 2026 (IEEE MDM 2026 workshop)`; status `withdrawn`; note: SIDS 2026: withdrawn; no longer counted as an active submission
