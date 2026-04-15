@@ -1,0 +1,7 @@
+{
+  "checker": "repo-local-second-checker@0.1",
+  "issue_count": 0,
+  "issues": [],
+  "ok": true,
+  "source": "paper/flagship/external_context/data_space_metadata_update.valid.json"
+}

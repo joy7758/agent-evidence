@@ -1,0 +1,7 @@
+{
+  "checker": "repo-local-second-checker@0.1",
+  "issue_count": 0,
+  "issues": [],
+  "ok": true,
+  "source": "examples/minimal-valid-evidence.json"
+}
