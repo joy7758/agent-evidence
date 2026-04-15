@@ -18,6 +18,8 @@ Execution data is not yet the same thing as a verifiable accountability object. 
 
 This manuscript starts from that narrower problem. The gap is not missing data in general; the gap is the absence of a bounded operation accountability statement that binds execution evidence, provenance closure, and validation into one portable unit. If the repository exposes only traces, review remains runtime-dependent. If it exposes only policy, the governing rule is visible but the accountable operation is not. If it exposes only provenance fragments, derivation may be visible without showing whether the statement closes. The B1 route therefore asks for the smallest boundary that still lets an external party decide whether a single operation accountability statement is structurally complete and locally checkable.
 
+This is also why the manuscript is not just about tracing. Logs and traces improve inspection, but they do not by themselves close one bounded accountability statement. Provenance links help explain derivation, but they do not by themselves yield local closure. Policy references show governing context, but they do not by themselves bind one accountable operation. Audit trail style materials may be broader and operationally useful, but B1 asks for something smaller and stricter: one portable, checkable unit for single-operation accountability.
+
 The manuscript stays narrow on purpose. It claims only what the repository already implements: a profile specification, a schema, examples, a profile-aware validator, a CLI entry point, a demo path, and submission handoff assets. It does not claim broad deployment or external generalization. The intended contribution is smaller and stronger: a minimal verification boundary can be stated cleanly enough to become a reusable software artifact.
 
 ## 2. Problem statement and design goal
@@ -51,6 +53,8 @@ Two supplementary additions extend that paper-facing evidence surface without re
 ## 6. Discussion, limits, and next evidence
 
 The limits are substantive and should be stated directly. This manuscript provides no broad external validation. There is no independent checker yet. It also does not attempt a larger governance or high-risk route. The repository supports a bounded profile and validator path, and the baseline of `1 valid / 3 invalid / 1 demo` is enough to support a minimal artifact claim, but not enough to justify stronger generalization.
+
+This manuscript also does not claim to replace logs, traces, provenance, policy, or broader audit materials. The narrower claim is that those surfaces still need a smaller combinable boundary when one operation must be inspected and checked as a local accountability unit. B1 therefore adds a minimal verification boundary to those materials rather than presenting itself as a substitute for full observability or audit systems.
 
 Those limits also define the next evidence. The supplementary external-context specimen is only a first extension beyond the original minimal example family, not broader validation already completed. The repo-local second checker is only a first checker-diversity surface, not an external checker. Further refinement of the manuscript can sharpen argument and presentation, but it should not enlarge the claim beyond the implemented package. These remain next steps because the repository does not yet present them as completed results.
 
