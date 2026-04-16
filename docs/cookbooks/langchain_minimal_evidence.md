@@ -6,20 +6,39 @@ This cookbook shows the smallest local-first LangChain path in this repository:
 
 - capture LangChain runtime events through an external callback
 - persist those events to a local JSONL store
-- export a signed JSON evidence bundle
-- verify the exported bundle offline with a public key
+- export a signed JSON `bundle`
+- verify the exported `bundle` offline to produce a `receipt`
+- write a reviewer-facing `summary`
 
 The example stays outside LangGraph persistence and checkpointer internals.
 
 ## 2) Why callback/export-first
 
-This repository already has a thin LangChain callback surface and a separate
-signed export surface. Reusing those two pieces keeps the integration external,
-reviewable, and easy to adapt into another LangChain app.
+This repository now has one recommended LangChain wrapper:
+`LangChainAdapter`.
+
+It keeps the integration external, reviewable, and easy to adapt into another
+LangChain app while still reusing the existing callback and export primitives.
 
 The callback records runtime facts. The export step packages those records into
 a portable artifact with a signed manifest summary. That is the smallest honest
 surface here.
+
+Recommended public API:
+
+```python
+from agent_evidence.integrations.langchain import LangChainAdapter
+
+adapter = LangChainAdapter.for_output_dir(
+    "./artifacts/langchain-run",
+    digest_only=True,
+    omit_request=False,
+    omit_response=False,
+)
+
+callbacks = [adapter.callback_handler()]
+artifacts = adapter.finalize()
+```
 
 ## 3) Minimal flow
 
@@ -27,7 +46,8 @@ surface here.
 LangChain callback events
 -> local JSONL evidence store
 -> signed JSON bundle
--> offline verify
+-> receipt
+-> summary
 ```
 
 If you need detached anchoring, treat the signed bundle and manifest as an
@@ -69,30 +89,35 @@ Or choose an explicit output directory:
 python examples/langchain_minimal_evidence.py --output-dir ./tmp/langchain-minimal-evidence
 ```
 
-The script generates the run artifacts, signs the exported bundle with a local
-Ed25519 demo key, runs an API-level verification pass, and writes a summary.
+The script uses `LangChainAdapter` to capture the run, signs the exported
+bundle with a local Ed25519 demo key, writes a machine-readable `receipt`, and
+writes a reviewer-facing `summary`.
 
 ## 6) Output artifacts
 
-By default the script writes:
+Primary outputs:
+
+- `bundle`: `examples/artifacts/langchain-minimal-evidence/langchain-evidence.bundle.json`
+- `receipt`: `examples/artifacts/langchain-minimal-evidence/receipt.json`
+- `summary`: `examples/artifacts/langchain-minimal-evidence/summary.json`
+
+Supporting files written by the same run:
 
 - `examples/artifacts/langchain-minimal-evidence/runtime-events.jsonl`
-- `examples/artifacts/langchain-minimal-evidence/langchain-evidence.bundle.json`
 - `examples/artifacts/langchain-minimal-evidence/langchain-evidence.manifest.json`
 - `examples/artifacts/langchain-minimal-evidence/manifest-private.pem`
 - `examples/artifacts/langchain-minimal-evidence/manifest-public.pem`
-- `examples/artifacts/langchain-minimal-evidence/summary.json`
 
 Notes:
 
 - `runtime-events.jsonl` is the local append-only callback capture.
-- `langchain-evidence.bundle.json` is the portable export artifact.
 - `langchain-evidence.manifest.json` is a readable sidecar copy of the signed manifest.
 - The generated private key is only for local demo use.
 
 ## 7) Verify
 
-Run the offline verification command from the summary:
+Run the offline verification command from the summary if you want to regenerate
+or inspect the `receipt` directly:
 
 ```bash
 agent-evidence verify-export \

@@ -1,13 +1,19 @@
 from __future__ import annotations
 
+import json
+import shutil
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Mapping
 from uuid import UUID
 
 from agent_evidence.aep import EvidenceBundleBuilder
 from agent_evidence.aep.hash_chain import sha256_digest
+from agent_evidence.export import export_json_bundle, verify_json_bundle
 from agent_evidence.models import EvidenceContext, EvidenceEvent, utc_now
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.serialization import ensure_json_object, to_jsonable
+from agent_evidence.storage import LocalEvidenceStore
 
 try:
     from langchain_core.callbacks import BaseCallbackHandler as LangChainBaseCallbackHandler
@@ -42,6 +48,65 @@ _SEMANTIC_EVENT_TYPES = {
     "on_tool_error": "tool.error",
     "on_tool_start": "tool.start",
 }
+
+
+@dataclass(frozen=True)
+class LangChainArtifacts:
+    """Normalized LangChain integration outputs plus supporting files."""
+
+    bundle_path: Path
+    receipt: dict[str, Any]
+    receipt_path: Path
+    summary: dict[str, Any]
+    summary_path: Path
+    supporting_files: dict[str, Path]
+
+
+def _load_ed25519_runtime():
+    try:
+        from cryptography.hazmat.primitives import serialization
+        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+    except ModuleNotFoundError as exc:  # pragma: no cover - depends on extras
+        raise ModuleNotFoundError(
+            "LangChainAdapter signing requires cryptography. Install agent-evidence with "
+            "the [signing] or [dev] extra."
+        ) from exc
+
+    return serialization, Ed25519PrivateKey
+
+
+def _write_adapter_keypair(
+    output_dir: Path,
+    *,
+    private_key_pem: bytes | None = None,
+) -> tuple[Path, Path, bytes, bytes]:
+    serialization, Ed25519PrivateKey = _load_ed25519_runtime()
+    if private_key_pem is None:
+        private_key = Ed25519PrivateKey.generate()
+    else:
+        loaded = serialization.load_pem_private_key(private_key_pem, password=None)
+        if not isinstance(loaded, Ed25519PrivateKey):
+            raise TypeError("LangChainAdapter requires an Ed25519 private key in PEM format.")
+        private_key = loaded
+
+    resolved_private_pem = private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption(),
+    )
+    public_pem = private_key.public_key().public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo,
+    )
+    private_key_path = output_dir / "manifest-private.pem"
+    public_key_path = output_dir / "manifest-public.pem"
+    private_key_path.write_bytes(resolved_private_pem)
+    public_key_path.write_bytes(public_pem)
+    return private_key_path, public_key_path, resolved_private_pem, public_pem
+
+
+def _write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def _merge_tags(*parts: list[str] | tuple[str, ...] | None) -> list[str]:
@@ -756,3 +821,147 @@ class EvidenceCallbackHandler(LangChainBaseCallbackHandler):
             name=name,
             extra=kwargs,
         )
+
+
+class LangChainAdapter:
+    """Recommended LangChain wrapper for the current quickstart artifact path."""
+
+    def __init__(
+        self,
+        *,
+        output_dir: Path,
+        store: LocalEvidenceStore,
+        recorder: EvidenceRecorder,
+        handler: EvidenceCallbackHandler,
+        private_key_pem: bytes | None = None,
+        key_id: str = "langchain-cookbook-demo",
+        key_version: str | None = None,
+        signer: str = "local-demo",
+        role: str = "attestor",
+    ) -> None:
+        self.output_dir = output_dir
+        self.store = store
+        self.recorder = recorder
+        self._handler = handler
+        self._private_key_pem = private_key_pem
+        self._key_id = key_id
+        self._key_version = key_version
+        self._signer = signer
+        self._role = role
+        self._artifacts: LangChainArtifacts | None = None
+
+    @classmethod
+    def for_output_dir(
+        cls,
+        output_dir: str | Path,
+        *,
+        digest_only: bool = True,
+        omit_request: bool = False,
+        omit_response: bool = False,
+        capture_stream_tokens: bool = False,
+        base_tags: list[str] | None = None,
+        private_key_pem: bytes | None = None,
+        key_id: str = "langchain-cookbook-demo",
+        key_version: str | None = None,
+        signer: str = "local-demo",
+        role: str = "attestor",
+    ) -> "LangChainAdapter":
+        resolved_output_dir = Path(output_dir)
+        if resolved_output_dir.exists():
+            if resolved_output_dir.is_dir():
+                shutil.rmtree(resolved_output_dir)
+            else:
+                resolved_output_dir.unlink()
+        resolved_output_dir.mkdir(parents=True, exist_ok=True)
+
+        store = LocalEvidenceStore(resolved_output_dir / "runtime-events.jsonl")
+        recorder = EvidenceRecorder(store)
+        handler = EvidenceCallbackHandler(
+            recorder=recorder,
+            base_tags=base_tags,
+            capture_stream_tokens=capture_stream_tokens,
+            digest_only=digest_only,
+            omit_request=omit_request,
+            omit_response=omit_response,
+        )
+        return cls(
+            output_dir=resolved_output_dir,
+            store=store,
+            recorder=recorder,
+            handler=handler,
+            private_key_pem=private_key_pem,
+            key_id=key_id,
+            key_version=key_version,
+            signer=signer,
+            role=role,
+        )
+
+    def callback_handler(self) -> EvidenceCallbackHandler:
+        return self._handler
+
+    def finalize(self) -> LangChainArtifacts:
+        if self._artifacts is not None:
+            return self._artifacts
+
+        records = self.store.list()
+        bundle_path = self.output_dir / "langchain-evidence.bundle.json"
+        manifest_path = self.output_dir / "langchain-evidence.manifest.json"
+        receipt_path = self.output_dir / "receipt.json"
+        summary_path = self.output_dir / "summary.json"
+
+        private_key_path, public_key_path, private_pem, public_pem = _write_adapter_keypair(
+            self.output_dir,
+            private_key_pem=self._private_key_pem,
+        )
+        bundle = export_json_bundle(
+            records,
+            bundle_path,
+            filters={"source": "langchain", "limit": len(records)},
+            private_key_pem=private_pem,
+            key_id=self._key_id,
+            key_version=self._key_version,
+            signer=self._signer,
+            role=self._role,
+            manifest_output_path=manifest_path,
+        )
+        receipt = verify_json_bundle(bundle_path, public_key_pem=public_pem)
+        _write_json(receipt_path, receipt)
+
+        verify_command = (
+            f"agent-evidence verify-export --bundle {bundle_path} --public-key {public_key_path}"
+        )
+        summary = {
+            "ok": receipt["ok"],
+            "output_dir": str(self.output_dir),
+            "store_path": str(self.store.path),
+            "bundle_path": str(bundle_path),
+            "receipt_path": str(receipt_path),
+            "manifest_path": str(manifest_path),
+            "private_key_path": str(private_key_path),
+            "public_key_path": str(public_key_path),
+            "record_count": len(records),
+            "signature_count": len(bundle.signatures),
+            "verify_command": verify_command,
+            "verify_result": receipt,
+            "anchor_note": (
+                "Detached anchoring is not implemented in this repository. Use the exported "
+                "bundle digest and signed manifest as the handoff point if you want to anchor "
+                "it in an external timestamp or registry system."
+            ),
+        }
+        _write_json(summary_path, summary)
+
+        self._artifacts = LangChainArtifacts(
+            bundle_path=bundle_path,
+            receipt=receipt,
+            receipt_path=receipt_path,
+            summary=summary,
+            summary_path=summary_path,
+            supporting_files={
+                "manifest": manifest_path,
+                "private_key": private_key_path,
+                "public_key": public_key_path,
+                "runtime_events": self.store.path,
+            },
+        )
+        return self._artifacts

@@ -1,4 +1,32 @@
-# Operation Accountability Statement Examples
+# Examples
+
+## Current primary runnable example
+
+The current primary runnable example in this repository is:
+
+- [`langchain_minimal_evidence.py`](./langchain_minimal_evidence.py)
+  - Recommended LangChain entry point for the current quickstart path.
+  - Produces the normalized outputs used in this repo today:
+    `bundle`, `receipt`, and `summary`.
+  - Uses the recommended public API:
+
+    ```python
+    from agent_evidence.integrations.langchain import LangChainAdapter
+
+    adapter = LangChainAdapter.for_output_dir("./artifacts/langchain-run")
+    callbacks = [adapter.callback_handler()]
+    artifacts = adapter.finalize()
+    ```
+
+  - Supporting files such as the manifest sidecar, local keys, and runtime JSONL
+    remain supporting materials rather than additional primary outputs.
+
+Related docs:
+
+- [`../docs/cookbooks/langchain_minimal_evidence.md`](../docs/cookbooks/langchain_minimal_evidence.md)
+- [`../integrations/langchain/README.md`](../integrations/langchain/README.md)
+
+## Operation Accountability Statement examples
 
 These examples are the current primary example surface for
 `execution-evidence-operation-accountability-profile@0.1`.
