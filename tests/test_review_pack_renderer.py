@@ -97,15 +97,19 @@ def test_review_pack_renderer_renders_deterministic_success_report() -> None:
 
     assert first.markdown == second.markdown
     assert first.taxonomy_labels == ("Verification passed",)
-    assert "## Overall Status" in first.markdown
-    assert "## Artifact Inventory" in first.markdown
-    assert "## Verification Facts" in first.markdown
-    assert "## Issue / Failure Summary" in first.markdown
-    assert "## Evidence References" in first.markdown
-    assert "## Reviewer Notes" in first.markdown
-    assert "`receipt.signature_verified`: `True`" in first.markdown
-    assert "`bundle.manifest.artifact_digest`: `artifact-digest-123`" in first.markdown
-    assert "No receipt issues were reported." in first.markdown
+    assert "# 审阅报告" in first.markdown
+    assert "## 总体状态" in first.markdown
+    assert "## 交付物清单" in first.markdown
+    assert "## 校验结果" in first.markdown
+    assert "## 问题摘要" in first.markdown
+    assert "## 证据引用" in first.markdown
+    assert "## 审阅备注" in first.markdown
+    assert "签名校验结果（receipt.signature_verified）：`True`" in first.markdown
+    assert (
+        "交付摘要指纹（bundle.manifest.artifact_digest）：`artifact-digest-123`" in first.markdown
+    )
+    assert "回执未报告问题。" in first.markdown
+    assert "结果：`校验通过`" in first.markdown
 
 
 def test_review_pack_renderer_keeps_taxonomy_labels_in_renderer_only(tmp_path: Path) -> None:
@@ -135,10 +139,10 @@ def test_review_pack_renderer_keeps_taxonomy_labels_in_renderer_only(tmp_path: P
     report_text = pack.report_path.read_text(encoding="utf-8")
     index_payload = json.loads(pack.index_path.read_text(encoding="utf-8"))
 
-    assert "Verification issues present" in report_text
-    assert "Chain continuity failed" in report_text
-    assert "Signature failure" in report_text
-    assert "Optional support material missing" in report_text
+    assert "校验未通过" in report_text
+    assert "链路连续性异常" in report_text
+    assert "签名校验失败" in report_text
+    assert "缺少可选附属文件" in report_text
     assert "chain: record 1: chain_hash mismatch" in report_text
     assert "signature verification failed" in report_text
     assert "taxonomy_labels" not in index_payload

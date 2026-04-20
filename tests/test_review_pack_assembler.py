@@ -124,13 +124,13 @@ def test_review_pack_assembler_packages_primary_outputs_and_excludes_private_key
     assert index_payload["receipt_facts"]["record_count"] == receipt_payload["record_count"]
 
     report_text = pack.report_path.read_text(encoding="utf-8")
-    assert "# Review Report" in report_text
-    assert "## Overall Status" in report_text
-    assert "## Artifact Inventory" in report_text
-    assert "## Verification Facts" in report_text
-    assert "## Issue / Failure Summary" in report_text
-    assert "## Evidence References" in report_text
-    assert "## Reviewer Notes" in report_text
+    assert "# 审阅报告" in report_text
+    assert "## 总体状态" in report_text
+    assert "## 交付物清单" in report_text
+    assert "## 校验结果" in report_text
+    assert "## 问题摘要" in report_text
+    assert "## 证据引用" in report_text
+    assert "## 审阅备注" in report_text
     assert "primary/receipt.json" in report_text
 
 
@@ -156,7 +156,7 @@ def test_review_pack_assembler_supporting_files_are_optional(tmp_path: Path) -> 
     assert index_payload["missing_supporting_files"] == ["manifest"]
 
     report_text = pack.report_path.read_text(encoding="utf-8")
-    assert "Optional support material missing" in report_text
+    assert "缺少可选附属文件" in report_text
 
 
 def test_review_pack_assembler_preserves_pack_shape_across_adapter_lines(tmp_path: Path) -> None:
@@ -212,12 +212,12 @@ def test_review_pack_assembler_preserves_pack_shape_across_adapter_lines(tmp_pat
     langchain_report = langchain_pack.report_path.read_text(encoding="utf-8")
     openai_report = openai_pack.report_path.read_text(encoding="utf-8")
     for heading in (
-        "## Overall Status",
-        "## Artifact Inventory",
-        "## Verification Facts",
-        "## Issue / Failure Summary",
-        "## Evidence References",
-        "## Reviewer Notes",
+        "## 总体状态",
+        "## 交付物清单",
+        "## 校验结果",
+        "## 问题摘要",
+        "## 证据引用",
+        "## 审阅备注",
     ):
         assert heading in langchain_report
         assert heading in openai_report
