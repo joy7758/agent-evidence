@@ -88,6 +88,8 @@ def test_review_pack_example_smoke(tmp_path: Path) -> None:
     assert (pack_root / "primary" / "receipt.json").exists()
     assert (pack_root / "primary" / "summary.json").exists()
     assert (pack_root / "review" / "report.md").exists()
+    assert (pack_root / "review" / "report.pdf").exists()
+    assert (pack_root / "review" / "report.pdf").read_bytes().startswith(b"%PDF")
     assert (pack_root / "index.json").exists()
     assert not (pack_root / "supporting" / "manifest-private.pem").exists()
 
@@ -122,6 +124,8 @@ def test_review_pack_example_smoke(tmp_path: Path) -> None:
     assert (primary_only_root / "primary" / "receipt.json").exists()
     assert (primary_only_root / "primary" / "summary.json").exists()
     assert (primary_only_root / "review" / "report.md").exists()
+    assert (primary_only_root / "review" / "report.pdf").exists()
+    assert (primary_only_root / "review" / "report.pdf").read_bytes().startswith(b"%PDF")
     assert (primary_only_root / "index.json").exists()
     assert not (primary_only_root / "supporting").exists()
     assert primary_only_payload["supporting_files"] == {}

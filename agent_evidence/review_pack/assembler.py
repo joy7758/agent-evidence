@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
+from .pdf_export import write_review_report_pdf
 from .renderer import ReviewPackRenderer
 
 PRIMARY_FILENAMES = {
@@ -21,6 +22,7 @@ SUPPORTING_FILENAMES = {
 }
 PACK_INDEX_FILENAME = "index.json"
 REPORT_FILENAME = "report.md"
+REPORT_PDF_FILENAME = "report.pdf"
 PRIMARY_DIRNAME = "primary"
 REVIEW_DIRNAME = "review"
 SUPPORTING_DIRNAME = "supporting"
@@ -35,6 +37,7 @@ class ReviewPackResult:
     supporting_files: dict[str, Path]
     index_path: Path
     report_path: Path
+    report_pdf_path: Path
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -160,6 +163,7 @@ class ReviewPackAssembler:
             name: str(path.relative_to(self.output_dir)) for name, path in copied_supporting.items()
         }
         report_path = review_dir / REPORT_FILENAME
+        report_pdf_path = review_dir / REPORT_PDF_FILENAME
         rendered_report = ReviewPackRenderer().render(
             bundle=bundle,
             receipt=receipt,
@@ -169,6 +173,7 @@ class ReviewPackAssembler:
             missing_supporting=missing_supporting,
         )
         report_path.write_text(rendered_report.markdown, encoding="utf-8")
+        write_review_report_pdf(rendered_report.markdown, report_pdf_path)
 
         index_path = self.output_dir / PACK_INDEX_FILENAME
         index_payload = {
@@ -197,4 +202,5 @@ class ReviewPackAssembler:
             supporting_files=copied_supporting,
             index_path=index_path,
             report_path=report_path,
+            report_pdf_path=report_pdf_path,
         )

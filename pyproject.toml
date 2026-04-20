@@ -16,6 +16,7 @@ dependencies = [
   "click>=8.1",
   "jsonschema>=4.23",
   "pydantic>=2.7",
+  "reportlab>=4.2,<5.0",
 ]
 
 [project.optional-dependencies]
@@ -52,6 +53,7 @@ postgres = [
 
 [project.scripts]
 agent-evidence = "agent_evidence.cli.main:main"
+ae-review-pack-engine = "agent_evidence.review_pack.engine:main"
 
 [tool.setuptools]
 include-package-data = true

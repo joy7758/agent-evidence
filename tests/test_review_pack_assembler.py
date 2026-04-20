@@ -99,6 +99,8 @@ def test_review_pack_assembler_packages_primary_outputs_and_excludes_private_key
     assert pack.primary_files["receipt"].exists()
     assert pack.primary_files["summary"].exists()
     assert pack.report_path.exists()
+    assert pack.report_pdf_path.exists()
+    assert pack.report_pdf_path.read_bytes().startswith(b"%PDF")
     assert pack.index_path.exists()
     assert "private_key" not in pack.supporting_files
     assert pack.supporting_files["manifest"].exists()
@@ -148,6 +150,8 @@ def test_review_pack_assembler_supporting_files_are_optional(tmp_path: Path) -> 
     assert pack.primary_files["bundle"].exists()
     assert pack.primary_files["receipt"].exists()
     assert pack.primary_files["summary"].exists()
+    assert pack.report_pdf_path.exists()
+    assert pack.report_pdf_path.read_bytes().startswith(b"%PDF")
     assert pack.supporting_files == {}
     assert not (pack.pack_dir / "supporting").exists()
 
@@ -211,6 +215,8 @@ def test_review_pack_assembler_preserves_pack_shape_across_adapter_lines(tmp_pat
 
     langchain_report = langchain_pack.report_path.read_text(encoding="utf-8")
     openai_report = openai_pack.report_path.read_text(encoding="utf-8")
+    assert langchain_pack.report_pdf_path.exists()
+    assert openai_pack.report_pdf_path.exists()
     for heading in (
         "## 总体状态",
         "## 交付物清单",
