@@ -111,3 +111,22 @@
   - 给出 negotiation / transfer 的最小状态链、哪些事件暂时不进最小 demo、以及两级去重策略
   - 推荐最终 bundle grouping key，并说明为什么
   - 不写 schema JSON，不写 Java 可运行代码
+
+## M11 FDO-facing registration / outreach / proposal skeleton
+- 输入：
+  - 当前 canonical package：`Execution Evidence and Operation Accountability Profile v0.1`
+  - 已有 `spec/`、`schema/`、`examples/`、`demo/`、`submission/`、`docs/fdo-mapping/`
+  - 用户给出的外部执行目标：GitHub 仓库表面、FDO Testbed 注册、Peter/Sven 外联、LDT4SSC/DS4SSCC 提案
+- 输出：
+  - `docs/fdo-mapping/fdo-operation-evidence-profile-registration-pack.md`
+  - `submission/fdo-testbed-registration-draft.md`
+  - `submission/peter-sven-outreach-draft.md`
+  - `submission/ldt4ssc-ds4sscc-module-pitch.md`
+  - `README.md` / `README.zh-CN.md` 的最小导航补充
+  - `docs/STATUS.md` 里程碑记录
+- 验收条件：
+  - 不新建第二套 profile / validator / examples 体系
+  - 明确当前 canonical package 名称与 FDO-facing 对象名之间的映射关系
+  - 把外部注册、外联、项目插入申请收敛为可直接复用的最小文稿骨架
+  - 明确哪些步骤可以在仓库内完成，哪些步骤仍需要登录、审批或人工发送
+  - 不虚构已经完成的 GitHub/FDO Testbed/邮件外部动作

@@ -25,3 +25,7 @@
 - final handoff -> `submission/final-handoff.md`
 - commit / PR note -> `submission/commit-and-pr-note.md`
 - package manifest -> `submission/package-manifest.md`
+- FDO registration pack -> `docs/fdo-mapping/fdo-operation-evidence-profile-registration-pack.md`
+- FDO Testbed registration draft -> `submission/fdo-testbed-registration-draft.md`
+- Peter / Sven outreach draft -> `submission/peter-sven-outreach-draft.md`
+- LDT4SSC / DS4SSCC module pitch -> `submission/ldt4ssc-ds4sscc-module-pitch.md`

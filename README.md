@@ -48,6 +48,20 @@ Current entry surfaces for this flow:
 - [examples/README.md](./examples/README.md)
 - [docs/cookbooks/langchain_minimal_evidence.md](./docs/cookbooks/langchain_minimal_evidence.md)
 
+## FDO-facing Pack
+
+For the current FDO-facing registration and outreach surface, start with:
+
+- [docs/fdo-mapping/fdo-operation-evidence-profile-registration-pack.md](./docs/fdo-mapping/fdo-operation-evidence-profile-registration-pack.md)
+- [submission/fdo-testbed-registration-draft.md](./submission/fdo-testbed-registration-draft.md)
+- [submission/peter-sven-outreach-draft.md](./submission/peter-sven-outreach-draft.md)
+- [submission/ldt4ssc-ds4sscc-module-pitch.md](./submission/ldt4ssc-ds4sscc-module-pitch.md)
+
+Current external naming relationship:
+
+- `FDO_OPERATION_EVIDENCE_PROFILE_V0_1` = operation-level evidence profile
+- `ARO_AUDIT_PROFILE_V1` = audit-facing sibling profile
+
 ## Why This Is Different From Ordinary Traces
 
 Ordinary traces help you inspect a run inside the system that produced it.

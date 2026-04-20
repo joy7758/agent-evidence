@@ -14,6 +14,7 @@
 - M3 样例集：已完成
 - M4 validator 与 CLI：已完成
 - M5 demo 与文稿：已完成
+- M11 FDO-facing registration / outreach / proposal skeleton：已完成
 - M8 可选 trust binding 扩展：已完成
 - M9 EDC augmentation 边界与最小接入文档：已完成
 - M10 EDC control-plane event extension 草图：已完成
@@ -26,6 +27,10 @@
 - validator：`agent_evidence/oap.py` 与 CLI 命令 `agent-evidence validate-profile <file>`
 - demo：`demo/run_operation_accountability_demo.py`
 - 文稿：`docs/research-brief-zh.md`、`docs/abstract-en.md`
+- FDO-facing registration pack：`docs/fdo-mapping/fdo-operation-evidence-profile-registration-pack.md`
+- FDO Testbed registration draft：`submission/fdo-testbed-registration-draft.md`
+- Peter / Sven outreach draft：`submission/peter-sven-outreach-draft.md`
+- LDT4SSC / DS4SSCC module pitch：`submission/ldt4ssc-ds4sscc-module-pitch.md`
 - 可选 trust-binding 扩展：`validation.trust_bindings[]`、对应样例与说明文档
 
 ## 已验证结果
@@ -54,6 +59,36 @@
 - 不平行新建第二套工程。
 - 优先沿用现有 Python 包、CLI、tests、docs 结构。
 - 先交付最小闭环，再考虑更广映射。
+
+## M11 FDO-facing registration / outreach / proposal skeleton
+- 状态：已完成
+- 定位结论：
+  - 用户给出的外部动作目标可以拆成两部分：仓库内可准备的 registration / outreach / proposal pack，以及仓库外必须人工完成的登录、提交、审批和邮件发送。
+  - 当前仓库已经具备 spec / schema / examples / validator / demo，缺口不在实现本身，而在对外口径和复用包。
+  - 本轮不新建第二套仓库内实现，不重命名当前 canonical profile，只补 FDO-facing 别名、映射说明和外联骨架。
+- 本轮新增产物：
+  - `docs/fdo-mapping/fdo-operation-evidence-profile-registration-pack.md`
+  - `submission/fdo-testbed-registration-draft.md`
+  - `submission/peter-sven-outreach-draft.md`
+  - `submission/ldt4ssc-ds4sscc-module-pitch.md`
+  - `README.md`、`README.zh-CN.md` 的 FDO-facing 导航入口
+  - `submission/package-manifest.md` 的新增清单项
+- 本轮命名收敛：
+  - 仓库 canonical package 名称继续使用 `Execution Evidence and Operation Accountability Profile v0.1`
+  - machine-readable profile id 继续使用 `execution-evidence-operation-accountability-profile@0.1`
+  - FDO-facing 对外对象名采用 `FDO_OPERATION_EVIDENCE_PROFILE_V0_1`
+  - `ARO_AUDIT_PROFILE_V1` 保持为审计导向 sibling object，不被本轮新对象替换
+  - 该 FDO-facing 名称只作为外部注册标签，不触发仓库内部 schema / validator / demo 重命名
+- 本轮完成与未完成边界：
+  - 已完成：注册字段草稿、链接位设计、flat field 到 canonical field 的映射、Peter/Sven 邮件草稿、LDT4SSC/DS4SSCC 模块提案骨架
+  - 未完成：GitHub 新仓库创建、FDO Testbed 登录与提交、审批结果获取、邮件真实发送
+  - 未完成原因：这些步骤依赖外部账户、外部审批或人工沟通，不应在本地仓库内虚构为已完成
+- 本轮核验：
+  - `git diff --check`：通过
+  - `./.venv/bin/agent-evidence validate-profile examples/minimal-valid-evidence.json`：通过，`ok: true`
+  - `./.venv/bin/agent-evidence validate-profile examples/invalid-missing-required.json`：通过，主错误码 `schema_violation`
+  - `python3 demo/run_operation_accountability_demo.py`：通过，末尾输出 `PASS execution-evidence-operation-accountability-profile@0.1 ...`
+  - 本轮仅新增文档与 README 导航，不涉及 schema、validator、demo 行为修改
 
 ## M9 EDC augmentation 边界与最小接入文档
 - 状态：已完成

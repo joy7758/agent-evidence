@@ -45,6 +45,20 @@ agent governance 平台。
 - 状态与验收：`docs/STATUS.md`、`docs/ACCEPTANCE-CHECKLIST.md`
 - 投稿交付：`submission/package-manifest.md`、`submission/final-handoff.md`
 
+## FDO 对外文稿入口
+
+如果当前目标是 FDO Testbed 注册、外联或项目插入申请，先看：
+
+- `docs/fdo-mapping/fdo-operation-evidence-profile-registration-pack.md`
+- `submission/fdo-testbed-registration-draft.md`
+- `submission/peter-sven-outreach-draft.md`
+- `submission/ldt4ssc-ds4sscc-module-pitch.md`
+
+当前对外命名关系：
+
+- `FDO_OPERATION_EVIDENCE_PROFILE_V0_1` = operation-level evidence profile
+- `ARO_AUDIT_PROFILE_V1` = audit-facing sibling profile
+
 ## Minimal v0.1 walkthrough
 
     python3 -m venv .venv
