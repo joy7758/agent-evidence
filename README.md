@@ -1,78 +1,124 @@
-<!-- language-switch:start -->
-[English](./README.md) | [中文](./README.zh-CN.md)
-<!-- language-switch:end -->
-
 # agent-evidence
 
-`agent-evidence` turns an AI agent run into a portable evidence package.
+把 AI Agent / service operation 转换为可验证、可审计、可复核的 evidence object。<br>
+Turn AI agent operations into auditable and verifiable evidence objects.
 
-## What You Get
+## Why this matters
 
-After one run, the primary outputs are:
+普通 AI workflow 通常只留下聊天记录、trace 页面或零散日志。它们能帮助开发者排查问题，但很难直接交给审查者、客户、治理团队或后续系统复核。
 
-- `bundle` — the exported evidence package you can hand off, verify, and retain outside the original runtime.
-- `receipt` — the machine-readable verification result returned by `agent-evidence validate-profile`, `agent-evidence verify-bundle`, or `agent-evidence verify-export`.
-- `summary` — the reviewer-facing summary output produced by the current demo and example surfaces.
+`agent-evidence` 关注的是一次 Agent / service operation 结束之后，能不能留下结构化证据：input / output hashes、operation type、policy reference、provenance chain、verification result，以及可以被 validator 检查的 evidence object。
 
-This repository keeps the output surface intentionally narrow: `bundle`, `receipt`, and `summary`.
+这个仓库的目标不是再做一个通用 Agent 平台，而是提供一个最小、可运行、可验证的 operation evidence 路径。
 
-## Install
+## What it provides
 
-For the current LangChain-first path:
+- `FDO_OPERATION_EVIDENCE_PROFILE_V0_1`
+- JSON Schema
+- profile-aware validator
+- minimal valid / invalid examples
+- registration pack
+- FDO Testbed registration draft
+- outreach draft for FDO discussion
+- LangChain / LangGraph 优先的 evidence handoff 思路
+
+## Quick Start
+
+Install from source:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -e ".[langchain,signing]"
+pip install -e ".[dev,langchain,signing]"
 ```
 
-For local development in this repository:
+Validate a minimal valid evidence profile:
 
 ```bash
-pip install -e ".[dev]"
+agent-evidence validate-profile examples/minimal-valid-evidence.json
 ```
 
-## Minimal Run Path
+Check that an intentionally invalid example fails:
 
-The first-run flow in this repository is organized around:
+```bash
+agent-evidence validate-profile examples/invalid-missing-required.json
+```
 
-1. install
-2. run one minimal example
-3. export a `bundle`
-4. verify the `bundle` to produce a `receipt`
-5. review the generated `summary`
+The console command is provided by the package entry point after `pip install -e ...`.
 
-Current entry surfaces for this flow:
+## Example Evidence Fields
 
-- [demo/README.md](./demo/README.md)
-- [examples/README.md](./examples/README.md)
-- [docs/cookbooks/langchain_minimal_evidence.md](./docs/cookbooks/langchain_minimal_evidence.md)
+- `operation_id` — one operation or run that needs to be reviewed
+- `operation_type` — what kind of operation was performed
+- `input_hashes` — hashes for inputs or source artifacts
+- `output_hashes` — hashes for generated outputs
+- `policy_reference` — policy, rule, or governance checkpoint used during the run
+- `provenance_chain` — links between inputs, actions, outputs, and evidence
+- `verification_result` — machine-readable result from profile validation or bundle verification
 
-## FDO-facing Pack
+## Demo Screenshots
 
-For the current FDO-facing registration and outreach surface, start with:
+Real screenshots are intentionally not generated in this README. Add them under:
 
-- [docs/fdo-mapping/fdo-operation-evidence-profile-registration-pack.md](./docs/fdo-mapping/fdo-operation-evidence-profile-registration-pack.md)
-- [submission/fdo-testbed-registration-draft.md](./submission/fdo-testbed-registration-draft.md)
-- [submission/peter-sven-outreach-draft.md](./submission/peter-sven-outreach-draft.md)
-- [submission/ldt4ssc-ds4sscc-module-pitch.md](./submission/ldt4ssc-ds4sscc-module-pitch.md)
+- `assets/profile-validator.png`
+- `assets/evidence-object.png`
+- `assets/fdo-testbed-registration.png`
+
+See [assets/README.md](./assets/README.md) for the capture checklist.
+
+## Relation to FDO
+
+`agent-evidence` is an experimental, minimal, discussion-oriented operation evidence profile. It explores how AI / Agent operation evidence can be expressed with an FDO-style profile, schema, examples, validator, and registration pack.
+
+It is not an official FDO standard. The current public claim is narrower: this repository provides a working profile and validator surface that can support FDO-facing discussion and a minimal FDO Testbed registration draft.
+
+Start here for the FDO-facing pack:
+
+- [FDO Operation Evidence Profile Registration Pack](./docs/fdo-mapping/fdo-operation-evidence-profile-registration-pack.md)
+- [FDO Testbed registration draft](./submission/fdo-testbed-registration-draft.md)
+- [FDO outreach draft](./submission/peter-sven-outreach-draft.md)
+- [LDT4SSC / DS4SSCC module pitch](./submission/ldt4ssc-ds4sscc-module-pitch.md)
 
 Current external naming relationship:
 
 - `FDO_OPERATION_EVIDENCE_PROFILE_V0_1` = operation-level evidence profile
 - `ARO_AUDIT_PROFILE_V1` = audit-facing sibling profile
 
-## Why This Is Different From Ordinary Traces
+## For hiring managers
 
-Ordinary traces help you inspect a run inside the system that produced it.
+This repository shows that I can:
 
-`agent-evidence` is for teams that need the run to leave behind a portable artifact boundary:
+- turn LangChain / Agent workflow thinking into a concrete evidence boundary
+- design JSON Schema and validator logic for high-responsibility AI workflows
+- model audit trail, provenance, hashes, and verification results as deliverable artifacts
+- connect trustworthy AI governance ideas to runnable examples
+- package technical work as open-source documentation, examples, and CLI validation
 
-- a `bundle` that can be exported and moved
-- a `receipt` that records what verified and what failed
-- a `summary` that another engineer or reviewer can read without replaying the original runtime
+## Minimal Run Path
 
-The current verification surface is bounded and local-first. This repository does not claim a hosted tracing plane, a full audit plane, or a generic governance platform.
+The first-run flow in this repository is organized around:
+
+1. install
+2. run or inspect one minimal example
+3. validate the profile
+4. export or verify an evidence bundle when needed
+5. review the generated `bundle`, `receipt`, and `summary`
+
+Current entry surfaces:
+
+- [demo/README.md](./demo/README.md)
+- [examples/README.md](./examples/README.md)
+- [LangChain minimal evidence cookbook](./docs/cookbooks/langchain_minimal_evidence.md)
+- [OpenAI-compatible minimal cookbook](./docs/cookbooks/openai_compatible_minimal.md)
+- [Review pack minimal cookbook](./docs/cookbooks/review_pack_minimal.md)
+
+## What You Get
+
+After one run, the primary outputs are intentionally narrow:
+
+- `bundle` — exported evidence package that can be handed off, verified, and retained outside the original runtime
+- `receipt` — machine-readable verification result returned by `agent-evidence validate-profile`, `agent-evidence verify-bundle`, or `agent-evidence verify-export`
+- `summary` — reviewer-facing summary output produced by the current demo and example surfaces
 
 ## Integration Priorities
 
@@ -116,3 +162,7 @@ This repository is being tightened into a developer-product entry page:
 - explicit about active versus frozen/reference surfaces
 
 For the current repo boundary, see [docs/reports/repo-map-audit.md](./docs/reports/repo-map-audit.md).
+
+## English Summary
+
+`agent-evidence` turns AI agent operations into structured evidence objects that can be validated, reviewed, and retained outside the original runtime. The project focuses on a minimal operation evidence profile, JSON Schema, validator, examples, and FDO-facing discussion material. It is experimental and discussion-oriented, not an official FDO standard.
