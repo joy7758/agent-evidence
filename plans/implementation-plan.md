@@ -73,3 +73,23 @@
   - 明确说明当前应引用 freeze package，而不是把整条 Java spike 直接并入 `main`
   - 不复制 `spikes/edc-java-extension/`，不合并 Java 代码，不新增运行时功能
   - `git diff --check` 通过
+
+## M12 AGT-to-EEOAP v0.1 reference adapter
+- 输入：
+  - 当前 canonical package：`Execution Evidence and Operation Accountability Profile v0.1`
+  - 现有 `agent_evidence/oap.py` digest / validation helpers
+  - 现有 `schema/`、`integrations/`、`docs/cookbooks/`、`tests/` 结构
+  - 一个明确标注为 synthetic 的 AGT-like runtime evidence fixture
+- 输出：
+  - `docs/cookbooks/agt_to_eeoap_v0_1.md`
+  - `integrations/agt/README.md`
+  - `integrations/agt/convert_agt_evidence_to_eeoap.py`
+  - `integrations/agt/fixtures/agt-evidence-minimal.synthetic.json`
+  - `integrations/agt/fixtures/eeoap-from-agt.expected.json`
+  - `tests/test_agt_adapter.py`
+- 验收条件：
+  - 转换器读取 synthetic AGT-like evidence，并输出合法 EEOAP v0.1 statement
+  - 输出 statement 通过现有 `validate_profile_file` 和 CLI `agent-evidence validate-profile`
+  - AGT-specific runtime material 被保留为 `evidence.artifacts[]` 中的 artifact 引用，不新增顶层字段
+  - 不修改 EEOAP v0.1 schema、不修改 validator 语义、不引入 AGT package dependency
+  - 文档明确 non-goals：不改 AGT runtime、不改 AGT policy engine、不新增 EEOAP 字段、不替代 `agt verify --evidence`

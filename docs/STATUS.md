@@ -14,6 +14,7 @@
 - M3 样例集：已完成
 - M4 validator 与 CLI：已完成
 - M5 demo 与文稿：已完成
+- M12 AGT-to-EEOAP v0.1 reference adapter：已完成
 - M7 旗舰论文规划包：已完成
 - M8 frozen EDC Java spike main-repo entry：已完成
 
@@ -49,6 +50,46 @@
 - 不平行新建第二套工程。
 - 优先沿用现有 Python 包、CLI、tests、docs 结构。
 - 先交付最小闭环，再考虑更广映射。
+
+## M12 AGT-to-EEOAP v0.1 reference adapter
+- 状态：已完成
+- 定位结论：
+  - 本轮只做 `AGT-to-EEOAP Interoperability Adapter`，作为一个外部、非侵入式 reference integration。
+  - AGT 被定位为 upstream runtime governance source；EEOAP v0.1 保持为 external operation-accountability statement format。
+  - 本轮不修改 EEOAP v0.1 schema，不修改现有 validator 语义，不引入 AGT package dependency。
+- 本轮新增产物：
+  - `docs/cookbooks/agt_to_eeoap_v0_1.md`
+  - `integrations/agt/README.md`
+  - `integrations/agt/convert_agt_evidence_to_eeoap.py`
+  - `integrations/agt/fixtures/agt-evidence-minimal.synthetic.json`
+  - `integrations/agt/fixtures/eeoap-from-agt.expected.json`
+  - `tests/test_agt_adapter.py`
+- 本轮边界收敛：
+  - `agt-evidence-minimal.synthetic.json` 明确为 synthetic AGT-like runtime evidence，不声明为 AGT 官方 schema。
+  - 转换器复用 `agent_evidence.oap.sha256_digest` 与 `with_recomputed_integrity` 计算 `references_digest`、`artifacts_digest`、`statement_digest`。
+  - 转换结果只使用 EEOAP v0.1 schema 允许的顶层字段。
+  - AGT runtime evidence 和 decision receipt 均进入 `evidence.artifacts[]`，不新增 `agt_*` 顶层字段。
+- 验收结果：
+  - synthetic AGT-like fixture 能转换为合法 EEOAP v0.1 statement。
+  - 转换结果通过 `agent-evidence validate-profile` / `validate_profile_file`。
+  - AGT-specific material 只作为 `evidence.artifacts[]` 引用，不进入顶层字段。
+  - 现有 profile schema 和 validator 语义保持不变。
+- 本轮核验：
+  - 命令：`python3 integrations/agt/convert_agt_evidence_to_eeoap.py --input integrations/agt/fixtures/agt-evidence-minimal.synthetic.json --output integrations/agt/fixtures/eeoap-from-agt.generated.json`
+    - 结果：生成 `integrations/agt/fixtures/eeoap-from-agt.generated.json`
+    - 是否通过：通过
+  - 命令：`agent-evidence validate-profile integrations/agt/fixtures/eeoap-from-agt.generated.json`
+    - 结果：`ok: true`, `issue_count: 0`
+    - 是否通过：通过
+  - 命令：`python -m pytest tests/test_agt_adapter.py`
+    - 结果：`1 passed`
+    - 是否通过：通过
+  - 命令：`ruff check integrations/agt/convert_agt_evidence_to_eeoap.py tests/test_agt_adapter.py`
+    - 结果：`All checks passed!`
+    - 是否通过：通过
+  - 命令：`python -m pytest`
+    - 结果：`67 passed, 1 skipped, 15 warnings`
+    - 是否通过：通过；warnings 为既有 Python 3.14 / langchain 兼容性提示
 
 ## 投稿状态同步
 - `Execution Evidence as a Verifiable Workflow Object: A Minimal Profile and Validator for Operation Accountability` — venue `The Journal of Systems & Software`；manuscript ID `JSSOFTWARE-S-26-00981`；当前状态 `rejected`；备注：已拒稿，不再作为在审稿件统计
