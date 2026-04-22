@@ -1,0 +1,112 @@
+{
+  "actor": {
+    "id": "did:agentmesh:demo-agent",
+    "name": "demo-agent",
+    "runtime": "agent-governance-toolkit",
+    "type": "agent"
+  },
+  "constraints": [
+    {
+      "description": "Only approved metadata fields may be added.",
+      "id": "constraint:approved-fields"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:agt-runtime-evidence-001",
+        "digest": "sha256:18cc5476d2a2ab85a3e58483210452e40086e59a2c87577a8eeec64092d86758",
+        "locator": "urn:demo:agt-evidence-minimal.synthetic",
+        "type": "synthetic-agt-runtime-evidence"
+      },
+      {
+        "artifact_id": "artifact:agt-decision-receipt-001",
+        "digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "locator": "urn:demo:agt-decision-receipt-001",
+        "type": "agt-decision-receipt"
+      }
+    ],
+    "id": "evidence:agt-action-001",
+    "integrity": {
+      "artifacts_digest": "sha256:8cb6ad0242c9116ec8b5b870c832235ed14395d956e93f8727cdc9e48f7997af",
+      "references_digest": "sha256:669dbfdba60bdf12a07f1a288e294d8675aa7982867efe1c879dbffb5b50077e",
+      "statement_digest": "sha256:3b6b1e5254969356fe81ee727410681f5918460ef7cfa997c125aaa65fd5e7da"
+    },
+    "operation_ref": "op:agt-action-001",
+    "policy_ref": "policy:approved-metadata-v1",
+    "references": [
+      {
+        "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "locator": "urn:demo:client-note-001",
+        "object_id": "obj:client-note-001",
+        "ref_id": "ref:agt-input",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "locator": "urn:demo:client-note-001-derived",
+        "object_id": "obj:client-note-001-derived",
+        "ref_id": "ref:agt-output",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:client-note-001"
+  },
+  "operation": {
+    "description": "Mapped from AGT action agt-action-001 (tool.call).",
+    "id": "op:agt-action-001",
+    "input_refs": [
+      "ref:agt-input"
+    ],
+    "output_refs": [
+      "ref:agt-output"
+    ],
+    "policy_ref": "policy:approved-metadata-v1",
+    "result": {
+      "status": "succeeded",
+      "summary": "AGT policy decision allow for metadata.enrich."
+    },
+    "subject_ref": "obj:client-note-001",
+    "type": "metadata.enrich"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:approved-fields"
+    ],
+    "id": "policy:approved-metadata-v1",
+    "name": "approved-metadata-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "did:agentmesh:demo-agent",
+    "id": "prov:agt-action-001",
+    "input_refs": [
+      "ref:agt-input"
+    ],
+    "operation_ref": "op:agt-action-001",
+    "output_refs": [
+      "ref:agt-output"
+    ],
+    "subject_ref": "obj:client-note-001"
+  },
+  "statement_id": "eeoap:agt-action-001",
+  "subject": {
+    "digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "id": "obj:client-note-001",
+    "locator": "urn:demo:client-note-001",
+    "type": "fdo-record"
+  },
+  "timestamp": "2026-04-22T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:agt-action-001",
+    "id": "validation:agt-action-001",
+    "method": "schema+reference+consistency",
+    "policy_ref": "policy:approved-metadata-v1",
+    "provenance_ref": "prov:agt-action-001",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

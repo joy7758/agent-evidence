@@ -1,0 +1,48 @@
+{
+  "source": "synthetic-agt-runtime-evidence",
+  "source_locator": "urn:demo:agt-evidence-minimal.synthetic",
+  "agent": {
+    "id": "did:agentmesh:demo-agent",
+    "name": "demo-agent",
+    "runtime": "agent-governance-toolkit"
+  },
+  "action": {
+    "id": "agt-action-001",
+    "type": "tool.call",
+    "name": "metadata.enrich"
+  },
+  "subject": {
+    "id": "obj:client-note-001",
+    "type": "fdo-record",
+    "locator": "urn:demo:client-note-001",
+    "digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "policy_decision": {
+    "id": "policy:approved-metadata-v1",
+    "name": "approved-metadata-policy",
+    "constraints": [
+      {
+        "id": "constraint:approved-fields",
+        "description": "Only approved metadata fields may be added."
+      }
+    ],
+    "result": "allow"
+  },
+  "input": {
+    "id": "obj:client-note-001",
+    "locator": "urn:demo:client-note-001",
+    "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "output": {
+    "id": "obj:client-note-001-derived",
+    "locator": "urn:demo:client-note-001-derived",
+    "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+  },
+  "audit_artifact": {
+    "id": "artifact:agt-decision-receipt-001",
+    "type": "agt-decision-receipt",
+    "locator": "urn:demo:agt-decision-receipt-001",
+    "digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+  },
+  "timestamp": "2026-04-22T00:00:00Z"
+}
