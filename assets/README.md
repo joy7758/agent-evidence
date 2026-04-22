@@ -1,11 +1,14 @@
 # README Screenshot Placeholders
 
-This directory is reserved for real README screenshots. Do not add generated placeholder images.
+This directory is reserved for real README screenshots. Do not add placeholder images.
 
-Capture these files after the demos are run manually:
+Current README assets:
 
-- `profile-validator.png` — terminal or UI view of `agent-evidence validate-profile examples/minimal-valid-evidence.json`
+- `profile-validator.png` — validator output for one valid profile and one intentionally invalid profile with `schema_violation`
+- `fdo-testbed-registration.png` — FDO Testbed Type Registry page showing `FDO_OPERATION_EVIDENCE_PROFILE_V0_1`
+
+Follow-up capture:
+
 - `evidence-object.png` — readable view of a minimal evidence object with operation, policy, provenance, and verification fields
-- `fdo-testbed-registration.png` — screenshot of the minimal FDO Testbed registration draft or registration step
 
 Keep screenshots simple and factual. The goal is to show input, execution, evidence, validation, and receipt, not to create marketing artwork.
