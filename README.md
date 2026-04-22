@@ -90,13 +90,13 @@ The minimal profile binds these parts into one reviewable object:
 
 ## Demo Screenshots
 
-Real screenshots are intentionally not generated in this README. Add them under:
+Validator proof:
 
-- `assets/profile-validator.png`
-- `assets/evidence-object.png`
-- `assets/fdo-testbed-registration.png`
+![Validator output showing valid pass and invalid schema violation](assets/profile-validator.png)
 
-See [assets/README.md](./assets/README.md) for the capture checklist.
+FDO Testbed registration proof:
+
+![FDO Testbed Type Registry entry for FDO_OPERATION_EVIDENCE_PROFILE_V0_1](assets/fdo-testbed-registration.png)
 
 ## Relation to FDO
 
