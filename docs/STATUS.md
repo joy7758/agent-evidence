@@ -74,6 +74,8 @@
   - 转换结果通过 `agent-evidence validate-profile` / `validate_profile_file`。
   - AGT-specific material 只作为 `evidence.artifacts[]` 引用，不进入顶层字段。
   - 现有 profile schema 和 validator 语义保持不变。
+- 对外互操作反馈：
+  - AGT issue：`https://github.com/microsoft/agent-governance-toolkit/issues/1314`
 - 本轮核验：
   - 命令：`python3 integrations/agt/convert_agt_evidence_to_eeoap.py --input integrations/agt/fixtures/agt-evidence-minimal.synthetic.json --output integrations/agt/fixtures/eeoap-from-agt.generated.json`
     - 结果：生成 `integrations/agt/fixtures/eeoap-from-agt.generated.json`
