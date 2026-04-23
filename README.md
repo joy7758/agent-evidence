@@ -111,6 +111,7 @@ Current entry surfaces:
 - [LangChain minimal evidence cookbook](./docs/cookbooks/langchain_minimal_evidence.md)
 - [OpenAI-compatible minimal cookbook](./docs/cookbooks/openai_compatible_minimal.md)
 - [Review pack minimal cookbook](./docs/cookbooks/review_pack_minimal.md)
+- [GitHub build attestation note](./docs/ci/github-build-attestation-minimal.md)
 
 ## What You Get
 
