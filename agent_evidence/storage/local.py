@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
+from threading import RLock
 
 from agent_evidence.models import EvidenceEnvelope
-from agent_evidence.storage.base import EvidenceStore
+from agent_evidence.storage.base import EvidenceStore, LatestHashes
 
 
 class LocalEvidenceStore(EvidenceStore):
@@ -14,11 +16,25 @@ class LocalEvidenceStore(EvidenceStore):
     def __init__(self, path: str | Path):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        self._lock = RLock()
 
     def append(self, envelope: EvidenceEnvelope) -> None:
+        with self._lock:
+            self._append_unlocked(envelope)
+
+    def _append_unlocked(self, envelope: EvidenceEnvelope) -> None:
         with self.path.open("a", encoding="utf-8") as handle:
-            handle.write(envelope.model_dump_json())
-            handle.write("\n")
+            handle.write(envelope.model_dump_json() + "\n")
+
+    def append_atomic(
+        self,
+        build_envelope_from_tip: Callable[[LatestHashes], EvidenceEnvelope],
+    ) -> EvidenceEnvelope:
+        with self._lock:
+            latest_hashes = self._latest_hashes_unlocked()
+            envelope = build_envelope_from_tip(latest_hashes)
+            self._append_unlocked(envelope)
+            return envelope
 
     def _last_envelope(self) -> EvidenceEnvelope | None:
         if not self.path.exists() or self.path.stat().st_size == 0:
@@ -50,17 +66,18 @@ class LocalEvidenceStore(EvidenceStore):
         return EvidenceEnvelope.model_validate_json(bytes(reversed(line_bytes)).decode("utf-8"))
 
     def list(self) -> list[EvidenceEnvelope]:
-        if not self.path.exists():
-            return []
+        with self._lock:
+            if not self.path.exists():
+                return []
 
-        records: list[EvidenceEnvelope] = []
-        with self.path.open("r", encoding="utf-8") as handle:
-            for line in handle:
-                line = line.strip()
-                if not line:
-                    continue
-                records.append(EvidenceEnvelope.model_validate_json(line))
-        return records
+            records: list[EvidenceEnvelope] = []
+            with self.path.open("r", encoding="utf-8") as handle:
+                for line in handle:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    records.append(EvidenceEnvelope.model_validate_json(line))
+            return records
 
     def latest_event_hash(self) -> str | None:
         event_hash, _ = self.latest_hashes()
@@ -71,6 +88,10 @@ class LocalEvidenceStore(EvidenceStore):
         return chain_hash
 
     def latest_hashes(self) -> tuple[str | None, str | None]:
+        with self._lock:
+            return self._latest_hashes_unlocked()
+
+    def _latest_hashes_unlocked(self) -> tuple[str | None, str | None]:
         envelope = self._last_envelope()
         if envelope is None:
             return None, None

@@ -1,15 +1,25 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from datetime import datetime
 
 from agent_evidence.models import EvidenceEnvelope
+
+LatestHashes = tuple[str | None, str | None]
+AtomicEnvelopeBuilder = Callable[[LatestHashes], EvidenceEnvelope]
 
 
 class EvidenceStore(ABC):
     @abstractmethod
     def append(self, envelope: EvidenceEnvelope) -> None:
         raise NotImplementedError
+
+    def append_atomic(self, build_envelope_from_tip: AtomicEnvelopeBuilder) -> EvidenceEnvelope:
+        latest_hashes = self.latest_hashes()
+        envelope = build_envelope_from_tip(latest_hashes)
+        self.append(envelope)
+        return envelope
 
     @abstractmethod
     def list(self) -> list[EvidenceEnvelope]:

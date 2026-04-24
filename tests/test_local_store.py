@@ -1,8 +1,42 @@
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from agent_evidence.crypto.chain import verify_chain
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage.local import LocalEvidenceStore
+
+
+def _assert_single_linear_chain(records: list, expected_count: int) -> None:
+    assert len(records) == expected_count
+    assert verify_chain(records) == []
+
+    genesis_records = [record for record in records if record.hashes.previous_event_hash is None]
+    assert len(genesis_records) == 1
+
+    previous_hashes = [
+        record.hashes.previous_event_hash
+        for record in records
+        if record.hashes.previous_event_hash is not None
+    ]
+    assert len(previous_hashes) == len(set(previous_hashes))
+
+    records_by_event_hash = {record.hashes.event_hash: record for record in records}
+    assert len(records_by_event_hash) == expected_count
+
+    visited: set[str] = set()
+    cursor = records[-1]
+    while True:
+        event_hash = cursor.hashes.event_hash
+        assert event_hash not in visited
+        visited.add(event_hash)
+
+        previous_event_hash = cursor.hashes.previous_event_hash
+        if previous_event_hash is None:
+            break
+        assert previous_event_hash in records_by_event_hash
+        cursor = records_by_event_hash[previous_event_hash]
+
+    assert len(visited) == expected_count
 
 
 def test_local_store_appends_chain(tmp_path: Path) -> None:
@@ -85,3 +119,24 @@ def test_local_store_query_supports_span_hash_and_pagination(tmp_path: Path) -> 
 
     paged = store.query(offset=1, limit=1)
     assert [record.event.event_type for record in paged] == ["tool.call"]
+
+
+def test_local_store_record_is_atomic_for_multithreaded_appends(tmp_path: Path) -> None:
+    store = LocalEvidenceStore(tmp_path / "concurrent.evidence.jsonl")
+    recorder = EvidenceRecorder(store)
+    record_count = 32
+
+    def record_event(index: int) -> str:
+        envelope = recorder.record(
+            actor=f"worker-{index}",
+            event_type="concurrent.local",
+            inputs={"index": index},
+        )
+        return envelope.hashes.event_hash
+
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        event_hashes = list(executor.map(record_event, range(record_count)))
+
+    assert len(event_hashes) == record_count
+    assert len(set(event_hashes)) == record_count
+    _assert_single_linear_chain(store.list(), record_count)
