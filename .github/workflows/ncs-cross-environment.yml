@@ -102,6 +102,16 @@ jobs:
           bash paper-ncs-execution-evidence/scripts/run_container_verification.sh \
             paper-ncs-execution-evidence/paper_packs/scientific_workflow_public
 
+      - name: Set up Python for result record
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install repository CLI for result record
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+
       - name: Record cross-environment result
         run: |
           bash paper-ncs-execution-evidence/scripts/run_cross_environment_verification.sh \
