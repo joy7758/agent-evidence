@@ -1,13 +1,15 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import datetime, timezone
+from threading import RLock
 from typing import Any
 
 from sqlalchemy import JSON, BigInteger, Index, Integer, String, create_engine, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
 from agent_evidence.models import EvidenceEnvelope
-from agent_evidence.storage.base import EvidenceStore
+from agent_evidence.storage.base import EvidenceStore, LatestHashes
 
 
 def _to_epoch_micros(value: datetime) -> int:
@@ -56,6 +58,7 @@ class SqlEvidenceStore(EvidenceStore):
     def __init__(self, url: str):
         self.url = url
         self.engine = create_engine(url)
+        self._lock = RLock()
         Base.metadata.create_all(self.engine)
 
     def _from_row(self, row: EvidenceRecordRow) -> EvidenceEnvelope:
@@ -67,12 +70,12 @@ class SqlEvidenceStore(EvidenceStore):
             }
         )
 
-    def append(self, envelope: EvidenceEnvelope) -> None:
+    def _row_from_envelope(self, envelope: EvidenceEnvelope) -> EvidenceRecordRow:
         payload = envelope.model_dump(mode="json")
         event = payload["event"]
         context = event["context"]
         hashes = payload["hashes"]
-        row = EvidenceRecordRow(
+        return EvidenceRecordRow(
             schema_version=payload["schema_version"],
             event_id=event["event_id"],
             event_type=event["event_type"],
@@ -91,9 +94,32 @@ class SqlEvidenceStore(EvidenceStore):
             metadata_json=event["metadata"],
             hashes_json=hashes,
         )
-        with Session(self.engine) as session:
-            session.add(row)
-            session.commit()
+
+    def append(self, envelope: EvidenceEnvelope) -> None:
+        row = self._row_from_envelope(envelope)
+        with self._lock:
+            with Session(self.engine) as session, session.begin():
+                session.add(row)
+
+    def append_atomic(
+        self,
+        build_envelope_from_tip: Callable[[LatestHashes], EvidenceEnvelope],
+    ) -> EvidenceEnvelope:
+        with self._lock:
+            with Session(self.engine) as session, session.begin():
+                latest_hashes = self._latest_hashes_in_session(session)
+                envelope = build_envelope_from_tip(latest_hashes)
+                session.add(self._row_from_envelope(envelope))
+                return envelope
+
+    def _latest_hashes_in_session(self, session: Session) -> LatestHashes:
+        statement = select(EvidenceRecordRow.event_hash, EvidenceRecordRow.chain_hash).order_by(
+            EvidenceRecordRow.id.desc()
+        )
+        row = session.execute(statement.limit(1)).one_or_none()
+        if row is None:
+            return None, None
+        return row[0], row[1]
 
     def list(self) -> list[EvidenceEnvelope]:
         return self.query()
@@ -107,14 +133,9 @@ class SqlEvidenceStore(EvidenceStore):
         return chain_hash
 
     def latest_hashes(self) -> tuple[str | None, str | None]:
-        statement = select(EvidenceRecordRow.event_hash, EvidenceRecordRow.chain_hash).order_by(
-            EvidenceRecordRow.id.desc()
-        )
-        with Session(self.engine) as session:
-            row = session.execute(statement.limit(1)).one_or_none()
-        if row is None:
-            return None, None
-        return row[0], row[1]
+        with self._lock:
+            with Session(self.engine) as session:
+                return self._latest_hashes_in_session(session)
 
     def query(
         self,

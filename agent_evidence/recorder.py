@@ -87,6 +87,36 @@ class EvidenceRecorder:
         metadata: Any | None = None,
         tags: list[str] | None = None,
     ) -> EvidenceEnvelope:
+        latest_hashes = getattr(self.store, "latest_hashes", None)
+        if callable(latest_hashes):
+            tip = latest_hashes()
+        else:
+            tip = (self.store.latest_event_hash(), self.store.latest_chain_hash())
+        return self._build_from_tip(
+            tip,
+            actor=actor,
+            event_type=event_type,
+            action=action,
+            inputs=inputs,
+            outputs=outputs,
+            context=context,
+            metadata=metadata,
+            tags=tags,
+        )
+
+    def _build_from_tip(
+        self,
+        latest_hashes: tuple[str | None, str | None],
+        *,
+        actor: str,
+        event_type: str | None = None,
+        action: str | None = None,
+        inputs: Any | None = None,
+        outputs: Any | None = None,
+        context: EvidenceContext | dict[str, Any] | None = None,
+        metadata: Any | None = None,
+        tags: list[str] | None = None,
+    ) -> EvidenceEnvelope:
         resolved_event_type = event_type or action
         if not resolved_event_type:
             raise ValueError("event_type is required.")
@@ -100,12 +130,7 @@ class EvidenceRecorder:
             metadata=ensure_json_object(metadata),
         )
         event_hash = compute_hash(event.model_dump(mode="json"))
-        latest_hashes = getattr(self.store, "latest_hashes", None)
-        if callable(latest_hashes):
-            previous_event_hash, previous_chain_hash = latest_hashes()
-        else:
-            previous_event_hash = self.store.latest_event_hash()
-            previous_chain_hash = self.store.latest_chain_hash()
+        previous_event_hash, previous_chain_hash = latest_hashes
         chain_hash = chain_digest_for_event(
             event_hash=event_hash,
             previous_chain_hash=previous_chain_hash,
@@ -120,6 +145,6 @@ class EvidenceRecorder:
         )
 
     def record(self, **kwargs: Any) -> EvidenceEnvelope:
-        envelope = self.build(**kwargs)
-        self.store.append(envelope)
-        return envelope
+        return self.store.append_atomic(
+            lambda latest_hashes: self._build_from_tip(latest_hashes, **kwargs)
+        )

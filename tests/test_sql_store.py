@@ -1,10 +1,12 @@
 import json
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from pathlib import Path
 
 from click.testing import CliRunner
 
 from agent_evidence.cli.main import main
+from agent_evidence.crypto.chain import verify_chain
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage.local import LocalEvidenceStore
 from agent_evidence.storage.sql import SqlEvidenceStore, _to_epoch_micros
@@ -12,6 +14,39 @@ from agent_evidence.storage.sql import SqlEvidenceStore, _to_epoch_micros
 
 def sqlite_url(path: Path) -> str:
     return f"sqlite+pysqlite:///{path}"
+
+
+def _assert_single_linear_chain(records: list, expected_count: int) -> None:
+    assert len(records) == expected_count
+    assert verify_chain(records) == []
+
+    genesis_records = [record for record in records if record.hashes.previous_event_hash is None]
+    assert len(genesis_records) == 1
+
+    previous_hashes = [
+        record.hashes.previous_event_hash
+        for record in records
+        if record.hashes.previous_event_hash is not None
+    ]
+    assert len(previous_hashes) == len(set(previous_hashes))
+
+    records_by_event_hash = {record.hashes.event_hash: record for record in records}
+    assert len(records_by_event_hash) == expected_count
+
+    visited: set[str] = set()
+    cursor = records[-1]
+    while True:
+        event_hash = cursor.hashes.event_hash
+        assert event_hash not in visited
+        visited.add(event_hash)
+
+        previous_event_hash = cursor.hashes.previous_event_hash
+        if previous_event_hash is None:
+            break
+        assert previous_event_hash in records_by_event_hash
+        cursor = records_by_event_hash[previous_event_hash]
+
+    assert len(visited) == expected_count
 
 
 def test_sql_store_appends_and_queries(tmp_path: Path) -> None:
@@ -210,3 +245,24 @@ def test_cli_migrate_and_query_sqlite(tmp_path: Path) -> None:
 def test_sql_store_epoch_micros_accepts_naive_datetime() -> None:
     naive_value = datetime(2026, 1, 1, 0, 0, 0, 123456)
     assert _to_epoch_micros(naive_value) == 1_767_225_600_123_456
+
+
+def test_sqlite_store_record_is_atomic_for_multithreaded_appends(tmp_path: Path) -> None:
+    store = SqlEvidenceStore(sqlite_url(tmp_path / "concurrent.db"))
+    recorder = EvidenceRecorder(store)
+    record_count = 32
+
+    def record_event(index: int) -> str:
+        envelope = recorder.record(
+            actor=f"worker-{index}",
+            event_type="concurrent.sqlite",
+            inputs={"index": index},
+        )
+        return envelope.hashes.event_hash
+
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        event_hashes = list(executor.map(record_event, range(record_count)))
+
+    assert len(event_hashes) == record_count
+    assert len(set(event_hashes)) == record_count
+    _assert_single_linear_chain(store.list(), record_count)
