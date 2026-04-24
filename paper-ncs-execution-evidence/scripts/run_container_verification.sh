@@ -100,5 +100,11 @@ print(f"Wrote {result_path}")
 PY
   '
 
+if command -v sudo >/dev/null 2>&1; then
+  sudo chown -R "$(id -u):$(id -g)" "$PACK" || true
+else
+  chown -R "$(id -u):$(id -g)" "$PACK" || true
+fi
+
 echo "CONTAINER_VERIFICATION: PASS"
 echo "Result: $RESULT_PATH"
