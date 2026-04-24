@@ -35,6 +35,10 @@
 ## Final gate
 
 ```bash
+python paper-ncs-execution-evidence/scripts/verify_public_dataset_source_metadata.py \
+  --pack paper-ncs-execution-evidence/paper_packs/scientific_workflow_public \
+  --write
+
 python paper-ncs-execution-evidence/scripts/build_public_scientific_workflow_pack.py \
   --pack paper-ncs-execution-evidence/paper_packs/scientific_workflow_public \
   --force

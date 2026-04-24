@@ -9,10 +9,13 @@
       "file_size_bytes": 1138148,
       "filename": "Blank_RNAi_sRNA-seq_rep1_downsampled.fastqsanger.gz",
       "id": "blank_rnai_rep1",
+      "local_md5_verified_from_source_metadata": "6638232f458ed3abbb642d2eb59a5c2b",
       "local_path": "inputs/Blank_RNAi_sRNA-seq_rep1_downsampled.fastqsanger.gz",
+      "local_sha256_verified_from_source_metadata": "sha256:f24baff79dbafa5dd63f3aa64f57bff54d35c32630dca0a7b12bbbabded11415",
       "observed_md5": "6638232f458ed3abbb642d2eb59a5c2b",
       "retrieval_status": "cached",
       "sha256": "sha256:f24baff79dbafa5dd63f3aa64f57bff54d35c32630dca0a7b12bbbabded11415",
+      "zenodo_md5": "6638232f458ed3abbb642d2eb59a5c2b",
       "zenodo_record": "https://zenodo.org/records/826906"
     },
     {
@@ -22,10 +25,13 @@
       "file_size_bytes": 899936,
       "filename": "Blank_RNAi_sRNA-seq_rep2_downsampled.fastqsanger.gz",
       "id": "blank_rnai_rep2",
+      "local_md5_verified_from_source_metadata": "d9e71d0c98d7c3102a02c9ce69343f84",
       "local_path": "inputs/Blank_RNAi_sRNA-seq_rep2_downsampled.fastqsanger.gz",
+      "local_sha256_verified_from_source_metadata": "sha256:eb6f95da49d9f35deab3fbce35ed108313e29964ae9eaf9eaa460becb641d09c",
       "observed_md5": "d9e71d0c98d7c3102a02c9ce69343f84",
       "retrieval_status": "cached",
       "sha256": "sha256:eb6f95da49d9f35deab3fbce35ed108313e29964ae9eaf9eaa460becb641d09c",
+      "zenodo_md5": "d9e71d0c98d7c3102a02c9ce69343f84",
       "zenodo_record": "https://zenodo.org/records/826906"
     },
     {
@@ -35,10 +41,13 @@
       "file_size_bytes": 545597,
       "filename": "Blank_RNAi_sRNA-seq_rep3_downsampled.fastqsanger.gz",
       "id": "blank_rnai_rep3",
+      "local_md5_verified_from_source_metadata": "782a05b6387f7d98372f75ac9033db1f",
       "local_path": "inputs/Blank_RNAi_sRNA-seq_rep3_downsampled.fastqsanger.gz",
+      "local_sha256_verified_from_source_metadata": "sha256:96c906be364d0333ad93a430a63648c5f1a002cb33b57768e4ae82900920d414",
       "observed_md5": "782a05b6387f7d98372f75ac9033db1f",
       "retrieval_status": "cached",
       "sha256": "sha256:96c906be364d0333ad93a430a63648c5f1a002cb33b57768e4ae82900920d414",
+      "zenodo_md5": "782a05b6387f7d98372f75ac9033db1f",
       "zenodo_record": "https://zenodo.org/records/826906"
     },
     {
@@ -48,10 +57,13 @@
       "file_size_bytes": 2023905,
       "filename": "Symp_RNAi_sRNA-seq_rep1_downsampled.fastqsanger.gz",
       "id": "symp_rnai_rep1",
+      "local_md5_verified_from_source_metadata": "c9119dbc9d50ab654eb55dfc48548257",
       "local_path": "inputs/Symp_RNAi_sRNA-seq_rep1_downsampled.fastqsanger.gz",
+      "local_sha256_verified_from_source_metadata": "sha256:b573f56e30b015712dee08af689b3d1a9f695b628713092911109efc98813bc0",
       "observed_md5": "c9119dbc9d50ab654eb55dfc48548257",
       "retrieval_status": "cached",
       "sha256": "sha256:b573f56e30b015712dee08af689b3d1a9f695b628713092911109efc98813bc0",
+      "zenodo_md5": "c9119dbc9d50ab654eb55dfc48548257",
       "zenodo_record": "https://zenodo.org/records/826906"
     },
     {
@@ -61,10 +73,13 @@
       "file_size_bytes": 1463365,
       "filename": "Symp_RNAi_sRNA-seq_rep2_downsampled.fastqsanger.gz",
       "id": "symp_rnai_rep2",
+      "local_md5_verified_from_source_metadata": "c0ad66cf30bc5bd8056f86ea6efe52b2",
       "local_path": "inputs/Symp_RNAi_sRNA-seq_rep2_downsampled.fastqsanger.gz",
+      "local_sha256_verified_from_source_metadata": "sha256:a0fd59ffcfb6becfe2fe6854f2dd9f61cfcd39907e7ed4bd1b32967fd78abe49",
       "observed_md5": "c0ad66cf30bc5bd8056f86ea6efe52b2",
       "retrieval_status": "cached",
       "sha256": "sha256:a0fd59ffcfb6becfe2fe6854f2dd9f61cfcd39907e7ed4bd1b32967fd78abe49",
+      "zenodo_md5": "c0ad66cf30bc5bd8056f86ea6efe52b2",
       "zenodo_record": "https://zenodo.org/records/826906"
     },
     {
@@ -74,19 +89,32 @@
       "file_size_bytes": 1620968,
       "filename": "Symp_RNAi_sRNA-seq_rep3_downsampled.fastqsanger.gz",
       "id": "symp_rnai_rep3",
+      "local_md5_verified_from_source_metadata": "c12859e9a9f8ea88fe0e047751038b00",
       "local_path": "inputs/Symp_RNAi_sRNA-seq_rep3_downsampled.fastqsanger.gz",
+      "local_sha256_verified_from_source_metadata": "sha256:0b25a0999b5cfc43c5513d9e78756eb1df6ff7596f15ad86f0884133e14e97b1",
       "observed_md5": "c12859e9a9f8ea88fe0e047751038b00",
       "retrieval_status": "cached",
       "sha256": "sha256:0b25a0999b5cfc43c5513d9e78756eb1df6ff7596f15ad86f0884133e14e97b1",
+      "zenodo_md5": "c12859e9a9f8ea88fe0e047751038b00",
       "zenodo_record": "https://zenodo.org/records/826906"
     }
   ],
   "geo_accession": "GSE82128",
-  "license": "TODO: verify from source record before submission",
+  "license": {
+    "id": "cc-by-4.0",
+    "source": "Zenodo API / DataCite API",
+    "status": "verified",
+    "title": "Creative Commons Attribution 4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0",
+    "verified_at_utc": "2026-04-24T09:41:51.092063Z"
+  },
   "notes": [
     "Data are public, downsampled, reviewer-lightweight FASTQ files.",
-    "The pack does not assert biological conclusions; it tests verifiable execution evidence."
+    "The pack does not assert biological conclusions; it tests verifiable execution evidence.",
+    "Zenodo/DataCite metadata is used for data-file license status, not the GTN tutorial content license."
   ],
   "source_description": "Galaxy Training Network small RNA-seq tutorial dataset.",
+  "source_metadata_status": "verified",
+  "source_metadata_verification": "source_metadata_verification.json",
   "zenodo_record_url": "https://zenodo.org/records/826906"
 }

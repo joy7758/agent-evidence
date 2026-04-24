@@ -1,5 +1,5 @@
 {
-  "bundle_digest": "sha256:833221aee57146e9ee30d5a2517c6f901e6bb89d5b8a322dee333a1182b12bff",
+  "bundle_digest": "sha256:ed2f8a1d6e17975c4646afe427f141243ce3172bf3fa8a1391a210162a638bee",
   "expected_exit_code": 0,
   "generated_at": "2026-04-24T00:10:03Z",
   "pack_id": "ncs-scientific-workflow-drosophila-srna-qc-public-v0.1",

@@ -12,7 +12,12 @@
     {
       "id": "dataset_source_manifest",
       "path": "dataset_source_manifest.json",
-      "sha256": "sha256:086fc32cb473ab673838f9aa38c25dcfd99db62cc46c50a65062f935945a713f"
+      "sha256": "sha256:fbf16fe09c0297619b6c8690c77c1ce6a1ee1c187e1b3824fe8735c9f97271eb"
+    },
+    {
+      "id": "source_metadata_verification",
+      "path": "source_metadata_verification.json",
+      "sha256": "sha256:e6ebda4e3d134942c9727b50136d293902bb85e186fb121733cd2e0c78752dbf"
     }
   ],
   "inputs": [
@@ -144,7 +149,7 @@
   "policy": {
     "path": "policy.json",
     "policy_id": "ncs-drosophila-srna-qc-public-policy-v0.1",
-    "sha256": "sha256:f00d3b6f6abe80dfebfd34454a311e7d30755a89c00cf07ec70fdc42a9033c50"
+    "sha256": "sha256:8a014f49acacf96d0b559cdbeb855ebd604283d0e346c6a95891d5cdb6cdb906"
   },
   "profile": {
     "name": "execution-evidence-operation-accountability",

@@ -6,7 +6,7 @@
   },
   "expected": {
     "exit_code": 0,
-    "receipt_digest": "sha256:e7fb03d517699d03e0a369727f7a200f0738d6c224b6b3b3f48a12b043ce57c2",
+    "receipt_digest": "sha256:e6f689832d8f46a0b23ac706f5c7433999d8372750632a5d7d75457ff2a201f5",
     "verdict": "PASS"
   },
   "failure_cases": [

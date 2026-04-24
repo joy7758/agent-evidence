@@ -24,8 +24,24 @@ It tests:
 - deterministic receipt and summary linkage;
 - failure detection for tampered inputs, tampered outputs, missing policy, broken evidence links, profile mismatch, temporal inconsistency and unverifiable outcomes.
 
+## Source metadata verification
+
+Source metadata was verified from the Zenodo record API and the DataCite DOI API.
+
+- Zenodo API: `https://zenodo.org/api/records/826906`
+- DataCite API: `https://api.datacite.org/dois/10.5281/zenodo.826906`
+- License status: `verified`
+- License id: `cc-by-4.0`
+- License title: `Creative Commons Attribution 4.0`
+- License URL: `https://creativecommons.org/licenses/by/4.0`
+- License source: `Zenodo API / DataCite API`
+
+The six FASTQ MD5 values were checked against Zenodo API file metadata. Local SHA-256 values are recorded in the pack.
+
+The GTN tutorial content license is not treated as the data-file license.
+
 ## Remaining work
 
-- verify source license before final submission;
 - archive the generated evidence pack with DOI;
-- run the cross-environment verification matrix.
+- maintain the cross-environment verification matrix;
+- publish an immutable OCI image digest before submission.

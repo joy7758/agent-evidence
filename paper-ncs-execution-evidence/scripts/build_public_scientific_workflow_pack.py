@@ -26,6 +26,7 @@ EXECUTION_START = "2026-04-24T00:10:00Z"
 EXECUTION_END = "2026-04-24T00:10:01Z"
 VALIDATION_TIME = "2026-04-24T00:10:02Z"
 RECEIPT_GENERATED_AT = "2026-04-24T00:10:03Z"
+SOURCE_METADATA_RECORD = "source_metadata/public_dataset_source_metadata_verification.json"
 
 FILES = [
     {
@@ -104,6 +105,39 @@ def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def load_verified_source_metadata(paper_root: Path) -> dict[str, Any] | None:
+    path = paper_root / SOURCE_METADATA_RECORD
+    if not path.exists():
+        return None
+    metadata = load_json(path)
+    if metadata.get("verification_status") != "PASS":
+        return None
+    return metadata
+
+
+def source_metadata_file_index(source_metadata: dict[str, Any] | None) -> dict[str, dict[str, Any]]:
+    if not source_metadata:
+        return {}
+    return {item.get("filename"): item for item in source_metadata.get("files", [])}
+
+
+def source_license(source_metadata: dict[str, Any] | None) -> dict[str, Any]:
+    if source_metadata and source_metadata.get("license_status") == "verified":
+        license_info = source_metadata.get("license") or {}
+        return {
+            "id": license_info.get("id"),
+            "source": license_info.get("source"),
+            "status": "verified",
+            "title": license_info.get("title"),
+            "url": license_info.get("url"),
+            "verified_at_utc": source_metadata.get("verified_at_utc"),
+        }
+    return {
+        "note": "License could not be verified from Zenodo/DataCite metadata.",
+        "status": "unknown",
+    }
+
+
 def direct_download_url(filename: str) -> str:
     return "https://zenodo.org/records/826906/files/" + urllib.parse.quote(filename) + "?download=1"
 
@@ -117,6 +151,7 @@ def reset_generated_pack_content(pack: Path) -> None:
         "policy.json",
         "provenance.json",
         "receipt.json",
+        "source_metadata_verification.json",
         "summary.json",
     ]:
         target = pack / name
@@ -180,22 +215,45 @@ def prepare_inputs(pack: Path, *, skip_download: bool, offline: bool) -> list[di
 
 
 def write_dataset_source_manifest(
-    pack: Path, input_records: list[dict[str, Any]]
+    pack: Path,
+    input_records: list[dict[str, Any]],
+    source_metadata: dict[str, Any] | None,
 ) -> dict[str, Any]:
+    source_files = source_metadata_file_index(source_metadata)
+    files: list[dict[str, Any]] = []
+    for item in input_records:
+        source_file = source_files.get(item["filename"], {})
+        files.append(
+            {
+                **item,
+                "local_md5_verified_from_source_metadata": source_file.get("local_md5"),
+                "local_sha256_verified_from_source_metadata": source_file.get("local_sha256"),
+                "zenodo_md5": source_file.get("zenodo_md5"),
+            }
+        )
+
     manifest = {
         "biological_context": BIOLOGICAL_CONTEXT,
         "doi": DOI,
-        "files": input_records,
+        "files": files,
         "geo_accession": GEO_ACCESSION,
-        "license": "TODO: verify from source record before submission",
+        "license": source_license(source_metadata),
         "notes": [
             "Data are public, downsampled, reviewer-lightweight FASTQ files.",
             (
                 "The pack does not assert biological conclusions; "
                 "it tests verifiable execution evidence."
             ),
+            (
+                "Zenodo/DataCite metadata is used for data-file license status, "
+                "not the GTN tutorial content license."
+            ),
         ],
         "source_description": SOURCE_DESCRIPTION,
+        "source_metadata_status": "verified" if source_metadata else "unverified",
+        "source_metadata_verification": (
+            "source_metadata_verification.json" if source_metadata else None
+        ),
         "zenodo_record_url": ZENODO_RECORD_URL,
     }
     write_json(pack / "dataset_source_manifest.json", manifest)
@@ -222,7 +280,23 @@ def workflow_command(input_records: list[dict[str, Any]]) -> list[str]:
     return command
 
 
-def build_policy(input_records: list[dict[str, Any]]) -> dict[str, Any]:
+def build_policy(
+    input_records: list[dict[str, Any]],
+    source_metadata_present: bool,
+) -> dict[str, Any]:
+    required_artifacts = [
+        "manifest.json",
+        "bundle.json",
+        "receipt.json",
+        "summary.json",
+        "dataset_source_manifest.json",
+        "outputs/qc_metrics.json",
+        "outputs/qc_report.txt",
+        "evidence/run_fastq_qc.py",
+        *[item["local_path"] for item in input_records],
+    ]
+    if source_metadata_present:
+        required_artifacts.append("source_metadata_verification.json")
     return {
         "allowed_operation_types": [OPERATION_TYPE],
         "dataset_doi": DOI,
@@ -232,17 +306,7 @@ def build_policy(input_records: list[dict[str, Any]]) -> dict[str, Any]:
             "name": PROFILE_NAME,
             "version": PROFILE_VERSION,
         },
-        "required_artifacts": [
-            "manifest.json",
-            "bundle.json",
-            "receipt.json",
-            "summary.json",
-            "dataset_source_manifest.json",
-            "outputs/qc_metrics.json",
-            "outputs/qc_report.txt",
-            "evidence/run_fastq_qc.py",
-            *[item["local_path"] for item in input_records],
-        ],
+        "required_artifacts": required_artifacts,
         "scope": "Deterministic QC of public downsampled Drosophila small RNA-seq FASTQ files.",
     }
 
@@ -281,23 +345,33 @@ def build_bundle(
 ) -> dict[str, Any]:
     metrics = load_json(pack / "outputs" / "qc_metrics.json")
     aggregate = metrics["aggregate"]
+    evidence = [
+        {
+            "id": "workflow_script",
+            "path": "evidence/run_fastq_qc.py",
+            "sha256": sha256_file(pack / "evidence" / "run_fastq_qc.py"),
+        },
+        {
+            "id": "dataset_source_manifest",
+            "path": "dataset_source_manifest.json",
+            "sha256": sha256_file(pack / "dataset_source_manifest.json"),
+        },
+    ]
+    source_metadata_path = pack / "source_metadata_verification.json"
+    if source_metadata_path.exists():
+        evidence.append(
+            {
+                "id": "source_metadata_verification",
+                "path": "source_metadata_verification.json",
+                "sha256": sha256_file(source_metadata_path),
+            }
+        )
     return {
         "actor": {
             "id": "paper-public-pack-builder",
             "type": "script",
         },
-        "evidence": [
-            {
-                "id": "workflow_script",
-                "path": "evidence/run_fastq_qc.py",
-                "sha256": sha256_file(pack / "evidence" / "run_fastq_qc.py"),
-            },
-            {
-                "id": "dataset_source_manifest",
-                "path": "dataset_source_manifest.json",
-                "sha256": sha256_file(pack / "dataset_source_manifest.json"),
-            },
-        ],
+        "evidence": evidence,
         "inputs": [
             {
                 "doi": DOI,
@@ -525,9 +599,12 @@ def copy_valid_pack(pack: Path, destination: Path) -> list[dict[str, Any]]:
         "policy.json",
         "provenance.json",
         "receipt.json",
+        "source_metadata_verification.json",
         "summary.json",
     ]:
-        shutil.copy2(pack / name, destination / name)
+        source = pack / name
+        if source.exists():
+            shutil.copy2(source, destination / name)
     for name in ["inputs", "outputs", "evidence"]:
         shutil.copytree(pack / name, destination / name)
     return load_json(destination / "dataset_source_manifest.json")["files"]
@@ -593,15 +670,19 @@ def build_pack(pack: Path, *, force: bool, skip_download: bool, offline: bool) -
         for name in ["inputs", "outputs", "evidence", "failures"]:
             (pack / name).mkdir(parents=True, exist_ok=True)
 
+    source_metadata = load_verified_source_metadata(paper_root)
+    if source_metadata:
+        write_json(pack / "source_metadata_verification.json", source_metadata)
+
     input_records = prepare_inputs(pack, skip_download=skip_download, offline=offline)
-    write_dataset_source_manifest(pack, input_records)
+    write_dataset_source_manifest(pack, input_records, source_metadata)
     run_workflow(pack, workflow_script, input_records)
 
     evidence_script = pack / "evidence" / "run_fastq_qc.py"
     evidence_script.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(workflow_script, evidence_script)
 
-    policy = build_policy(input_records)
+    policy = build_policy(input_records, source_metadata is not None)
     provenance = build_provenance(input_records)
     write_json(pack / "policy.json", policy)
     write_json(pack / "provenance.json", provenance)

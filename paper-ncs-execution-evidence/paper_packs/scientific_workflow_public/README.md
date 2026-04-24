@@ -13,6 +13,25 @@ This is the manuscript-facing public scientific workflow pack.
 No biological discovery is claimed. The experiment tests portable,
 validator-backed execution evidence over a public scientific workflow.
 
+## Source metadata and license
+
+Source metadata is verified from the Zenodo record API and DataCite DOI API.
+The GTN tutorial content license is not used as the data-file license source.
+
+- License status: `verified`
+- License id: `cc-by-4.0`
+- License title: `Creative Commons Attribution 4.0`
+- License URL: `https://creativecommons.org/licenses/by/4.0`
+- License source: `Zenodo API / DataCite API`
+- Source metadata record: `source_metadata_verification.json`
+- Raw API snapshots: `paper-ncs-execution-evidence/source_metadata/raw/`
+
+```bash
+python paper-ncs-execution-evidence/scripts/verify_public_dataset_source_metadata.py \
+  --pack paper-ncs-execution-evidence/paper_packs/scientific_workflow_public \
+  --write
+```
+
 ## Build
 
 ```bash

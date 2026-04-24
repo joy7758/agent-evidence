@@ -4,10 +4,7 @@
 
 - Date/time: 2026-04-24 CST
 - Current branch: `ncs-scientific-workflow-evidence`
-- Dirty working tree files:
-  - `M agent_evidence/cli/main.py`
-  - `?? agent_evidence/validate_pack.py`
-  - `?? paper-ncs-execution-evidence/`
+- Dirty working tree files: see current `git status --short` during each command run
 
 ## Existing top-level `paper*` directories
 
@@ -199,6 +196,23 @@ It falls back to the paper-local validator only when no repository `validate-pac
 
 The manuscript-facing scientific workflow pack is `paper_packs/scientific_workflow_public/`, built from Zenodo DOI `10.5281/zenodo.826906`. The earlier smoke pack remains a regression fixture.
 
+## Public dataset source metadata
+
+- DOI: `10.5281/zenodo.826906`
+- Zenodo API snapshot: present
+- DataCite API snapshot: present
+- Compact verification record: present
+- Source metadata verification status: PASS
+- License status: verified
+- License id: `cc-by-4.0`
+- License title: `Creative Commons Attribution 4.0`
+- License URL: `https://creativecommons.org/licenses/by/4.0`
+- License source: `Zenodo API / DataCite API`
+- Local file MD5 verification: pass for six FASTQ inputs
+- Zenodo file MD5 verification: pass for six FASTQ inputs
+- Dataset source manifest license TODO: resolved
+- Boundary: GTN tutorial content license is not used as a substitute for Zenodo/DataCite data-file license metadata
+
 ## Gaps blocking NCS submission
 
 | Gap | Current status | Required for NCS | Next action |
@@ -210,7 +224,7 @@ The manuscript-facing scientific workflow pack is `paper_packs/scientific_workfl
 | independent checker | DONE | agreement table | keep agreement table current |
 | native cross-environment matrix | DONE | Ubuntu/macOS plus Python 3.11-3.13 | keep CI green |
 | container verification | DONE | Docker validation from local CI image | keep CI green |
-| public dataset license | TODO | source license verified before submission | verify source metadata |
+| dataset license/source metadata | DONE | source license verified before submission | keep source metadata verification current |
 | immutable OCI release digest | TODO | reproducible image reference before submission | publish release image |
 | manuscript results extraction | TODO | figure-data tables and text | extract results |
 | baseline comparison | draft | accurate comparison section | refine |
