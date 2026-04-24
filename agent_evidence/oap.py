@@ -72,6 +72,44 @@ def _issue(stage: str, code: str, path: str, message: str) -> dict[str, str]:
     }
 
 
+def _stage(
+    name: str,
+    issues: list[dict[str, str]],
+    *,
+    skipped: bool = False,
+    skip_reason: str | None = None,
+) -> dict[str, Any]:
+    stage: dict[str, Any] = {
+        "name": name,
+        "ok": not issues and not skipped,
+        "issues": issues,
+        "skipped": skipped,
+    }
+    if skip_reason is not None:
+        stage["skip_reason"] = skip_reason
+    return stage
+
+
+def _flatten_issues(stages: list[dict[str, Any]]) -> list[dict[str, str]]:
+    return [issue for stage in stages for issue in stage["issues"]]
+
+
+def _issue_summary(issues: list[dict[str, str]]) -> dict[str, dict[str, int]]:
+    by_stage: dict[str, int] = {}
+    by_code: dict[str, int] = {}
+    for issue in issues:
+        by_stage[issue["stage"]] = by_stage.get(issue["stage"], 0) + 1
+        by_code[issue["code"]] = by_code.get(issue["code"], 0) + 1
+    return {
+        "by_stage": dict(sorted(by_stage.items())),
+        "by_code": dict(sorted(by_code.items())),
+    }
+
+
+def _skipped_stage(name: str, reason: str) -> dict[str, Any]:
+    return _stage(name, [], skipped=True, skip_reason=reason)
+
+
 def _validate_schema(
     profile: dict[str, Any], schema_path: str | Path = SCHEMA_PATH
 ) -> list[dict[str, str]]:
@@ -382,32 +420,59 @@ def build_validation_report(
     *,
     schema_path: str | Path | None = None,
     source: str | None = None,
+    fail_fast: bool = True,
 ) -> dict[str, Any]:
     resolved_schema_path = schema_path or SCHEMA_PATH
+    stages: list[dict[str, Any]] = []
     schema_issues = _validate_schema(profile, resolved_schema_path)
-    reference_issues: list[dict[str, str]] = []
-    consistency_issues: list[dict[str, str]] = []
-    integrity_issues: list[dict[str, str]] = []
+    stages.append(_stage("schema", schema_issues))
 
-    if not schema_issues:
+    if schema_issues:
+        skip_reason = "Skipped because schema validation failed."
+        stages.extend(
+            [
+                _skipped_stage("references", skip_reason),
+                _skipped_stage("consistency", skip_reason),
+                _skipped_stage("integrity", skip_reason),
+            ]
+        )
+    else:
         reference_issues = _validate_reference_closure(profile)
-    if not schema_issues and not reference_issues:
-        consistency_issues = _validate_link_consistency(profile)
-    if not schema_issues and not reference_issues and not consistency_issues:
-        integrity_issues = _validate_integrity(profile)
+        stages.append(_stage("references", reference_issues))
 
-    stages = [
-        {"name": "schema", "ok": not schema_issues, "issues": schema_issues},
-        {"name": "references", "ok": not reference_issues, "issues": reference_issues},
-        {"name": "consistency", "ok": not consistency_issues, "issues": consistency_issues},
-        {"name": "integrity", "ok": not integrity_issues, "issues": integrity_issues},
-    ]
-    issues = [issue for stage in stages for issue in stage["issues"]]
+        if fail_fast and reference_issues:
+            skip_reason = "Skipped because fail_fast stopped after reference validation failed."
+            stages.extend(
+                [
+                    _skipped_stage("consistency", skip_reason),
+                    _skipped_stage("integrity", skip_reason),
+                ]
+            )
+        else:
+            consistency_issues = _validate_link_consistency(profile)
+            stages.append(_stage("consistency", consistency_issues))
+
+            if fail_fast and consistency_issues:
+                stages.append(
+                    _skipped_stage(
+                        "integrity",
+                        "Skipped because fail_fast stopped after consistency validation failed.",
+                    )
+                )
+            else:
+                stages.append(_stage("integrity", _validate_integrity(profile)))
+
+    issues = _flatten_issues(stages)
+    issue_summary = _issue_summary(issues)
     report = {
         "ok": not issues,
         "profile": f"{PROFILE_NAME}@{PROFILE_VERSION}",
         "source": source,
+        "fail_fast": fail_fast,
         "issue_count": len(issues),
+        "primary_error_code": issues[0]["code"] if issues else None,
+        "issues": issues,
+        "issue_summary": issue_summary,
         "stages": stages,
         "summary": render_summary_lines(
             {
@@ -416,6 +481,7 @@ def build_validation_report(
                 "source": source,
                 "issue_count": len(issues),
                 "issues": issues,
+                "issue_summary": issue_summary,
             }
         ),
     }
@@ -426,9 +492,15 @@ def validate_profile_file(
     path: str | Path,
     *,
     schema_path: str | Path | None = None,
+    fail_fast: bool = True,
 ) -> dict[str, Any]:
     profile = load_profile(path)
-    return build_validation_report(profile, schema_path=schema_path, source=str(path))
+    return build_validation_report(
+        profile,
+        schema_path=schema_path,
+        source=str(path),
+        fail_fast=fail_fast,
+    )
 
 
 def render_summary_lines(report: dict[str, Any]) -> list[str]:
@@ -437,7 +509,17 @@ def render_summary_lines(report: dict[str, Any]) -> list[str]:
     if report["ok"]:
         return [f"PASS {profile} {source}"]
 
+    issues = report.get("issues")
+    if issues is None:
+        issues = _flatten_issues(report.get("stages", []))
+
     lines = [f"FAIL {profile} {source} ({report['issue_count']} issue(s))"]
-    for issue in report["issues"]:
+    issue_summary = report.get("issue_summary")
+    if issue_summary and issue_summary.get("by_stage"):
+        stage_counts = ", ".join(
+            f"{stage}={count}" for stage, count in issue_summary["by_stage"].items()
+        )
+        lines.append(f"Stages with issues: {stage_counts}")
+    for issue in issues:
         lines.append(f"[{issue['code']}] {issue['path']}: {issue['message']}")
     return lines
