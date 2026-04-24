@@ -9,20 +9,20 @@ Positioning:
 
 Canonical artifacts:
 
-- Release note: [RELEASE_NOTE.md](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/RELEASE_NOTE.md)
-- Schema: [schema_v0.1.json](/Users/zhangbin/GitHub/agent-evidence/agent_evidence/aep/schema_v0.1.json)
-- Verify CLI: [main.py](/Users/zhangbin/GitHub/agent-evidence/agent_evidence/cli/main.py)
-- LangChain exporter: [export_evidence.py](/Users/zhangbin/GitHub/agent-evidence/integrations/langchain/export_evidence.py)
-- Automaton exporter: [automaton.py](/Users/zhangbin/GitHub/agent-evidence/agent_evidence/integrations/automaton.py)
-- Live runbook: [LIVE_RUNBOOK.md](/Users/zhangbin/GitHub/agent-evidence/integrations/automaton/LIVE_RUNBOOK.md)
-- Boundary statement: [What-AEP-proves-and-what-it-does-not-prove.md](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/What-AEP-proves-and-what-it-does-not-prove.md)
+- Release note: [RELEASE_NOTE.md](RELEASE_NOTE.md)
+- Schema: [schema_v0.1.json](../../agent_evidence/aep/schema_v0.1.json)
+- Verify CLI: [main.py](../../agent_evidence/cli/main.py)
+- LangChain exporter: [export_evidence.py](../../integrations/langchain/export_evidence.py)
+- Automaton exporter: [automaton.py](../../agent_evidence/integrations/automaton.py)
+- Live runbook: [LIVE_RUNBOOK.md](../../integrations/automaton/LIVE_RUNBOOK.md)
+- Boundary statement: [What-AEP-proves-and-what-it-does-not-prove.md](What-AEP-proves-and-what-it-does-not-prove.md)
 
 Public fixtures:
 
-- Live bundle without runtime root: [manifest.json](/Users/zhangbin/GitHub/agent-evidence/tests/fixtures/agent_evidence_profile/valid/live-automaton-bundle/manifest.json)
-- Live bundle with runtime root: [manifest.json](/Users/zhangbin/GitHub/agent-evidence/tests/fixtures/agent_evidence_profile/valid/live-automaton-runtime-root-bundle/manifest.json)
-- Tampered live bundle without runtime root: [manifest.json](/Users/zhangbin/GitHub/agent-evidence/tests/fixtures/agent_evidence_profile/invalid/live-automaton-tampered-bundle/manifest.json)
-- Tampered live bundle with runtime root: [manifest.json](/Users/zhangbin/GitHub/agent-evidence/tests/fixtures/agent_evidence_profile/invalid/live-automaton-runtime-root-tampered-bundle/manifest.json)
+- Live bundle without runtime root: [manifest.json](../../tests/fixtures/agent_evidence_profile/valid/live-automaton-bundle/manifest.json)
+- Live bundle with runtime root: [manifest.json](../../tests/fixtures/agent_evidence_profile/valid/live-automaton-runtime-root-bundle/manifest.json)
+- Tampered live bundle without runtime root: [manifest.json](../../tests/fixtures/agent_evidence_profile/invalid/live-automaton-tampered-bundle/manifest.json)
+- Tampered live bundle with runtime root: [manifest.json](../../tests/fixtures/agent_evidence_profile/invalid/live-automaton-runtime-root-tampered-bundle/manifest.json)
 
 Minimal verification surface:
 

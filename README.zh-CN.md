@@ -249,7 +249,7 @@ agent-evidence export automaton \
 
 ## 受控释放表面
 
-位于 [v0.1-live-chain](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/README.md) 的受控样品发布属于历史 lineage surface，并不是当前主入口。
+位于 [v0.1-live-chain](release/v0.1-live-chain/README.md) 的受控样品发布属于历史 lineage surface，并不是当前主入口。
 
 该历史样品轨道在 Zenodo 上保留原始 DOI：
 https://doi.org/10.5281/zenodo.19055948
@@ -266,7 +266,7 @@ https://doi.org/10.5281/zenodo.19055948
 
 它与当前 Agent Evidence / AEP v0.1 package 路径的关系，统一见 [docs/lineage.md](docs/lineage.md)。
 
-正式的样本发布说明是[RELEASE_NOTE.md](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/RELEASE_NOTE.md)。
+正式的样本发布说明是[RELEASE_NOTE.md](release/v0.1-live-chain/RELEASE_NOTE.md)。
 
 ## CLI 示例
 

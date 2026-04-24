@@ -25,7 +25,7 @@ This release packages the first public, reproducible live-chain specimen of AEP 
 - no external signing / anchoring by default
 - strength depends on capture boundary and anchoring model
 
-See the boundary statement: [What-AEP-proves-and-what-it-does-not-prove.md](/Users/zhangbin/GitHub/agent-evidence/release/v0.1-live-chain/What-AEP-proves-and-what-it-does-not-prove.md)
+See the boundary statement: [What-AEP-proves-and-what-it-does-not-prove.md](What-AEP-proves-and-what-it-does-not-prove.md)
 
 ## What this release contains
 
