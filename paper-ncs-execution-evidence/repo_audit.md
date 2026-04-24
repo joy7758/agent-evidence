@@ -136,7 +136,8 @@ Configured matrix:
 
 - native OS: `ubuntu-latest`, `macos-latest`
 - Python: `3.11`, `3.12`, `3.13`
-- container: `ghcr.io/joy7758/agent-evidence:ncs-v0.1`
+- container: local CI image built from `paper-ncs-execution-evidence/docker/Dockerfile.ncs-ci`
+- optional pull image: `ghcr.io/joy7758/agent-evidence:ncs-v0.1`
 
 Workflow files:
 
@@ -144,6 +145,16 @@ Workflow files:
 - paper-local manuscript artifact copy: `paper-ncs-execution-evidence/.github/workflows/ncs-cross-environment.yml`
 
 Each environment builds the public Drosophila small RNA-seq pack, runs the repository strict validator, runs the paper-local validator, runs the public failure matrix and runs independent-checker agreement.
+
+Previous container blocker:
+
+- `ghcr.io/joy7758/agent-evidence:ncs-v0.1` failed to pull with Docker exit code `1`.
+
+Resolution:
+
+- CI no longer requires the unavailable GHCR image.
+- The container job builds `agent-evidence-ncs-ci:local` from the current checkout and runs the same validation commands inside Docker.
+- `ghcr.io/joy7758/agent-evidence:ncs-v0.1` remains an optional non-default pull path controlled by `NCS_CONTAINER_PULL_IMAGE=1`.
 
 Local cross-environment harness:
 
@@ -155,7 +166,7 @@ Local cross-environment harness:
 - local Docker container status: `not-run`
 - result file: `paper-ncs-execution-evidence/paper_packs/scientific_workflow_public/cross_environment_verification.json`
 
-Remote GitHub Actions status:
+Previous remote GitHub Actions status:
 
 - run id: `24881392886`
 - trigger: push to `ncs-scientific-workflow-evidence`
@@ -185,6 +196,10 @@ The manuscript-facing scientific workflow pack is `paper_packs/scientific_workfl
 | public scientific dataset pack | DONE | public dataset + deterministic outputs + receipt | keep matrix green |
 | failure injection public matrix | DONE | deterministic FAIL codes | keep matrix green |
 | independent checker | DONE | agreement table | keep agreement table current |
-| cross-environment verification | NATIVE CI PASS / CONTAINER BLOCKED | stable receipt digest across OS/container | publish or authorize container image, rerun CI |
+| native cross-environment matrix | DONE | Ubuntu/macOS plus Python 3.11-3.13 | keep CI green |
+| container verification | PENDING RERUN | Docker validation from local CI image | run updated CI |
+| public dataset license | TODO | source license verified before submission | verify source metadata |
+| immutable OCI release digest | TODO | reproducible image reference before submission | publish release image |
+| manuscript results extraction | TODO | figure-data tables and text | extract results |
 | baseline comparison | draft | accurate comparison section | refine |
 | related manuscripts disclosure | draft | final statuses | update manually |

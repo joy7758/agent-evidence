@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PAPER_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 CODE_ROOT="${CODE_ROOT:-$(cd "$PAPER_ROOT/.." && pwd)}"
-PACK_ROOT="$PAPER_ROOT/paper_packs/scientific_workflow_public"
+PACK_ROOT="${1:-$PAPER_ROOT/paper_packs/scientific_workflow_public}"
 
 cd "$CODE_ROOT"
 python "$PAPER_ROOT/scripts/build_public_scientific_workflow_pack.py" \

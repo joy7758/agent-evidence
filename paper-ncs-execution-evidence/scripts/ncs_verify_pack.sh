@@ -26,6 +26,9 @@ fi
 if [ -n "${VERIFY_CMD:-}" ]; then
   read -r -a VERIFIER_ARGS <<< "$VERIFY_CMD"
   STRICT_VALIDATOR_SOURCE="env-override"
+elif [ -n "${AGENT_EVIDENCE_BIN:-}" ] && "$AGENT_EVIDENCE_BIN" --help 2>&1 | grep -q "validate-pack"; then
+  VERIFIER_ARGS=("$AGENT_EVIDENCE_BIN" "validate-pack")
+  STRICT_VALIDATOR_SOURCE="repository"
 elif [ -x "$CODE_ROOT/.venv/bin/agent-evidence" ] && "$CODE_ROOT/.venv/bin/agent-evidence" --help 2>&1 | grep -q "validate-pack"; then
   VERIFIER_ARGS=("$CODE_ROOT/.venv/bin/agent-evidence" "validate-pack")
   STRICT_VALIDATOR_SOURCE="repository"

@@ -9,7 +9,8 @@ Workflow file: `/Users/zhangbin/GitHub/agent-evidence/paper-ncs-execution-eviden
 |---|---|
 | Native OS | ubuntu-latest, macos-latest |
 | Python | 3.11, 3.12, 3.13 |
-| Container | ghcr.io/joy7758/agent-evidence:ncs-v0.1 |
+| Container | locally built CI image from Dockerfile.ncs-ci |
+| Optional pull image | ghcr.io/joy7758/agent-evidence:ncs-v0.1 |
 
 ## Local verification
 
@@ -19,10 +20,6 @@ Workflow file: `/Users/zhangbin/GitHub/agent-evidence/paper-ncs-execution-eviden
 | Paper-local validator | 0 | PASS |
 | Public failure matrix | 0 | PASS |
 | Independent checker agreement | 0 | PASS |
-| Local Docker container | not run | PASS |
+| Container result present | no | not run |
 
 Receipt digest: `sha256:e7fb03d517699d03e0a369727f7a200f0738d6c224b6b3b3f48a12b043ce57c2`
-
-Remote CI status: configured, not run in this local session.
-
-Local Docker note: Docker execution is optional locally; CI runs the declared container matrix.
