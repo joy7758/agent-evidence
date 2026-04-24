@@ -1,0 +1,33 @@
+name: Docs Link Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docs-link-check:
+    name: Check documentation links
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # Exclude legacy workstation-absolute links until those historical docs
+          # are cleaned up, and exclude DOI URLs that reject CI requests with 403.
+          args: >-
+            --root-dir "${{ github.workspace }}"
+            --no-progress
+            --exclude '^file://.*/Users/zhangbin/GitHub/agent-evidence/'
+            --exclude '^https://doi\.org/10\.1145/(317087\.317089|1084805\.1084812|2076450\.2076466)$'
+            './**/*.md'
+          fail: true
