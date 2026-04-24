@@ -23,7 +23,7 @@ dev = [
   "pytest>=8.0",
   "pre-commit>=3.7,<5.0",
   "ruff>=0.14,<1.0",
-  "cryptography>=44,<46",
+  "cryptography>=46.0.7,<47",
   "defusedxml>=0.7,<1.0",
   "langchain-core>=1.2,<2.0",
   "openai-agents>=0.12,<1.0",
@@ -40,7 +40,7 @@ sql = [
   "sqlalchemy>=2.0,<3.0",
 ]
 signing = [
-  "cryptography>=44,<46",
+  "cryptography>=46.0.7,<47",
 ]
 xml = [
   "defusedxml>=0.7,<1.0",
