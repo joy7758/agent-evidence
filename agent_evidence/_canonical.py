@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Collection
 from typing import Any
 
 
@@ -16,13 +16,14 @@ def _sort_key(value: Any) -> str:
 
 
 def canonicalize_unordered_collection(
-    values: Iterable[Any],
+    values: Collection[Any],
     *,
     normalize_item: Callable[[Any], Any],
     limit: int | None = None,
 ) -> list[Any]:
+    if limit is not None and len(values) > limit:
+        raise ValueError(f"unordered collection exceeds maximum size: {len(values)} > {limit}")
+
     normalized_items = [normalize_item(item) for item in values]
     normalized_items.sort(key=_sort_key)
-    if limit is not None:
-        return normalized_items[:limit]
     return normalized_items
