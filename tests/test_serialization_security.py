@@ -1,3 +1,6 @@
+import pytest
+
+from agent_evidence._canonical import canonicalize_unordered_collection
 from agent_evidence.serialization import (
     MAX_COLLECTION_SIZE,
     MAX_STRING_LENGTH,
@@ -54,12 +57,16 @@ def test_to_jsonable_limits_collection_sizes() -> None:
     payload = {
         "items": list(range(MAX_COLLECTION_SIZE + 50)),
         "mapping": {f"k{i}": i for i in range(MAX_COLLECTION_SIZE + 50)},
+        "tuple_items": tuple(range(MAX_COLLECTION_SIZE + 50)),
     }
 
     serialized = to_jsonable(payload)
 
     assert len(serialized["items"]) == MAX_COLLECTION_SIZE
     assert len(serialized["mapping"]) == MAX_COLLECTION_SIZE
+    assert len(serialized["tuple_items"]) == MAX_COLLECTION_SIZE
+    assert serialized["items"] == list(range(MAX_COLLECTION_SIZE))
+    assert serialized["tuple_items"] == list(range(MAX_COLLECTION_SIZE))
 
 
 def test_to_jsonable_sorts_unordered_collections_deterministically() -> None:
@@ -72,3 +79,26 @@ def test_to_jsonable_sorts_unordered_collections_deterministically() -> None:
 
     assert serialized["tags"] == ["alpha", "beta"]
     assert serialized["nested"] == [["team", "ml"], ["team", "ops"]]
+
+
+@pytest.mark.parametrize("collection_type", [set, frozenset])
+def test_unordered_collection_limit_fails_before_normalization(collection_type: type) -> None:
+    payload = collection_type(range(MAX_COLLECTION_SIZE + 1))
+
+    def normalize_item(_item: object) -> object:
+        raise AssertionError("oversized unordered collection should fail before normalization")
+
+    with pytest.raises(ValueError, match="unordered collection exceeds maximum size"):
+        canonicalize_unordered_collection(
+            payload,
+            normalize_item=normalize_item,
+            limit=MAX_COLLECTION_SIZE,
+        )
+
+
+@pytest.mark.parametrize("collection_type", [set, frozenset])
+def test_to_jsonable_rejects_oversized_unordered_collections(collection_type: type) -> None:
+    payload = {"items": collection_type(range(MAX_COLLECTION_SIZE + 1))}
+
+    with pytest.raises(ValueError, match="unordered collection exceeds maximum size"):
+        to_jsonable(payload)
