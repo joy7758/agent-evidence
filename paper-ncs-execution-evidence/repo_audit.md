@@ -175,6 +175,18 @@ Previous remote GitHub Actions status:
 - container matrix: FAIL before validation because `ghcr.io/joy7758/agent-evidence:ncs-v0.1` could not be pulled
 - container failure reason: Docker pull failed with exit code `1` during GitHub Actions container initialization
 
+Latest remote GitHub Actions status:
+
+- run id: `24882352219`
+- run URL: `https://github.com/joy7758/agent-evidence/actions/runs/24882352219`
+- trigger: push to `ncs-scientific-workflow-evidence`
+- conclusion: PASS
+- native Ubuntu/Python matrix: PASS for Python `3.11`, `3.12`, `3.13`
+- native macOS/Python matrix: PASS for Python `3.11`, `3.12`, `3.13`
+- container local-build job: PASS
+- container validation path: built `agent-evidence-ncs-ci:local` from `paper-ncs-execution-evidence/docker/Dockerfile.ncs-ci`, installed the current checkout and ran the public pack validator, public failure matrix and independent-checker agreement
+- immutable OCI release digest: TODO before submission
+
 ## NCS verifier connection
 
 `ncs_verify_pack.sh` defaults to the repository validator:
@@ -197,7 +209,7 @@ The manuscript-facing scientific workflow pack is `paper_packs/scientific_workfl
 | failure injection public matrix | DONE | deterministic FAIL codes | keep matrix green |
 | independent checker | DONE | agreement table | keep agreement table current |
 | native cross-environment matrix | DONE | Ubuntu/macOS plus Python 3.11-3.13 | keep CI green |
-| container verification | PENDING RERUN | Docker validation from local CI image | run updated CI |
+| container verification | DONE | Docker validation from local CI image | keep CI green |
 | public dataset license | TODO | source license verified before submission | verify source metadata |
 | immutable OCI release digest | TODO | reproducible image reference before submission | publish release image |
 | manuscript results extraction | TODO | figure-data tables and text | extract results |

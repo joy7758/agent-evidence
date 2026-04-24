@@ -31,7 +31,7 @@ Container verification now builds an ephemeral image from the current checkout u
 
 ## Remote CI result
 
-GitHub Actions run `24881392886` was triggered from branch `ncs-scientific-workflow-evidence`.
+GitHub Actions run `24882352219` was triggered from branch `ncs-scientific-workflow-evidence` and completed with status `success`.
 
 Native environments passed:
 
@@ -42,9 +42,9 @@ Native environments passed:
 - `macos-latest`, Python `3.12`
 - `macos-latest`, Python `3.13`
 
-The container environment did not initialize because GitHub Actions could not pull `ghcr.io/joy7758/agent-evidence:ncs-v0.1`; Docker pull failed with exit code `1`.
+The container environment passed using the local CI image built from `paper-ncs-execution-evidence/docker/Dockerfile.ncs-ci`. The job installed the current checkout inside the container, built the public pack, ran `agent-evidence validate-pack --pack <pack> --strict`, ran the public failure matrix and ran independent-checker agreement.
 
-That blocker is addressed by the local-image CI path. A future release should publish an immutable OCI image digest before submission.
+The previous GHCR pull blocker from run `24881392886` is resolved by the local-image CI path. A future release should publish an immutable OCI image digest before submission.
 
 The data source license remains a separate submission blocker.
 
