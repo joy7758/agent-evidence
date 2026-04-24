@@ -8,6 +8,8 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 from uuid import UUID
 
+from agent_evidence._canonical import canonicalize_unordered_collection
+
 DEFAULT_REDACT_KEYS = {
     "api_key",
     "authorization",
@@ -115,9 +117,11 @@ def _to_jsonable(value: Any, depth: int, seen: set[int]) -> Any:
                 _to_jsonable(item, depth + 1, seen) for item in list(value)[:MAX_COLLECTION_SIZE]
             ]
         if isinstance(value, set | frozenset):
-            return [
-                _to_jsonable(item, depth + 1, seen) for item in list(value)[:MAX_COLLECTION_SIZE]
-            ]
+            return canonicalize_unordered_collection(
+                value,
+                normalize_item=lambda item: _to_jsonable(item, depth + 1, seen),
+                limit=MAX_COLLECTION_SIZE,
+            )
         return _truncate_string(repr(value))
     finally:
         seen.remove(object_id)
