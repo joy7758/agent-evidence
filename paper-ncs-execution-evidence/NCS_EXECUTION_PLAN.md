@@ -25,7 +25,7 @@ We present a validator-backed execution-evidence boundary for independently veri
 | public scientific workflow pack | DONE |
 | final public dataset pack | DONE |
 | independent checker agreement table | DONE |
-| cross-environment CI matrix | CONFIGURED |
+| cross-environment CI matrix | NATIVE PASS / CONTAINER BLOCKED |
 | local cross-environment verification harness | DONE |
 
 ## 8-week plan

@@ -155,7 +155,14 @@ Local cross-environment harness:
 - local Docker container status: `not-run`
 - result file: `paper-ncs-execution-evidence/paper_packs/scientific_workflow_public/cross_environment_verification.json`
 
-Remote GitHub Actions status: configured, not run in this local session.
+Remote GitHub Actions status:
+
+- run id: `24881392886`
+- trigger: push to `ncs-scientific-workflow-evidence`
+- native Ubuntu/Python matrix: PASS for Python `3.11`, `3.12`, `3.13`
+- native macOS/Python matrix: PASS for Python `3.11`, `3.12`, `3.13`
+- container matrix: FAIL before validation because `ghcr.io/joy7758/agent-evidence:ncs-v0.1` could not be pulled
+- container failure reason: Docker pull failed with exit code `1` during GitHub Actions container initialization
 
 ## NCS verifier connection
 
@@ -178,6 +185,6 @@ The manuscript-facing scientific workflow pack is `paper_packs/scientific_workfl
 | public scientific dataset pack | DONE | public dataset + deterministic outputs + receipt | keep matrix green |
 | failure injection public matrix | DONE | deterministic FAIL codes | keep matrix green |
 | independent checker | DONE | agreement table | keep agreement table current |
-| cross-environment verification | CONFIGURED / LOCAL PASS | stable receipt digest across OS/container | run remote CI and record results |
+| cross-environment verification | NATIVE CI PASS / CONTAINER BLOCKED | stable receipt digest across OS/container | publish or authorize container image, rerun CI |
 | baseline comparison | draft | accurate comparison section | refine |
 | related manuscripts disclosure | draft | final statuses | update manually |

@@ -48,8 +48,24 @@
   },
   "receipt_digest": "sha256:e7fb03d517699d03e0a369727f7a200f0738d6c224b6b3b3f48a12b043ce57c2",
   "remote_ci": {
-    "reason": "Workflow is staged as a paper-local CI definition; remote GitHub Actions require committing and installing/enabling it from the repository workflow path.",
-    "status": "configured_not_run"
+    "branch": "ncs-scientific-workflow-evidence",
+    "container_result": {
+      "image": "ghcr.io/joy7758/agent-evidence:ncs-v0.1",
+      "reason": "Docker pull failed with exit code 1 during GitHub Actions container initialization.",
+      "status": "fail"
+    },
+    "event": "push",
+    "native_results": {
+      "macos-latest_python_3.11": "pass",
+      "macos-latest_python_3.12": "pass",
+      "macos-latest_python_3.13": "pass",
+      "ubuntu-latest_python_3.11": "pass",
+      "ubuntu-latest_python_3.12": "pass",
+      "ubuntu-latest_python_3.13": "pass"
+    },
+    "overall_status": "failed",
+    "run_id": "24881392886",
+    "status": "failed_container_pull"
   },
   "repository_validator": {
     "command": "/Users/zhangbin/GitHub/agent-evidence/.venv/bin/agent-evidence validate-pack --pack <pack> --strict",

@@ -27,6 +27,21 @@ Each environment runs:
 
 The local cross-environment harness passes the repository validator, paper-local validator, public failure matrix and independent checker agreement checks. The local Docker run was not executed because Docker was not available or not running in this session.
 
+## Remote CI result
+
+GitHub Actions run `24881392886` was triggered from branch `ncs-scientific-workflow-evidence`.
+
+Native environments passed:
+
+- `ubuntu-latest`, Python `3.11`
+- `ubuntu-latest`, Python `3.12`
+- `ubuntu-latest`, Python `3.13`
+- `macos-latest`, Python `3.11`
+- `macos-latest`, Python `3.12`
+- `macos-latest`, Python `3.13`
+
+The container environment did not initialize because GitHub Actions could not pull `ghcr.io/joy7758/agent-evidence:ncs-v0.1`; Docker pull failed with exit code `1`.
+
 The paper-local result file is:
 
 `paper_packs/scientific_workflow_public/cross_environment_verification.json`
@@ -41,4 +56,4 @@ The paper-local workflow copy is:
 
 ## Interpretation
 
-The local result establishes that both validators and the checker agree on the current machine. The CI workflow defines the manuscript-facing cross-environment gate. Remote GitHub Actions results must be recorded after the branch is pushed and the workflow completes.
+The local result and native CI matrix establish agreement across macOS and Ubuntu runners for Python `3.11`, `3.12` and `3.13`. Container verification remains blocked until the declared GHCR image is published or made accessible to GitHub Actions.
