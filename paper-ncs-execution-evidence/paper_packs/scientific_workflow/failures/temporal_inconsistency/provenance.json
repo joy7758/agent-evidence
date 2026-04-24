@@ -1,0 +1,33 @@
+{
+  "environment": {
+    "external_dependencies": [],
+    "runtime": "python-stdlib"
+  },
+  "execution_end": "2026-04-24T00:00:01Z",
+  "execution_start": "2026-04-24T00:00:00Z",
+  "fixture_note": "Local FASTQ smoke fixture; not the final public Nature dataset.",
+  "input_paths": [
+    "inputs/smoke_reads.fastq"
+  ],
+  "output_paths": [
+    "outputs/qc_metrics.json",
+    "outputs/qc_report.txt"
+  ],
+  "provenance_id": "ncs-fastq-qc-smoke-provenance-v0.1",
+  "validation_time": "2026-04-23T23:59:59Z",
+  "workflow": {
+    "command": [
+      "python",
+      "evidence/run_fastq_qc.py",
+      "--input",
+      "inputs/smoke_reads.fastq",
+      "--metrics",
+      "outputs/qc_metrics.json",
+      "--report",
+      "outputs/qc_report.txt"
+    ],
+    "script": "evidence/run_fastq_qc.py",
+    "tool": "paper-fastq-qc-v0.1",
+    "type": "fastq_qc"
+  }
+}

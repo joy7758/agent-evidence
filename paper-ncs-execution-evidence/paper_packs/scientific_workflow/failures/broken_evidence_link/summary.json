@@ -1,0 +1,50 @@
+{
+  "expected_exit_code": 11,
+  "fixture_status": "Local FASTQ smoke fixture; not the final public Nature dataset.",
+  "metrics": {
+    "aggregate": {
+      "aggregate_gc_fraction": 0.5,
+      "max_read_length": 12,
+      "mean_phred_quality": 40.0,
+      "mean_read_length": 11.0,
+      "min_read_length": 8,
+      "sample_count": 1,
+      "total_base_count": 44,
+      "total_gc_count": 20,
+      "total_n_count": 4,
+      "total_read_count": 4,
+      "total_valid_base_count": 40
+    },
+    "base_count": 44,
+    "gc_count": 20,
+    "gc_fraction": 0.5,
+    "max_read_length": 12,
+    "mean_phred_quality": 40.0,
+    "mean_read_length": 11.0,
+    "min_read_length": 8,
+    "n_count": 4,
+    "read_count": 4,
+    "samples": [
+      {
+        "base_count": 44,
+        "filename": "smoke_reads.fastq",
+        "gc_count": 20,
+        "gc_fraction": 0.5,
+        "max_read_length": 12,
+        "mean_phred_quality": 40.0,
+        "mean_read_length": 11.0,
+        "min_read_length": 8,
+        "n_count": 4,
+        "read_count": 4,
+        "sample_name": "smoke_reads",
+        "valid_base_count": 40
+      }
+    ],
+    "valid_base_count": 40
+  },
+  "pack_id": "ncs-scientific-workflow-fastq-qc-smoke-v0.1",
+  "primary_output": "outputs/qc_metrics.json",
+  "receipt_digest": "sha256:a8f0fb00a12ab759fbdd10f7e8b79d75ee1f7306af7f9c36f572429d53bbb46a",
+  "verdict": "FAIL",
+  "workflow_name": "FASTQ QC smoke workflow"
+}

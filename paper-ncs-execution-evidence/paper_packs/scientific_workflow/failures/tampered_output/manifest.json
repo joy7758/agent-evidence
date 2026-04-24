@@ -1,0 +1,61 @@
+{
+  "evidence_objects": {
+    "bundle": "bundle.json",
+    "receipt": "receipt.json",
+    "summary": "summary.json"
+  },
+  "expected": {
+    "exit_code": 0,
+    "receipt_digest": "sha256:0db065547aae4cdba36a32c2ef2b768d1fe0a3d3deb0a1b3df4d706c30823aa7",
+    "verdict": "PASS"
+  },
+  "failure_cases": [
+    {
+      "expected_exit_code": 2,
+      "id": "tampered_input",
+      "path": "failures/tampered_input"
+    },
+    {
+      "expected_exit_code": 2,
+      "id": "tampered_output",
+      "path": "failures/tampered_output"
+    },
+    {
+      "expected_exit_code": 5,
+      "id": "missing_policy",
+      "path": "failures/missing_policy"
+    },
+    {
+      "expected_exit_code": 11,
+      "id": "broken_evidence_link",
+      "path": "failures/broken_evidence_link"
+    },
+    {
+      "expected_exit_code": 4,
+      "id": "version_mismatch",
+      "path": "failures/version_mismatch"
+    },
+    {
+      "expected_exit_code": 6,
+      "id": "temporal_inconsistency",
+      "path": "failures/temporal_inconsistency"
+    },
+    {
+      "expected_exit_code": 7,
+      "id": "outcome_unverifiable",
+      "path": "failures/outcome_unverifiable"
+    }
+  ],
+  "pack_id": "ncs-scientific-workflow-fastq-qc-smoke-v0.1",
+  "profile": {
+    "name": "execution-evidence-operation-accountability",
+    "version": "ncs-v1.0-draft"
+  },
+  "status": "Local FASTQ smoke fixture; not the final public Nature dataset.",
+  "task": {
+    "domain": "bioinformatics",
+    "scientific_purpose": "Wire reviewer-verifiable execution evidence using a deterministic local FASTQ QC smoke fixture, not biological discovery.",
+    "workflow_name": "FASTQ QC smoke workflow",
+    "workflow_version": "0.1"
+  }
+}

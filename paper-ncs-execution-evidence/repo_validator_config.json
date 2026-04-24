@@ -1,0 +1,20 @@
+{
+  "mode": "strict",
+  "reason": "Repository CLI supports native NCS pack validation through agent-evidence validate-pack --pack --strict.",
+  "commands": [
+    {
+      "name": "agent-evidence validate-pack",
+      "role": "native_ncs_pack_validation",
+      "argv": [
+        "agent-evidence",
+        "validate-pack",
+        "--pack",
+        "{pack}",
+        "--strict"
+      ],
+      "expected_exit_code": 0,
+      "status": "strict-integrated",
+      "notes": "Validates the native NCS pack contract directly."
+    }
+  ]
+}

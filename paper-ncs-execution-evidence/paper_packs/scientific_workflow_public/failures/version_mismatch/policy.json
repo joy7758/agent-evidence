@@ -1,0 +1,29 @@
+{
+  "allowed_operation_types": [
+    "fastq_qc"
+  ],
+  "dataset_doi": "10.5281/zenodo.826906",
+  "external_dependencies": [],
+  "policy_id": "ncs-drosophila-srna-qc-public-policy-v0.1",
+  "profile": {
+    "name": "execution-evidence-operation-accountability",
+    "version": "ncs-v1.0-draft"
+  },
+  "required_artifacts": [
+    "manifest.json",
+    "bundle.json",
+    "receipt.json",
+    "summary.json",
+    "dataset_source_manifest.json",
+    "outputs/qc_metrics.json",
+    "outputs/qc_report.txt",
+    "evidence/run_fastq_qc.py",
+    "inputs/Blank_RNAi_sRNA-seq_rep1_downsampled.fastqsanger.gz",
+    "inputs/Blank_RNAi_sRNA-seq_rep2_downsampled.fastqsanger.gz",
+    "inputs/Blank_RNAi_sRNA-seq_rep3_downsampled.fastqsanger.gz",
+    "inputs/Symp_RNAi_sRNA-seq_rep1_downsampled.fastqsanger.gz",
+    "inputs/Symp_RNAi_sRNA-seq_rep2_downsampled.fastqsanger.gz",
+    "inputs/Symp_RNAi_sRNA-seq_rep3_downsampled.fastqsanger.gz"
+  ],
+  "scope": "Deterministic QC of public downsampled Drosophila small RNA-seq FASTQ files."
+}

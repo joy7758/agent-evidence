@@ -1,0 +1,101 @@
+{
+  "actor": {
+    "id": "paper-local-builder",
+    "type": "script"
+  },
+  "evidence": [
+    {
+      "id": "workflow_script",
+      "path": "evidence/missing_run_fastq_qc.py",
+      "sha256": "sha256:73d3ea31f04c3eb9aa12c13515cd874576e2c58f509963c7a33e61665e677967"
+    }
+  ],
+  "fixture_status": "Local FASTQ smoke fixture; not the final public Nature dataset.",
+  "inputs": [
+    {
+      "id": "input_reads",
+      "kind": "local_fastq_smoke_fixture",
+      "path": "inputs/smoke_reads.fastq",
+      "sha256": "sha256:121d0aa4b67bc6ae5302f88b1e7c88fb857495d9e3912c5bbe41bf56a51aca8a"
+    }
+  ],
+  "operation": {
+    "command": [
+      "python",
+      "evidence/run_fastq_qc.py",
+      "--input",
+      "inputs/smoke_reads.fastq",
+      "--metrics",
+      "outputs/qc_metrics.json",
+      "--report",
+      "outputs/qc_report.txt"
+    ],
+    "execution_end": "2026-04-24T00:00:01Z",
+    "execution_start": "2026-04-24T00:00:00Z",
+    "id": "fastq_qc_smoke_run_001",
+    "semantics": "Compute deterministic FASTQ QC metrics from a fixed local FASTQ smoke fixture.",
+    "tool": "paper-fastq-qc-v0.1",
+    "type": "fastq_qc"
+  },
+  "outcome": {
+    "claims": [
+      {
+        "json_path": "$.read_count",
+        "name": "read_count",
+        "output": "qc_metrics",
+        "value": 4
+      },
+      {
+        "json_path": "$.gc_fraction",
+        "name": "gc_fraction",
+        "output": "qc_metrics",
+        "value": 0.5
+      },
+      {
+        "json_path": "$.mean_phred_quality",
+        "name": "mean_phred_quality",
+        "output": "qc_metrics",
+        "value": 40.0
+      }
+    ],
+    "primary_output": "qc_metrics"
+  },
+  "outputs": [
+    {
+      "id": "qc_metrics",
+      "path": "outputs/qc_metrics.json",
+      "sha256": "sha256:c045da4a8c334844c08684876e99e9f577d1360409d7efc1557a15a10f4321fe"
+    },
+    {
+      "id": "qc_report",
+      "path": "outputs/qc_report.txt",
+      "sha256": "sha256:c825d43521b7a89a500eee8656104dd8f3926085212856ee73f0ff86bac93ed0"
+    }
+  ],
+  "pack_id": "ncs-scientific-workflow-fastq-qc-smoke-v0.1",
+  "policy": {
+    "path": "policy.json",
+    "policy_id": "ncs-fastq-qc-smoke-policy-v0.1",
+    "sha256": "sha256:ee8e3b47ee9917b9503748c2b9b8e1244b7214fc50c853e690b0203fe2930cc0"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability",
+    "version": "ncs-v1.0-draft"
+  },
+  "provenance": {
+    "path": "provenance.json",
+    "provenance_id": "ncs-fastq-qc-smoke-provenance-v0.1",
+    "sha256": "sha256:29042a3abe1246e8e0a1c8dc59ff425a3185a4a8b7f25b0e98e850502fe6fa7e"
+  },
+  "subject": {
+    "id": "smoke_reads_fastq",
+    "not_final_nature_dataset": true,
+    "type": "local_fastq_fixture"
+  },
+  "validation": {
+    "expected_exit_code": 0,
+    "strict": true,
+    "validation_time": "2026-04-24T00:00:02Z",
+    "validator": "paper-local validate_ncs_pack.py"
+  }
+}

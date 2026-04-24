@@ -1,0 +1,171 @@
+{
+  "actor": {
+    "id": "paper-public-pack-builder",
+    "type": "script"
+  },
+  "evidence": [
+    {
+      "id": "workflow_script",
+      "path": "evidence/run_fastq_qc.py",
+      "sha256": "sha256:73d3ea31f04c3eb9aa12c13515cd874576e2c58f509963c7a33e61665e677967"
+    },
+    {
+      "id": "dataset_source_manifest",
+      "path": "dataset_source_manifest.json",
+      "sha256": "sha256:086fc32cb473ab673838f9aa38c25dcfd99db62cc46c50a65062f935945a713f"
+    }
+  ],
+  "inputs": [
+    {
+      "doi": "10.5281/zenodo.826906",
+      "id": "blank_rnai_rep1",
+      "kind": "public_dataset_file",
+      "md5": "6638232f458ed3abbb642d2eb59a5c2b",
+      "path": "inputs/Blank_RNAi_sRNA-seq_rep1_downsampled.fastqsanger.gz",
+      "sha256": "sha256:f24baff79dbafa5dd63f3aa64f57bff54d35c32630dca0a7b12bbbabded11415",
+      "zenodo_record": "https://zenodo.org/records/826906"
+    },
+    {
+      "doi": "10.5281/zenodo.826906",
+      "id": "blank_rnai_rep2",
+      "kind": "public_dataset_file",
+      "md5": "d9e71d0c98d7c3102a02c9ce69343f84",
+      "path": "inputs/Blank_RNAi_sRNA-seq_rep2_downsampled.fastqsanger.gz",
+      "sha256": "sha256:eb6f95da49d9f35deab3fbce35ed108313e29964ae9eaf9eaa460becb641d09c",
+      "zenodo_record": "https://zenodo.org/records/826906"
+    },
+    {
+      "doi": "10.5281/zenodo.826906",
+      "id": "blank_rnai_rep3",
+      "kind": "public_dataset_file",
+      "md5": "782a05b6387f7d98372f75ac9033db1f",
+      "path": "inputs/Blank_RNAi_sRNA-seq_rep3_downsampled.fastqsanger.gz",
+      "sha256": "sha256:96c906be364d0333ad93a430a63648c5f1a002cb33b57768e4ae82900920d414",
+      "zenodo_record": "https://zenodo.org/records/826906"
+    },
+    {
+      "doi": "10.5281/zenodo.826906",
+      "id": "symp_rnai_rep1",
+      "kind": "public_dataset_file",
+      "md5": "c9119dbc9d50ab654eb55dfc48548257",
+      "path": "inputs/Symp_RNAi_sRNA-seq_rep1_downsampled.fastqsanger.gz",
+      "sha256": "sha256:b573f56e30b015712dee08af689b3d1a9f695b628713092911109efc98813bc0",
+      "zenodo_record": "https://zenodo.org/records/826906"
+    },
+    {
+      "doi": "10.5281/zenodo.826906",
+      "id": "symp_rnai_rep2",
+      "kind": "public_dataset_file",
+      "md5": "c0ad66cf30bc5bd8056f86ea6efe52b2",
+      "path": "inputs/Symp_RNAi_sRNA-seq_rep2_downsampled.fastqsanger.gz",
+      "sha256": "sha256:a0fd59ffcfb6becfe2fe6854f2dd9f61cfcd39907e7ed4bd1b32967fd78abe49",
+      "zenodo_record": "https://zenodo.org/records/826906"
+    },
+    {
+      "doi": "10.5281/zenodo.826906",
+      "id": "symp_rnai_rep3",
+      "kind": "public_dataset_file",
+      "md5": "c12859e9a9f8ea88fe0e047751038b00",
+      "path": "inputs/Symp_RNAi_sRNA-seq_rep3_downsampled.fastqsanger.gz",
+      "sha256": "sha256:0b25a0999b5cfc43c5513d9e78756eb1df6ff7596f15ad86f0884133e14e97b1",
+      "zenodo_record": "https://zenodo.org/records/826906"
+    }
+  ],
+  "operation": {
+    "command": [
+      "python",
+      "evidence/run_fastq_qc.py",
+      "--input",
+      "inputs/Blank_RNAi_sRNA-seq_rep1_downsampled.fastqsanger.gz",
+      "--input",
+      "inputs/Blank_RNAi_sRNA-seq_rep2_downsampled.fastqsanger.gz",
+      "--input",
+      "inputs/Blank_RNAi_sRNA-seq_rep3_downsampled.fastqsanger.gz",
+      "--input",
+      "inputs/Symp_RNAi_sRNA-seq_rep1_downsampled.fastqsanger.gz",
+      "--input",
+      "inputs/Symp_RNAi_sRNA-seq_rep2_downsampled.fastqsanger.gz",
+      "--input",
+      "inputs/Symp_RNAi_sRNA-seq_rep3_downsampled.fastqsanger.gz",
+      "--metrics",
+      "outputs/qc_metrics.json",
+      "--report",
+      "outputs/qc_report.txt"
+    ],
+    "execution_end": "2026-04-24T00:10:01Z",
+    "execution_start": "2026-04-24T00:10:00Z",
+    "id": "drosophila_srna_fastq_qc_public_run_001",
+    "semantics": "Compute deterministic FASTQ QC metrics from six public downsampled Drosophila small RNA-seq FASTQ files.",
+    "tool": "paper-fastq-qc-v0.2",
+    "type": "fastq_qc"
+  },
+  "outcome": {
+    "claims": [
+      {
+        "json_path": "$.aggregate.sample_count",
+        "name": "sample_count",
+        "output": "qc_metrics",
+        "value": 6
+      },
+      {
+        "json_path": "$.aggregate.total_read_count",
+        "name": "total_read_count",
+        "output": "qc_metrics",
+        "value": 483154
+      },
+      {
+        "json_path": "$.aggregate.aggregate_gc_fraction",
+        "name": "aggregate_gc_fraction",
+        "output": "qc_metrics",
+        "value": 0.42488863581714326
+      },
+      {
+        "json_path": "$.aggregate.mean_phred_quality",
+        "name": "mean_phred_quality",
+        "output": "qc_metrics",
+        "value": 36.09981448521345
+      }
+    ],
+    "primary_output": "qc_metrics"
+  },
+  "outputs": [
+    {
+      "id": "qc_metrics",
+      "path": "outputs/qc_metrics.json",
+      "sha256": "sha256:78eec65a5294c2322d424bebcc27919917097ac5838c95c027cf27c7bbcf39de"
+    },
+    {
+      "id": "qc_report",
+      "path": "outputs/qc_report.txt",
+      "sha256": "sha256:32cbfd41263d5b0eb8093cb8ae8e63873e02f7d31a101610aebdf99502bdd95f"
+    }
+  ],
+  "pack_id": "ncs-scientific-workflow-drosophila-srna-qc-public-v0.1",
+  "policy": {
+    "path": "policy.json",
+    "policy_id": "ncs-drosophila-srna-qc-public-policy-v0.1",
+    "sha256": "sha256:f00d3b6f6abe80dfebfd34454a311e7d30755a89c00cf07ec70fdc42a9033c50"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability",
+    "version": "ncs-v0-broken"
+  },
+  "provenance": {
+    "path": "provenance.json",
+    "provenance_id": "ncs-drosophila-srna-qc-public-provenance-v0.1",
+    "sha256": "sha256:33373d853a2a175970f423f4c880a5c37639f58aeb40eb7550e16ad38f2b143e"
+  },
+  "subject": {
+    "doi": "10.5281/zenodo.826906",
+    "geo_accession": "GSE82128",
+    "id": "zenodo_826906_drosophila_srna_fastq",
+    "type": "public_drosophila_srna_fastq_dataset",
+    "zenodo_record": "https://zenodo.org/records/826906"
+  },
+  "validation": {
+    "expected_exit_code": 0,
+    "strict": true,
+    "validation_time": "2026-04-24T00:10:02Z",
+    "validator": "agent-evidence validate-pack"
+  }
+}

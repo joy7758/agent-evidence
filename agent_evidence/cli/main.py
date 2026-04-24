@@ -29,6 +29,7 @@ from agent_evidence.oap import validate_profile_file
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage import migrate_records, open_store
 from agent_evidence.storage.base import EvidenceStore
+from agent_evidence.validate_pack import validate_pack as validate_pack_dir
 
 
 def parse_json_option(raw: str | None) -> dict:
@@ -390,6 +391,20 @@ def validate_profile_command(profile_path: Path, schema_path: Path | None) -> No
     click.echo(json.dumps(report, indent=2, sort_keys=True))
     if not report["ok"]:
         raise SystemExit(1)
+
+
+@main.command(name="validate-pack")
+@click.option(
+    "--pack",
+    "pack_dir",
+    required=True,
+    type=click.Path(file_okay=False, path_type=Path),
+)
+@click.option("--strict", is_flag=True, help="Run strict native NCS pack validation.")
+def validate_pack_command(pack_dir: Path, strict: bool) -> None:
+    """Validate a native NCS execution-evidence pack directory."""
+
+    raise SystemExit(validate_pack_dir(pack_dir, strict=strict))
 
 
 @main.command()

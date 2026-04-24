@@ -1,0 +1,66 @@
+{
+  "compatibility_status": "derived_view",
+  "derived": [
+    {
+      "path": "repo_compat/ncs_bundle_view.json",
+      "sha256": "sha256:0a81a8328a08745f5d0aab88fbf559a3848a3bcc08d1d9bd341c9eda8d5e4e0b"
+    },
+    {
+      "path": "repo_compat/operation_accountability_statement.json",
+      "sha256": "sha256:c15145cefece7048256ddd5b9622fbbd964a4d6e8bd6fe9c2111c4ccb31e9119"
+    }
+  ],
+  "digest_rule": "canonical JSON for JSON files; byte SHA-256 for non-JSON artifacts",
+  "evidence": [
+    {
+      "id": "workflow_script",
+      "path": "evidence/run_fastq_qc.py",
+      "sha256": "sha256:077676e9413d051784ba60ff2271f80e0b546753dbcb8f7cff21b330c10dda93"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "input_reads",
+      "path": "inputs/smoke_reads.fastq",
+      "sha256": "sha256:121d0aa4b67bc6ae5302f88b1e7c88fb857495d9e3912c5bbe41bf56a51aca8a"
+    }
+  ],
+  "json_objects": [
+    {
+      "path": "manifest.json",
+      "sha256": "sha256:269b40d5974d82699792869b600eef9076a90688080e17d7bea6bf0e5f66b6fe"
+    },
+    {
+      "path": "bundle.json",
+      "sha256": "sha256:0a81a8328a08745f5d0aab88fbf559a3848a3bcc08d1d9bd341c9eda8d5e4e0b"
+    },
+    {
+      "path": "receipt.json",
+      "sha256": "sha256:5259b4ff9b3a824901149089abf86a9d4f99858a01a9b8bed4fd7f68929409af"
+    },
+    {
+      "path": "summary.json",
+      "sha256": "sha256:9cc4af9e15e40e3771214bd088a77e16c90a486d67dd877fec51146a819acf3b"
+    },
+    {
+      "path": "policy.json",
+      "sha256": "sha256:ee8e3b47ee9917b9503748c2b9b8e1244b7214fc50c853e690b0203fe2930cc0"
+    },
+    {
+      "path": "provenance.json",
+      "sha256": "sha256:29042a3abe1246e8e0a1c8dc59ff425a3185a4a8b7f25b0e98e850502fe6fa7e"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "qc_metrics",
+      "path": "outputs/qc_metrics.json",
+      "sha256": "sha256:735188e2cee9542d6eb4d3f9895d0530cc0467bc9fb192561b75331be7b06017"
+    },
+    {
+      "id": "qc_report",
+      "path": "outputs/qc_report.txt",
+      "sha256": "sha256:51d1a08ac6db3fe49a866ebe1490d032f0fa6cb7968b004e16f766892679c848"
+    }
+  ]
+}

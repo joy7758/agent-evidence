@@ -1,0 +1,22 @@
+{
+  "dataset_doi": "10.5281/zenodo.826906",
+  "expected_exit_code": 11,
+  "metrics": {
+    "aggregate_gc_fraction": 0.42488863581714326,
+    "max_read_length": 50,
+    "mean_phred_quality": 36.09981448521345,
+    "mean_read_length": 21.329385661714486,
+    "min_read_length": 12,
+    "sample_count": 6,
+    "total_base_count": 10305378,
+    "total_gc_count": 4378638,
+    "total_n_count": 0,
+    "total_read_count": 483154,
+    "total_valid_base_count": 10305378
+  },
+  "pack_id": "ncs-scientific-workflow-drosophila-srna-qc-public-v0.1",
+  "primary_output": "outputs/qc_metrics.json",
+  "receipt_digest": "sha256:77f616f89b2059fb78c8b5c09f3bc420668502b6cce598a6f4438543f4518d3b",
+  "verdict": "FAIL",
+  "workflow_name": "drosophila_small_rna_fastq_qc_public"
+}

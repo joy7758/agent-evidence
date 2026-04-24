@@ -1,0 +1,12 @@
+{
+  "bundle_digest": "sha256:0d4173a4c85fd04ac104f2f7561a15bc86038ec221e9462417b6f49e676f081a",
+  "expected_exit_code": 7,
+  "generated_at": "2026-04-24T00:00:03Z",
+  "pack_id": "ncs-scientific-workflow-fastq-qc-smoke-v0.1",
+  "profile": {
+    "name": "execution-evidence-operation-accountability",
+    "version": "ncs-v1.0-draft"
+  },
+  "validator": "paper-local validate_ncs_pack.py",
+  "verdict": "FAIL"
+}

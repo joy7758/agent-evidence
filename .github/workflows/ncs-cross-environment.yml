@@ -1,0 +1,139 @@
+name: NCS cross-environment verification
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  native:
+    name: native-${{ matrix.os }}-py${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+        python-version:
+          - "3.11"
+          - "3.12"
+          - "3.13"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install repository CLI
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+
+      - name: Build public scientific workflow pack
+        run: |
+          python paper-ncs-execution-evidence/scripts/build_public_scientific_workflow_pack.py \
+            --pack paper-ncs-execution-evidence/paper_packs/scientific_workflow_public \
+            --force
+
+      - name: Repository strict validation
+        run: |
+          agent-evidence validate-pack \
+            --pack paper-ncs-execution-evidence/paper_packs/scientific_workflow_public \
+            --strict
+
+      - name: Paper-local strict validation
+        run: |
+          python paper-ncs-execution-evidence/scripts/validate_ncs_pack.py \
+            --pack paper-ncs-execution-evidence/paper_packs/scientific_workflow_public \
+            --strict
+
+      - name: Repository failure matrix
+        run: |
+          bash paper-ncs-execution-evidence/scripts/run_public_scientific_workflow_validation_matrix.sh
+
+      - name: Independent checker agreement
+        run: |
+          bash paper-ncs-execution-evidence/scripts/run_independent_checker_agreement.sh \
+            paper-ncs-execution-evidence/paper_packs/scientific_workflow_public
+
+      - name: Print digest agreement record
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("paper-ncs-execution-evidence/paper_packs/scientific_workflow_public")
+          summary = json.loads((root / "summary.json").read_text(encoding="utf-8"))
+          receipt = json.loads((root / "receipt.json").read_text(encoding="utf-8"))
+          agreement = json.loads((root / "independent_checker_agreement.json").read_text(encoding="utf-8"))
+          print("receipt_digest", summary.get("receipt_digest"))
+          print("receipt_pack_id", receipt.get("pack_id"))
+          print("independent_checker_agreement", agreement.get("overall_agreement"))
+          PY
+
+  container:
+    name: container-${{ matrix.container-image }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        container-image:
+          - ghcr.io/joy7758/agent-evidence:ncs-v0.1
+    container:
+      image: ${{ matrix.container-image }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install repository CLI in container
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+
+      - name: Build public scientific workflow pack
+        run: |
+          python paper-ncs-execution-evidence/scripts/build_public_scientific_workflow_pack.py \
+            --pack paper-ncs-execution-evidence/paper_packs/scientific_workflow_public \
+            --force
+
+      - name: Repository strict validation
+        run: |
+          agent-evidence validate-pack \
+            --pack paper-ncs-execution-evidence/paper_packs/scientific_workflow_public \
+            --strict
+
+      - name: Paper-local strict validation
+        run: |
+          python paper-ncs-execution-evidence/scripts/validate_ncs_pack.py \
+            --pack paper-ncs-execution-evidence/paper_packs/scientific_workflow_public \
+            --strict
+
+      - name: Repository failure matrix
+        run: |
+          bash paper-ncs-execution-evidence/scripts/run_public_scientific_workflow_validation_matrix.sh
+
+      - name: Independent checker agreement
+        run: |
+          bash paper-ncs-execution-evidence/scripts/run_independent_checker_agreement.sh \
+            paper-ncs-execution-evidence/paper_packs/scientific_workflow_public
+
+      - name: Print digest agreement record
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("paper-ncs-execution-evidence/paper_packs/scientific_workflow_public")
+          summary = json.loads((root / "summary.json").read_text(encoding="utf-8"))
+          receipt = json.loads((root / "receipt.json").read_text(encoding="utf-8"))
+          agreement = json.loads((root / "independent_checker_agreement.json").read_text(encoding="utf-8"))
+          print("receipt_digest", summary.get("receipt_digest"))
+          print("receipt_pack_id", receipt.get("pack_id"))
+          print("independent_checker_agreement", agreement.get("overall_agreement"))
+          PY

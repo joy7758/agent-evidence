@@ -1,0 +1,151 @@
+{
+  "actor": {
+    "id": "paper-local-builder",
+    "name": "NCS paper-local pack builder",
+    "runtime": "python-stdlib",
+    "type": "script"
+  },
+  "constraints": [
+    {
+      "description": "The operation must be the deterministic FASTQ QC smoke workflow and must retain local policy, provenance, evidence and digest links.",
+      "id": "constraint:ncs-fastq-qc-smoke-boundary"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:manifest",
+        "digest": "sha256:269b40d5974d82699792869b600eef9076a90688080e17d7bea6bf0e5f66b6fe",
+        "locator": "manifest.json",
+        "type": "manifest"
+      },
+      {
+        "artifact_id": "artifact:bundle",
+        "digest": "sha256:0a81a8328a08745f5d0aab88fbf559a3848a3bcc08d1d9bd341c9eda8d5e4e0b",
+        "locator": "bundle.json",
+        "type": "ncs_bundle"
+      },
+      {
+        "artifact_id": "artifact:receipt",
+        "digest": "sha256:5259b4ff9b3a824901149089abf86a9d4f99858a01a9b8bed4fd7f68929409af",
+        "locator": "receipt.json",
+        "type": "receipt"
+      },
+      {
+        "artifact_id": "artifact:summary",
+        "digest": "sha256:9cc4af9e15e40e3771214bd088a77e16c90a486d67dd877fec51146a819acf3b",
+        "locator": "summary.json",
+        "type": "summary"
+      },
+      {
+        "artifact_id": "artifact:policy",
+        "digest": "sha256:ee8e3b47ee9917b9503748c2b9b8e1244b7214fc50c853e690b0203fe2930cc0",
+        "locator": "policy.json",
+        "type": "policy"
+      },
+      {
+        "artifact_id": "artifact:provenance",
+        "digest": "sha256:29042a3abe1246e8e0a1c8dc59ff425a3185a4a8b7f25b0e98e850502fe6fa7e",
+        "locator": "provenance.json",
+        "type": "provenance"
+      },
+      {
+        "artifact_id": "artifact:workflow_script",
+        "digest": "sha256:077676e9413d051784ba60ff2271f80e0b546753dbcb8f7cff21b330c10dda93",
+        "locator": "evidence/run_fastq_qc.py",
+        "type": "workflow_script"
+      }
+    ],
+    "id": "ncs-fastq-qc-smoke-evidence-v0.1",
+    "integrity": {
+      "artifacts_digest": "sha256:10b933f534f4f751ed0259dda3cd210d6300fd7a2e48e6e6772a5d46756cce5b",
+      "references_digest": "sha256:9185a628f7ca8991d82c8ff43aa0825843073af1db508e942e17f90cd5795788",
+      "statement_digest": "sha256:ac059e720daba3c73a7fe276dedf2f45c0ad0d82114c2294ce8400aec6fda689"
+    },
+    "operation_ref": "fastq_qc_smoke_run_001",
+    "policy_ref": "ncs-fastq-qc-smoke-policy-v0.1",
+    "references": [
+      {
+        "digest": "sha256:121d0aa4b67bc6ae5302f88b1e7c88fb857495d9e3912c5bbe41bf56a51aca8a",
+        "locator": "inputs/smoke_reads.fastq",
+        "object_id": "smoke_reads_fastq",
+        "ref_id": "ref:input_reads",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:735188e2cee9542d6eb4d3f9895d0530cc0467bc9fb192561b75331be7b06017",
+        "locator": "outputs/qc_metrics.json",
+        "object_id": "qc_metrics",
+        "ref_id": "ref:qc_metrics",
+        "role": "output"
+      },
+      {
+        "digest": "sha256:51d1a08ac6db3fe49a866ebe1490d032f0fa6cb7968b004e16f766892679c848",
+        "locator": "outputs/qc_report.txt",
+        "object_id": "qc_report",
+        "ref_id": "ref:qc_report",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "smoke_reads_fastq"
+  },
+  "operation": {
+    "description": "Compute deterministic FASTQ QC metrics from a fixed local FASTQ smoke fixture.",
+    "id": "fastq_qc_smoke_run_001",
+    "input_refs": [
+      "ref:input_reads"
+    ],
+    "output_refs": [
+      "ref:qc_metrics",
+      "ref:qc_report"
+    ],
+    "policy_ref": "ncs-fastq-qc-smoke-policy-v0.1",
+    "result": {
+      "status": "succeeded",
+      "summary": "Generated qc_metrics, qc_report for a local FASTQ QC smoke fixture."
+    },
+    "subject_ref": "smoke_reads_fastq",
+    "type": "fastq_qc"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:ncs-fastq-qc-smoke-boundary"
+    ],
+    "id": "ncs-fastq-qc-smoke-policy-v0.1",
+    "name": "NCS FASTQ QC smoke policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "paper-local-builder",
+    "id": "ncs-fastq-qc-smoke-provenance-v0.1",
+    "input_refs": [
+      "ref:input_reads"
+    ],
+    "operation_ref": "fastq_qc_smoke_run_001",
+    "output_refs": [
+      "ref:qc_metrics",
+      "ref:qc_report"
+    ],
+    "subject_ref": "smoke_reads_fastq"
+  },
+  "statement_id": "compat:ncs-scientific-workflow-fastq-qc-smoke-v0.1",
+  "subject": {
+    "digest": "sha256:121d0aa4b67bc6ae5302f88b1e7c88fb857495d9e3912c5bbe41bf56a51aca8a",
+    "id": "smoke_reads_fastq",
+    "locator": "inputs/smoke_reads.fastq",
+    "type": "local_fastq_fixture"
+  },
+  "timestamp": "2026-04-24T00:00:02Z",
+  "validation": {
+    "evidence_ref": "ncs-fastq-qc-smoke-evidence-v0.1",
+    "id": "validation:ncs-fastq-qc-smoke-compat",
+    "method": "derived compatibility statement for repository validate-profile probe",
+    "policy_ref": "ncs-fastq-qc-smoke-policy-v0.1",
+    "provenance_ref": "ncs-fastq-qc-smoke-provenance-v0.1",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

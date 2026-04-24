@@ -1,0 +1,12 @@
+{
+  "bundle_digest": "sha256:aaee17b107c242b07618a2965caa753d1c6dbe466ec1191e1bb4b3d7593af5bc",
+  "expected_exit_code": 11,
+  "generated_at": "2026-04-24T00:10:03Z",
+  "pack_id": "ncs-scientific-workflow-drosophila-srna-qc-public-v0.1",
+  "profile": {
+    "name": "execution-evidence-operation-accountability",
+    "version": "ncs-v1.0-draft"
+  },
+  "validator": "agent-evidence validate-pack",
+  "verdict": "FAIL"
+}

@@ -1,0 +1,25 @@
+{
+  "mode": "strict",
+  "overall_status": "pass",
+  "reason": "Repository CLI supports native NCS pack validation through agent-evidence validate-pack --pack --strict.",
+  "results": [
+    {
+      "argv": [
+        "/Users/zhangbin/GitHub/agent-evidence/.venv/bin/agent-evidence",
+        "validate-pack",
+        "--pack",
+        "paper-ncs-execution-evidence/paper_packs/scientific_workflow",
+        "--strict"
+      ],
+      "configured_status": "strict-integrated",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "name": "agent-evidence validate-pack",
+      "notes": "Validates the native NCS pack contract directly.",
+      "role": "native_ncs_pack_validation",
+      "status": "passed",
+      "stderr": "/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\n",
+      "stdout": "PASS: paper-ncs-execution-evidence/paper_packs/scientific_workflow\n"
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "independent_checker": "/Users/zhangbin/GitHub/agent-evidence/paper-ncs-execution-evidence/scripts/independent_check_ncs_pack.py",
+  "overall_agreement": true,
+  "pack": "paper-ncs-execution-evidence/paper_packs/scientific_workflow_public",
+  "repository_validator": "/Users/zhangbin/GitHub/agent-evidence/.venv/bin/agent-evidence validate-pack --pack <pack> --strict",
+  "rows": [
+    {
+      "agreement": true,
+      "case": "scientific_workflow_public",
+      "description": "Pack satisfies profile and verification checks.",
+      "expected_exit_code": 0,
+      "expected_failure_class": "PASS",
+      "independent_exit_code": 0,
+      "independent_failure_class": "PASS",
+      "independent_reason": "pack satisfies independent checker protocol",
+      "repository_exit_code": 0,
+      "repository_stderr": "/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\n",
+      "repository_stdout": "PASS: paper-ncs-execution-evidence/paper_packs/scientific_workflow_public\n"
+    },
+    {
+      "agreement": true,
+      "case": "failures/tampered_input",
+      "description": "Recomputed content digest differs from the declared digest.",
+      "expected_exit_code": 2,
+      "expected_failure_class": "CONTENT_OR_DIGEST_MISMATCH",
+      "independent_exit_code": 2,
+      "independent_failure_class": "CONTENT_OR_DIGEST_MISMATCH",
+      "independent_reason": "input digest mismatch for blank_rnai_rep1",
+      "repository_exit_code": 2,
+      "repository_stderr": "/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\n",
+      "repository_stdout": "FAIL: CONTENT_OR_DIGEST_MISMATCH: input digest mismatch: blank_rnai_rep1\n"
+    },
+    {
+      "agreement": true,
+      "case": "failures/tampered_output",
+      "description": "Recomputed content digest differs from the declared digest.",
+      "expected_exit_code": 2,
+      "expected_failure_class": "CONTENT_OR_DIGEST_MISMATCH",
+      "independent_exit_code": 2,
+      "independent_failure_class": "CONTENT_OR_DIGEST_MISMATCH",
+      "independent_reason": "output digest mismatch for qc_metrics",
+      "repository_exit_code": 2,
+      "repository_stderr": "/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\n",
+      "repository_stdout": "FAIL: CONTENT_OR_DIGEST_MISMATCH: output digest mismatch: qc_metrics\n"
+    },
+    {
+      "agreement": true,
+      "case": "failures/missing_policy",
+      "description": "Policy reference or policy digest linkage is broken.",
+      "expected_exit_code": 5,
+      "expected_failure_class": "POLICY_LINKAGE_FAILURE",
+      "independent_exit_code": 5,
+      "independent_failure_class": "POLICY_LINKAGE_FAILURE",
+      "independent_reason": "artifact reference does not resolve: policy.json",
+      "repository_exit_code": 5,
+      "repository_stderr": "/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\n",
+      "repository_stdout": "FAIL: POLICY_LINKAGE_FAILURE: referenced artifact not found: policy.json\n"
+    },
+    {
+      "agreement": true,
+      "case": "failures/broken_evidence_link",
+      "description": "Referenced evidence artifact cannot be resolved inside the pack.",
+      "expected_exit_code": 11,
+      "expected_failure_class": "REFERENCE_RESOLUTION_FAILURE",
+      "independent_exit_code": 11,
+      "independent_failure_class": "REFERENCE_RESOLUTION_FAILURE",
+      "independent_reason": "artifact reference does not resolve: evidence/missing_run_fastq_qc.py",
+      "repository_exit_code": 11,
+      "repository_stderr": "/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\n",
+      "repository_stdout": "FAIL: REFERENCE_RESOLUTION_FAILURE: referenced artifact not found: evidence/missing_run_fastq_qc.py\n"
+    },
+    {
+      "agreement": true,
+      "case": "failures/version_mismatch",
+      "description": "Pack declares an unsupported profile version.",
+      "expected_exit_code": 4,
+      "expected_failure_class": "VERSION_OR_PROFILE_MISMATCH",
+      "independent_exit_code": 4,
+      "independent_failure_class": "VERSION_OR_PROFILE_MISMATCH",
+      "independent_reason": "unsupported profile version: ncs-v0-broken",
+      "repository_exit_code": 4,
+      "repository_stderr": "/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\n",
+      "repository_stdout": "FAIL: VERSION_OR_PROFILE_MISMATCH: unsupported profile version: ncs-v0-broken\n"
+    },
+    {
+      "agreement": true,
+      "case": "failures/temporal_inconsistency",
+      "description": "Execution and validation timestamps violate required ordering.",
+      "expected_exit_code": 6,
+      "expected_failure_class": "TEMPORAL_INCONSISTENCY",
+      "independent_exit_code": 6,
+      "independent_failure_class": "TEMPORAL_INCONSISTENCY",
+      "independent_reason": "execution_start <= execution_end <= validation_time was violated",
+      "repository_exit_code": 6,
+      "repository_stderr": "/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\n",
+      "repository_stdout": "FAIL: TEMPORAL_INCONSISTENCY: timestamp ordering must satisfy execution_start <= execution_end <= validation_time\n"
+    },
+    {
+      "agreement": true,
+      "case": "failures/outcome_unverifiable",
+      "description": "Claimed outcome cannot be linked to digest-backed primary output evidence.",
+      "expected_exit_code": 7,
+      "expected_failure_class": "OUTCOME_UNVERIFIABLE",
+      "independent_exit_code": 7,
+      "independent_failure_class": "OUTCOME_UNVERIFIABLE",
+      "independent_reason": "primary output digest is missing",
+      "repository_exit_code": 7,
+      "repository_stderr": "/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\n",
+      "repository_stdout": "FAIL: OUTCOME_UNVERIFIABLE: primary output digest is missing\n"
+    }
+  ]
+}

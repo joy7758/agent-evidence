@@ -1,0 +1,83 @@
+FASTQ QC report
+Deterministic Phred+33 FASTQ QC metrics.
+
+Aggregate
+aggregate_gc_fraction: 0.42488863581714326
+max_read_length: 50
+mean_phred_quality: 36.09981448521345
+mean_read_length: 21.329385661714486
+min_read_length: 12
+sample_count: 6
+total_base_count: 10305378
+total_gc_count: 4378638
+total_n_count: 0
+total_read_count: 483154
+total_valid_base_count: 10305378
+
+Samples
+- Blank_RNAi_sRNA-seq_rep1_downsampled (Blank_RNAi_sRNA-seq_rep1_downsampled.fastqsanger.gz)
+  base_count: 1536533
+  gc_count: 653440
+  gc_fraction: 0.4252690960753853
+  max_read_length: 50
+  mean_phred_quality: 36.09945572272122
+  mean_read_length: 21.339550580523305
+  min_read_length: 12
+  n_count: 0
+  read_count: 72004
+  valid_base_count: 1536533
+- Blank_RNAi_sRNA-seq_rep2_downsampled (Blank_RNAi_sRNA-seq_rep2_downsampled.fastqsanger.gz)
+  base_count: 1216421
+  gc_count: 513327
+  gc_fraction: 0.4219978116129202
+  max_read_length: 50
+  mean_phred_quality: 36.12485808778375
+  mean_read_length: 21.3849899792553
+  min_read_length: 12
+  n_count: 0
+  read_count: 56882
+  valid_base_count: 1216421
+- Blank_RNAi_sRNA-seq_rep3_downsampled (Blank_RNAi_sRNA-seq_rep3_downsampled.fastqsanger.gz)
+  base_count: 738778
+  gc_count: 313375
+  gc_fraction: 0.4241802002766731
+  max_read_length: 50
+  mean_phred_quality: 36.03614753011053
+  mean_read_length: 21.364314632735685
+  min_read_length: 12
+  n_count: 0
+  read_count: 34580
+  valid_base_count: 738778
+- Symp_RNAi_sRNA-seq_rep1_downsampled (Symp_RNAi_sRNA-seq_rep1_downsampled.fastqsanger.gz)
+  base_count: 2696127
+  gc_count: 1144959
+  gc_fraction: 0.42466805161626286
+  max_read_length: 50
+  mean_phred_quality: 36.10311346609414
+  mean_read_length: 21.29978669616053
+  min_read_length: 12
+  n_count: 0
+  read_count: 126580
+  valid_base_count: 2696127
+- Symp_RNAi_sRNA-seq_rep2_downsampled (Symp_RNAi_sRNA-seq_rep2_downsampled.fastqsanger.gz)
+  base_count: 1958005
+  gc_count: 834087
+  gc_fraction: 0.4259881869556002
+  max_read_length: 50
+  mean_phred_quality: 36.10899512514013
+  mean_read_length: 21.318348104435685
+  min_read_length: 12
+  n_count: 0
+  read_count: 91846
+  valid_base_count: 1958005
+- Symp_RNAi_sRNA-seq_rep3_downsampled (Symp_RNAi_sRNA-seq_rep3_downsampled.fastqsanger.gz)
+  base_count: 2159514
+  gc_count: 919450
+  gc_fraction: 0.42576709389242207
+  max_read_length: 50
+  mean_phred_quality: 36.095301072370916
+  mean_read_length: 21.326005806719202
+  min_read_length: 12
+  n_count: 0
+  read_count: 101262
+  valid_base_count: 2159514

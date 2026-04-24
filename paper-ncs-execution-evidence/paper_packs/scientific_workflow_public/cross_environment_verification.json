@@ -1,0 +1,60 @@
+{
+  "ci_matrix": {
+    "container_images": [
+      "ghcr.io/joy7758/agent-evidence:ncs-v0.1"
+    ],
+    "native_os": [
+      "ubuntu-latest",
+      "macos-latest"
+    ],
+    "python_versions": [
+      "3.11",
+      "3.12",
+      "3.13"
+    ]
+  },
+  "docker_container_local": {
+    "exit_code": null,
+    "image": "ghcr.io/joy7758/agent-evidence:ncs-v0.1",
+    "output": "",
+    "reason": "Docker execution is optional locally; CI runs the declared container matrix.",
+    "status": "not-run"
+  },
+  "failure_matrix": {
+    "command": "bash paper-ncs-execution-evidence/scripts/run_public_scientific_workflow_validation_matrix.sh",
+    "exit_code": 0,
+    "output": "Built public scientific workflow pack: /Users/zhangbin/GitHub/agent-evidence/paper-ncs-execution-evidence/paper_packs/scientific_workflow_public\nrepository validator: /Users/zhangbin/GitHub/agent-evidence/.venv/bin/agent-evidence validate-pack\ncase                                       expected observed status\n/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\nscientific_workflow_public                        0        0 OK\n/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\nfailures/tampered_input                           2        2 OK\n/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\nfailures/tampered_output                          2        2 OK\n/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\nfailures/missing_policy                           5        5 OK\n/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\nfailures/broken_evidence_link                    11       11 OK\n/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\nfailures/version_mismatch                         4        4 OK\n/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\nfailures/temporal_inconsistency                   6        6 OK\n/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\nfailures/outcome_unverifiable                     7        7 OK\n"
+  },
+  "generated_at": "2026-04-24T09:00:54.309154Z",
+  "independent_checker": {
+    "command": "bash paper-ncs-execution-evidence/scripts/run_independent_checker_agreement.sh <pack>",
+    "exit_code": 0,
+    "output": "Built public scientific workflow pack: paper-ncs-execution-evidence/paper_packs/scientific_workflow_public\nWrote paper-ncs-execution-evidence/paper_packs/scientific_workflow_public/independent_checker_agreement.json\nWrote paper-ncs-execution-evidence/paper_packs/scientific_workflow_public/independent_checker_agreement.md\ncase expected repo independent class agreement\nscientific_workflow_public 0 0 0 PASS True\nfailures/tampered_input 2 2 2 CONTENT_OR_DIGEST_MISMATCH True\nfailures/tampered_output 2 2 2 CONTENT_OR_DIGEST_MISMATCH True\nfailures/missing_policy 5 5 5 POLICY_LINKAGE_FAILURE True\nfailures/broken_evidence_link 11 11 11 REFERENCE_RESOLUTION_FAILURE True\nfailures/version_mismatch 4 4 4 VERSION_OR_PROFILE_MISMATCH True\nfailures/temporal_inconsistency 6 6 6 TEMPORAL_INCONSISTENCY True\nfailures/outcome_unverifiable 7 7 7 OUTCOME_UNVERIFIABLE True\n"
+  },
+  "local_docker_pass": true,
+  "local_environment": {
+    "machine": "arm64",
+    "python": "3.14.3",
+    "release": "25.3.0",
+    "system": "Darwin"
+  },
+  "local_native_pass": true,
+  "overall_local_pass": true,
+  "pack": "paper-ncs-execution-evidence/paper_packs/scientific_workflow_public",
+  "paper_local_validator": {
+    "command": "python paper-ncs-execution-evidence/scripts/validate_ncs_pack.py --pack <pack> --strict",
+    "exit_code": 0,
+    "output": "PASS: paper-ncs-execution-evidence/paper_packs/scientific_workflow_public\n"
+  },
+  "receipt_digest": "sha256:e7fb03d517699d03e0a369727f7a200f0738d6c224b6b3b3f48a12b043ce57c2",
+  "remote_ci": {
+    "reason": "Workflow is staged as a paper-local CI definition; remote GitHub Actions require committing and installing/enabling it from the repository workflow path.",
+    "status": "configured_not_run"
+  },
+  "repository_validator": {
+    "command": "/Users/zhangbin/GitHub/agent-evidence/.venv/bin/agent-evidence validate-pack --pack <pack> --strict",
+    "exit_code": 0,
+    "output": "/Users/zhangbin/GitHub/agent-evidence/.venv/lib/python3.14/site-packages/langchain_core/_api/deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.\n  from pydantic.v1.fields import FieldInfo as FieldInfoV1\nPASS: paper-ncs-execution-evidence/paper_packs/scientific_workflow_public\n"
+  },
+  "workflow_file": "/Users/zhangbin/GitHub/agent-evidence/paper-ncs-execution-evidence/.github/workflows/ncs-cross-environment.yml"
+}

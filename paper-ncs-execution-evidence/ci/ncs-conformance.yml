@@ -1,0 +1,59 @@
+name: NCS conformance
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  conformance:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+        python-version:
+          - "3.11"
+          - "3.12"
+          - "3.13"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package when available
+        run: |
+          if [ -f pyproject.toml ] || [ -f setup.py ]; then
+            python -m pip install --upgrade pip
+            python -m pip install -e .
+          fi
+
+      - name: Check paper directory structure
+        run: |
+          test -d paper-ncs-execution-evidence/manuscript
+          test -d paper-ncs-execution-evidence/paper_packs/scientific_workflow
+          test -d paper-ncs-execution-evidence/paper_packs/agent_workflow
+          test -x paper-ncs-execution-evidence/scripts/make_ncs_pack.py
+          test -x paper-ncs-execution-evidence/scripts/ncs_verify_pack.sh
+
+      - name: Create draft scientific workflow pack
+        run: python paper-ncs-execution-evidence/scripts/make_ncs_pack.py paper-ncs-execution-evidence/paper_packs/scientific_workflow
+
+      - name: Run verifier when available
+        run: |
+          if command -v agent-evidence >/dev/null 2>&1; then
+            if agent-evidence --help | grep -q "validate-pack"; then
+              bash paper-ncs-execution-evidence/scripts/ncs_verify_pack.sh paper-ncs-execution-evidence/paper_packs/scientific_workflow
+            else
+              echo "::warning::agent-evidence is installed but no validate-pack command was found."
+            fi
+          else
+            echo "::warning::agent-evidence command is not available."
+          fi

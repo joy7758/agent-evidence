@@ -1,0 +1,23 @@
+{
+  "allowed_operation_types": [
+    "fastq_qc"
+  ],
+  "external_dependencies": [],
+  "not_final_nature_dataset": true,
+  "policy_id": "ncs-fastq-qc-smoke-policy-v0.1",
+  "profile": {
+    "name": "execution-evidence-operation-accountability",
+    "version": "ncs-v1.0-draft"
+  },
+  "required_artifacts": [
+    "manifest.json",
+    "bundle.json",
+    "receipt.json",
+    "summary.json",
+    "inputs/smoke_reads.fastq",
+    "outputs/qc_metrics.json",
+    "outputs/qc_report.txt",
+    "evidence/run_fastq_qc.py"
+  ],
+  "scope": "Deterministic local smoke validation of the NCS execution-evidence pack surface."
+}
