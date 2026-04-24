@@ -101,9 +101,9 @@ PY
   '
 
 if command -v sudo >/dev/null 2>&1; then
-  sudo chown -R "$(id -u):$(id -g)" "$PACK" || true
+  sudo chown -R "$(id -u):$(id -g)" "$CODE_ROOT" || true
 else
-  chown -R "$(id -u):$(id -g)" "$PACK" || true
+  chown -R "$(id -u):$(id -g)" "$CODE_ROOT" || true
 fi
 
 echo "CONTAINER_VERIFICATION: PASS"
