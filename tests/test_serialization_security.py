@@ -60,3 +60,15 @@ def test_to_jsonable_limits_collection_sizes() -> None:
 
     assert len(serialized["items"]) == MAX_COLLECTION_SIZE
     assert len(serialized["mapping"]) == MAX_COLLECTION_SIZE
+
+
+def test_to_jsonable_sorts_unordered_collections_deterministically() -> None:
+    payload = {
+        "tags": {"beta", "alpha"},
+        "nested": frozenset({("team", "ops"), ("team", "ml")}),
+    }
+
+    serialized = to_jsonable(payload)
+
+    assert serialized["tags"] == ["alpha", "beta"]
+    assert serialized["nested"] == [["team", "ml"], ["team", "ops"]]

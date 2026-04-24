@@ -6,6 +6,8 @@ from pathlib import Path
 from typing import Any, Mapping
 from uuid import UUID
 
+from agent_evidence._canonical import canonicalize_unordered_collection
+
 
 def canonicalize(value: Any) -> Any:
     """Normalize Python values into a deterministic JSON-compatible shape."""
@@ -17,8 +19,10 @@ def canonicalize(value: Any) -> Any:
             str(key): canonicalize(item)
             for key, item in sorted(value.items(), key=lambda entry: str(entry[0]))
         }
-    if isinstance(value, (list, tuple, set, frozenset)):
+    if isinstance(value, (list, tuple)):
         return [canonicalize(item) for item in value]
+    if isinstance(value, (set, frozenset)):
+        return canonicalize_unordered_collection(value, normalize_item=canonicalize)
     if isinstance(value, (datetime, date, time)):
         return value.isoformat()
     if isinstance(value, UUID):
