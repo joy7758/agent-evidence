@@ -15,6 +15,8 @@
 - M4 validator 与 CLI：已完成
 - M5 demo 与文稿：已完成
 - M12 AGT-to-EEOAP v0.1 reference adapter：已完成
+- M12b AGT docs-only interoperability note：已完成（merged upstream）
+- M12c AGT AuditEntry accountability export example：已完成（merged upstream）
 - M7 旗舰论文规划包：已完成
 - M8 frozen EDC Java spike main-repo entry：已完成
 
@@ -76,6 +78,9 @@
   - 现有 profile schema 和 validator 语义保持不变。
 - 对外互操作反馈：
   - AGT issue：`https://github.com/microsoft/agent-governance-toolkit/issues/1314`
+- 上游合并状态：
+  - docs-only interoperability note：`microsoft/agent-governance-toolkit#1319`
+  - AuditEntry accountability export example：`microsoft/agent-governance-toolkit#1370`
 - 本轮核验：
   - 命令：`python3 integrations/agt/convert_agt_evidence_to_eeoap.py --input integrations/agt/fixtures/agt-evidence-minimal.synthetic.json --output integrations/agt/fixtures/eeoap-from-agt.generated.json`
     - 结果：生成 `integrations/agt/fixtures/eeoap-from-agt.generated.json`
@@ -92,6 +97,20 @@
   - 命令：`python -m pytest`
     - 结果：`67 passed, 1 skipped, 15 warnings`
     - 是否通过：通过；warnings 为既有 Python 3.14 / langchain 兼容性提示
+
+## M12b AGT docs-only interoperability note
+- Status: merged upstream
+- PR: `microsoft/agent-governance-toolkit#1319`
+- Issue: `microsoft/agent-governance-toolkit#1314`
+- Scope: documentation-level interoperability note for external operation-accountability profiles
+- Boundary: no AGT runtime changes, no replacement of `agt verify --evidence`, no AGT package dependency, no new runtime contract
+
+## M12c AGT AuditEntry accountability export example
+- Status: merged upstream
+- PR: `microsoft/agent-governance-toolkit#1370`
+- Issue: `microsoft/agent-governance-toolkit#1314`
+- Scope: real `AuditService` / `AuditEntry` output -> smallest-stable external accountability export shape -> EEOAP mapping example
+- Boundary: no AGT runtime changes, no `AuditEntry` / `AuditService` contract changes, no replacement of `agt verify --evidence`, no required dependency on external validator
 
 ## 投稿状态同步
 - `Execution Evidence as a Verifiable Workflow Object: A Minimal Profile and Validator for Operation Accountability` — venue `The Journal of Systems & Software`；manuscript ID `JSSOFTWARE-S-26-00981`；当前状态 `rejected`；备注：已拒稿，不再作为在审稿件统计
