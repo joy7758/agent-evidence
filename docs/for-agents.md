@@ -39,6 +39,16 @@ Run the smallest demo:
 .venv/bin/python demo/run_operation_accountability_demo.py
 ```
 
+Run the 5-minute LangChain evidence path when the user asks for a quick
+LangChain / LangGraph evidence demo:
+
+```bash
+.venv/bin/python examples/langchain_minimal_evidence.py --output-dir ./tmp/langchain-minimal-evidence
+```
+
+Start from `docs/cookbooks/langchain_minimal_evidence.md`. The path is
+offline/mock by default and does not require an external model API key.
+
 Inspect the CLI:
 
 ```bash

@@ -114,6 +114,7 @@ behavior, or outbound promotion workflows.
 - `llms-full.txt`
 - `docs/for-agents.md`
 - `docs/callable-surfaces.md`
+- `docs/cookbooks/langchain_minimal_evidence.md`
 - `docs/cookbooks/local-openapi-wrapper.md`
 - `docs/cookbooks/local-mcp-readonly.md`
 - `docs/project-facts.md`
