@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use agent-evidence in derived work, cite it using this metadata."
+type: software
+title: "agent-evidence"
+abstract: "Runtime evidence exporter and validator for AI agent and service operations."
+authors:
+  - family-names: "Zhang"
+    given-names: "Bin"
+    orcid: "https://orcid.org/0009-0002-8861-1481"
+version: "0.2.0"
+doi: "10.5281/zenodo.19334062"
+license: "Apache-2.0"
+repository-code: "https://github.com/joy7758/agent-evidence"
+url: "https://github.com/joy7758/agent-evidence"
+keywords:
+  - "AI agents"
+  - "runtime evidence"
+  - "operation accountability"
+  - "validation"
+  - "evidence bundles"

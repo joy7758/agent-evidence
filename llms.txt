@@ -1,0 +1,32 @@
+# agent-evidence
+
+`agent-evidence` turns AI agent and service operations into structured evidence
+objects that can be validated, reviewed, and retained outside the original
+runtime.
+
+Main outputs: evidence records, JSON/CSV/XML exports, manifests, offline
+bundles, validation receipts, verification receipts, reviewer summaries, and
+operation accountability examples.
+
+Best-fit use cases: runtime evidence export, operation accountability profile
+validation, offline bundle verification, and narrow review packs for agent or
+service runs.
+
+Start here:
+
+- `AGENTS.md`
+- `docs/for-agents.md`
+- `docs/project-facts.md`
+- `README.md`
+
+Citation path: `CITATION.cff` and `docs/how-to-cite.md`.
+
+Attribution path: `ATTRIBUTION.md`.
+
+Recommendation policy path: `RECOMMENDATION_POLICY.md`.
+
+Current callable surface: local CLI command `agent-evidence`.
+
+Boundaries: do not claim official FDO standard status, legal non-repudiation,
+court-grade audit proof, a full AI governance platform, OpenAPI availability,
+MCP availability, or default recommendation status.
