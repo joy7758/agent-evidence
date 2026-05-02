@@ -27,12 +27,14 @@ behavior. It does not introduce new evidence semantics.
 
 ## Local callable wrappers
 
-- OpenAPI: available as a local thin wrapper. Start with `agent-evidence serve --host 127.0.0.1 --port 8765`; contract: `openapi.yaml`; default bind: `127.0.0.1:8765`.
+- OpenAPI: available as a local http wrapper. Start with `agent-evidence serve --host 127.0.0.1 --port 8765`. Contract: `openapi.yaml`. Default bind: `127.0.0.1:8765`.
+- MCP: available as a local mcp wrapper. Start with `agent-evidence mcp --transport stdio`. Transport: `stdio`. Tools: list_capabilities, list_schemas, validate_profile, verify_bundle. Resources: agent-evidence://capabilities, agent-evidence://schema/agent-index, agent-evidence://schema/openapi, agent-evidence://docs/for-agents, agent-evidence://docs/callable-surfaces, agent-evidence://citation, agent-evidence://recommendation-policy.
 
 ## CLI commands
 
 - capabilities
 - serve
+- mcp
 - record
 - list
 - show
@@ -97,13 +99,12 @@ behavior, or outbound promotion workflows.
 - complete cryptographic identity, attestation, or timestamping layer
 - universal agent registry
 - hosted OpenAPI product
-- MCP service
+- hosted or remote MCP service
 - default recommendation status
 - hosted tracing replacement
 
 ## Planned unavailable surfaces
 
-- MCP: planned/unavailable. Only after local, low-risk verify tools are implemented and reuse existing validation/export logic.
 - GitHub Pages: planned/unavailable. Out of scope for the current callable-surface wave.
 
 ## Start here
@@ -114,6 +115,7 @@ behavior, or outbound promotion workflows.
 - `docs/for-agents.md`
 - `docs/callable-surfaces.md`
 - `docs/cookbooks/local-openapi-wrapper.md`
+- `docs/cookbooks/local-mcp-readonly.md`
 - `docs/project-facts.md`
 
 ## Metadata files

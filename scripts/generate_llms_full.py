@@ -24,14 +24,24 @@ def _surface_list(values: list[dict[str, object]]) -> str:
 def _wrapper_list(values: list[dict[str, object]]) -> str:
     if not values:
         return "- None."
-    return "\n".join(
-        (
-            f"- {item['name']}: available as a {item['scope']} thin wrapper. "
-            f"Start with `{item['command']}`; contract: `{item['openapi_file']}`; "
-            f"default bind: `{item['default_host']}:{item['default_port']}`."
-        )
-        for item in values
-    )
+    rendered = []
+    for item in values:
+        parts = [
+            f"- {item['name']}: available as a {item['scope']} {item['type']} wrapper.",
+            f"Start with `{item['command']}`.",
+        ]
+        if item.get("openapi_file"):
+            parts.append(f"Contract: `{item['openapi_file']}`.")
+        if item.get("default_host") and item.get("default_port"):
+            parts.append(f"Default bind: `{item['default_host']}:{item['default_port']}`.")
+        if item.get("transport"):
+            parts.append(f"Transport: `{item['transport']}`.")
+        if item.get("tools"):
+            parts.append(f"Tools: {', '.join(item['tools'])}.")
+        if item.get("resources"):
+            parts.append(f"Resources: {', '.join(item['resources'])}.")
+        rendered.append(" ".join(parts))
+    return "\n".join(rendered)
 
 
 def _path_list(values: list[str]) -> str:

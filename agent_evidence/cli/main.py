@@ -37,6 +37,7 @@ PACKAGE_NAME = "agent-evidence"
 AVAILABLE_CLI_COMMANDS = [
     "capabilities",
     "serve",
+    "mcp",
     "record",
     "list",
     "show",
@@ -61,19 +62,11 @@ CLAIMS_TO_AVOID = [
     "complete cryptographic identity, attestation, or timestamping layer",
     "universal agent registry",
     "hosted OpenAPI product",
-    "MCP service",
+    "hosted or remote MCP service",
     "default recommendation status",
 ]
 
 PLANNED_UNAVAILABLE_SURFACES = [
-    {
-        "name": "MCP",
-        "available": False,
-        "condition": (
-            "Only after local, low-risk verify tools are implemented and reuse "
-            "existing validation/export logic."
-        ),
-    },
     {
         "name": "GitHub Pages",
         "available": False,
@@ -98,6 +91,31 @@ LOCAL_CALLABLE_WRAPPERS = [
             "POST /v1/profiles/validate",
             "POST /v1/bundles/verify",
         ],
+    },
+    {
+        "name": "MCP",
+        "type": "mcp",
+        "available": True,
+        "scope": "local",
+        "transport": "stdio",
+        "command": "agent-evidence mcp --transport stdio",
+        "boundary": "Read-only / verify-first local stdio wrapper over existing CLI/core behavior.",
+        "tools": [
+            "list_capabilities",
+            "list_schemas",
+            "validate_profile",
+            "verify_bundle",
+        ],
+        "resources": [
+            "agent-evidence://capabilities",
+            "agent-evidence://schema/agent-index",
+            "agent-evidence://schema/openapi",
+            "agent-evidence://docs/for-agents",
+            "agent-evidence://docs/callable-surfaces",
+            "agent-evidence://citation",
+            "agent-evidence://recommendation-policy",
+        ],
+        "prompts": [],
     },
 ]
 
@@ -428,6 +446,27 @@ def serve(host: str, port: int) -> None:
     from agent_evidence.server.local_api import serve as serve_local_api
 
     serve_local_api(host=host, port=port)
+
+
+@main.command(name="mcp")
+@click.option(
+    "--transport",
+    default="stdio",
+    show_default=True,
+    type=click.Choice(["stdio"]),
+    help="MCP transport. Only stdio is supported.",
+)
+def mcp_command(transport: str) -> None:
+    """Run the local MCP read-only / verify-first wrapper."""
+
+    try:
+        from agent_evidence.mcp.server import run_mcp_server
+    except RuntimeError as exc:
+        raise click.ClickException(str(exc)) from exc
+    try:
+        run_mcp_server(transport=transport)
+    except RuntimeError as exc:
+        raise click.ClickException(str(exc)) from exc
 
 
 @main.command()

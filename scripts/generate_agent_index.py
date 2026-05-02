@@ -22,6 +22,7 @@ SOURCE_PATHS = [
     "docs/for-agents.md",
     "docs/callable-surfaces.md",
     "docs/cookbooks/local-openapi-wrapper.md",
+    "docs/cookbooks/local-mcp-readonly.md",
     "CITATION.cff",
     "codemeta.json",
     "ATTRIBUTION.md",
@@ -35,6 +36,7 @@ GUIDE_PATHS = [
     "docs/for-agents.md",
     "docs/callable-surfaces.md",
     "docs/cookbooks/local-openapi-wrapper.md",
+    "docs/cookbooks/local-mcp-readonly.md",
     "docs/project-facts.md",
 ]
 
