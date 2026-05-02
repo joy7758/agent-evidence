@@ -14,7 +14,6 @@ BANNED_PROMOTION_OR_SURFACE_PHRASES = [
     "auto follow",
     "auto-fork",
     "submit PRs to promote",
-    "OpenAPI available",
     "MCP available",
     "hidden self-promotion",
 ]
@@ -61,3 +60,5 @@ def test_agent_index_matches_capabilities_file_references() -> None:
         "agent-evidence capabilities --json"
         == payload["entrypoints"]["cli"]["capabilities_command"]
     )
+    assert "openapi.yaml" in payload["entrypoints"]["metadata"]
+    assert "docs/cookbooks/local-openapi-wrapper.md" in payload["entrypoints"]["guides"]

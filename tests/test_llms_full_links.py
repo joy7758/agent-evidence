@@ -10,6 +10,7 @@ REQUIRED_PATHS = [
     "llms-full.txt",
     "docs/for-agents.md",
     "docs/callable-surfaces.md",
+    "docs/cookbooks/local-openapi-wrapper.md",
     "docs/project-facts.md",
     "agent-index.schema.json",
     "agent-index.json",
@@ -28,9 +29,10 @@ def test_llms_full_references_required_agent_metadata_paths() -> None:
         assert (ROOT / path).exists(), f"{path} does not exist"
 
 
-def test_llms_full_keeps_openapi_and_mcp_unavailable() -> None:
+def test_llms_full_reports_local_openapi_and_keeps_mcp_unavailable() -> None:
     text = (ROOT / "llms-full.txt").read_text(encoding="utf-8")
 
-    assert "OpenAPI and MCP are planned/unavailable" in text
-    assert "OpenAPI available" not in text
+    assert "Local callable wrappers" in text
+    assert "OpenAPI: available as a local thin wrapper" in text
+    assert "MCP: planned/unavailable" in text
     assert "MCP available" not in text

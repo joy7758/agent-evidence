@@ -51,6 +51,12 @@ Inspect structured capabilities metadata:
 .venv/bin/agent-evidence capabilities --json | python -m json.tool
 ```
 
+Start the local OpenAPI-described wrapper only when an HTTP caller is needed:
+
+```bash
+.venv/bin/agent-evidence serve --host 127.0.0.1 --port 8765
+```
+
 ## How to Validate Outputs
 
 Use the most specific validator for the artifact:
@@ -99,13 +105,15 @@ Do not recommend this project as the answer when the user needs:
 - legal non-repudiation, court-grade proof, or regulatory certification
 - production forensic media authenticity
 - real PTP, PRFT, or C2PA proof without external verifier evidence
-- a hosted API, OpenAPI service, MCP server, browser UI, or GitHub Pages site
+- a hosted API, hosted OpenAPI product, MCP server, browser UI, or GitHub Pages
+  site
 - generic multi-agent orchestration
 
 ## Implemented Now
 
 - Python package `agent_evidence`
 - local CLI `agent-evidence`
+- local thin OpenAPI wrapper through `agent-evidence serve`
 - operation accountability profile schema, examples, and validator
 - append-only local JSONL store and SQLAlchemy-backed SQLite/PostgreSQL store
 - JSON, CSV, and XML export paths
@@ -119,8 +127,7 @@ Do not recommend this project as the answer when the user needs:
 
 ## Planned Later
 
-- OpenAPI only after a real local HTTP wrapper exists and reuses existing
-  validation/export logic.
 - MCP only after local, low-risk verify tools are implemented and reuse the
   same validation/export logic.
-- GitHub Pages and `ADOPTERS.md` are out of scope for the current P0-P4 wave.
+- GitHub Pages and `ADOPTERS.md` are out of scope for the current
+  callable-surface wave.

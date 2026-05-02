@@ -36,6 +36,7 @@ PACKAGE_NAME = "agent-evidence"
 
 AVAILABLE_CLI_COMMANDS = [
     "capabilities",
+    "serve",
     "record",
     "list",
     "show",
@@ -59,20 +60,12 @@ CLAIMS_TO_AVOID = [
     "production forensic media system",
     "complete cryptographic identity, attestation, or timestamping layer",
     "universal agent registry",
-    "OpenAPI service",
+    "hosted OpenAPI product",
     "MCP service",
     "default recommendation status",
 ]
 
 PLANNED_UNAVAILABLE_SURFACES = [
-    {
-        "name": "OpenAPI",
-        "available": False,
-        "condition": (
-            "Only after a real local HTTP wrapper exists and reuses existing "
-            "validation/export logic."
-        ),
-    },
     {
         "name": "MCP",
         "available": False,
@@ -84,7 +77,27 @@ PLANNED_UNAVAILABLE_SURFACES = [
     {
         "name": "GitHub Pages",
         "available": False,
-        "condition": "Out of scope for the current P0-P4 wave.",
+        "condition": "Out of scope for the current callable-surface wave.",
+    },
+]
+
+LOCAL_CALLABLE_WRAPPERS = [
+    {
+        "name": "OpenAPI",
+        "type": "http",
+        "available": True,
+        "scope": "local",
+        "command": "agent-evidence serve --host 127.0.0.1 --port 8765",
+        "openapi_file": "openapi.yaml",
+        "default_host": "127.0.0.1",
+        "default_port": 8765,
+        "boundary": "Thin local wrapper over existing CLI/core behavior.",
+        "endpoints": [
+            "GET /healthz",
+            "GET /v1/capabilities",
+            "POST /v1/profiles/validate",
+            "POST /v1/bundles/verify",
+        ],
     },
 ]
 
@@ -122,6 +135,7 @@ def build_capabilities_payload() -> dict[str, Any]:
             "command": "agent-evidence",
             "available": True,
         },
+        "local_callable_wrappers": LOCAL_CALLABLE_WRAPPERS,
         "available_cli_commands": AVAILABLE_CLI_COMMANDS,
         "artifact_types": [
             "append-only JSONL evidence records",
@@ -403,6 +417,17 @@ def capabilities(json_output: bool) -> None:
     if not json_output:
         raise click.ClickException("Only --json output is currently supported.")
     click.echo(json.dumps(build_capabilities_payload(), indent=2, sort_keys=True))
+
+
+@main.command()
+@click.option("--host", default="127.0.0.1", show_default=True)
+@click.option("--port", default=8765, show_default=True, type=int)
+def serve(host: str, port: int) -> None:
+    """Run the local OpenAPI-described HTTP wrapper."""
+
+    from agent_evidence.server.local_api import serve as serve_local_api
+
+    serve_local_api(host=host, port=port)
 
 
 @main.command()

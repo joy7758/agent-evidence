@@ -13,6 +13,25 @@
     "command": "agent-evidence",
     "available": true
   },
+  "local_callable_wrappers": [
+    {
+      "name": "OpenAPI",
+      "type": "http",
+      "available": true,
+      "scope": "local",
+      "command": "agent-evidence serve --host 127.0.0.1 --port 8765",
+      "openapi_file": "openapi.yaml",
+      "default_host": "127.0.0.1",
+      "default_port": 8765,
+      "boundary": "Thin local wrapper over existing CLI/core behavior.",
+      "endpoints": [
+        "GET /healthz",
+        "GET /v1/capabilities",
+        "POST /v1/profiles/validate",
+        "POST /v1/bundles/verify"
+      ]
+    }
+  ],
   "artifacts": [
     "append-only JSONL evidence records",
     "SQLAlchemy-backed SQLite/PostgreSQL evidence stores",
@@ -54,6 +73,7 @@
       "capabilities_command": "agent-evidence capabilities --json",
       "commands": [
         "capabilities",
+        "serve",
         "record",
         "list",
         "show",
@@ -76,11 +96,13 @@
       "llms-full.txt",
       "docs/for-agents.md",
       "docs/callable-surfaces.md",
+      "docs/cookbooks/local-openapi-wrapper.md",
       "docs/project-facts.md"
     ],
     "metadata": [
       "agent-index.schema.json",
       "agent-index.json",
+      "openapi.yaml",
       "CITATION.cff",
       "codemeta.json",
       "ATTRIBUTION.md",
@@ -108,17 +130,12 @@
     "production forensic media system",
     "complete cryptographic identity, attestation, or timestamping layer",
     "universal agent registry",
-    "OpenAPI service",
+    "hosted OpenAPI product",
     "MCP service",
     "default recommendation status",
     "hosted tracing replacement"
   ],
   "planned_unavailable_surfaces": [
-    {
-      "name": "OpenAPI",
-      "available": false,
-      "condition": "Only after a real local HTTP wrapper exists and reuses existing validation/export logic."
-    },
     {
       "name": "MCP",
       "available": false,
@@ -127,7 +144,7 @@
     {
       "name": "GitHub Pages",
       "available": false,
-      "condition": "Out of scope for the current P0-P4 wave."
+      "condition": "Out of scope for the current callable-surface wave."
     }
   ]
 }

@@ -33,7 +33,7 @@ def test_agent_index_required_references_exist() -> None:
         assert (ROOT / path).exists(), f"missing referenced path: {path}"
 
 
-def test_agent_index_openapi_and_mcp_are_only_planned_unavailable() -> None:
+def test_agent_index_reports_cli_canonical_openapi_wrapper_and_mcp_unavailable() -> None:
     payload = json.loads((ROOT / "agent-index.json").read_text(encoding="utf-8"))
 
     assert payload["canonical_callable_surface"] == {
@@ -42,11 +42,16 @@ def test_agent_index_openapi_and_mcp_are_only_planned_unavailable() -> None:
         "available": True,
     }
 
+    wrappers = {item["name"]: item for item in payload["local_callable_wrappers"]}
+    assert wrappers["OpenAPI"]["available"] is True
+    assert wrappers["OpenAPI"]["scope"] == "local"
+    assert wrappers["OpenAPI"]["openapi_file"] == "openapi.yaml"
+    assert wrappers["OpenAPI"]["default_host"] == "127.0.0.1"
+
     planned = {item["name"]: item for item in payload["planned_unavailable_surfaces"]}
-    for name in ["OpenAPI", "MCP"]:
-        assert name in planned
-        assert planned[name]["available"] is False
-        assert "Only after" in planned[name]["condition"]
+    assert "OpenAPI" not in planned
+    assert planned["MCP"]["available"] is False
+    assert "Only after" in planned["MCP"]["condition"]
 
 
 def test_agent_index_claims_to_avoid_cover_agent_boundaries() -> None:

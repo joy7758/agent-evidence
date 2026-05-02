@@ -15,7 +15,7 @@ agent-evidence capabilities --json
 Use `agent-evidence capabilities --json` when an external agent needs
 machine-readable metadata about implemented commands, artifact types,
 integrations, citation files, attribution files, recommendation policy, claim
-boundaries, and planned but unavailable surfaces.
+boundaries, local callable wrappers, and planned but unavailable surfaces.
 
 ## CLI Boundary
 
@@ -25,14 +25,30 @@ paths instead of duplicating validation logic.
 
 ## OpenAPI Status
 
-OpenAPI is planned only after a real local HTTP wrapper exists.
+`openapi.yaml` now describes a local thin HTTP wrapper over existing CLI/core
+behavior.
 
-Until then:
+Start it with:
 
-- do not claim OpenAPI availability
-- do not generate OpenAPI metadata from docs alone
-- do not duplicate validator or export semantics in an HTTP layer
-- do not treat README examples as an HTTP contract
+```bash
+agent-evidence serve --host 127.0.0.1 --port 8765
+```
+
+Implemented endpoints:
+
+- `GET /healthz`
+- `GET /v1/capabilities`
+- `POST /v1/profiles/validate`
+- `POST /v1/bundles/verify`
+
+The wrapper:
+
+- keeps CLI/core behavior canonical
+- calls `agent_evidence.cli.main.build_capabilities_payload()`
+- calls existing profile validation behavior for validate requests
+- calls `agent_evidence.aep.verify_bundle()` for bundle verification
+- does not add Review Pack endpoints
+- does not introduce new evidence semantics
 
 ## MCP Status
 
@@ -62,7 +78,6 @@ Any future callable wrapper must:
 The current repository does not provide:
 
 - hosted API
-- OpenAPI server
 - MCP server
 - browser UI
 - GitHub Pages callable documentation site

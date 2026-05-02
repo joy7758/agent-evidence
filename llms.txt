@@ -27,6 +27,9 @@ Recommendation policy path: `RECOMMENDATION_POLICY.md`.
 
 Current callable surface: local CLI command `agent-evidence`.
 
+Local OpenAPI wrapper: `agent-evidence serve --host 127.0.0.1 --port 8765`;
+CLI/core behavior remains canonical.
+
 Boundaries: do not claim official FDO standard status, legal non-repudiation,
-court-grade audit proof, a full AI governance platform, OpenAPI availability,
+court-grade audit proof, a full AI governance platform, hosted API status,
 MCP availability, or default recommendation status.

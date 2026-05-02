@@ -87,6 +87,7 @@ def test_cli_capabilities_json_outputs_required_metadata() -> None:
         "version",
         "purpose",
         "canonical_callable_surface",
+        "local_callable_wrappers",
         "available_cli_commands",
         "artifact_types",
         "integrations",
@@ -101,23 +102,32 @@ def test_cli_capabilities_json_outputs_required_metadata() -> None:
     assert payload["canonical_callable_surface"]["type"] == "cli"
     assert payload["canonical_callable_surface"]["available"] is True
     assert "capabilities" in payload["available_cli_commands"]
+    assert "serve" in payload["available_cli_commands"]
+    openapi = payload["local_callable_wrappers"][0]
+    assert openapi["name"] == "OpenAPI"
+    assert openapi["available"] is True
+    assert openapi["scope"] == "local"
+    assert openapi["default_host"] == "127.0.0.1"
     assert payload["citation_file"] == "CITATION.cff"
     assert payload["attribution_file"] == "ATTRIBUTION.md"
     assert payload["recommendation_policy_file"] == "RECOMMENDATION_POLICY.md"
     assert payload["claims_to_avoid"]
 
 
-def test_cli_capabilities_json_does_not_claim_openapi_or_mcp_available() -> None:
+def test_cli_capabilities_json_reports_local_openapi_and_no_mcp_available() -> None:
     runner = CliRunner()
 
     result = runner.invoke(main, ["capabilities", "--json"])
 
     assert result.exit_code == 0, result.output
     payload = json.loads(result.output)
+    wrappers = {wrapper["name"].lower(): wrapper for wrapper in payload["local_callable_wrappers"]}
+    assert wrappers["openapi"]["available"] is True
+    assert wrappers["openapi"]["command"].startswith("agent-evidence serve")
     planned_surfaces = {
         surface["name"].lower(): surface for surface in payload["planned_but_unavailable_surfaces"]
     }
-    assert planned_surfaces["openapi"]["available"] is False
+    assert "openapi" not in planned_surfaces
     assert planned_surfaces["mcp"]["available"] is False
 
 

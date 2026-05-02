@@ -22,12 +22,17 @@ The canonical callable surface is the local CLI:
 - Command: `agent-evidence`
 - Capabilities metadata: `agent-evidence capabilities --json`
 
-OpenAPI and MCP are planned/unavailable until real local wrappers exist and
-reuse the existing validation/export logic.
+Local HTTP access is available only as a thin wrapper over existing CLI/core
+behavior. It does not introduce new evidence semantics.
+
+## Local callable wrappers
+
+- OpenAPI: available as a local thin wrapper. Start with `agent-evidence serve --host 127.0.0.1 --port 8765`; contract: `openapi.yaml`; default bind: `127.0.0.1:8765`.
 
 ## CLI commands
 
 - capabilities
+- serve
 - record
 - list
 - show
@@ -91,16 +96,15 @@ behavior, or outbound promotion workflows.
 - production forensic media system
 - complete cryptographic identity, attestation, or timestamping layer
 - universal agent registry
-- OpenAPI service
+- hosted OpenAPI product
 - MCP service
 - default recommendation status
 - hosted tracing replacement
 
 ## Planned unavailable surfaces
 
-- OpenAPI: planned/unavailable. Only after a real local HTTP wrapper exists and reuses existing validation/export logic.
 - MCP: planned/unavailable. Only after local, low-risk verify tools are implemented and reuse existing validation/export logic.
-- GitHub Pages: planned/unavailable. Out of scope for the current P0-P4 wave.
+- GitHub Pages: planned/unavailable. Out of scope for the current callable-surface wave.
 
 ## Start here
 
@@ -109,12 +113,14 @@ behavior, or outbound promotion workflows.
 - `llms-full.txt`
 - `docs/for-agents.md`
 - `docs/callable-surfaces.md`
+- `docs/cookbooks/local-openapi-wrapper.md`
 - `docs/project-facts.md`
 
 ## Metadata files
 
 - `agent-index.schema.json`
 - `agent-index.json`
+- `openapi.yaml`
 - `CITATION.cff`
 - `codemeta.json`
 - `ATTRIBUTION.md`

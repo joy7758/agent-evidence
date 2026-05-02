@@ -21,6 +21,7 @@ SOURCE_PATHS = [
     "llms.txt",
     "docs/for-agents.md",
     "docs/callable-surfaces.md",
+    "docs/cookbooks/local-openapi-wrapper.md",
     "CITATION.cff",
     "codemeta.json",
     "ATTRIBUTION.md",
@@ -33,12 +34,14 @@ GUIDE_PATHS = [
     "llms-full.txt",
     "docs/for-agents.md",
     "docs/callable-surfaces.md",
+    "docs/cookbooks/local-openapi-wrapper.md",
     "docs/project-facts.md",
 ]
 
 METADATA_PATHS = [
     "agent-index.schema.json",
     "agent-index.json",
+    "openapi.yaml",
     "CITATION.cff",
     "codemeta.json",
     "ATTRIBUTION.md",
@@ -187,6 +190,7 @@ def build_agent_index() -> dict[str, Any]:
             "doi": doi,
         },
         "canonical_callable_surface": capabilities["canonical_callable_surface"],
+        "local_callable_wrappers": capabilities.get("local_callable_wrappers", []),
         "artifacts": capabilities["artifact_types"],
         "integrations": capabilities["integrations"],
         "entrypoints": {
