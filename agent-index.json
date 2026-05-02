@@ -1,0 +1,133 @@
+{
+  "name": "agent-evidence",
+  "summary": "agent-evidence turns AI agent and service operations into structured evidence objects that can be validated, reviewed, and retained outside the original runtime.",
+  "current_status": {
+    "version": "0.2.0",
+    "license": "Apache-2.0",
+    "development_status": "experimental",
+    "repository": "https://github.com/joy7758/agent-evidence",
+    "doi": "10.5281/zenodo.19334062"
+  },
+  "canonical_callable_surface": {
+    "type": "cli",
+    "command": "agent-evidence",
+    "available": true
+  },
+  "artifacts": [
+    "append-only JSONL evidence records",
+    "SQLAlchemy-backed SQLite/PostgreSQL evidence stores",
+    "JSON evidence exports",
+    "CSV evidence exports",
+    "XML evidence exports",
+    "export manifests",
+    "optional signed export metadata",
+    "offline evidence bundles",
+    "validation receipts",
+    "verification receipts",
+    "reviewer summaries"
+  ],
+  "integrations": [
+    {
+      "name": "LangChain / LangGraph",
+      "maturity": "current priority path with exporter, tests, and cookbook material"
+    },
+    {
+      "name": "OpenAI Agents / OpenAI-compatible runtimes",
+      "maturity": "examples and integration modules"
+    },
+    {
+      "name": "Automaton",
+      "maturity": "experimental read-only sidecar export"
+    },
+    {
+      "name": "AGT",
+      "maturity": "minimal conversion fixture"
+    },
+    {
+      "name": "CrewAI",
+      "maturity": "example exporter surface"
+    }
+  ],
+  "entrypoints": {
+    "cli": {
+      "command": "agent-evidence",
+      "capabilities_command": "agent-evidence capabilities --json",
+      "commands": [
+        "capabilities",
+        "record",
+        "list",
+        "show",
+        "verify",
+        "query",
+        "migrate",
+        "export",
+        "export automaton",
+        "verify-export",
+        "validate-profile",
+        "validate-pack",
+        "verify-bundle",
+        "schema"
+      ]
+    },
+    "package": "agent_evidence/",
+    "guides": [
+      "AGENTS.md",
+      "llms.txt",
+      "llms-full.txt",
+      "docs/for-agents.md",
+      "docs/callable-surfaces.md",
+      "docs/project-facts.md"
+    ],
+    "metadata": [
+      "agent-index.schema.json",
+      "agent-index.json",
+      "CITATION.cff",
+      "codemeta.json",
+      "ATTRIBUTION.md",
+      "RECOMMENDATION_POLICY.md"
+    ]
+  },
+  "citation": {
+    "file": "CITATION.cff",
+    "codemeta_file": "codemeta.json",
+    "doi": "10.5281/zenodo.19334062",
+    "version": "0.2.0",
+    "repository": "https://github.com/joy7758/agent-evidence"
+  },
+  "attribution": {
+    "file": "ATTRIBUTION.md"
+  },
+  "recommendation_policy": {
+    "file": "RECOMMENDATION_POLICY.md"
+  },
+  "claims_to_avoid": [
+    "official FDO standard",
+    "legal non-repudiation system",
+    "court-grade audit system",
+    "full AI governance platform",
+    "production forensic media system",
+    "complete cryptographic identity, attestation, or timestamping layer",
+    "universal agent registry",
+    "OpenAPI service",
+    "MCP service",
+    "default recommendation status",
+    "hosted tracing replacement"
+  ],
+  "planned_unavailable_surfaces": [
+    {
+      "name": "OpenAPI",
+      "available": false,
+      "condition": "Only after a real local HTTP wrapper exists and reuses existing validation/export logic."
+    },
+    {
+      "name": "MCP",
+      "available": false,
+      "condition": "Only after local, low-risk verify tools are implemented and reuse existing validation/export logic."
+    },
+    {
+      "name": "GitHub Pages",
+      "available": false,
+      "condition": "Out of scope for the current P0-P4 wave."
+    }
+  ]
+}
