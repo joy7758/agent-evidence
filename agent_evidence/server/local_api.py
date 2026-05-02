@@ -14,36 +14,49 @@ from agent_evidence.oap import build_validation_report, load_profile
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8765
 SERVICE_NAME = "agent-evidence-local-api"
-MAX_REQUEST_BYTES = 2 * 1024 * 1024
+MAX_REQUEST_BYTES = 1 * 1024 * 1024
+
+
+class RequestError(ValueError):
+    def __init__(self, code: str, message: str) -> None:
+        super().__init__(message)
+        self.code = code
+        self.message = message
 
 
 class AgentEvidenceRequestHandler(BaseHTTPRequestHandler):
     server_version = "AgentEvidenceLocalAPI/0.1"
 
     def do_GET(self) -> None:  # noqa: N802
-        path = urlparse(self.path).path
-        if path == "/healthz":
-            self._write_json(
-                {
-                    "status": "ok",
-                    "service": SERVICE_NAME,
-                }
-            )
-            return
-        if path == "/v1/capabilities":
-            self._write_json(build_capabilities_payload())
-            return
-        self._write_json({"error": {"code": "not_found", "message": "Route not found."}}, 404)
+        try:
+            path = urlparse(self.path).path
+            if path == "/healthz":
+                self._write_json(
+                    {
+                        "status": "ok",
+                        "service": SERVICE_NAME,
+                    }
+                )
+                return
+            if path == "/v1/capabilities":
+                self._write_json(build_capabilities_payload())
+                return
+            self._write_error("not_found", "Route not found.", HTTPStatus.NOT_FOUND)
+        except Exception:
+            self._internal_error()
 
     def do_POST(self) -> None:  # noqa: N802
-        path = urlparse(self.path).path
-        if path == "/v1/profiles/validate":
-            self._handle_validate_profile()
-            return
-        if path == "/v1/bundles/verify":
-            self._handle_verify_bundle()
-            return
-        self._write_json({"error": {"code": "not_found", "message": "Route not found."}}, 404)
+        try:
+            path = urlparse(self.path).path
+            if path == "/v1/profiles/validate":
+                self._handle_validate_profile()
+                return
+            if path == "/v1/bundles/verify":
+                self._handle_verify_bundle()
+                return
+            self._write_error("not_found", "Route not found.", HTTPStatus.NOT_FOUND)
+        except Exception:
+            self._internal_error()
 
     def do_PUT(self) -> None:  # noqa: N802
         self._method_not_allowed()
@@ -58,8 +71,9 @@ class AgentEvidenceRequestHandler(BaseHTTPRequestHandler):
         return
 
     def _method_not_allowed(self) -> None:
-        self._write_json(
-            {"error": {"code": "method_not_allowed", "message": "Method not allowed."}},
+        self._write_error(
+            "method_not_allowed",
+            "Method not allowed.",
             HTTPStatus.METHOD_NOT_ALLOWED,
         )
 
@@ -70,7 +84,7 @@ class AgentEvidenceRequestHandler(BaseHTTPRequestHandler):
             if "profile" in request:
                 profile = request["profile"]
                 if not isinstance(profile, dict):
-                    self._bad_request("profile must be a JSON object.")
+                    self._invalid_request("profile must be a JSON object.")
                     return
                 report = build_validation_report(
                     profile,
@@ -81,7 +95,11 @@ class AgentEvidenceRequestHandler(BaseHTTPRequestHandler):
                 return
             if "profile_path" in request:
                 profile_path = _required_string(request, "profile_path")
-                profile = load_profile(Path(profile_path))
+                try:
+                    profile = load_profile(Path(profile_path))
+                except (OSError, ValueError):
+                    self._invalid_request("Unable to read or parse profile_path.")
+                    return
                 report = build_validation_report(
                     profile,
                     source=profile_path,
@@ -89,40 +107,62 @@ class AgentEvidenceRequestHandler(BaseHTTPRequestHandler):
                 )
                 self._write_json(report)
                 return
-            self._bad_request("Request must include profile or profile_path.")
-        except (OSError, ValueError) as exc:
-            self._bad_request(str(exc))
+            self._invalid_request("Request must include profile or profile_path.")
+        except RequestError as exc:
+            self._write_error(exc.code, exc.message, HTTPStatus.BAD_REQUEST)
 
     def _handle_verify_bundle(self) -> None:
         try:
             request = self._read_json_body()
             bundle_path = _required_string(request, "bundle_path")
             self._write_json(verify_bundle(Path(bundle_path)))
-        except (OSError, ValueError) as exc:
-            self._bad_request(str(exc))
+        except RequestError as exc:
+            self._write_error(exc.code, exc.message, HTTPStatus.BAD_REQUEST)
 
     def _read_json_body(self) -> dict[str, Any]:
         content_length = self.headers.get("Content-Length")
         if content_length is None:
-            raise ValueError("Content-Length header is required.")
+            raise RequestError("invalid_request", "Content-Length header is required.")
         try:
             length = int(content_length)
         except ValueError as exc:
-            raise ValueError("Content-Length header must be an integer.") from exc
+            raise RequestError(
+                "invalid_request",
+                "Content-Length header must be an integer.",
+            ) from exc
+        if length < 0:
+            raise RequestError("invalid_request", "Content-Length header must be non-negative.")
         if length > MAX_REQUEST_BYTES:
-            raise ValueError("Request body is too large.")
+            self.rfile.read(MAX_REQUEST_BYTES + 1)
+            raise RequestError("invalid_request", "Request body is too large.")
         try:
             payload = json.loads(self.rfile.read(length).decode("utf-8"))
-        except json.JSONDecodeError as exc:
-            raise ValueError(f"Invalid JSON body: {exc.msg}.") from exc
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            raise RequestError("invalid_json", "Request body must be valid JSON.") from exc
         if not isinstance(payload, dict):
-            raise ValueError("Request body must be a JSON object.")
+            raise RequestError("invalid_request", "Request body must be a JSON object.")
         return payload
 
-    def _bad_request(self, message: str) -> None:
+    def _invalid_request(self, message: str) -> None:
+        self._write_error("invalid_request", message, HTTPStatus.BAD_REQUEST)
+
+    def _internal_error(self) -> None:
+        self._write_error(
+            "internal_error",
+            "Internal server error.",
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+        )
+
+    def _write_error(self, code: str, message: str, status: int | HTTPStatus) -> None:
         self._write_json(
-            {"error": {"code": "bad_request", "message": message}},
-            HTTPStatus.BAD_REQUEST,
+            {
+                "ok": False,
+                "error": {
+                    "code": code,
+                    "message": message,
+                },
+            },
+            status,
         )
 
     def _write_json(
@@ -139,14 +179,14 @@ class AgentEvidenceRequestHandler(BaseHTTPRequestHandler):
 def _required_string(payload: dict[str, Any], key: str) -> str:
     value = payload.get(key)
     if not isinstance(value, str) or not value:
-        raise ValueError(f"{key} must be a non-empty string.")
+        raise RequestError("invalid_request", f"{key} must be a non-empty string.")
     return value
 
 
 def _optional_bool(payload: dict[str, Any], key: str, *, default: bool) -> bool:
     value = payload.get(key, default)
     if not isinstance(value, bool):
-        raise ValueError(f"{key} must be a boolean when provided.")
+        raise RequestError("invalid_request", f"{key} must be a boolean when provided.")
     return value
 
 

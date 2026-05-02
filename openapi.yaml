@@ -130,8 +130,12 @@ components:
     ErrorResponse:
       type: object
       required:
+        - ok
         - error
       properties:
+        ok:
+          type: boolean
+          const: false
         error:
           type: object
           required:

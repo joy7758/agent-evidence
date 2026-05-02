@@ -96,6 +96,30 @@ curl -s http://127.0.0.1:8765/v1/bundles/verify \
 
 The endpoint calls `agent_evidence.aep.verify_bundle()`.
 
+## Error Responses
+
+Request errors return a stable JSON shape:
+
+```json
+{
+  "ok": false,
+  "error": {
+    "code": "invalid_request",
+    "message": "Request body must be a JSON object."
+  }
+}
+```
+
+Current error codes:
+
+- `invalid_json`
+- `invalid_request`
+- `not_found`
+- `method_not_allowed`
+- `internal_error`
+
+The server limits request bodies to 1 MiB.
+
 ## Limitations
 
 - CLI/core remains canonical.

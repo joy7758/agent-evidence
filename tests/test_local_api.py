@@ -13,7 +13,12 @@ from click.testing import CliRunner
 from agent_evidence.aep import verify_bundle
 from agent_evidence.cli.main import build_capabilities_payload, main
 from agent_evidence.oap import build_validation_report, load_profile
-from agent_evidence.server.local_api import DEFAULT_HOST, DEFAULT_PORT, create_server
+from agent_evidence.server.local_api import (
+    DEFAULT_HOST,
+    DEFAULT_PORT,
+    MAX_REQUEST_BYTES,
+    create_server,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -46,6 +51,21 @@ def post_json(url: str, payload: dict) -> dict:
     )
     with urlopen(request, timeout=5) as response:
         return json.loads(response.read().decode("utf-8"))
+
+
+def post_raw(url: str, body: bytes) -> dict:
+    request = Request(
+        url,
+        data=body,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    with urlopen(request, timeout=5) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def read_http_error(exc: HTTPError) -> dict:
+    return json.loads(exc.read().decode("utf-8"))
 
 
 def test_local_api_healthz() -> None:
@@ -121,7 +141,96 @@ def test_local_api_rejects_unsupported_validate_shape() -> None:
             urlopen(request, timeout=5)
         except HTTPError as exc:
             assert exc.code == 400
-            payload = json.loads(exc.read().decode("utf-8"))
-            assert payload["error"]["code"] == "bad_request"
+            payload = read_http_error(exc)
+            assert payload["ok"] is False
+            assert payload["error"]["code"] == "invalid_request"
         else:
             raise AssertionError("unsupported request shape should fail")
+
+
+def test_local_api_rejects_invalid_json_body() -> None:
+    with running_server() as base_url:
+        try:
+            post_raw(f"{base_url}/v1/profiles/validate", b"{")
+        except HTTPError as exc:
+            assert exc.code == 400
+            payload = read_http_error(exc)
+            assert payload == {
+                "ok": False,
+                "error": {
+                    "code": "invalid_json",
+                    "message": "Request body must be valid JSON.",
+                },
+            }
+        else:
+            raise AssertionError("invalid JSON should fail")
+
+
+def test_local_api_rejects_oversized_body() -> None:
+    with running_server() as base_url:
+        try:
+            post_raw(f"{base_url}/v1/profiles/validate", b" " * (MAX_REQUEST_BYTES + 1))
+        except HTTPError as exc:
+            assert exc.code == 400
+            payload = read_http_error(exc)
+            assert payload["ok"] is False
+            assert payload["error"]["code"] == "invalid_request"
+            assert payload["error"]["message"] == "Request body is too large."
+        else:
+            raise AssertionError("oversized request should fail")
+
+
+def test_local_api_missing_profile_path_error_is_sanitized() -> None:
+    missing_path = "/tmp/agent-evidence-secret-profile.json"
+    with running_server() as base_url:
+        try:
+            post_json(f"{base_url}/v1/profiles/validate", {"profile_path": missing_path})
+        except HTTPError as exc:
+            assert exc.code == 400
+            payload = read_http_error(exc)
+            assert payload == {
+                "ok": False,
+                "error": {
+                    "code": "invalid_request",
+                    "message": "Unable to read or parse profile_path.",
+                },
+            }
+        else:
+            raise AssertionError("missing profile_path should fail")
+
+
+def test_local_api_unknown_route_returns_stable_404() -> None:
+    with running_server() as base_url:
+        try:
+            get_json(f"{base_url}/v1/unknown")
+        except HTTPError as exc:
+            assert exc.code == 404
+            payload = read_http_error(exc)
+            assert payload == {
+                "ok": False,
+                "error": {
+                    "code": "not_found",
+                    "message": "Route not found.",
+                },
+            }
+        else:
+            raise AssertionError("unknown route should fail")
+
+
+def test_local_api_method_not_allowed_returns_stable_405() -> None:
+    with running_server() as base_url:
+        request = Request(f"{base_url}/healthz", data=b"{}", method="PUT")
+        try:
+            urlopen(request, timeout=5)
+        except HTTPError as exc:
+            assert exc.code == 405
+            payload = read_http_error(exc)
+            assert payload == {
+                "ok": False,
+                "error": {
+                    "code": "method_not_allowed",
+                    "message": "Method not allowed.",
+                },
+            }
+        else:
+            raise AssertionError("PUT should fail")

@@ -54,3 +54,12 @@ def test_openapi_contract_contains_no_out_of_scope_surfaces() -> None:
         "always recommend",
     ]:
         assert banned not in text
+
+
+def test_openapi_error_response_has_stable_shape() -> None:
+    spec = _load_spec()
+    error_schema = spec["components"]["schemas"]["ErrorResponse"]
+
+    assert set(error_schema["required"]) == {"ok", "error"}
+    assert error_schema["properties"]["ok"] == {"type": "boolean", "const": False}
+    assert set(error_schema["properties"]["error"]["required"]) == {"code", "message"}
