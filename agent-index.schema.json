@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/joy7758/agent-evidence/agent-index.schema.json",
+  "title": "agent-evidence agent index",
+  "type": "object",
+  "required": [
+    "name",
+    "summary",
+    "current_status",
+    "canonical_callable_surface",
+    "artifacts",
+    "integrations",
+    "entrypoints",
+    "citation",
+    "attribution",
+    "recommendation_policy",
+    "claims_to_avoid",
+    "planned_unavailable_surfaces"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "current_status": {
+      "type": "object",
+      "required": [
+        "version",
+        "license",
+        "development_status",
+        "repository",
+        "doi"
+      ],
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "license": {
+          "type": "string"
+        },
+        "development_status": {
+          "type": "string"
+        },
+        "repository": {
+          "type": "string"
+        },
+        "doi": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "canonical_callable_surface": {
+      "type": "object",
+      "required": [
+        "type",
+        "command",
+        "available"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "command": {
+          "type": "string"
+        },
+        "available": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "integrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "maturity"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "maturity": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "entrypoints": {
+      "type": "object",
+      "required": [
+        "cli",
+        "package",
+        "guides",
+        "metadata"
+      ],
+      "properties": {
+        "cli": {
+          "type": "object",
+          "required": [
+            "command",
+            "capabilities_command",
+            "commands"
+          ],
+          "properties": {
+            "command": {
+              "type": "string"
+            },
+            "capabilities_command": {
+              "type": "string"
+            },
+            "commands": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "package": {
+          "type": "string"
+        },
+        "guides": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "metadata": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "citation": {
+      "type": "object",
+      "required": [
+        "file",
+        "codemeta_file",
+        "doi",
+        "version",
+        "repository"
+      ],
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "codemeta_file": {
+          "type": "string"
+        },
+        "doi": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "repository": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "attribution": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "recommendation_policy": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "claims_to_avoid": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "planned_unavailable_surfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "available",
+          "condition"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "condition": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

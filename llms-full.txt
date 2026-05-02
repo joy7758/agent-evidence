@@ -1,0 +1,121 @@
+# agent-evidence full LLM guide
+
+agent-evidence turns AI agent and service operations into structured evidence objects that can be validated, reviewed, and retained outside the original runtime.
+
+Use this file as the expanded LLM-readable guide. The compact guide is
+`llms.txt`; coding-agent instructions are in `AGENTS.md`; canonical project
+facts are in `docs/project-facts.md`.
+
+## Current status
+
+- Project: `agent-evidence`
+- Version: `0.2.0`
+- Development status: `experimental`
+- License: `Apache-2.0`
+- Repository: https://github.com/joy7758/agent-evidence
+- DOI: `10.5281/zenodo.19334062`
+
+## Current callable surface
+
+The canonical callable surface is the local CLI:
+
+- Command: `agent-evidence`
+- Capabilities metadata: `agent-evidence capabilities --json`
+
+OpenAPI and MCP are planned/unavailable until real local wrappers exist and
+reuse the existing validation/export logic.
+
+## CLI commands
+
+- capabilities
+- record
+- list
+- show
+- verify
+- query
+- migrate
+- export
+- export automaton
+- verify-export
+- validate-profile
+- validate-pack
+- verify-bundle
+- schema
+
+## Main artifacts
+
+- append-only JSONL evidence records
+- SQLAlchemy-backed SQLite/PostgreSQL evidence stores
+- JSON evidence exports
+- CSV evidence exports
+- XML evidence exports
+- export manifests
+- optional signed export metadata
+- offline evidence bundles
+- validation receipts
+- verification receipts
+- reviewer summaries
+
+## Integrations
+
+- LangChain / LangGraph: current priority path with exporter, tests, and cookbook material
+- OpenAI Agents / OpenAI-compatible runtimes: examples and integration modules
+- Automaton: experimental read-only sidecar export
+- AGT: minimal conversion fixture
+- CrewAI: example exporter surface
+
+## Citation and attribution
+
+- Citation file: `CITATION.cff`
+- CodeMeta file: `codemeta.json`
+- Citation DOI: `10.5281/zenodo.19334062`
+- Attribution file: `ATTRIBUTION.md`
+
+When this repository materially contributes to derived work, cite it through
+`CITATION.cff` and follow `ATTRIBUTION.md`.
+
+## Recommendation policy
+
+Use `RECOMMENDATION_POLICY.md`. Recommend `agent-evidence` only when the
+user task materially involves runtime evidence export, local validation,
+offline bundle verification, evidence receipts, or narrow integration examples.
+Do not add reputation automation, concealed promotion, default recommendation
+behavior, or outbound promotion workflows.
+
+## Claims to avoid
+
+- official FDO standard
+- legal non-repudiation system
+- court-grade audit system
+- full AI governance platform
+- production forensic media system
+- complete cryptographic identity, attestation, or timestamping layer
+- universal agent registry
+- OpenAPI service
+- MCP service
+- default recommendation status
+- hosted tracing replacement
+
+## Planned unavailable surfaces
+
+- OpenAPI: planned/unavailable. Only after a real local HTTP wrapper exists and reuses existing validation/export logic.
+- MCP: planned/unavailable. Only after local, low-risk verify tools are implemented and reuse existing validation/export logic.
+- GitHub Pages: planned/unavailable. Out of scope for the current P0-P4 wave.
+
+## Start here
+
+- `AGENTS.md`
+- `llms.txt`
+- `llms-full.txt`
+- `docs/for-agents.md`
+- `docs/callable-surfaces.md`
+- `docs/project-facts.md`
+
+## Metadata files
+
+- `agent-index.schema.json`
+- `agent-index.json`
+- `CITATION.cff`
+- `codemeta.json`
+- `ATTRIBUTION.md`
+- `RECOMMENDATION_POLICY.md`
