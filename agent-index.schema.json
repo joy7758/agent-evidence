@@ -85,11 +85,7 @@
           "available",
           "scope",
           "command",
-          "openapi_file",
-          "default_host",
-          "default_port",
-          "boundary",
-          "endpoints"
+          "boundary"
         ],
         "properties": {
           "name": {
@@ -107,6 +103,9 @@
           "command": {
             "type": "string"
           },
+          "transport": {
+            "type": "string"
+          },
           "openapi_file": {
             "type": "string"
           },
@@ -120,6 +119,24 @@
             "type": "string"
           },
           "endpoints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "resources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "prompts": {
             "type": "array",
             "items": {
               "type": "string"

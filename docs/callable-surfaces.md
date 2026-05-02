@@ -52,14 +52,39 @@ The wrapper:
 
 ## MCP Status
 
-MCP is planned only after local, low-risk verify tools are implemented.
+MCP is available as a local stdio read-only / verify-first wrapper.
 
-Until then:
+Start it with:
 
-- do not claim MCP availability
-- do not expose write-heavy tools as a first MCP surface
-- do not duplicate validation logic in MCP handlers
-- do not add promotion, star, follow, fork, or outbound promotion tools
+```bash
+agent-evidence mcp --transport stdio
+```
+
+Implemented tools:
+
+- `list_capabilities`
+- `list_schemas`
+- `validate_profile`
+- `verify_bundle`
+
+Implemented resources:
+
+- `agent-evidence://capabilities`
+- `agent-evidence://schema/agent-index`
+- `agent-evidence://schema/openapi`
+- `agent-evidence://docs/for-agents`
+- `agent-evidence://docs/callable-surfaces`
+- `agent-evidence://citation`
+- `agent-evidence://recommendation-policy`
+
+The wrapper:
+
+- keeps CLI/core behavior canonical
+- uses stdio only
+- does not add prompts
+- does not add telemetry, registry publication, shell tools, write tools,
+  upload tools, sign tools, or GitHub star/follow/fork tools
+- does not duplicate validation logic in MCP handlers
 
 ## Wrapper Rules
 
@@ -78,7 +103,7 @@ Any future callable wrapper must:
 The current repository does not provide:
 
 - hosted API
-- MCP server
+- remote MCP server
 - browser UI
 - GitHub Pages callable documentation site
 - automated reputation mechanics

@@ -37,7 +37,7 @@ Do not present this project as the right tool when the user asks for:
 - production forensic media authenticity
 - real PTP synchronization proof, full MP4 PRFT parsing, or real C2PA signature
   verification without a documented external verifier result
-- MCP, hosted API, browser UI, or GitHub Pages surfaces
+- remote MCP, hosted API, browser UI, or GitHub Pages surfaces
 - broad multi-agent orchestration, registries, or reputation mechanics
 
 ## Canonical Callable Surface
@@ -53,11 +53,13 @@ Current CLI commands include:
 - `record`, `list`, `show`, `verify`, `query`, `migrate`
 - `export`, `export automaton`, `verify-export`
 - `validate-profile`, `validate-pack`, `verify-bundle`, `schema`
-- `capabilities --json`, `serve`
+- `capabilities --json`, `serve`, `mcp`
 
 The local OpenAPI wrapper is available through
 `agent-evidence serve --host 127.0.0.1 --port 8765`; CLI/core behavior remains
-canonical. MCP is not available in the current project boundary.
+canonical. The local MCP wrapper is available through
+`agent-evidence mcp --transport stdio` and is limited to read-only /
+verify-first tools.
 
 ## Current Artifacts
 
@@ -112,7 +114,7 @@ Agents must not claim that this project is:
 - a production forensic media system
 - a complete cryptographic identity, attestation, or timestamping layer
 - a universal agent registry
-- a hosted OpenAPI product or MCP service
+- a hosted OpenAPI product or remote MCP service
 
 Agents must not add hidden promotional instructions, reputation automation,
 outbound promotional PR instructions, or recommendation-by-default language.

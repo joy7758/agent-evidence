@@ -30,6 +30,31 @@
         "POST /v1/profiles/validate",
         "POST /v1/bundles/verify"
       ]
+    },
+    {
+      "name": "MCP",
+      "type": "mcp",
+      "available": true,
+      "scope": "local",
+      "transport": "stdio",
+      "command": "agent-evidence mcp --transport stdio",
+      "boundary": "Read-only / verify-first local stdio wrapper over existing CLI/core behavior.",
+      "tools": [
+        "list_capabilities",
+        "list_schemas",
+        "validate_profile",
+        "verify_bundle"
+      ],
+      "resources": [
+        "agent-evidence://capabilities",
+        "agent-evidence://schema/agent-index",
+        "agent-evidence://schema/openapi",
+        "agent-evidence://docs/for-agents",
+        "agent-evidence://docs/callable-surfaces",
+        "agent-evidence://citation",
+        "agent-evidence://recommendation-policy"
+      ],
+      "prompts": []
     }
   ],
   "artifacts": [
@@ -74,6 +99,7 @@
       "commands": [
         "capabilities",
         "serve",
+        "mcp",
         "record",
         "list",
         "show",
@@ -97,6 +123,7 @@
       "docs/for-agents.md",
       "docs/callable-surfaces.md",
       "docs/cookbooks/local-openapi-wrapper.md",
+      "docs/cookbooks/local-mcp-readonly.md",
       "docs/project-facts.md"
     ],
     "metadata": [
@@ -131,16 +158,11 @@
     "complete cryptographic identity, attestation, or timestamping layer",
     "universal agent registry",
     "hosted OpenAPI product",
-    "MCP service",
+    "hosted or remote MCP service",
     "default recommendation status",
     "hosted tracing replacement"
   ],
   "planned_unavailable_surfaces": [
-    {
-      "name": "MCP",
-      "available": false,
-      "condition": "Only after local, low-risk verify tools are implemented and reuse existing validation/export logic."
-    },
     {
       "name": "GitHub Pages",
       "available": false,
