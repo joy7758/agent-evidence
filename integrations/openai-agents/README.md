@@ -1,11 +1,11 @@
 # OpenAI Agents Integration
 
-This prototype integration captures a minimal OpenAI Agents runtime trace,
-converts it into a legacy `Execution Evidence Object`-style export surface, and
-exports a JSON evidence bundle.
+This example integration captures a minimal OpenAI Agents runtime trace and
+exports a JSON runtime evidence export.
 
-Historical note: this README documents an older object-model wording. The
-current primary repository entry is Agent Evidence / AEP v0.1.
+Use it as a narrow exporter example for `agent-evidence`, not as a new platform
+surface. The current canonical callable surface remains the local
+`agent-evidence` CLI.
 
 Run:
 

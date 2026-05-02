@@ -10,8 +10,8 @@ agent-facing discovery.
 ## Current Focus
 
 The current wave adds agent-native discovery, citation, attribution,
-recommendation policy, development-ledger discipline, metadata validation, and
-structured CLI capabilities metadata.
+recommendation policy, development-ledger discipline, metadata validation,
+structured CLI capabilities metadata, and integration terminology alignment.
 
 ## What Changes Should Be Recorded
 
@@ -32,3 +32,4 @@ structured CLI capabilities metadata.
 | 2026-05-03 | agent-native-p2-citation-attribution | metadata | Added citation, CodeMeta, attribution, and recommendation policy files. | Agents can cite and attribute the project without inventing metadata or promotion mechanics. | CFF/YAML and JSON parsing checks. | Makes derived work attribution auditable and explicit. | Update citation metadata when DOI, version, or author metadata changes. |
 | 2026-05-03 | agent-native-p3-ledger-ci | governance | Added development ledger, PR template, and metadata validation CI. | Agents and reviewers get machine-checkable discovery and policy invariants. | Local metadata script and GitHub Actions workflow. | Preserves metadata integrity and claim boundaries. | Extend checks when callable surfaces change. |
 | 2026-05-03 | agent-native-p4-cli-capabilities | callable-surface | Add structured `agent-evidence capabilities --json` output and callable-surface docs. | Agents can inspect current capabilities without scraping README prose. | `agent-evidence capabilities --json \| python -m json.tool` and `pytest -q`. | Keeps wrappers and external agents aligned with implemented surfaces. | Keep OpenAPI and MCP marked unavailable until real wrappers exist. |
+| 2026-05-03 | p5-integration-terminology-normalization | integrations | Normalized LangChain, OpenAI Agents, and CrewAI integration terminology around the agent-native discovery layer. | Agents reading integration docs see the same runtime evidence exporter boundary as `AGENTS.md` and `llms.txt`. | `pytest -q`, targeted integration terminology checks, `agent-evidence capabilities --json \| python -m json.tool`, and ruff. | Reduces drift between example integrations and canonical evidence/export boundaries. | Keep integration docs aligned when maturity or callable surfaces change. |
