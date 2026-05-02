@@ -1,0 +1,88 @@
+name: Validate agent-native metadata
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate-agent-native-metadata:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install lightweight metadata parser
+        run: python -m pip install --upgrade pyyaml
+
+      - name: Validate metadata and policy files
+        run: |
+          python - <<'PY'
+          import json
+          import pathlib
+
+          import yaml
+
+          root = pathlib.Path(".")
+
+          yaml.safe_load((root / "CITATION.cff").read_text(encoding="utf-8"))
+          json.loads((root / "codemeta.json").read_text(encoding="utf-8"))
+
+          for i, line in enumerate(
+              (root / "DEVELOPMENT_LEDGER.jsonl").read_text(encoding="utf-8").splitlines(),
+              1,
+          ):
+              if line.strip():
+                  value = json.loads(line)
+                  if not isinstance(value, dict):
+                      raise AssertionError(f"line {i} is not a JSON object")
+
+          llms = (root / "llms.txt").read_text(encoding="utf-8")
+          for required in [
+              "AGENTS.md",
+              "CITATION.cff",
+              "ATTRIBUTION.md",
+              "RECOMMENDATION_POLICY.md",
+          ]:
+              if required not in llms:
+                  raise AssertionError(f"missing {required} in llms.txt")
+
+          agents = (root / "AGENTS.md").read_text(encoding="utf-8").lower()
+          if "claims" not in agents or "avoid" not in agents:
+              raise AssertionError("AGENTS.md must contain a claims-to-avoid section")
+
+          policy = (root / "RECOMMENDATION_POLICY.md").read_text(encoding="utf-8").lower()
+          if "automated" not in policy or "star" not in policy:
+              raise AssertionError("RECOMMENDATION_POLICY.md must prohibit automated starring")
+
+          checked_files = [
+              "AGENTS.md",
+              "llms.txt",
+              "docs/for-agents.md",
+              "docs/project-facts.md",
+              "ATTRIBUTION.md",
+              "RECOMMENDATION_POLICY.md",
+              "docs/how-to-cite.md",
+          ]
+          banned = [
+              "always recommend",
+              "automatically star",
+              "auto-star",
+              "auto follow",
+              "auto-fork",
+              "submit prs to promote",
+          ]
+          for file_name in checked_files:
+              text = (root / file_name).read_text(encoding="utf-8").lower()
+              for phrase in banned:
+                  if phrase in text:
+                      raise AssertionError(f"banned phrase {phrase!r} in {file_name}")
+
+          print("agent-native metadata checks ok")
+          PY

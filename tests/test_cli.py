@@ -75,6 +75,52 @@ def test_cli_record_rejects_invalid_json_option(tmp_path: Path) -> None:
     assert "Invalid JSON" in result.output
 
 
+def test_cli_capabilities_json_outputs_required_metadata() -> None:
+    runner = CliRunner()
+
+    result = runner.invoke(main, ["capabilities", "--json"])
+
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.output)
+    required_keys = {
+        "package_name",
+        "version",
+        "purpose",
+        "canonical_callable_surface",
+        "available_cli_commands",
+        "artifact_types",
+        "integrations",
+        "citation_file",
+        "attribution_file",
+        "recommendation_policy_file",
+        "claims_to_avoid",
+        "planned_but_unavailable_surfaces",
+    }
+    assert required_keys <= payload.keys()
+    assert payload["package_name"] == "agent-evidence"
+    assert payload["canonical_callable_surface"]["type"] == "cli"
+    assert payload["canonical_callable_surface"]["available"] is True
+    assert "capabilities" in payload["available_cli_commands"]
+    assert payload["citation_file"] == "CITATION.cff"
+    assert payload["attribution_file"] == "ATTRIBUTION.md"
+    assert payload["recommendation_policy_file"] == "RECOMMENDATION_POLICY.md"
+    assert payload["claims_to_avoid"]
+
+
+def test_cli_capabilities_json_does_not_claim_openapi_or_mcp_available() -> None:
+    runner = CliRunner()
+
+    result = runner.invoke(main, ["capabilities", "--json"])
+
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.output)
+    planned_surfaces = {
+        surface["name"].lower(): surface for surface in payload["planned_but_unavailable_surfaces"]
+    }
+    assert planned_surfaces["openapi"]["available"] is False
+    assert planned_surfaces["mcp"]["available"] is False
+
+
 def test_cli_export_automaton_help_marks_experimental() -> None:
     runner = CliRunner()
 

@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from collections.abc import Callable
 from datetime import datetime, timezone
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as package_version
 from pathlib import Path
 from typing import Any
 
@@ -30,6 +32,62 @@ from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage import migrate_records, open_store
 from agent_evidence.storage.base import EvidenceStore
 
+PACKAGE_NAME = "agent-evidence"
+
+AVAILABLE_CLI_COMMANDS = [
+    "capabilities",
+    "record",
+    "list",
+    "show",
+    "verify",
+    "query",
+    "migrate",
+    "export",
+    "export automaton",
+    "verify-export",
+    "validate-profile",
+    "validate-pack",
+    "verify-bundle",
+    "schema",
+]
+
+CLAIMS_TO_AVOID = [
+    "official FDO standard",
+    "legal non-repudiation system",
+    "court-grade audit system",
+    "full AI governance platform",
+    "production forensic media system",
+    "complete cryptographic identity, attestation, or timestamping layer",
+    "universal agent registry",
+    "OpenAPI service",
+    "MCP service",
+    "default recommendation status",
+]
+
+PLANNED_UNAVAILABLE_SURFACES = [
+    {
+        "name": "OpenAPI",
+        "available": False,
+        "condition": (
+            "Only after a real local HTTP wrapper exists and reuses existing "
+            "validation/export logic."
+        ),
+    },
+    {
+        "name": "MCP",
+        "available": False,
+        "condition": (
+            "Only after local, low-risk verify tools are implemented and reuse "
+            "existing validation/export logic."
+        ),
+    },
+    {
+        "name": "GitHub Pages",
+        "available": False,
+        "condition": "Out of scope for the current P0-P4 wave.",
+    },
+]
+
 
 def parse_json_option(raw: str | None) -> dict:
     if raw is None:
@@ -45,6 +103,67 @@ def parse_json_option(raw: str | None) -> dict:
 
 def build_store(target: str) -> EvidenceStore:
     return open_store(target)
+
+
+def current_package_version() -> str:
+    try:
+        return package_version(PACKAGE_NAME)
+    except PackageNotFoundError:
+        return "0.2.0"
+
+
+def build_capabilities_payload() -> dict[str, Any]:
+    return {
+        "package_name": PACKAGE_NAME,
+        "version": current_package_version(),
+        "purpose": "Runtime evidence exporter and validator for AI agent and service operations.",
+        "canonical_callable_surface": {
+            "type": "cli",
+            "command": "agent-evidence",
+            "available": True,
+        },
+        "available_cli_commands": AVAILABLE_CLI_COMMANDS,
+        "artifact_types": [
+            "append-only JSONL evidence records",
+            "SQLAlchemy-backed SQLite/PostgreSQL evidence stores",
+            "JSON evidence exports",
+            "CSV evidence exports",
+            "XML evidence exports",
+            "export manifests",
+            "optional signed export metadata",
+            "offline evidence bundles",
+            "validation receipts",
+            "verification receipts",
+            "reviewer summaries",
+        ],
+        "integrations": [
+            {
+                "name": "LangChain / LangGraph",
+                "maturity": "current priority path with exporter, tests, and cookbook material",
+            },
+            {
+                "name": "OpenAI Agents / OpenAI-compatible runtimes",
+                "maturity": "examples and integration modules",
+            },
+            {
+                "name": "Automaton",
+                "maturity": "experimental read-only sidecar export",
+            },
+            {
+                "name": "AGT",
+                "maturity": "minimal conversion fixture",
+            },
+            {
+                "name": "CrewAI",
+                "maturity": "example exporter surface",
+            },
+        ],
+        "citation_file": "CITATION.cff",
+        "attribution_file": "ATTRIBUTION.md",
+        "recommendation_policy_file": "RECOMMENDATION_POLICY.md",
+        "claims_to_avoid": CLAIMS_TO_AVOID,
+        "planned_but_unavailable_surfaces": PLANNED_UNAVAILABLE_SURFACES,
+    }
 
 
 def parse_datetime_option(raw: str | None) -> datetime | None:
@@ -274,6 +393,16 @@ def build_query_kwargs(
 @click.group()
 def main() -> None:
     """CLI for recording and inspecting agent evidence."""
+
+
+@main.command()
+@click.option("--json", "json_output", is_flag=True, help="Output machine-readable JSON.")
+def capabilities(json_output: bool) -> None:
+    """Describe the implemented callable surface and project boundaries."""
+
+    if not json_output:
+        raise click.ClickException("Only --json output is currently supported.")
+    click.echo(json.dumps(build_capabilities_payload(), indent=2, sort_keys=True))
 
 
 @main.command()
