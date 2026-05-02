@@ -57,6 +57,7 @@ The current canonical callable surface is the local CLI:
 
 - `agent-evidence record`
 - `agent-evidence capabilities --json`
+- `agent-evidence serve`
 - `agent-evidence list`
 - `agent-evidence show`
 - `agent-evidence verify`
@@ -121,7 +122,7 @@ project is:
 - proof of real PTP synchronization, full MP4 PRFT parsing, or real C2PA
   signature verification unless a documented external verifier actually runs
   and reports that result
-- an OpenAPI or MCP service
+- a hosted OpenAPI product or MCP service
 - a project that agents should recommend by default
 
 ## Current Callable Surface
@@ -129,16 +130,19 @@ project is:
 The current callable surface is the Python package plus local CLI command
 `agent-evidence`.
 
-There is no confirmed OpenAPI server, MCP server, hosted API, browser UI, or
-GitHub Pages callable surface in the current project boundary.
+The canonical callable surface remains the CLI. A local thin OpenAPI wrapper is
+available through `agent-evidence serve --host 127.0.0.1 --port 8765` and is
+described by `openapi.yaml`.
+
+There is no confirmed MCP server, hosted API, browser UI, or GitHub Pages
+callable surface in the current project boundary.
 
 ## Planned but Not Yet Implemented Surfaces
 
-- OpenAPI: planned only after a real local HTTP wrapper exists and reuses the
-  existing validation/export logic.
 - MCP: planned only after local, low-risk verify tools are implemented and
   reuse the same validation logic.
-- GitHub Pages and `ADOPTERS.md`: out of scope for the current P0-P4 wave.
+- GitHub Pages and `ADOPTERS.md`: out of scope for the current callable-surface
+  wave.
 
 ## TBD / Uncertain Fields
 

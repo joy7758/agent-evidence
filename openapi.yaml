@@ -1,0 +1,150 @@
+openapi: 3.1.0
+info:
+  title: agent-evidence local API
+  version: 0.2.0
+  description: Thin local HTTP wrapper over existing agent-evidence CLI/core behavior.
+servers:
+  - url: http://127.0.0.1:8765
+paths:
+  /healthz:
+    get:
+      operationId: healthz
+      summary: Check local service status.
+      responses:
+        "200":
+          description: Service status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+  /v1/capabilities:
+    get:
+      operationId: getCapabilities
+      summary: Return the same capabilities payload as the CLI JSON command.
+      responses:
+        "200":
+          description: Structured capabilities metadata.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /v1/profiles/validate:
+    post:
+      operationId: validateProfile
+      summary: Validate an Agent Evidence Profile payload or local profile path.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/ProfileObjectRequest"
+                - $ref: "#/components/schemas/ProfilePathRequest"
+      responses:
+        "200":
+          description: Validation report from existing core behavior.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "400":
+          description: Invalid request shape.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/bundles/verify:
+    post:
+      operationId: verifyBundle
+      summary: Verify a local evidence bundle path with existing core behavior.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BundleVerifyRequest"
+      responses:
+        "200":
+          description: Bundle verification report from existing core behavior.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "400":
+          description: Invalid request shape.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - service
+      properties:
+        status:
+          type: string
+          const: ok
+        service:
+          type: string
+          const: agent-evidence-local-api
+      additionalProperties: false
+    ProfileObjectRequest:
+      type: object
+      required:
+        - profile
+      properties:
+        profile:
+          type: object
+          additionalProperties: true
+        fail_fast:
+          type: boolean
+          default: true
+      additionalProperties: false
+    ProfilePathRequest:
+      type: object
+      required:
+        - profile_path
+      properties:
+        profile_path:
+          type: string
+          minLength: 1
+        fail_fast:
+          type: boolean
+          default: true
+      additionalProperties: false
+    BundleVerifyRequest:
+      type: object
+      required:
+        - bundle_path
+      properties:
+        bundle_path:
+          type: string
+          minLength: 1
+      additionalProperties: false
+    ErrorResponse:
+      type: object
+      required:
+        - ok
+        - error
+      properties:
+        ok:
+          type: boolean
+          const: false
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+          additionalProperties: false
+      additionalProperties: false

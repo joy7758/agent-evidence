@@ -21,6 +21,19 @@ def _surface_list(values: list[dict[str, object]]) -> str:
     )
 
 
+def _wrapper_list(values: list[dict[str, object]]) -> str:
+    if not values:
+        return "- None."
+    return "\n".join(
+        (
+            f"- {item['name']}: available as a {item['scope']} thin wrapper. "
+            f"Start with `{item['command']}`; contract: `{item['openapi_file']}`; "
+            f"default bind: `{item['default_host']}:{item['default_port']}`."
+        )
+        for item in values
+    )
+
+
 def _path_list(values: list[str]) -> str:
     return "\n".join(f"- `{value}`" for value in values)
 
@@ -56,8 +69,12 @@ The canonical callable surface is the local CLI:
 - Command: `{index["canonical_callable_surface"]["command"]}`
 - Capabilities metadata: `{entrypoints["cli"]["capabilities_command"]}`
 
-OpenAPI and MCP are planned/unavailable until real local wrappers exist and
-reuse the existing validation/export logic.
+Local HTTP access is available only as a thin wrapper over existing CLI/core
+behavior. It does not introduce new evidence semantics.
+
+## Local callable wrappers
+
+{_wrapper_list(index["local_callable_wrappers"])}
 
 ## CLI commands
 
