@@ -27,8 +27,8 @@ DOI: [10.5281/zenodo.19334061](https://doi.org/10.5281/zenodo.19334061)
 - runnable single-path demo
 - LangChain-first evidence exporter and offline bundle verification
 - FDO-style mapping material for discussion, not a claim of official standard adoption
-- v0.3.1 DOI metadata patch preparation, with the primary citation DOI using
-  the Zenodo concept DOI and exact release DOI documented separately
+- v0.4.0 Review Pack release preparation, with local offline reviewer-facing
+  packaging for verified signed exports
 
 ## Quick Start
 

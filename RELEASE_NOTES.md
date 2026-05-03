@@ -1,5 +1,65 @@
 # Release Notes
 
+## v0.4.0 Review Pack Release Prep
+
+This release-prep entry prepares `agent-evidence` v0.4.0 after Review Pack
+V0.1 was merged.
+
+### Added
+
+- Review Pack V0.1 local reviewer-facing packaging:
+  - `agent-evidence review-pack create`
+  - `manifest.json`
+  - `receipt.json`
+  - `findings.json`
+  - `summary.md`
+  - `artifacts/evidence.bundle.json`
+  - `artifacts/manifest-public.pem`
+  - optional `artifacts/summary.json`
+- Review Pack cookbook:
+  - `docs/cookbooks/review_pack_minimal.md`
+- Review Pack tests for:
+  - LangChain example pack creation
+  - OpenAI-compatible mock pack creation
+  - fail-closed verification behavior
+  - no private key copying
+  - no secret leakage
+  - no network calls
+  - boundary language in reviewer summaries
+
+### Safety Boundaries
+
+- Review Pack V0.1 is local and offline.
+- Review Pack creation verifies signed exports before packaging.
+- Review Pack creation does not mutate source artifacts.
+- Review Pack creation does not copy private keys.
+- Review Pack creation does not add telemetry.
+- Review Pack creation does not change OpenAPI or MCP behavior.
+- Review Pack creation does not change canonical schema or core validation.
+- No legal non-repudiation, court-grade proof, or regulatory certification
+  claim is made.
+- `agent-evidence` is not a full AI governance platform.
+
+### Non-Goals
+
+- No AI Act Pack.
+- No PDF or HTML report generator.
+- No hosted review service.
+- No remote MCP.
+- No MCP registry publication.
+- No GitHub Pages or `ADOPTERS.md`.
+- No canonical schema rewrite.
+- No core validation rewrite.
+- No old NCS/media work.
+
+### Release Actions Still Required
+
+- Confirm final v0.4.0 release authorization.
+- Confirm GitHub release body.
+- Confirm PyPI/TestPyPI publication intent.
+- Confirm Zenodo behavior after GitHub release.
+- Confirm v0.4.0 installed-package smoke after publication.
+
 ## v0.3.1 Metadata-Only Patch Prep
 
 This metadata-only patch prepares `agent-evidence` v0.3.1 after GitHub Release
@@ -11,6 +71,8 @@ v0.3.0 was archived by Zenodo.
   `10.5281/zenodo.19334061`.
 - The exact v0.3.0 version DOI is documented for release-specific citation:
   `10.5281/zenodo.19998176`.
+- The exact v0.3.1 version DOI is documented for release-specific citation:
+  `10.5281/zenodo.19998690`.
 - Release metadata, citation guidance, generated agent metadata, and release
   readiness docs are aligned on version `0.3.1`.
 

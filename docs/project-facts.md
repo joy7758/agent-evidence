@@ -18,7 +18,7 @@ original runtime.
 
 ## Current Version
 
-`0.3.1`
+`0.4.0`
 
 Source: `pyproject.toml`.
 
@@ -35,7 +35,8 @@ Sources: `pyproject.toml`, `LICENSE`.
 Source: `README.md`.
 
 The current primary DOI is the Zenodo concept DOI for the project. For exact
-release citation, v0.3.0 was archived at `10.5281/zenodo.19998176`.
+release citation, v0.3.0 was archived at `10.5281/zenodo.19998176` and v0.3.1
+was archived at `10.5281/zenodo.19998690`.
 
 Historical release DOI also present: `10.5281/zenodo.19055948` in
 `release/v0.1-live-chain/RELEASE_NOTE.md`. Use the concept DOI unless citing a
@@ -69,6 +70,7 @@ The current canonical callable surface is the local CLI:
 - `agent-evidence export`
 - `agent-evidence export automaton`
 - `agent-evidence verify-export`
+- `agent-evidence review-pack create`
 - `agent-evidence validate-profile`
 - `agent-evidence validate-pack`
 - `agent-evidence verify-bundle`
@@ -86,6 +88,7 @@ Primary outputs are intentionally narrow:
 - offline evidence bundles
 - machine-readable verification receipts
 - validation reports
+- local Review Pack V0.1 reviewer packages for verified signed exports
 - reviewer-facing summaries from demos and pack builders
 - operation accountability profile examples
 

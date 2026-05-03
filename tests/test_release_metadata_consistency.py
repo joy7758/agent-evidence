@@ -7,10 +7,11 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.3.1"
+VERSION = "0.4.0"
 CONCEPT_DOI = "10.5281/zenodo.19334061"
 STALE_V020_DOI = "10.5281/zenodo.19334062"
 V030_VERSION_DOI = "10.5281/zenodo.19998176"
+V031_VERSION_DOI = "10.5281/zenodo.19998690"
 
 
 def _project_version() -> str:
@@ -62,7 +63,7 @@ def test_stale_v020_doi_is_not_active_citation_metadata() -> None:
         assert STALE_V020_DOI not in (ROOT / path).read_text(encoding="utf-8"), path
 
 
-def test_v030_version_doi_is_release_specific_documentation_only() -> None:
+def test_prior_version_dois_are_release_specific_documentation_only() -> None:
     release_specific_docs = [
         "RELEASE_NOTES.md",
         "docs/how-to-cite.md",
@@ -73,6 +74,7 @@ def test_v030_version_doi_is_release_specific_documentation_only() -> None:
         (ROOT / path).read_text(encoding="utf-8") for path in release_specific_docs
     )
     assert V030_VERSION_DOI in combined
+    assert V031_VERSION_DOI in combined
 
     for path in [
         "CITATION.cff",
@@ -82,6 +84,7 @@ def test_v030_version_doi_is_release_specific_documentation_only() -> None:
         "llms-full.txt",
     ]:
         assert V030_VERSION_DOI not in (ROOT / path).read_text(encoding="utf-8"), path
+        assert V031_VERSION_DOI not in (ROOT / path).read_text(encoding="utf-8"), path
 
 
 def test_release_docs_and_stale_callable_statements_are_present() -> None:
@@ -117,6 +120,8 @@ def test_release_checklist_covers_major_release_checks() -> None:
         "agent-evidence mcp --transport stdio --help",
         "python examples/langchain_minimal_evidence.py",
         "python examples/openai_compatible_minimal_evidence.py",
+        "agent-evidence review-pack create",
+        "Review Pack secret sentinel check",
         "secret sentinel check",
         "DOI handling",
         "PyPI",
