@@ -1,14 +1,15 @@
 # Review Pack Minimal
 
-## 1) What Review Pack V0.2 is
+## 1) What Review Pack V0.3 is
 
-Review Pack V0.2 is a local, offline package for a human reviewer. It starts
+Review Pack V0.3 is a local, offline package for a human reviewer. It starts
 from an already captured signed export bundle, verifies that bundle first, and
 then writes a small reviewer-facing directory.
 
 It does not introduce new evidence semantics. CLI/core verification remains
-canonical. V0.2 improves the reviewer-facing markdown summary, manifest, and
-findings metadata without changing evidence schema or core verification.
+canonical. V0.3 improves reviewer checklist IDs, manifest/receipt clarity,
+conservative secret scan status, and structured failure output for agents
+without changing evidence schema or core verification.
 
 ## 2) What it is not
 
@@ -19,7 +20,7 @@ findings metadata without changing evidence schema or core verification.
 - It is not a PDF or HTML report generator.
 - It is not a hosted or remote review service.
 
-Review Pack V0.2 does not change OpenAPI or MCP behavior and is not exposed
+Review Pack V0.3 does not change OpenAPI or MCP behavior and is not exposed
 through OpenAPI or MCP.
 
 ## 3) Install
@@ -76,7 +77,7 @@ external API key.
 
 ## 6) Output layout
 
-Review Pack V0.2 writes:
+Review Pack V0.3 writes:
 
 ```text
 review-pack/
@@ -101,10 +102,12 @@ public key, and the optional summary file. It does not copy
 `summary.md` is markdown-only. It includes:
 
 - verification outcome
-- reviewer checklist
+- reviewer checklist with stable IDs such as `RP-CHECK-001`
 - verification details table
 - artifact inventory table
 - findings summary table
+- secret and private key boundary note
+- pack creation mode: `local_offline`
 - recommended reviewer actions
 - what this does not prove
 
@@ -113,9 +116,34 @@ to confirm the verification outcome, inspect the evidence bundle and public
 key, review findings and warnings, read limitations, and escalate fail or
 unknown findings.
 
-## 8) Findings taxonomy
+## 8) Manifest and receipt fields
 
-Review Pack V0.2 keeps a small findings taxonomy.
+Review Pack V0.3 keeps machine-readable reviewer metadata in `manifest.json`
+and `receipt.json`.
+
+Expected fields include:
+
+- `review_pack_version: "0.3"`
+- `pack_creation_mode: "local_offline"`
+- `verification_ok`
+- `record_count`
+- `signature_count`
+- `verified_signature_count`
+- `included_artifacts`
+- `artifact_inventory`
+- `reviewer_checklist` in `manifest.json`
+- `reviewer_checklist_reference` in `receipt.json`
+- `secret_scan_status`
+- `non_claims`
+
+`secret_scan_status` is deliberately conservative. It records whether Review
+Pack creation found configured secret sentinel patterns in the generated pack.
+It is not comprehensive DLP and does not prove that all possible secrets are
+absent.
+
+## 9) Findings taxonomy
+
+Review Pack V0.3 keeps a small findings taxonomy.
 
 Allowed severity values:
 
@@ -126,10 +154,12 @@ Allowed severity values:
 
 Finding types remain limited to verification, signature, summary attachment,
 artifact inventory, private key exclusion, secret scan, limitation notice, and
-fail-closed error categories. The taxonomy is intentionally not a compliance
-taxonomy.
+fail-closed error categories. V0.3 adds narrow reviewer-package metadata
+findings such as `reviewer_checklist_present`,
+`review_pack_manifest_complete`, and `secret_scan_status_recorded`. The
+taxonomy is intentionally not a compliance taxonomy.
 
-## 9) Failure behavior
+## 10) Failure behavior
 
 Review Pack creation verifies before packaging.
 
@@ -143,9 +173,23 @@ If verification fails:
 If the output directory already exists and is non-empty, the command fails
 instead of overwriting it.
 
-## 10) Safety boundaries
+For agent callers that need machine-readable failure output, V0.3 adds:
 
-Review Pack V0.2:
+```bash
+agent-evidence review-pack create \
+  --bundle ./tmp/langchain-minimal-evidence/langchain-evidence.bundle.json \
+  --public-key ./tmp/langchain-minimal-evidence/manifest-public.pem \
+  --summary ./tmp/langchain-minimal-evidence/summary.json \
+  --output-dir ./tmp/langchain-review-pack \
+  --json-errors
+```
+
+`--json-errors` changes only Review Pack creation failures. Successful output
+is already JSON. Default failure output remains human-readable.
+
+## 11) Safety boundaries
+
+Review Pack V0.3:
 
 - runs locally
 - requires no network
@@ -153,12 +197,13 @@ Review Pack V0.2:
 - does not serialize environment variables
 - does not write provider API keys or authorization headers
 - does not copy private keys
+- does not claim comprehensive DLP
 
 The reviewer summary explains what was verified and what artifacts were
 included. It also states the limits: this package is not legal
 non-repudiation, compliance certification, AI Act approval, or a full AI
 governance assessment.
 
-Review Pack V0.2 does not add PDF/HTML output, dashboard workflows, remote
+Review Pack V0.3 does not add PDF/HTML output, dashboard workflows, remote
 review service behavior, legal attestation, compliance certification, AI Act
 Pack behavior, or OpenAPI/MCP tools.

@@ -172,7 +172,7 @@ def build_capabilities_payload() -> dict[str, Any]:
             "offline evidence bundles",
             "validation receipts",
             "verification receipts",
-            "local Review Pack V0.2 reviewer packages",
+            "local Review Pack V0.3 reviewer packages",
             "reviewer summaries",
         ],
         "integrations": [
@@ -1114,18 +1114,18 @@ def review_pack_command() -> None:
 @click.option(
     "--bundle",
     required=True,
-    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    type=click.Path(dir_okay=False, path_type=Path),
     help="Signed JSON export bundle to verify before packaging.",
 )
 @click.option(
     "--public-key",
     required=True,
-    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    type=click.Path(dir_okay=False, path_type=Path),
     help="Manifest public key used for signed export verification.",
 )
 @click.option(
     "--summary",
-    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    type=click.Path(dir_okay=False, path_type=Path),
     help="Optional source summary.json to include as a reviewer aid.",
 )
 @click.option(
@@ -1134,11 +1134,17 @@ def review_pack_command() -> None:
     type=click.Path(file_okay=False, path_type=Path),
     help="Directory where the Review Pack will be written.",
 )
+@click.option(
+    "--json-errors",
+    is_flag=True,
+    help="Emit structured JSON on Review Pack creation failure.",
+)
 def review_pack_create_command(
     bundle: Path,
     public_key: Path,
     summary: Path | None,
     output_dir: Path,
+    json_errors: bool,
 ) -> None:
     """Create a local Review Pack after signed export verification passes."""
 
@@ -1150,10 +1156,39 @@ def review_pack_create_command(
             output_dir=output_dir,
         )
     except ReviewPackVerificationError as exc:
+        if json_errors:
+            _echo_review_pack_error(exc, reason="verification_failed")
+            raise click.exceptions.Exit(1) from exc
         raise click.ClickException(str(exc)) from exc
     except ReviewPackError as exc:
+        if json_errors:
+            _echo_review_pack_error(exc, reason=_review_pack_error_reason(exc))
+            raise click.exceptions.Exit(1) from exc
         raise click.ClickException(str(exc)) from exc
     click.echo(json.dumps(result, indent=2, sort_keys=True))
+
+
+def _review_pack_error_reason(exc: ReviewPackError) -> str:
+    message = str(exc).lower()
+    if "already exists and is not empty" in message:
+        return "output_dir_not_empty"
+    if "path is not a file" in message:
+        return "invalid_input"
+    if "secret-like content detected" in message:
+        return "secret_scan_failed"
+    return "unknown"
+
+
+def _echo_review_pack_error(exc: ReviewPackError, *, reason: str) -> None:
+    payload = {
+        "ok": False,
+        "error": {
+            "code": "review_pack_create_failed",
+            "message": str(exc),
+            "reason": reason,
+        },
+    }
+    click.echo(json.dumps(payload, indent=2, sort_keys=True))
 
 
 @main.command(name="verify-bundle")
