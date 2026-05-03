@@ -13,7 +13,7 @@ from pydantic import ValidationError
 
 from agent_evidence.export import verify_json_bundle
 
-REVIEW_PACK_VERSION = "0.1"
+REVIEW_PACK_VERSION = "0.2"
 
 ALLOWED_FINDING_SEVERITIES = {"pass", "warning", "fail", "unknown"}
 ALLOWED_FINDING_TYPES = {
@@ -26,6 +26,12 @@ ALLOWED_FINDING_TYPES = {
     "verification_failed",
     "unsupported_artifact",
     "redaction_warning",
+    "bundle_tampered",
+    "public_key_mismatch",
+    "private_key_excluded",
+    "secret_scan_passed",
+    "artifact_inventory_recorded",
+    "limitation_notice_present",
 }
 
 BOUNDARIES = [
@@ -90,6 +96,37 @@ def _validate_output_dir(output_dir: Path) -> None:
         raise ReviewPackError(f"output directory already exists and is not empty: {output_dir}")
 
 
+def _verification_details(verification_result: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "verification_ok": verification_result.get("ok") is True,
+        "record_count": verification_result.get("record_count"),
+        "signature_count": verification_result.get("signature_count"),
+        "verified_signature_count": verification_result.get("verified_signature_count"),
+    }
+
+
+def _build_artifact_inventory(included_artifacts: list[str]) -> list[dict[str, str]]:
+    roles = {
+        "manifest.json": "Review Pack manifest",
+        "receipt.json": "Machine-readable verification receipt",
+        "findings.json": "Structured reviewer findings",
+        "summary.md": "Reviewer-facing markdown summary",
+        "artifacts/evidence.bundle.json": "Copied signed evidence bundle",
+        "artifacts/manifest-public.pem": "Copied public key used for verification",
+        "artifacts/summary.json": "Copied source summary, when provided",
+    }
+    paths = [
+        "manifest.json",
+        "receipt.json",
+        "findings.json",
+        "summary.md",
+        *included_artifacts,
+    ]
+    return [
+        {"path": path, "role": roles.get(path, "Included Review Pack artifact")} for path in paths
+    ]
+
+
 def _verify_export_bundle(bundle_path: Path, public_key_path: Path) -> dict[str, Any]:
     try:
         result = verify_json_bundle(
@@ -144,6 +181,7 @@ def _build_findings(
     *,
     summary_path: Path | None,
 ) -> dict[str, Any]:
+    verification = _verification_details(verification_result)
     findings = [
         {
             "severity": "pass",
@@ -154,6 +192,28 @@ def _build_findings(
             "severity": "pass",
             "type": "signature_verified",
             "message": ("Signed export metadata was verified with the provided public key."),
+        },
+        {
+            "severity": "pass",
+            "type": "private_key_excluded",
+            "message": "Only public artifacts are copied; private signing keys are excluded.",
+        },
+        {
+            "severity": "pass",
+            "type": "secret_scan_passed",
+            "message": (
+                "Review Pack artifacts passed the secret-like content scan before finalization."
+            ),
+        },
+        {
+            "severity": "pass",
+            "type": "artifact_inventory_recorded",
+            "message": "Review Pack manifest records the generated and copied artifacts.",
+        },
+        {
+            "severity": "pass",
+            "type": "limitation_notice_present",
+            "message": "Reviewer summary includes explicit non-claim limitations.",
         },
     ]
     if summary_path is None:
@@ -176,31 +236,48 @@ def _build_findings(
     return {
         "ok": True,
         "review_pack_version": REVIEW_PACK_VERSION,
-        "verification_ok": verification_result.get("ok") is True,
+        **verification,
         "findings": findings,
     }
+
+
+def _markdown_table(headers: list[str], rows: list[list[Any]]) -> list[str]:
+    rendered = [
+        "| " + " | ".join(headers) + " |",
+        "| " + " | ".join("---" for _ in headers) + " |",
+    ]
+    for row in rows:
+        rendered.append(
+            "| "
+            + " | ".join("not provided" if value is None else str(value) for value in row)
+            + " |"
+        )
+    return rendered
 
 
 def _render_summary_markdown(
     *,
     receipt: dict[str, Any],
     findings: dict[str, Any],
-    bundle_filename: str,
-    public_key_filename: str,
-    summary_filename: str | None,
+    artifact_inventory: list[dict[str, str]],
 ) -> str:
     verification = receipt["verification"]
     issue_lines = verification.get("issues") or []
     if not issue_lines:
         issue_lines = ["No verification issues were reported."]
-    finding_lines = [
-        f"- {item['severity']}: {item['type']} - {item['message']}" for item in findings["findings"]
+    verification_rows = [
+        ["verification_ok", receipt["verification_ok"]],
+        ["record_count", receipt.get("record_count")],
+        ["signature_count", receipt.get("signature_count")],
+        ["verified_signature_count", receipt.get("verified_signature_count")],
+        ["bundle", receipt["source"]["bundle"]],
+        ["public_key", receipt["source"]["public_key"]],
+        ["summary_attached", receipt["source"]["summary"] is not None],
     ]
-    source_summary = (
-        f"- source summary: `{_relative_artifact(summary_filename)}`"
-        if summary_filename
-        else "- source summary: not provided"
-    )
+    artifact_rows = [[f"`{item['path']}`", item["role"]] for item in artifact_inventory]
+    finding_rows = [
+        [item["severity"], item["type"], item["message"]] for item in findings["findings"]
+    ]
     return "\n".join(
         [
             "# Agent Evidence Review Pack",
@@ -208,31 +285,38 @@ def _render_summary_markdown(
             "## Verification Outcome",
             "",
             "- outcome: pass",
-            f"- record count: {verification.get('record_count')}",
-            f"- signature count: {verification.get('signature_count')}",
-            f"- verified signature count: {verification.get('verified_signature_count')}",
+            *[f"- {issue}" for issue in issue_lines],
             "",
-            "## Source Artifacts",
+            "## Reviewer Checklist",
             "",
-            f"- evidence bundle: `{_relative_artifact(bundle_filename)}`",
-            f"- manifest public key: `{_relative_artifact(public_key_filename)}`",
-            source_summary,
+            "- [ ] Confirm verification outcome is pass.",
+            "- [ ] Review the included evidence bundle.",
+            "- [ ] Review the public key used for verification.",
+            "- [ ] Review findings and warnings.",
+            "- [ ] Review limitations before relying on the pack.",
+            "- [ ] Escalate fail or unknown findings.",
             "",
-            "## What Was Checked",
+            "## Verification Details",
             "",
-            "- the exported JSON evidence bundle was parsed by existing core verification",
-            "- evidence chain and manifest consistency were checked by existing core verification",
-            "- signed export metadata was checked against the provided public key",
+            *_markdown_table(["Field", "Value"], verification_rows),
+            "",
+            "## Artifact Inventory",
+            "",
+            *_markdown_table(["Path", "Role"], artifact_rows),
             "",
             "## Findings",
             "",
-            *finding_lines,
+            *_markdown_table(["Severity", "Type", "Message"], finding_rows),
             "",
-            "## Verification Issues",
+            "## Recommended Reviewer Actions",
             "",
-            *[f"- {issue}" for issue in issue_lines],
+            "- Retain `receipt.json`, `findings.json`, `manifest.json`, and `summary.md` together.",
+            "- Inspect the copied evidence bundle before making reviewer decisions.",
+            "- Compare warnings or unknown findings with the source evidence workflow.",
+            "- Re-run source verification if the bundle, public key, or summary changes.",
+            "- Treat fail or unknown findings as escalation inputs, not approvals.",
             "",
-            "## Limitations",
+            "## What This Does Not Prove",
             "",
             "- This review pack is not legal non-repudiation.",
             "- This review pack is not compliance certification.",
@@ -249,20 +333,26 @@ def _build_manifest(
     public_key_path: Path,
     summary_path: Path | None,
     included_artifacts: list[str],
+    artifact_inventory: list[dict[str, str]],
+    verification_result: dict[str, Any],
 ) -> dict[str, Any]:
+    verification = _verification_details(verification_result)
     return {
         "review_pack_version": REVIEW_PACK_VERSION,
         "created_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        **verification,
         "source": {
             "bundle_filename": bundle_path.name,
             "public_key_filename": public_key_path.name,
             "summary_filename": summary_path.name if summary_path is not None else None,
         },
         "included_artifacts": included_artifacts,
+        "artifact_inventory": artifact_inventory,
         "receipt": "receipt.json",
         "findings": "findings.json",
         "summary": "summary.md",
         "boundaries": BOUNDARIES,
+        "non_claims": BOUNDARIES,
     }
 
 
@@ -309,14 +399,18 @@ def create_review_pack(
             _copy_file(summary, summary_artifact)
             included_artifacts.append(_relative_artifact(summary_artifact.name))
 
+        verification = _verification_details(verification_result)
+        artifact_inventory = _build_artifact_inventory(included_artifacts)
         receipt = {
             "ok": True,
             "review_pack_version": REVIEW_PACK_VERSION,
+            **verification,
             "source": {
                 "bundle": bundle.name,
                 "public_key": public_key.name,
                 "summary": summary.name if summary is not None else None,
             },
+            "included_artifacts": included_artifacts,
             "artifacts": {
                 "bundle": _relative_artifact(bundle_artifact.name),
                 "public_key": _relative_artifact(public_key_artifact.name),
@@ -328,6 +422,7 @@ def create_review_pack(
             },
             "verification": verification_result,
             "boundaries": BOUNDARIES,
+            "non_claims": BOUNDARIES,
         }
         findings = _build_findings(verification_result, summary_path=summary)
         manifest = _build_manifest(
@@ -335,13 +430,13 @@ def create_review_pack(
             public_key_path=public_key,
             summary_path=summary,
             included_artifacts=included_artifacts,
+            artifact_inventory=artifact_inventory,
+            verification_result=verification_result,
         )
         markdown = _render_summary_markdown(
             receipt=receipt,
             findings=findings,
-            bundle_filename=bundle_artifact.name,
-            public_key_filename=public_key_artifact.name,
-            summary_filename=summary_artifact.name if summary_artifact is not None else None,
+            artifact_inventory=artifact_inventory,
         )
 
         (staging / "receipt.json").write_text(_json_text(receipt), encoding="utf-8")
