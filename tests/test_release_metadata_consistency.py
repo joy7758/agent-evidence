@@ -7,11 +7,12 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.4.0"
+VERSION = "0.5.0"
 CONCEPT_DOI = "10.5281/zenodo.19334061"
 STALE_V020_DOI = "10.5281/zenodo.19334062"
 V030_VERSION_DOI = "10.5281/zenodo.19998176"
 V031_VERSION_DOI = "10.5281/zenodo.19998690"
+V040_VERSION_DOI = "10.5281/zenodo.20004271"
 
 
 def _project_version() -> str:
@@ -75,6 +76,7 @@ def test_prior_version_dois_are_release_specific_documentation_only() -> None:
     )
     assert V030_VERSION_DOI in combined
     assert V031_VERSION_DOI in combined
+    assert V040_VERSION_DOI in combined
 
     for path in [
         "CITATION.cff",
@@ -85,6 +87,7 @@ def test_prior_version_dois_are_release_specific_documentation_only() -> None:
     ]:
         assert V030_VERSION_DOI not in (ROOT / path).read_text(encoding="utf-8"), path
         assert V031_VERSION_DOI not in (ROOT / path).read_text(encoding="utf-8"), path
+        assert V040_VERSION_DOI not in (ROOT / path).read_text(encoding="utf-8"), path
 
 
 def test_release_docs_and_stale_callable_statements_are_present() -> None:
@@ -121,10 +124,55 @@ def test_release_checklist_covers_major_release_checks() -> None:
         "python examples/langchain_minimal_evidence.py",
         "python examples/openai_compatible_minimal_evidence.py",
         "agent-evidence review-pack create",
+        "Review Pack V0.2",
+        "review_pack_version",
+        "tampered bundle fail-closed",
         "Review Pack secret sentinel check",
         "secret sentinel check",
         "DOI handling",
         "PyPI",
         "GitHub release",
+    ]:
+        assert required in checklist
+
+
+def test_review_pack_v02_release_prep_docs_are_aligned() -> None:
+    notes = (ROOT / "RELEASE_NOTES.md").read_text(encoding="utf-8")
+    readiness = (ROOT / "docs/release-readiness.md").read_text(encoding="utf-8")
+    checklist = (ROOT / "docs/release-checklist.md").read_text(encoding="utf-8")
+
+    for required in [
+        "v0.5.0",
+        "Review Pack V0.2",
+        "reviewer checklist",
+        "verification details table",
+        "artifact inventory table",
+        "findings table",
+        "recommended reviewer actions",
+        "What This Does Not Prove",
+        "tampered bundle fail-closed",
+        "does not change OpenAPI or MCP behavior",
+        "No AI Act Pack.",
+        "No PDF or HTML report generator.",
+    ]:
+        assert required in notes
+
+    for required in [
+        "| Review Pack V0.2 | beta, local-only/offline reviewer package |",
+        "Review Pack V0.2 is not a legal/compliance product",
+        "not an AI Act Pack",
+    ]:
+        assert required in readiness
+
+    for required in [
+        "Review Pack V0.2 Smoke",
+        "review_pack_version",
+        "Reviewer Checklist",
+        "Verification Details",
+        "Artifact Inventory",
+        "Recommended Reviewer Actions",
+        "What This Does Not Prove",
+        "tampered bundle fail-closed",
+        "no OpenAPI or MCP Review Pack endpoint/tool",
     ]:
         assert required in checklist

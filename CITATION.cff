@@ -7,7 +7,7 @@ authors:
   - family-names: "Zhang"
     given-names: "Bin"
     orcid: "https://orcid.org/0009-0002-8861-1481"
-version: "0.4.0"
+version: "0.5.0"
 doi: "10.5281/zenodo.19334061"
 license: "Apache-2.0"
 repository-code: "https://github.com/joy7758/agent-evidence"

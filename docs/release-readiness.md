@@ -1,16 +1,16 @@
-# Release Readiness for v0.4.0
+# Release Readiness for v0.5.0
 
-This document records release-prep status for `agent-evidence` v0.4.0 after
-Review Pack V0.1 was merged.
+This document records release-prep status for `agent-evidence` v0.5.0 after
+Review Pack V0.2 was merged.
 
 This is a release-prep document. It does not publish a release.
 
 ## Current Assessment
 
-Recommendation: go for a v0.4.0 release-prep PR; no-go for final GitHub,
+Recommendation: go for a v0.5.0 release-prep PR; no-go for final GitHub,
 TestPyPI, or PyPI publication until release authorization is explicit.
 
-Current package metadata target: `0.4.0`.
+Current package metadata target: `0.5.0`.
 
 Current primary project DOI: `10.5281/zenodo.19334061`.
 
@@ -22,10 +22,11 @@ release citations should use the relevant version DOI.
 - Primary project DOI: `10.5281/zenodo.19334061`
 - Exact v0.3.0 version DOI: `10.5281/zenodo.19998176`
 - Exact v0.3.1 version DOI: `10.5281/zenodo.19998690`
+- Exact v0.4.0 version DOI: `10.5281/zenodo.20004271`
 
 Use the concept DOI in `CITATION.cff`, `codemeta.json`, `README.md`, and
 generated agent metadata. Use version DOIs only when citing or reproducing a
-specific archived release. Confirm Zenodo behavior after a v0.4.0 GitHub
+specific archived release. Confirm Zenodo behavior after a v0.5.0 GitHub
 release before deciding whether any follow-up DOI metadata patch is needed.
 
 ## Surface Status
@@ -39,12 +40,12 @@ release before deciding whether any follow-up DOI metadata patch is needed.
 | local MCP stdio tools | beta, local-only/read-only | Stdio, fixed tools/resources, no remote registry publication. |
 | LangChain 5-minute path | supported developer path | Offline/mock runnable path with bundle verification. |
 | OpenAI-compatible minimal path | beta developer path | Provider-agnostic mock/offline default path with hardening tests. |
-| Review Pack V0.1 | beta, local-only/offline reviewer package | Verifies signed exports before packaging; not legal or compliance certification. |
+| Review Pack V0.2 | beta, local-only/offline reviewer package | Verifies signed exports before packaging; not legal or compliance certification. |
 | OpenAI Agents SDK tracing integration | experimental/example | Narrow exporter example, not a platform surface. |
 | CrewAI | experimental/example | Example exporter surface. |
 | Automaton sidecar | experimental | Read-only sidecar export; live data contract still settling. |
 | AGT conversion fixture | experimental/reference | Synthetic/reference conversion fixture. |
-| Pages / ADOPTERS / registry | planned/unavailable | Out of scope for v0.4.0 release prep. |
+| Pages / ADOPTERS / registry | planned/unavailable | Out of scope for v0.5.0 release prep. |
 
 ## Claims Boundary
 
@@ -57,16 +58,17 @@ The release must clearly state these boundaries:
 - not a hosted OpenAPI product
 - not a hosted or remote MCP service
 - not an MCP registry publication
-- Review Pack V0.1 is local/offline reviewer packaging, not a hosted service
-- Review Pack V0.1 is not compliance certification
-- Review Pack V0.1 is not AI Act approval
+- Review Pack V0.2 is local/offline reviewer packaging, not a hosted service
+- Review Pack V0.2 is not compliance certification
+- Review Pack V0.2 is not AI Act approval
+- Review Pack V0.2 is not a legal/compliance product
 - not an AI Act Pack
 
 ## Metadata Alignment Plan
 
 - Keep `pyproject.toml`, `CITATION.cff`, `codemeta.json`,
   `docs/project-facts.md`, `agent-index.json`, and `llms-full.txt` aligned on
-  version `0.4.0`.
+  version `0.5.0`.
 - Keep the Zenodo concept DOI as primary project DOI in active citation
   metadata.
 - Keep `docs/project-facts.md` as the canonical factual source for project
@@ -77,10 +79,20 @@ The release must clearly state these boundaries:
 
 ## Release Notes Outline
 
-Use `RELEASE_NOTES.md` for the v0.4.0 Review Pack release-prep summary. Release
+Use `RELEASE_NOTES.md` for the v0.5.0 Review Pack release-prep summary. Release
 notes should cover:
 
-- local Review Pack V0.1
+- local Review Pack V0.2
+- enhanced reviewer-facing `summary.md`
+- reviewer checklist
+- verification details table
+- artifact inventory table
+- findings table
+- recommended reviewer actions
+- `What This Does Not Prove` section
+- refined bounded findings taxonomy
+- tampered bundle fail-closed coverage
+- manifest and receipt clarity fields
 - verify-first and fail-closed packaging behavior
 - no private key copying
 - no network requirement
@@ -97,7 +109,7 @@ notes should cover:
   metadata, and docs.
 - DOI drift if a version DOI is used as active citation metadata for a later
   release.
-- Overclaiming Review Pack V0.1 as legal proof, compliance certification, or a
+- Overclaiming Review Pack V0.2 as legal proof, compliance certification, or a
   full governance assessment.
 - Optional dependency installation issues for `[mcp]`, `[langchain]`,
   `[openai-compatible]`, and `[signing]`.
@@ -108,7 +120,7 @@ notes should cover:
 
 ## Release Go / No-Go
 
-Go for v0.4.0 release-prep implementation when:
+Go for v0.5.0 release-prep implementation when:
 
 - metadata versions are aligned
 - release notes exist
