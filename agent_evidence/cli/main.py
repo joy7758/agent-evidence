@@ -29,6 +29,11 @@ from agent_evidence.manifest import SignaturePolicy, SignerConfig, VerificationK
 from agent_evidence.models import EvidenceEnvelope
 from agent_evidence.oap import validate_profile_file
 from agent_evidence.recorder import EvidenceRecorder
+from agent_evidence.review_pack import (
+    ReviewPackError,
+    ReviewPackVerificationError,
+    create_review_pack,
+)
 from agent_evidence.storage import migrate_records, open_store
 from agent_evidence.storage.base import EvidenceStore
 
@@ -47,6 +52,7 @@ AVAILABLE_CLI_COMMANDS = [
     "export",
     "export automaton",
     "verify-export",
+    "review-pack create",
     "validate-profile",
     "validate-pack",
     "verify-bundle",
@@ -166,6 +172,7 @@ def build_capabilities_payload() -> dict[str, Any]:
             "offline evidence bundles",
             "validation receipts",
             "verification receipts",
+            "local Review Pack V0.1 reviewer packages",
             "reviewer summaries",
         ],
         "integrations": [
@@ -1096,6 +1103,57 @@ def verify_export_command(
     click.echo(json.dumps(result, indent=2, sort_keys=True))
     if not result["ok"]:
         raise click.ClickException("Export verification failed.")
+
+
+@main.group(name="review-pack")
+def review_pack_command() -> None:
+    """Create local reviewer-facing packages from verified exports."""
+
+
+@review_pack_command.command(name="create")
+@click.option(
+    "--bundle",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Signed JSON export bundle to verify before packaging.",
+)
+@click.option(
+    "--public-key",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Manifest public key used for signed export verification.",
+)
+@click.option(
+    "--summary",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Optional source summary.json to include as a reviewer aid.",
+)
+@click.option(
+    "--output-dir",
+    required=True,
+    type=click.Path(file_okay=False, path_type=Path),
+    help="Directory where the Review Pack will be written.",
+)
+def review_pack_create_command(
+    bundle: Path,
+    public_key: Path,
+    summary: Path | None,
+    output_dir: Path,
+) -> None:
+    """Create a local Review Pack after signed export verification passes."""
+
+    try:
+        result = create_review_pack(
+            bundle_path=bundle,
+            public_key_path=public_key,
+            summary_path=summary,
+            output_dir=output_dir,
+        )
+    except ReviewPackVerificationError as exc:
+        raise click.ClickException(str(exc)) from exc
+    except ReviewPackError as exc:
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result, indent=2, sort_keys=True))
 
 
 @main.command(name="verify-bundle")

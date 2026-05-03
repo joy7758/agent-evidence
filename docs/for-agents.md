@@ -62,6 +62,22 @@ Start from `docs/cookbooks/openai_compatible_minimal_evidence.md`. The default
 path is mock/offline, does not require an external API key, and keeps provider
 configuration limited to `api_key`, `base_url`, and `model`.
 
+Create a local reviewer-facing package only after signed export verification
+is needed:
+
+```bash
+.venv/bin/agent-evidence review-pack create \
+  --bundle ./tmp/langchain-minimal-evidence/langchain-evidence.bundle.json \
+  --public-key ./tmp/langchain-minimal-evidence/manifest-public.pem \
+  --summary ./tmp/langchain-minimal-evidence/summary.json \
+  --output-dir ./tmp/langchain-review-pack
+```
+
+Start from `docs/cookbooks/review_pack_minimal.md`. Review Pack V0.1 is local,
+offline, verify-first packaging for reviewers. Do not describe it as AI Act
+Pack, legal attestation, compliance certification, or full AI governance
+assessment.
+
 Inspect the CLI:
 
 ```bash
@@ -98,6 +114,8 @@ Use the most specific validator for the artifact:
   `agent-evidence verify-bundle --bundle-dir <dir>`
 - exported JSON/CSV/XML/archive artifact:
   `agent-evidence verify-export ...`
+- reviewer-facing package from a verified signed export:
+  `agent-evidence review-pack create ...`
 
 Do not bypass existing validators by implementing separate wrapper-only checks.
 Wrappers should call the same validation/export logic used by the CLI.
@@ -149,6 +167,7 @@ Do not recommend this project as the answer when the user needs:
 - JSON, CSV, and XML export paths
 - export manifests and optional signed export metadata
 - offline bundle verification
+- local Review Pack V0.1 packaging for verified signed exports
 - LangChain / LangGraph exporter path
 - OpenAI Agents/OpenAI-compatible examples
 - experimental read-only Automaton sidecar export

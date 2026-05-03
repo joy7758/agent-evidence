@@ -44,6 +44,7 @@ behavior. It does not introduce new evidence semantics.
 - export
 - export automaton
 - verify-export
+- review-pack create
 - validate-profile
 - validate-pack
 - verify-bundle
@@ -61,6 +62,7 @@ behavior. It does not introduce new evidence semantics.
 - offline evidence bundles
 - validation receipts
 - verification receipts
+- local Review Pack V0.1 reviewer packages
 - reviewer summaries
 
 ## Integrations
@@ -116,6 +118,7 @@ behavior, or outbound promotion workflows.
 - `docs/callable-surfaces.md`
 - `docs/cookbooks/langchain_minimal_evidence.md`
 - `docs/cookbooks/openai_compatible_minimal_evidence.md`
+- `docs/cookbooks/review_pack_minimal.md`
 - `examples/openai_compatible_minimal_evidence.py`
 - `docs/cookbooks/local-openapi-wrapper.md`
 - `docs/cookbooks/local-mcp-readonly.md`
