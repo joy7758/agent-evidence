@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.5.0"
+VERSION = "0.6.0"
 CONCEPT_DOI = "10.5281/zenodo.19334061"
 STALE_V020_DOI = "10.5281/zenodo.19334062"
 V030_VERSION_DOI = "10.5281/zenodo.19998176"
@@ -127,8 +127,11 @@ def test_release_checklist_covers_major_release_checks() -> None:
         "python examples/langchain_minimal_evidence.py",
         "python examples/openai_compatible_minimal_evidence.py",
         "agent-evidence review-pack create",
-        "Review Pack V0.2",
+        "Review Pack V0.3",
         "review_pack_version",
+        "RP-CHECK-001",
+        "secret_scan_status",
+        "--json-errors",
         "tampered bundle fail-closed",
         "Review Pack secret sentinel check",
         "secret sentinel check",
@@ -139,40 +142,47 @@ def test_release_checklist_covers_major_release_checks() -> None:
         assert required in checklist
 
 
-def test_review_pack_v02_release_prep_docs_are_aligned() -> None:
+def test_review_pack_v03_release_prep_docs_are_aligned() -> None:
     notes = (ROOT / "RELEASE_NOTES.md").read_text(encoding="utf-8")
     readiness = (ROOT / "docs/release-readiness.md").read_text(encoding="utf-8")
     checklist = (ROOT / "docs/release-checklist.md").read_text(encoding="utf-8")
 
     for required in [
-        "v0.5.0",
-        "Review Pack V0.2",
-        "reviewer checklist",
-        "verification details table",
-        "artifact inventory table",
-        "findings table",
-        "recommended reviewer actions",
-        "What This Does Not Prove",
-        "tampered bundle fail-closed",
+        "v0.6.0",
+        "Review Pack V0.3",
+        "stable `RP-CHECK-*` reviewer checklist IDs",
+        "`pack_creation_mode: local_offline`",
+        "conservative `secret_scan_status`",
+        "optional `--json-errors`",
+        "not comprehensive DLP",
         "does not change OpenAPI or MCP behavior",
         "No AI Act Pack.",
         "No PDF or HTML report generator.",
+        "No dashboard.",
+        "No hosted or remote review service.",
     ]:
         assert required in notes
 
     for required in [
-        "| Review Pack V0.2 | beta, local-only/offline reviewer package |",
-        "Review Pack V0.2 is not a legal/compliance product",
+        "| Review Pack V0.3 | beta, local-only/offline reviewer package |",
+        "Review Pack V0.3 is not a legal/compliance product",
+        "Review Pack V0.3 is not comprehensive DLP",
         "not an AI Act Pack",
-        "v0.5.0 release completed",
-        "PyPI v0.5.0: completed",
-        "post-release audit passed",
+        "v0.6.0 release-prep ready",
+        "PyPI v0.6.0: not uploaded",
+        "Release execution still requires explicit approval",
     ]:
         assert required in readiness
 
     for required in [
-        "Review Pack V0.2 Smoke",
+        "Review Pack V0.3 Smoke",
         "review_pack_version",
+        '"0.3"',
+        "RP-CHECK-001",
+        "Secret and Private Key Boundary",
+        "not comprehensive DLP",
+        "secret_scan_status",
+        "--json-errors",
         "Reviewer Checklist",
         "Verification Details",
         "Artifact Inventory",
