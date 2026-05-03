@@ -13,6 +13,7 @@ from click.testing import CliRunner
 from agent_evidence.cli.main import main
 from agent_evidence.review_pack import (
     ALLOWED_FINDING_SEVERITIES,
+    ALLOWED_FINDING_TYPES,
     ReviewPackError,
     ReviewPackVerificationError,
     create_review_pack,
@@ -31,6 +32,16 @@ BOUNDARY_PHRASES = [
     "not compliance certification",
     "not AI Act approval",
     "not full AI governance assessment",
+]
+
+SUMMARY_SECTIONS = [
+    "## Verification Outcome",
+    "## Reviewer Checklist",
+    "## Verification Details",
+    "## Artifact Inventory",
+    "## Findings",
+    "## Recommended Reviewer Actions",
+    "## What This Does Not Prove",
 ]
 
 
@@ -82,10 +93,43 @@ def _assert_review_pack_layout(pack_dir: Path, *, includes_summary: bool = True)
     assert receipt["verification"]["ok"] is True
     assert findings["ok"] is True
     assert {finding["severity"] for finding in findings["findings"]} <= ALLOWED_FINDING_SEVERITIES
-    assert manifest["review_pack_version"] == "0.1"
+    assert {finding["type"] for finding in findings["findings"]} <= ALLOWED_FINDING_TYPES
+    assert receipt["review_pack_version"] == "0.2"
+    assert manifest["review_pack_version"] == "0.2"
+    assert findings["review_pack_version"] == "0.2"
+    assert receipt["verification_ok"] is True
+    assert manifest["verification_ok"] is True
+    assert receipt["record_count"] == receipt["verification"]["record_count"]
+    assert manifest["record_count"] == receipt["verification"]["record_count"]
+    assert receipt["signature_count"] == receipt["verification"]["signature_count"]
+    assert manifest["signature_count"] == receipt["verification"]["signature_count"]
+    assert (
+        receipt["verified_signature_count"] == receipt["verification"]["verified_signature_count"]
+    )
+    assert (
+        manifest["verified_signature_count"] == receipt["verification"]["verified_signature_count"]
+    )
+    assert manifest["included_artifacts"] == receipt["included_artifacts"]
+    inventory_paths = {item["path"] for item in manifest["artifact_inventory"]}
+    assert {
+        "manifest.json",
+        "receipt.json",
+        "findings.json",
+        "summary.md",
+        "artifacts/evidence.bundle.json",
+        "artifacts/manifest-public.pem",
+    } <= inventory_paths
     for phrase in BOUNDARY_PHRASES:
         assert phrase in summary
         assert phrase in " ".join(manifest["boundaries"])
+        assert phrase in " ".join(manifest["non_claims"])
+        assert phrase in " ".join(receipt["non_claims"])
+    for section in SUMMARY_SECTIONS:
+        assert section in summary
+    assert "| Field | Value |" in summary
+    assert "| Path | Role |" in summary
+    assert "| Severity | Type | Message |" in summary
+    assert "- [ ] Confirm verification outcome is pass." in summary
 
 
 def _scan_text_files(root: Path) -> str:
@@ -146,6 +190,53 @@ def test_review_pack_fails_closed_for_bad_public_key(tmp_path: Path) -> None:
         )
 
     assert not pack_dir.exists()
+    assert not (pack_dir / "summary.md").exists()
+
+
+def test_review_pack_fails_closed_for_tampered_bundle(tmp_path: Path) -> None:
+    module = _load_langchain_example()
+    source_dir = tmp_path / "langchain-minimal-evidence"
+    source_summary = module.run_example(source_dir)
+    original_bundle = Path(source_summary["bundle_path"])
+    tampered_bundle = tmp_path / "tampered.bundle.json"
+    payload = json.loads(original_bundle.read_text(encoding="utf-8"))
+    payload["records"][0]["event"]["inputs"]["input"] = "tampered input"
+    tampered_bundle.write_text(json.dumps(payload), encoding="utf-8")
+    pack_dir = tmp_path / "tampered-review-pack"
+
+    with pytest.raises(ReviewPackVerificationError) as exc_info:
+        create_review_pack(
+            bundle_path=tampered_bundle,
+            public_key_path=source_summary["public_key_path"],
+            summary_path=source_dir / "summary.json",
+            output_dir=pack_dir,
+        )
+
+    receipt_text = json.dumps(exc_info.value.receipt)
+    assert "artifact_digest mismatch" in receipt_text
+    assert "chain_hash mismatch" in receipt_text
+    assert "manifest-public.pem" in receipt_text
+    assert not pack_dir.exists()
+    assert not (pack_dir / "summary.md").exists()
+
+
+def test_review_pack_refuses_non_empty_output_directory(tmp_path: Path) -> None:
+    module = _load_langchain_example()
+    source_dir = tmp_path / "langchain-minimal-evidence"
+    source_summary = module.run_example(source_dir)
+    pack_dir = tmp_path / "existing-review-pack"
+    pack_dir.mkdir()
+    (pack_dir / "existing.txt").write_text("keep me\n", encoding="utf-8")
+
+    with pytest.raises(ReviewPackError, match="already exists and is not empty"):
+        create_review_pack(
+            bundle_path=source_summary["bundle_path"],
+            public_key_path=source_summary["public_key_path"],
+            summary_path=source_dir / "summary.json",
+            output_dir=pack_dir,
+        )
+
+    assert (pack_dir / "existing.txt").read_text(encoding="utf-8") == "keep me\n"
     assert not (pack_dir / "summary.md").exists()
 
 

@@ -172,7 +172,7 @@ def build_capabilities_payload() -> dict[str, Any]:
             "offline evidence bundles",
             "validation receipts",
             "verification receipts",
-            "local Review Pack V0.1 reviewer packages",
+            "local Review Pack V0.2 reviewer packages",
             "reviewer summaries",
         ],
         "integrations": [

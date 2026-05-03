@@ -1,13 +1,14 @@
 # Review Pack Minimal
 
-## 1) What Review Pack V0.1 is
+## 1) What Review Pack V0.2 is
 
-Review Pack V0.1 is a local, offline package for a human reviewer. It starts
+Review Pack V0.2 is a local, offline package for a human reviewer. It starts
 from an already captured signed export bundle, verifies that bundle first, and
 then writes a small reviewer-facing directory.
 
 It does not introduce new evidence semantics. CLI/core verification remains
-canonical.
+canonical. V0.2 improves the reviewer-facing markdown summary, manifest, and
+findings metadata without changing evidence schema or core verification.
 
 ## 2) What it is not
 
@@ -18,7 +19,8 @@ canonical.
 - It is not a PDF or HTML report generator.
 - It is not a hosted or remote review service.
 
-Review Pack V0.1 does not change OpenAPI or MCP behavior.
+Review Pack V0.2 does not change OpenAPI or MCP behavior and is not exposed
+through OpenAPI or MCP.
 
 ## 3) Install
 
@@ -74,7 +76,7 @@ external API key.
 
 ## 6) Output layout
 
-Review Pack V0.1 writes:
+Review Pack V0.2 writes:
 
 ```text
 review-pack/
@@ -94,7 +96,40 @@ Review Pack creation copies only the signed evidence bundle, the manifest
 public key, and the optional summary file. It does not copy
 `manifest-private.pem` or any arbitrary files from the source directory.
 
-## 7) Failure behavior
+## 7) Reviewer summary
+
+`summary.md` is markdown-only. It includes:
+
+- verification outcome
+- reviewer checklist
+- verification details table
+- artifact inventory table
+- findings summary table
+- recommended reviewer actions
+- what this does not prove
+
+The checklist is a reviewer aid, not an approval workflow. It asks the reviewer
+to confirm the verification outcome, inspect the evidence bundle and public
+key, review findings and warnings, read limitations, and escalate fail or
+unknown findings.
+
+## 8) Findings taxonomy
+
+Review Pack V0.2 keeps a small findings taxonomy.
+
+Allowed severity values:
+
+- `pass`
+- `warning`
+- `fail`
+- `unknown`
+
+Finding types remain limited to verification, signature, summary attachment,
+artifact inventory, private key exclusion, secret scan, limitation notice, and
+fail-closed error categories. The taxonomy is intentionally not a compliance
+taxonomy.
+
+## 9) Failure behavior
 
 Review Pack creation verifies before packaging.
 
@@ -108,9 +143,9 @@ If verification fails:
 If the output directory already exists and is non-empty, the command fails
 instead of overwriting it.
 
-## 8) Safety boundaries
+## 10) Safety boundaries
 
-Review Pack V0.1:
+Review Pack V0.2:
 
 - runs locally
 - requires no network
@@ -123,3 +158,7 @@ The reviewer summary explains what was verified and what artifacts were
 included. It also states the limits: this package is not legal
 non-repudiation, compliance certification, AI Act approval, or a full AI
 governance assessment.
+
+Review Pack V0.2 does not add PDF/HTML output, dashboard workflows, remote
+review service behavior, legal attestation, compliance certification, AI Act
+Pack behavior, or OpenAPI/MCP tools.
