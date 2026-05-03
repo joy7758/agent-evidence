@@ -81,9 +81,9 @@ def _provider_config(
         missing = [
             name
             for name, value in {
-                "OPENAI_COMPATIBLE_API_KEY or --api-key": api_key,
-                "OPENAI_COMPATIBLE_BASE_URL or --base-url": base_url,
-                "OPENAI_COMPATIBLE_MODEL or --model": model,
+                "OPENAI_COMPATIBLE_API_KEY": api_key,
+                "OPENAI_COMPATIBLE_BASE_URL": base_url,
+                "OPENAI_COMPATIBLE_MODEL": model,
             }.items()
             if not value
         ]
