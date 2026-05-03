@@ -1,16 +1,23 @@
 # Release Readiness for v0.5.0
 
-This document records release-prep status for `agent-evidence` v0.5.0 after
-Review Pack V0.2 was merged.
+This document records post-release status for `agent-evidence` v0.5.0 after
+Review Pack V0.2 was released.
 
-This is a release-prep document. It does not publish a release.
+This is a release-state document. It records the current release posture and is
+not an active release authorization gate.
 
 ## Current Assessment
 
-Recommendation: go for a v0.5.0 release-prep PR; no-go for final GitHub,
-TestPyPI, or PyPI publication until release authorization is explicit.
+Status: v0.5.0 release completed.
 
-Current package metadata target: `0.5.0`.
+- GitHub Release v0.5.0: completed.
+- Zenodo archive: completed.
+- TestPyPI v0.5.0: completed.
+- PyPI v0.5.0: completed.
+- Post-release smoke and audit: completed.
+- Urgent hotfix: not required.
+
+Current package metadata version: `0.5.0`.
 
 Current primary project DOI: `10.5281/zenodo.19334061`.
 
@@ -23,11 +30,12 @@ release citations should use the relevant version DOI.
 - Exact v0.3.0 version DOI: `10.5281/zenodo.19998176`
 - Exact v0.3.1 version DOI: `10.5281/zenodo.19998690`
 - Exact v0.4.0 version DOI: `10.5281/zenodo.20004271`
+- Exact v0.5.0 version DOI: `10.5281/zenodo.20011103`
 
 Use the concept DOI in `CITATION.cff`, `codemeta.json`, `README.md`, and
 generated agent metadata. Use version DOIs only when citing or reproducing a
-specific archived release. Confirm Zenodo behavior after a v0.5.0 GitHub
-release before deciding whether any follow-up DOI metadata patch is needed.
+specific archived release. No v0.5.0 DOI metadata patch is needed because the
+primary project DOI remains the concept DOI.
 
 ## Surface Status
 
@@ -45,7 +53,7 @@ release before deciding whether any follow-up DOI metadata patch is needed.
 | CrewAI | experimental/example | Example exporter surface. |
 | Automaton sidecar | experimental | Read-only sidecar export; live data contract still settling. |
 | AGT conversion fixture | experimental/reference | Synthetic/reference conversion fixture. |
-| Pages / ADOPTERS / registry | planned/unavailable | Out of scope for v0.5.0 release prep. |
+| Pages / ADOPTERS / registry | planned/unavailable | Out of scope for v0.5.0. |
 
 ## Claims Boundary
 
@@ -64,9 +72,9 @@ The release must clearly state these boundaries:
 - Review Pack V0.2 is not a legal/compliance product
 - not an AI Act Pack
 
-## Metadata Alignment Plan
+## Metadata Alignment
 
-- Keep `pyproject.toml`, `CITATION.cff`, `codemeta.json`,
+- `pyproject.toml`, `CITATION.cff`, `codemeta.json`,
   `docs/project-facts.md`, `agent-index.json`, and `llms-full.txt` aligned on
   version `0.5.0`.
 - Keep the Zenodo concept DOI as primary project DOI in active citation
@@ -77,10 +85,10 @@ The release must clearly state these boundaries:
   - `python scripts/generate_agent_index.py --check`
   - `python scripts/generate_llms_full.py --check`
 
-## Release Notes Outline
+## Release Notes Status
 
-Use `RELEASE_NOTES.md` for the v0.5.0 Review Pack release-prep summary. Release
-notes should cover:
+`RELEASE_NOTES.md` records the v0.5.0 Review Pack release summary. The release
+notes cover:
 
 - local Review Pack V0.2
 - enhanced reviewer-facing `summary.md`
@@ -118,21 +126,19 @@ notes should cover:
 - Contamination from isolated old NCS/media work if release work is not done
   from a clean `origin/main` worktree.
 
-## Release Go / No-Go
+## Post-Release Status
 
-Go for v0.5.0 release-prep implementation when:
+v0.5.0 post-release audit passed for:
 
-- metadata versions are aligned
-- release notes exist
-- Review Pack status is explicit
-- generated metadata checks pass
-- release checklist includes Review Pack smoke
-- stale callable-surface statements remain fixed
+- GitHub Release latest state
+- Zenodo v0.5.0 archive and concept DOI strategy
+- PyPI latest state
+- clean install smoke
+- MCP extra smoke
+- Review Pack V0.2 smoke
+- generated metadata checks
+- release-facing claim boundaries
 
-No-go for final release publication until:
-
-- GitHub release body is finalized
-- PyPI publication intent is confirmed
-- TestPyPI credentials are ready if TestPyPI is used
-- release smoke tests have run from a clean checkout
-- Zenodo DOI handling is confirmed after GitHub release
+The remaining follow-up is documentation hygiene when post-release audits find
+stale wording. That follow-up does not imply a code hotfix or new package
+publication by itself.

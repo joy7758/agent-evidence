@@ -27,8 +27,8 @@ DOI: [10.5281/zenodo.19334061](https://doi.org/10.5281/zenodo.19334061)
 - runnable single-path demo
 - LangChain-first evidence exporter and offline bundle verification
 - FDO-style mapping material for discussion, not a claim of official standard adoption
-- v0.4.0 Review Pack release preparation, with local offline reviewer-facing
-  packaging for verified signed exports
+- v0.5.0 released package with Review Pack V0.2: local, offline,
+  verify-first reviewer-facing packaging for verified signed exports
 
 ## Quick Start
 
