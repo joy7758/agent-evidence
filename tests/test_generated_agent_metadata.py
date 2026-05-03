@@ -61,5 +61,6 @@ def test_agent_index_matches_capabilities_file_references() -> None:
         == payload["entrypoints"]["cli"]["capabilities_command"]
     )
     assert "openapi.yaml" in payload["entrypoints"]["metadata"]
+    assert "docs/cookbooks/langchain_minimal_evidence.md" in payload["entrypoints"]["guides"]
     assert "docs/cookbooks/local-openapi-wrapper.md" in payload["entrypoints"]["guides"]
     assert "docs/cookbooks/local-mcp-readonly.md" in payload["entrypoints"]["guides"]
