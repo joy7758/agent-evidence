@@ -54,9 +54,21 @@ Use this checklist before publishing a GitHub or PyPI release.
 - [ ] Confirm `verify-export` returns `"ok": true`
 - [ ] Remove `./tmp/openai-compatible-minimal-evidence`
 
+## Review Pack Smoke
+
+- [ ] Run `python examples/langchain_minimal_evidence.py --output-dir ./tmp/langchain-minimal-evidence`
+- [ ] Run `agent-evidence review-pack create --bundle ./tmp/langchain-minimal-evidence/langchain-evidence.bundle.json --public-key ./tmp/langchain-minimal-evidence/manifest-public.pem --summary ./tmp/langchain-minimal-evidence/summary.json --output-dir ./tmp/langchain-review-pack`
+- [ ] Confirm `./tmp/langchain-review-pack/receipt.json` contains `"ok": true`
+- [ ] Confirm `./tmp/langchain-review-pack/findings.json` parses as JSON
+- [ ] Confirm `./tmp/langchain-review-pack/summary.md` includes limitation language
+- [ ] Confirm `manifest-private.pem` is not copied into the Review Pack
+- [ ] Remove `./tmp/langchain-minimal-evidence` and `./tmp/langchain-review-pack`
+- [ ] Run the OpenAI-compatible mock Review Pack smoke if changing Review Pack packaging
+
 ## Secret and Promotion Checks
 
 - [ ] Run an OpenAI-compatible secret sentinel check
+- [ ] Run a Review Pack secret sentinel check
 - [ ] Confirm fake provider API keys do not appear in generated artifacts
 - [ ] Confirm `Authorization` headers are not serialized into artifacts
 - [ ] Check no automatic star/follow/fork/promotion language exists in
@@ -71,7 +83,8 @@ Use this checklist before publishing a GitHub or PyPI release.
 - [ ] No legal non-repudiation claim
 - [ ] No full AI governance platform claim
 - [ ] No remote MCP or hosted OpenAPI product claim
-- [ ] No Review Pack or AI Act Pack claim
+- [ ] Review Pack claims are limited to local/offline V0.1 reviewer packaging
+- [ ] No AI Act Pack claim
 
 ## Final Release Actions
 
