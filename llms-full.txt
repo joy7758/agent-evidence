@@ -9,7 +9,7 @@ facts are in `docs/project-facts.md`.
 ## Current status
 
 - Project: `agent-evidence`
-- Version: `0.5.0`
+- Version: `0.6.0`
 - Development status: `experimental`
 - License: `Apache-2.0`
 - Repository: https://github.com/joy7758/agent-evidence

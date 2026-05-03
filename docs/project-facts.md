@@ -18,7 +18,7 @@ original runtime.
 
 ## Current Version
 
-`0.5.0`
+`0.6.0`
 
 Source: `pyproject.toml`.
 
@@ -26,7 +26,9 @@ Source: `pyproject.toml`.
 
 `v0.5.0`
 
-Sources: GitHub Release, Zenodo, and PyPI post-release audit.
+Sources: GitHub Release, Zenodo, and PyPI post-release audit. The repository
+metadata is currently prepared for v0.6.0 release execution, but v0.6.0 has
+not been published yet.
 
 ## Current License
 
@@ -96,7 +98,7 @@ Primary outputs are intentionally narrow:
 - offline evidence bundles
 - machine-readable verification receipts
 - validation reports
-- local Review Pack V0.2 reviewer packages for verified signed exports
+- local Review Pack V0.3 reviewer packages for verified signed exports
 - reviewer-facing summaries from demos and pack builders
 - operation accountability profile examples
 

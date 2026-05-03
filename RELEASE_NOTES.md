@@ -1,5 +1,75 @@
 # Release Notes
 
+## v0.6.0 Review Pack V0.3 Release Prep
+
+This release-prep entry prepares `agent-evidence` v0.6.0 after Review Pack
+V0.3 was merged and post-merge audited. It does not publish a GitHub Release,
+TestPyPI package, or PyPI package by itself.
+
+### Added
+
+- Review Pack V0.3 reviewer-facing stabilization:
+  - stable `RP-CHECK-*` reviewer checklist IDs
+  - `pack_creation_mode: local_offline`
+  - `Secret and Private Key Boundary` summary section
+  - conservative `secret_scan_status`
+  - optional `--json-errors` for `review-pack create` failures
+- Review Pack manifest and receipt clarity fields for reviewers and agents:
+  - `review_pack_version`
+  - `pack_creation_mode`
+  - `verification_ok`
+  - `record_count`
+  - `signature_count`
+  - `verified_signature_count`
+  - `included_artifacts`
+  - `artifact_inventory`
+  - `reviewer_checklist`
+  - `secret_scan_status`
+  - `non_claims`
+- Structured Review Pack failure output remains opt-in and limited to
+  `agent-evidence review-pack create --json-errors`.
+
+### Safety Boundaries
+
+- Review Pack V0.3 is local and offline.
+- Review Pack creation verifies signed exports before packaging.
+- Review Pack creation fails closed when verification fails.
+- Review Pack creation does not mutate source artifacts.
+- Review Pack creation does not copy private keys.
+- Review Pack creation does not add telemetry.
+- Review Pack creation does not change OpenAPI or MCP behavior.
+- Review Pack creation does not change canonical schema or core validation.
+- `secret_scan_status` is not comprehensive DLP and does not prove all possible
+  secrets are absent.
+- No legal non-repudiation, court-grade proof, or regulatory certification
+  claim is made.
+- Review Pack V0.3 is not compliance certification.
+- Review Pack V0.3 is not AI Act approval.
+- Review Pack V0.3 is not a full AI governance assessment.
+- `agent-evidence` is not a full AI governance platform.
+
+### Non-Goals
+
+- No AI Act Pack.
+- No PDF or HTML report generator.
+- No dashboard.
+- No hosted or remote review service.
+- No remote MCP.
+- No MCP registry publication.
+- No OpenAPI or MCP Review Pack exposure.
+- No GitHub Pages or `ADOPTERS.md`.
+- No canonical schema rewrite.
+- No core validation rewrite.
+- No old NCS/media work.
+
+### Release Actions Still Required
+
+- Confirm final v0.6.0 release authorization.
+- Confirm GitHub release body.
+- Confirm PyPI/TestPyPI publication intent.
+- Confirm Zenodo behavior after GitHub release.
+- Confirm v0.6.0 installed-package smoke after publication.
+
 ## v0.5.0 Review Pack V0.2 Release
 
 This release entry records `agent-evidence` v0.5.0 after Review Pack V0.2 was
