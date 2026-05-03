@@ -53,6 +53,18 @@ The mock path does not require any of these variables. A live provider call is
 available only when explicitly requested with `--live`, and tests do not use
 that mode.
 
+Live mode fails before any provider call when `api_key`, `base_url`, or `model`
+is missing. The error is machine-readable and uses the code
+`invalid_provider_config`.
+
+Provider examples are configuration examples only:
+
+| Provider | `base_url` | `model` | Notes |
+| --- | --- | --- | --- |
+| OpenAI | `https://api.openai.com/v1` | provider model name | Use live mode only when explicitly enabled. |
+| Zhipu GLM | `<provider OpenAI-compatible endpoint>/v1` | provider model name | Configure through `base_url`; no provider-specific core logic. |
+| Other compatible provider | `<provider-compatible-endpoint>/v1` | provider model name | Must support OpenAI-compatible chat completions semantics. |
+
 Example live invocation shape:
 
 ```bash
@@ -74,6 +86,10 @@ bundle, and verifies that bundle through the existing CLI/core behavior.
 
 CLI/core behavior remains canonical. This cookbook does not change the OpenAPI
 or MCP wrappers and does not introduce new evidence semantics.
+
+Tests exercise the mock path only. They do not call real providers, do not
+require real API keys, and check that provider secret sentinels are not written
+to runtime events, bundle JSON, manifest JSON, or summary output.
 
 ## 5) Minimal flow
 
@@ -105,6 +121,8 @@ Notes:
 - `openai-compatible-evidence.manifest.json` is a readable sidecar copy of the signed manifest.
 - The generated private key is only for local demo use.
 - Request and response payloads are represented by digests in the demo evidence.
+- Provider API keys and authorization-like values are not written into the
+  runtime store, export bundle, manifest, or summary artifacts.
 
 ## 7) Verify
 
