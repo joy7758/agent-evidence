@@ -1,9 +1,9 @@
 # Release Notes
 
-## v0.5.0 Review Pack V0.2 Release Prep
+## v0.5.0 Review Pack V0.2 Release
 
-This release-prep entry prepares `agent-evidence` v0.5.0 after Review Pack
-V0.2 was merged and post-merge audited.
+This release entry records `agent-evidence` v0.5.0 after Review Pack V0.2 was
+merged, post-merge audited, and published to GitHub, Zenodo, TestPyPI, and PyPI.
 
 ### Added
 
@@ -57,13 +57,14 @@ V0.2 was merged and post-merge audited.
 - No core validation rewrite.
 - No old NCS/media work.
 
-### Release Actions Still Required
+### Release Status
 
-- Confirm final v0.5.0 release authorization.
-- Confirm GitHub release body.
-- Confirm PyPI/TestPyPI publication intent.
-- Confirm Zenodo behavior after GitHub release.
-- Confirm v0.5.0 installed-package smoke after publication.
+- GitHub Release v0.5.0: completed.
+- Zenodo v0.5.0 archive: completed.
+- TestPyPI v0.5.0 publication: completed.
+- PyPI v0.5.0 publication: completed.
+- v0.5.0 clean install smoke: completed.
+- This docs-only post-release correction does not publish a new package.
 
 ## v0.4.0 Review Pack Release Prep
 

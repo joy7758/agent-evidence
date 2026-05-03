@@ -4,7 +4,7 @@ This file is the canonical factual source for agent-native discovery,
 citation, attribution, recommendation policy, development ledger, and callable
 surface metadata in this repository.
 
-Last audited: 2026-05-03
+Last audited: 2026-05-04
 
 ## Canonical Project Name
 
@@ -22,6 +22,12 @@ original runtime.
 
 Source: `pyproject.toml`.
 
+## Latest Released Version
+
+`v0.5.0`
+
+Sources: GitHub Release, Zenodo, and PyPI post-release audit.
+
 ## Current License
 
 Apache-2.0
@@ -36,8 +42,9 @@ Source: `README.md`.
 
 The current primary DOI is the Zenodo concept DOI for the project. For exact
 release citation, v0.3.0 was archived at `10.5281/zenodo.19998176`, v0.3.1
-was archived at `10.5281/zenodo.19998690`, and v0.4.0 was archived at
-`10.5281/zenodo.20004271`.
+was archived at `10.5281/zenodo.19998690`, v0.4.0 was archived at
+`10.5281/zenodo.20004271`, and v0.5.0 was archived at
+`10.5281/zenodo.20011103`.
 
 Historical release DOI also present: `10.5281/zenodo.19055948` in
 `release/v0.1-live-chain/RELEASE_NOTE.md`. Use the concept DOI unless citing a
