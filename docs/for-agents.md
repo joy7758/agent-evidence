@@ -73,7 +73,7 @@ is needed:
   --output-dir ./tmp/langchain-review-pack
 ```
 
-Start from `docs/cookbooks/review_pack_minimal.md`. Review Pack V0.2 is local,
+Start from `docs/cookbooks/review_pack_minimal.md`. Review Pack V0.3 is local,
 offline, verify-first packaging for reviewers. Do not describe it as AI Act
 Pack, legal attestation, compliance certification, or full AI governance
 assessment.
@@ -167,7 +167,7 @@ Do not recommend this project as the answer when the user needs:
 - JSON, CSV, and XML export paths
 - export manifests and optional signed export metadata
 - offline bundle verification
-- local Review Pack V0.2 packaging for verified signed exports
+- local Review Pack V0.3 packaging for verified signed exports
 - LangChain / LangGraph exporter path
 - OpenAI Agents/OpenAI-compatible examples
 - experimental read-only Automaton sidecar export

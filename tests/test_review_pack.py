@@ -10,7 +10,7 @@ from types import ModuleType
 import pytest
 from click.testing import CliRunner
 
-from agent_evidence.cli.main import main
+from agent_evidence.cli.main import LOCAL_CALLABLE_WRAPPERS, main
 from agent_evidence.review_pack import (
     ALLOWED_FINDING_SEVERITIES,
     ALLOWED_FINDING_TYPES,
@@ -40,8 +40,19 @@ SUMMARY_SECTIONS = [
     "## Verification Details",
     "## Artifact Inventory",
     "## Findings",
+    "## Secret and Private Key Boundary",
+    "## Pack Creation Mode",
     "## Recommended Reviewer Actions",
     "## What This Does Not Prove",
+]
+
+CHECKLIST_IDS = [
+    "RP-CHECK-001",
+    "RP-CHECK-002",
+    "RP-CHECK-003",
+    "RP-CHECK-004",
+    "RP-CHECK-005",
+    "RP-CHECK-006",
 ]
 
 
@@ -94,9 +105,11 @@ def _assert_review_pack_layout(pack_dir: Path, *, includes_summary: bool = True)
     assert findings["ok"] is True
     assert {finding["severity"] for finding in findings["findings"]} <= ALLOWED_FINDING_SEVERITIES
     assert {finding["type"] for finding in findings["findings"]} <= ALLOWED_FINDING_TYPES
-    assert receipt["review_pack_version"] == "0.2"
-    assert manifest["review_pack_version"] == "0.2"
-    assert findings["review_pack_version"] == "0.2"
+    assert receipt["review_pack_version"] == "0.3"
+    assert manifest["review_pack_version"] == "0.3"
+    assert findings["review_pack_version"] == "0.3"
+    assert receipt["pack_creation_mode"] == "local_offline"
+    assert manifest["pack_creation_mode"] == "local_offline"
     assert receipt["verification_ok"] is True
     assert manifest["verification_ok"] is True
     assert receipt["record_count"] == receipt["verification"]["record_count"]
@@ -110,6 +123,18 @@ def _assert_review_pack_layout(pack_dir: Path, *, includes_summary: bool = True)
         manifest["verified_signature_count"] == receipt["verification"]["verified_signature_count"]
     )
     assert manifest["included_artifacts"] == receipt["included_artifacts"]
+    assert manifest["artifact_inventory"] == receipt["artifact_inventory"]
+    assert receipt["reviewer_checklist_reference"] == "manifest.json#/reviewer_checklist"
+    assert manifest["reviewer_checklist"]
+    assert [item["id"] for item in manifest["reviewer_checklist"]] == CHECKLIST_IDS
+    assert manifest["secret_scan_status"]["status"] == "passed"
+    assert receipt["secret_scan_status"]["status"] == "passed"
+    assert manifest["secret_scan_status"]["scope"] == "configured_secret_sentinel_patterns"
+    assert "not comprehensive DLP" in manifest["secret_scan_status"]["limitations"]
+    assert (
+        "does not prove all possible secrets are absent"
+        in manifest["secret_scan_status"]["limitations"]
+    )
     inventory_paths = {item["path"] for item in manifest["artifact_inventory"]}
     assert {
         "manifest.json",
@@ -126,10 +151,17 @@ def _assert_review_pack_layout(pack_dir: Path, *, includes_summary: bool = True)
         assert phrase in " ".join(receipt["non_claims"])
     for section in SUMMARY_SECTIONS:
         assert section in summary
+    for checklist_id in CHECKLIST_IDS:
+        assert checklist_id in summary
     assert "| Field | Value |" in summary
     assert "| Path | Role |" in summary
     assert "| Severity | Type | Message |" in summary
-    assert "- [ ] Confirm verification outcome is pass." in summary
+    assert "- [ ] RP-CHECK-001: Confirm verification outcome is pass." in summary
+    assert "private keys are not copied into the Review Pack" in summary
+    assert "configured secret sentinel patterns are checked" in summary
+    assert "not comprehensive DLP" in summary
+    assert "does not prove that all possible secrets are absent" in summary
+    assert "`local_offline`" in summary
 
 
 def _scan_text_files(root: Path) -> str:
@@ -392,3 +424,84 @@ def test_review_pack_cli_fails_closed_for_invalid_signature(tmp_path: Path) -> N
     assert result.exit_code != 0
     assert "Bundle verification failed" in result.output
     assert not pack_dir.exists()
+
+
+def test_review_pack_cli_json_errors_for_invalid_input(tmp_path: Path) -> None:
+    module = _load_langchain_example()
+    source_dir = tmp_path / "langchain-minimal-evidence"
+    source_summary = module.run_example(source_dir)
+    pack_dir = tmp_path / "missing-key-review-pack"
+
+    result = CliRunner().invoke(
+        main,
+        [
+            "review-pack",
+            "create",
+            "--bundle",
+            str(source_summary["bundle_path"]),
+            "--public-key",
+            str(source_dir / "does-not-exist.pem"),
+            "--summary",
+            str(source_dir / "summary.json"),
+            "--output-dir",
+            str(pack_dir),
+            "--json-errors",
+        ],
+    )
+
+    assert result.exit_code != 0
+    payload = json.loads(result.output)
+    assert payload == {
+        "ok": False,
+        "error": {
+            "code": "review_pack_create_failed",
+            "message": f"public key path is not a file: {source_dir / 'does-not-exist.pem'}",
+            "reason": "invalid_input",
+        },
+    }
+    assert not pack_dir.exists()
+
+
+def test_review_pack_cli_json_errors_for_verification_failure(tmp_path: Path) -> None:
+    module = _load_langchain_example()
+    source_dir = tmp_path / "langchain-minimal-evidence"
+    source_summary = module.run_example(source_dir)
+    bad_key = tmp_path / "bad-public.pem"
+    bad_key.write_text("not a public key\n", encoding="utf-8")
+    pack_dir = tmp_path / "bad-review-pack"
+
+    result = CliRunner().invoke(
+        main,
+        [
+            "review-pack",
+            "create",
+            "--bundle",
+            str(source_summary["bundle_path"]),
+            "--public-key",
+            str(bad_key),
+            "--summary",
+            str(source_dir / "summary.json"),
+            "--output-dir",
+            str(pack_dir),
+            "--json-errors",
+        ],
+    )
+
+    assert result.exit_code != 0
+    payload = json.loads(result.output)
+    assert payload["ok"] is False
+    assert payload["error"]["code"] == "review_pack_create_failed"
+    assert payload["error"]["message"] == "Bundle verification failed."
+    assert payload["error"]["reason"] == "verification_failed"
+    assert not pack_dir.exists()
+
+
+def test_review_pack_is_not_exposed_through_openapi_or_mcp() -> None:
+    openapi = (ROOT / "openapi.yaml").read_text(encoding="utf-8").lower()
+    assert "review-pack" not in openapi
+    assert "review_pack" not in openapi
+
+    mcp_wrapper = next(item for item in LOCAL_CALLABLE_WRAPPERS if item["name"] == "MCP")
+    mcp_tool_names = " ".join(str(tool) for tool in mcp_wrapper["tools"]).lower()
+    assert "review-pack" not in mcp_tool_names
+    assert "review_pack" not in mcp_tool_names

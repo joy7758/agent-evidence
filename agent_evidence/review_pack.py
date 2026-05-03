@@ -13,7 +13,8 @@ from pydantic import ValidationError
 
 from agent_evidence.export import verify_json_bundle
 
-REVIEW_PACK_VERSION = "0.2"
+REVIEW_PACK_VERSION = "0.3"
+PACK_CREATION_MODE = "local_offline"
 
 ALLOWED_FINDING_SEVERITIES = {"pass", "warning", "fail", "unknown"}
 ALLOWED_FINDING_TYPES = {
@@ -32,6 +33,9 @@ ALLOWED_FINDING_TYPES = {
     "secret_scan_passed",
     "artifact_inventory_recorded",
     "limitation_notice_present",
+    "reviewer_checklist_present",
+    "review_pack_manifest_complete",
+    "secret_scan_status_recorded",
 }
 
 BOUNDARIES = [
@@ -39,6 +43,38 @@ BOUNDARIES = [
     "not compliance certification",
     "not AI Act approval",
     "not full AI governance assessment",
+]
+
+SECRET_SCAN_LIMITATIONS = [
+    "not comprehensive DLP",
+    "does not prove all possible secrets are absent",
+]
+
+REVIEWER_CHECKLIST = [
+    {
+        "id": "RP-CHECK-001",
+        "text": "Confirm verification outcome is pass.",
+    },
+    {
+        "id": "RP-CHECK-002",
+        "text": "Review the included evidence bundle.",
+    },
+    {
+        "id": "RP-CHECK-003",
+        "text": "Review the public key used for verification.",
+    },
+    {
+        "id": "RP-CHECK-004",
+        "text": "Review findings and warnings.",
+    },
+    {
+        "id": "RP-CHECK-005",
+        "text": "Review limitations before relying on the pack.",
+    },
+    {
+        "id": "RP-CHECK-006",
+        "text": "Escalate fail or unknown findings.",
+    },
 ]
 
 SECRET_LIKE_PATTERNS = [
@@ -102,6 +138,14 @@ def _verification_details(verification_result: dict[str, Any]) -> dict[str, Any]
         "record_count": verification_result.get("record_count"),
         "signature_count": verification_result.get("signature_count"),
         "verified_signature_count": verification_result.get("verified_signature_count"),
+    }
+
+
+def _secret_scan_status() -> dict[str, Any]:
+    return {
+        "status": "passed",
+        "scope": "configured_secret_sentinel_patterns",
+        "limitations": SECRET_SCAN_LIMITATIONS,
     }
 
 
@@ -202,7 +246,8 @@ def _build_findings(
             "severity": "pass",
             "type": "secret_scan_passed",
             "message": (
-                "Review Pack artifacts passed the secret-like content scan before finalization."
+                "Review Pack artifacts passed configured secret sentinel pattern checks "
+                "before finalization."
             ),
         },
         {
@@ -214,6 +259,21 @@ def _build_findings(
             "severity": "pass",
             "type": "limitation_notice_present",
             "message": "Reviewer summary includes explicit non-claim limitations.",
+        },
+        {
+            "severity": "pass",
+            "type": "reviewer_checklist_present",
+            "message": "Reviewer summary and manifest include stable reviewer checklist items.",
+        },
+        {
+            "severity": "pass",
+            "type": "review_pack_manifest_complete",
+            "message": "Review Pack manifest records reviewer-facing package metadata.",
+        },
+        {
+            "severity": "pass",
+            "type": "secret_scan_status_recorded",
+            "message": "Review Pack metadata records conservative secret scan status and limits.",
         },
     ]
     if summary_path is None:
@@ -278,6 +338,7 @@ def _render_summary_markdown(
     finding_rows = [
         [item["severity"], item["type"], item["message"]] for item in findings["findings"]
     ]
+    checklist_lines = [f"- [ ] {item['id']}: {item['text']}" for item in REVIEWER_CHECKLIST]
     return "\n".join(
         [
             "# Agent Evidence Review Pack",
@@ -289,12 +350,7 @@ def _render_summary_markdown(
             "",
             "## Reviewer Checklist",
             "",
-            "- [ ] Confirm verification outcome is pass.",
-            "- [ ] Review the included evidence bundle.",
-            "- [ ] Review the public key used for verification.",
-            "- [ ] Review findings and warnings.",
-            "- [ ] Review limitations before relying on the pack.",
-            "- [ ] Escalate fail or unknown findings.",
+            *checklist_lines,
             "",
             "## Verification Details",
             "",
@@ -307,6 +363,17 @@ def _render_summary_markdown(
             "## Findings",
             "",
             *_markdown_table(["Severity", "Type", "Message"], finding_rows),
+            "",
+            "## Secret and Private Key Boundary",
+            "",
+            "- private keys are not copied into the Review Pack.",
+            "- configured secret sentinel patterns are checked during pack creation.",
+            "- this is not comprehensive DLP.",
+            "- this does not prove that all possible secrets are absent.",
+            "",
+            "## Pack Creation Mode",
+            "",
+            f"- `{PACK_CREATION_MODE}`",
             "",
             "## Recommended Reviewer Actions",
             "",
@@ -339,6 +406,7 @@ def _build_manifest(
     verification = _verification_details(verification_result)
     return {
         "review_pack_version": REVIEW_PACK_VERSION,
+        "pack_creation_mode": PACK_CREATION_MODE,
         "created_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         **verification,
         "source": {
@@ -348,6 +416,8 @@ def _build_manifest(
         },
         "included_artifacts": included_artifacts,
         "artifact_inventory": artifact_inventory,
+        "reviewer_checklist": REVIEWER_CHECKLIST,
+        "secret_scan_status": _secret_scan_status(),
         "receipt": "receipt.json",
         "findings": "findings.json",
         "summary": "summary.md",
@@ -404,6 +474,7 @@ def create_review_pack(
         receipt = {
             "ok": True,
             "review_pack_version": REVIEW_PACK_VERSION,
+            "pack_creation_mode": PACK_CREATION_MODE,
             **verification,
             "source": {
                 "bundle": bundle.name,
@@ -411,6 +482,9 @@ def create_review_pack(
                 "summary": summary.name if summary is not None else None,
             },
             "included_artifacts": included_artifacts,
+            "artifact_inventory": artifact_inventory,
+            "reviewer_checklist_reference": "manifest.json#/reviewer_checklist",
+            "secret_scan_status": _secret_scan_status(),
             "artifacts": {
                 "bundle": _relative_artifact(bundle_artifact.name),
                 "public_key": _relative_artifact(public_key_artifact.name),
