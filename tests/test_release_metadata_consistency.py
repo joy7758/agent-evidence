@@ -7,6 +7,10 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+VERSION = "0.3.1"
+CONCEPT_DOI = "10.5281/zenodo.19334061"
+STALE_V020_DOI = "10.5281/zenodo.19334062"
+V030_VERSION_DOI = "10.5281/zenodo.19998176"
 
 
 def _project_version() -> str:
@@ -23,7 +27,7 @@ def test_release_versions_are_aligned() -> None:
     project_facts = (ROOT / "docs/project-facts.md").read_text(encoding="utf-8")
     llms_full = (ROOT / "llms-full.txt").read_text(encoding="utf-8")
 
-    assert version == "0.3.0"
+    assert version == VERSION
     assert str(citation["version"]) == version
     assert str(codemeta["version"]) == version
     assert str(agent_index["current_status"]["version"]) == version
@@ -31,15 +35,53 @@ def test_release_versions_are_aligned() -> None:
     assert f"- Version: `{version}`" in llms_full
 
 
-def test_release_metadata_uses_existing_doi_without_inventing_new_one() -> None:
+def test_release_metadata_uses_concept_doi_as_primary_project_doi() -> None:
     citation = yaml.safe_load((ROOT / "CITATION.cff").read_text(encoding="utf-8"))
     codemeta = json.loads((ROOT / "codemeta.json").read_text(encoding="utf-8"))
+    agent_index = json.loads((ROOT / "agent-index.json").read_text(encoding="utf-8"))
     readiness = (ROOT / "docs/release-readiness.md").read_text(encoding="utf-8")
 
-    assert citation["doi"] == "10.5281/zenodo.19334062"
-    assert codemeta["identifier"] == "https://doi.org/10.5281/zenodo.19334062"
+    assert citation["doi"] == CONCEPT_DOI
+    assert codemeta["identifier"] == f"https://doi.org/{CONCEPT_DOI}"
+    assert codemeta["citation"] == f"https://doi.org/{CONCEPT_DOI}"
+    assert agent_index["current_status"]["doi"] == CONCEPT_DOI
+    assert agent_index["citation"]["doi"] == CONCEPT_DOI
     assert "Do not invent a new DOI." in readiness
-    assert "release-specific archive metadata" in " ".join(readiness.split())
+    assert "Zenodo concept DOI" in readiness
+
+
+def test_stale_v020_doi_is_not_active_citation_metadata() -> None:
+    for path in [
+        "CITATION.cff",
+        "codemeta.json",
+        "README.md",
+        "docs/project-facts.md",
+        "agent-index.json",
+        "llms-full.txt",
+    ]:
+        assert STALE_V020_DOI not in (ROOT / path).read_text(encoding="utf-8"), path
+
+
+def test_v030_version_doi_is_release_specific_documentation_only() -> None:
+    release_specific_docs = [
+        "RELEASE_NOTES.md",
+        "docs/how-to-cite.md",
+        "docs/project-facts.md",
+        "docs/release-readiness.md",
+    ]
+    combined = "\n".join(
+        (ROOT / path).read_text(encoding="utf-8") for path in release_specific_docs
+    )
+    assert V030_VERSION_DOI in combined
+
+    for path in [
+        "CITATION.cff",
+        "codemeta.json",
+        "README.md",
+        "agent-index.json",
+        "llms-full.txt",
+    ]:
+        assert V030_VERSION_DOI not in (ROOT / path).read_text(encoding="utf-8"), path
 
 
 def test_release_docs_and_stale_callable_statements_are_present() -> None:

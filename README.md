@@ -3,7 +3,7 @@
 把 AI Agent / service operation 转换为可验证、可审计、可复核的 evidence object。<br>
 Turn AI agent operations into auditable and verifiable evidence objects.
 
-DOI: [10.5281/zenodo.19334062](https://doi.org/10.5281/zenodo.19334062)
+DOI: [10.5281/zenodo.19334061](https://doi.org/10.5281/zenodo.19334061)
 
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
@@ -27,8 +27,8 @@ DOI: [10.5281/zenodo.19334062](https://doi.org/10.5281/zenodo.19334062)
 - runnable single-path demo
 - LangChain-first evidence exporter and offline bundle verification
 - FDO-style mapping material for discussion, not a claim of official standard adoption
-- v0.3.0 release-prep metadata and release checklist, with final GitHub/PyPI
-  release execution still requiring maintainer confirmation
+- v0.3.1 DOI metadata patch preparation, with the primary citation DOI using
+  the Zenodo concept DOI and exact release DOI documented separately
 
 ## Quick Start
 

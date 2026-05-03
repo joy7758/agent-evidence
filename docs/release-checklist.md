@@ -20,7 +20,8 @@ Use this checklist before publishing a GitHub or PyPI release.
 - [ ] `pyproject.toml`, `CITATION.cff`, `codemeta.json`,
       `docs/project-facts.md`, `agent-index.json`, and `llms-full.txt` agree
       on the current version
-- [ ] DOI handling is confirmed before publication
+- [ ] Primary DOI is the Zenodo concept DOI
+- [ ] Exact release DOI is documented only in release-specific context
 - [ ] PyPI and GitHub release notes are consistent
 
 ## Local OpenAPI Smoke
