@@ -36,6 +36,9 @@ langchain = [
 openai-agents = [
   "openai-agents>=0.12,<1.0",
 ]
+openai-compatible = [
+  "openai>=2,<3",
+]
 mcp = [
   "mcp>=1.27,<2",
 ]

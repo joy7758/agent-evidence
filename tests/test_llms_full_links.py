@@ -11,6 +11,8 @@ REQUIRED_PATHS = [
     "docs/for-agents.md",
     "docs/callable-surfaces.md",
     "docs/cookbooks/langchain_minimal_evidence.md",
+    "docs/cookbooks/openai_compatible_minimal_evidence.md",
+    "examples/openai_compatible_minimal_evidence.py",
     "docs/cookbooks/local-openapi-wrapper.md",
     "docs/cookbooks/local-mcp-readonly.md",
     "docs/project-facts.md",
