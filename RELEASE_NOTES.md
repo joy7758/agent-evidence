@@ -1,5 +1,70 @@
 # Release Notes
 
+## v0.5.0 Review Pack V0.2 Release Prep
+
+This release-prep entry prepares `agent-evidence` v0.5.0 after Review Pack
+V0.2 was merged and post-merge audited.
+
+### Added
+
+- Review Pack V0.2 reviewer-facing summary improvements:
+  - reviewer checklist
+  - verification details table
+  - artifact inventory table
+  - findings table
+  - recommended reviewer actions
+  - `What This Does Not Prove` section
+- Review Pack manifest and receipt clarity fields for reviewers and agents:
+  - `review_pack_version`
+  - `verification_ok`
+  - `record_count`
+  - `signature_count`
+  - `verified_signature_count`
+  - `included_artifacts`
+  - `artifact_inventory`
+  - `non_claims`
+- Refined bounded findings taxonomy for local review packages.
+- Explicit tampered bundle fail-closed coverage.
+
+### Safety Boundaries
+
+- Review Pack V0.2 is local and offline.
+- Review Pack creation verifies signed exports before packaging.
+- Review Pack creation fails closed when verification fails.
+- Review Pack creation does not mutate source artifacts.
+- Review Pack creation does not copy private keys.
+- Review Pack creation does not add telemetry.
+- Review Pack creation does not change OpenAPI or MCP behavior.
+- Review Pack creation does not change canonical schema or core validation.
+- No legal non-repudiation, court-grade proof, or regulatory certification
+  claim is made.
+- Review Pack V0.2 is not compliance certification.
+- Review Pack V0.2 is not AI Act approval.
+- Review Pack V0.2 is not a full AI governance assessment.
+- `agent-evidence` is not a full AI governance platform.
+
+### Non-Goals
+
+- No AI Act Pack.
+- No PDF or HTML report generator.
+- No dashboard.
+- No hosted or remote review service.
+- No remote MCP.
+- No MCP registry publication.
+- No OpenAPI or MCP Review Pack exposure.
+- No GitHub Pages or `ADOPTERS.md`.
+- No canonical schema rewrite.
+- No core validation rewrite.
+- No old NCS/media work.
+
+### Release Actions Still Required
+
+- Confirm final v0.5.0 release authorization.
+- Confirm GitHub release body.
+- Confirm PyPI/TestPyPI publication intent.
+- Confirm Zenodo behavior after GitHub release.
+- Confirm v0.5.0 installed-package smoke after publication.
+
 ## v0.4.0 Review Pack Release Prep
 
 This release-prep entry prepares `agent-evidence` v0.4.0 after Review Pack

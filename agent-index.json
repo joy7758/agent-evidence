@@ -2,7 +2,7 @@
   "name": "agent-evidence",
   "summary": "agent-evidence turns AI agent and service operations into structured evidence objects that can be validated, reviewed, and retained outside the original runtime.",
   "current_status": {
-    "version": "0.4.0",
+    "version": "0.5.0",
     "license": "Apache-2.0",
     "development_status": "experimental",
     "repository": "https://github.com/joy7758/agent-evidence",
@@ -149,7 +149,7 @@
     "file": "CITATION.cff",
     "codemeta_file": "codemeta.json",
     "doi": "10.5281/zenodo.19334061",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "repository": "https://github.com/joy7758/agent-evidence"
   },
   "attribution": {

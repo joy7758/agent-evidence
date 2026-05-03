@@ -54,14 +54,22 @@ Use this checklist before publishing a GitHub or PyPI release.
 - [ ] Confirm `verify-export` returns `"ok": true`
 - [ ] Remove `./tmp/openai-compatible-minimal-evidence`
 
-## Review Pack Smoke
+## Review Pack V0.2 Smoke
 
 - [ ] Run `python examples/langchain_minimal_evidence.py --output-dir ./tmp/langchain-minimal-evidence`
 - [ ] Run `agent-evidence review-pack create --bundle ./tmp/langchain-minimal-evidence/langchain-evidence.bundle.json --public-key ./tmp/langchain-minimal-evidence/manifest-public.pem --summary ./tmp/langchain-minimal-evidence/summary.json --output-dir ./tmp/langchain-review-pack`
+- [ ] Confirm `./tmp/langchain-review-pack/manifest.json` parses as JSON
 - [ ] Confirm `./tmp/langchain-review-pack/receipt.json` contains `"ok": true`
 - [ ] Confirm `./tmp/langchain-review-pack/findings.json` parses as JSON
-- [ ] Confirm `./tmp/langchain-review-pack/summary.md` includes limitation language
+- [ ] Confirm `review_pack_version` is `"0.2"` in Review Pack metadata
+- [ ] Confirm `./tmp/langchain-review-pack/summary.md` includes:
+      `Reviewer Checklist`, `Verification Details`, `Artifact Inventory`,
+      `Findings`, `Recommended Reviewer Actions`, and `What This Does Not Prove`
+- [ ] Confirm `findings.json` severities are limited to `pass`, `warning`,
+      `fail`, and `unknown`
 - [ ] Confirm `manifest-private.pem` is not copied into the Review Pack
+- [ ] Confirm the tampered bundle fail-closed test passes
+- [ ] Confirm no OpenAPI or MCP Review Pack endpoint/tool is exposed
 - [ ] Remove `./tmp/langchain-minimal-evidence` and `./tmp/langchain-review-pack`
 - [ ] Run the OpenAI-compatible mock Review Pack smoke if changing Review Pack packaging
 
@@ -83,7 +91,7 @@ Use this checklist before publishing a GitHub or PyPI release.
 - [ ] No legal non-repudiation claim
 - [ ] No full AI governance platform claim
 - [ ] No remote MCP or hosted OpenAPI product claim
-- [ ] Review Pack claims are limited to local/offline V0.1 reviewer packaging
+- [ ] Review Pack claims are limited to local/offline V0.2 reviewer packaging
 - [ ] No AI Act Pack claim
 
 ## Final Release Actions
