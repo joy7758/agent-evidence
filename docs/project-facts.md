@@ -18,7 +18,7 @@ original runtime.
 
 ## Current Version
 
-`0.2.0`
+`0.3.0`
 
 Source: `pyproject.toml`.
 
@@ -148,8 +148,8 @@ Pages callable surface in the current project boundary.
 
 ## TBD / Uncertain Fields
 
-- Release-specific citation policy: TBD until `CITATION.cff` and
-  `docs/how-to-cite.md` define whether the current DOI or a release DOI should
-  be preferred for each use case.
+- Release-specific citation policy: use the current documented DOI as the
+  concept/repository DOI until release execution confirms whether a
+  release-specific archive DOI should be added after publication.
 - Organization/funder/adopter metadata: TBD because no canonical organization,
   funder, or adoption claim is confirmed in project metadata.

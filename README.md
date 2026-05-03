@@ -27,7 +27,8 @@ DOI: [10.5281/zenodo.19334062](https://doi.org/10.5281/zenodo.19334062)
 - runnable single-path demo
 - LangChain-first evidence exporter and offline bundle verification
 - FDO-style mapping material for discussion, not a claim of official standard adoption
-- release and archive surface anchored by GitHub Release `v0.2.0` and DOI `10.5281/zenodo.19334062`
+- v0.3.0 release-prep metadata and release checklist, with final GitHub/PyPI
+  release execution still requiring maintainer confirmation
 
 ## Quick Start
 

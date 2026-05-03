@@ -9,7 +9,7 @@ facts are in `docs/project-facts.md`.
 ## Current status
 
 - Project: `agent-evidence`
-- Version: `0.2.0`
+- Version: `0.3.0`
 - Development status: `experimental`
 - License: `Apache-2.0`
 - Repository: https://github.com/joy7758/agent-evidence
@@ -119,6 +119,9 @@ behavior, or outbound promotion workflows.
 - `examples/openai_compatible_minimal_evidence.py`
 - `docs/cookbooks/local-openapi-wrapper.md`
 - `docs/cookbooks/local-mcp-readonly.md`
+- `docs/release-readiness.md`
+- `docs/release-checklist.md`
+- `RELEASE_NOTES.md`
 - `docs/project-facts.md`
 
 ## Metadata files
