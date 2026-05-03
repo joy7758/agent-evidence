@@ -18,7 +18,7 @@ original runtime.
 
 ## Current Version
 
-`0.3.0`
+`0.3.1`
 
 Source: `pyproject.toml`.
 
@@ -30,13 +30,16 @@ Sources: `pyproject.toml`, `LICENSE`.
 
 ## DOI
 
-`10.5281/zenodo.19334062`
+`10.5281/zenodo.19334061`
 
 Source: `README.md`.
 
+The current primary DOI is the Zenodo concept DOI for the project. For exact
+release citation, v0.3.0 was archived at `10.5281/zenodo.19998176`.
+
 Historical release DOI also present: `10.5281/zenodo.19055948` in
-`release/v0.1-live-chain/RELEASE_NOTE.md`. Use the current README DOI unless
-citing that historical release specifically.
+`release/v0.1-live-chain/RELEASE_NOTE.md`. Use the concept DOI unless citing a
+specific archived release.
 
 ## Canonical Repository URL
 
@@ -148,8 +151,8 @@ Pages callable surface in the current project boundary.
 
 ## TBD / Uncertain Fields
 
-- Release-specific citation policy: use the current documented DOI as the
-  concept/repository DOI until release execution confirms whether a
-  release-specific archive DOI should be added after publication.
+- Release-specific citation policy: use the documented concept DOI for the
+  evolving project, and use the version DOI recorded in release notes when an
+  exact archived release must be cited.
 - Organization/funder/adopter metadata: TBD because no canonical organization,
   funder, or adoption claim is confirmed in project metadata.

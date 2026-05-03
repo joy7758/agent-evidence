@@ -1,5 +1,26 @@
 # Release Notes
 
+## v0.3.1 Metadata-Only Patch Prep
+
+This metadata-only patch prepares `agent-evidence` v0.3.1 after GitHub Release
+v0.3.0 was archived by Zenodo.
+
+### Changed
+
+- Primary project citation now uses the Zenodo concept DOI:
+  `10.5281/zenodo.19334061`.
+- The exact v0.3.0 version DOI is documented for release-specific citation:
+  `10.5281/zenodo.19998176`.
+- Release metadata, citation guidance, generated agent metadata, and release
+  readiness docs are aligned on version `0.3.1`.
+
+### Scope
+
+- Metadata-only patch.
+- No code behavior changes.
+- No OpenAPI, MCP, schema, or core validation changes.
+- No PyPI/TestPyPI release was made for `0.3.0`.
+
 ## v0.3.0 Release Prep
 
 This release-prep entry summarizes the agent-native discovery and local

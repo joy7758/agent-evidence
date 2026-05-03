@@ -1,6 +1,6 @@
 # 当前状态
 
-> Current release-prep status for v0.3.0 is tracked in
+> Current release-prep status for v0.3.1 is tracked in
 > `docs/release-readiness.md` and `docs/release-checklist.md`. The historical
 > notes below include earlier v0.1/v0.2 readiness context.
 
@@ -201,7 +201,8 @@
   - 本地 `git tag` 可见 `v0.2.0`
   - `git show v0.2.0` 可见该 tag 冻结了 OAP v0.1 package
   - GitHub Release API 可见公开 release `Agent Evidence v0.2.0`
-  - DataCite API 可见 Zenodo DOI `10.5281/zenodo.19334062`
+  - DataCite API 可见当时的 Zenodo v0.2.0 version DOI；当前项目主 DOI 见
+    `docs/release-readiness.md`
 - 投稿前待补：
   - 若后续继续扩大 release / DOI 同步面，需要逐项判断其他历史 specimen 材料是否保留旧 DOI `10.5281/zenodo.19055948`
   - related work 正式引文

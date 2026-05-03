@@ -7,8 +7,8 @@ Use `CITATION.cff` as the machine-readable source for citation metadata.
 Plain-text citation:
 
 Bin Zhang. `agent-evidence`: Runtime evidence exporter and validator for AI
-agent and service operations. Version 0.2.0. DOI:
-10.5281/zenodo.19334062.
+agent and service operations. Version 0.3.1. DOI:
+10.5281/zenodo.19334061.
 
 Repository: <https://github.com/joy7758/agent-evidence>
 
@@ -18,8 +18,8 @@ Repository: <https://github.com/joy7758/agent-evidence>
 @software{zhang_agent_evidence_2026,
   author = {Zhang, Bin},
   title = {agent-evidence},
-  version = {0.2.0},
-  doi = {10.5281/zenodo.19334062},
+  version = {0.3.1},
+  doi = {10.5281/zenodo.19334061},
   url = {https://github.com/joy7758/agent-evidence},
   license = {Apache-2.0},
   note = {Runtime evidence exporter and validator for AI agent and service operations}
@@ -29,8 +29,12 @@ Repository: <https://github.com/joy7758/agent-evidence>
 ## Citing a Specific Version or Release
 
 When citing a specific release, prefer the DOI and version recorded for that
-release. The current repository-level DOI in `README.md` is
-`10.5281/zenodo.19334062`.
+release. The current project DOI in `README.md` is the Zenodo concept DOI:
+`10.5281/zenodo.19334061`.
+
+Exact release DOI currently documented:
+
+- `10.5281/zenodo.19998176` for the GitHub Release v0.3.0 archive.
 
 Historical release DOI present in this repository:
 

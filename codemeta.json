@@ -3,8 +3,8 @@
   "@type": "SoftwareSourceCode",
   "name": "agent-evidence",
   "description": "Runtime evidence exporter and validator for AI agent and service operations.",
-  "version": "0.3.0",
-  "identifier": "https://doi.org/10.5281/zenodo.19334062",
+  "version": "0.3.1",
+  "identifier": "https://doi.org/10.5281/zenodo.19334061",
   "codeRepository": "https://github.com/joy7758/agent-evidence",
   "url": "https://github.com/joy7758/agent-evidence",
   "license": "https://spdx.org/licenses/Apache-2.0.html",
@@ -29,7 +29,7 @@
       "identifier": "https://orcid.org/0009-0002-8861-1481"
     }
   ],
-  "citation": "https://doi.org/10.5281/zenodo.19334062",
+  "citation": "https://doi.org/10.5281/zenodo.19334061",
   "softwareRequirements": [
     "click>=8.1",
     "jsonschema>=4.23",
