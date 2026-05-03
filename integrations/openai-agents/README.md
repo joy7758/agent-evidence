@@ -12,3 +12,12 @@ Run:
 ```bash
 python integrations/openai-agents/export_evidence.py
 ```
+
+For the provider-agnostic OpenAI-compatible 5-minute path, start with:
+
+```text
+docs/cookbooks/openai_compatible_minimal_evidence.md
+```
+
+That path defaults to mock/offline behavior and keeps provider configuration
+limited to `api_key`, `base_url`, and `model`.

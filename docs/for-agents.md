@@ -49,6 +49,19 @@ LangChain / LangGraph evidence demo:
 Start from `docs/cookbooks/langchain_minimal_evidence.md`. The path is
 offline/mock by default and does not require an external model API key.
 
+Run the OpenAI-compatible evidence path when the user asks for a
+provider-agnostic OpenAI API-compatible demo:
+
+```bash
+.venv/bin/python examples/openai_compatible_minimal_evidence.py \
+  --output-dir ./tmp/openai-compatible-minimal-evidence \
+  --mock
+```
+
+Start from `docs/cookbooks/openai_compatible_minimal_evidence.md`. The default
+path is mock/offline, does not require an external API key, and keeps provider
+configuration limited to `api_key`, `base_url`, and `model`.
+
 Inspect the CLI:
 
 ```bash
