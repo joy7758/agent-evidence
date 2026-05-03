@@ -68,3 +68,6 @@ def test_agent_index_matches_capabilities_file_references() -> None:
     assert "examples/openai_compatible_minimal_evidence.py" in payload["entrypoints"]["guides"]
     assert "docs/cookbooks/local-openapi-wrapper.md" in payload["entrypoints"]["guides"]
     assert "docs/cookbooks/local-mcp-readonly.md" in payload["entrypoints"]["guides"]
+    assert "docs/release-readiness.md" in payload["entrypoints"]["guides"]
+    assert "docs/release-checklist.md" in payload["entrypoints"]["guides"]
+    assert "RELEASE_NOTES.md" in payload["entrypoints"]["guides"]

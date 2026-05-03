@@ -126,7 +126,10 @@ The server limits request bodies to 1 MiB.
 - The server is intended for local use on `127.0.0.1`.
 - There is no hosted mode.
 - There is no auth system.
-- There is no MCP server yet.
+- MCP is available separately as a local stdio read-only / verify-first wrapper.
+- MCP remains local-only and is not registry-published.
 - There is no telemetry.
 - There is no Review Pack endpoint.
+- There are no remote MCP, write-tool, shell-tool, upload/sign, or GitHub
+  automation tools.
 - The wrapper does not duplicate validation or verification logic.

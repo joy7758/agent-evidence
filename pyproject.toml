@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "agent-evidence"
-version = "0.2.0"
+version = "0.3.0"
 description = "Evidence capture primitives for autonomous agent systems."
 readme = "README.md"
 requires-python = ">=3.11"

@@ -26,6 +26,9 @@ SOURCE_PATHS = [
     "examples/openai_compatible_minimal_evidence.py",
     "docs/cookbooks/local-openapi-wrapper.md",
     "docs/cookbooks/local-mcp-readonly.md",
+    "docs/release-readiness.md",
+    "docs/release-checklist.md",
+    "RELEASE_NOTES.md",
     "CITATION.cff",
     "codemeta.json",
     "ATTRIBUTION.md",
@@ -43,6 +46,9 @@ GUIDE_PATHS = [
     "examples/openai_compatible_minimal_evidence.py",
     "docs/cookbooks/local-openapi-wrapper.md",
     "docs/cookbooks/local-mcp-readonly.md",
+    "docs/release-readiness.md",
+    "docs/release-checklist.md",
+    "RELEASE_NOTES.md",
     "docs/project-facts.md",
 ]
 

@@ -2,7 +2,7 @@
   "name": "agent-evidence",
   "summary": "agent-evidence turns AI agent and service operations into structured evidence objects that can be validated, reviewed, and retained outside the original runtime.",
   "current_status": {
-    "version": "0.2.0",
+    "version": "0.3.0",
     "license": "Apache-2.0",
     "development_status": "experimental",
     "repository": "https://github.com/joy7758/agent-evidence",
@@ -127,6 +127,9 @@
       "examples/openai_compatible_minimal_evidence.py",
       "docs/cookbooks/local-openapi-wrapper.md",
       "docs/cookbooks/local-mcp-readonly.md",
+      "docs/release-readiness.md",
+      "docs/release-checklist.md",
+      "RELEASE_NOTES.md",
       "docs/project-facts.md"
     ],
     "metadata": [
@@ -143,7 +146,7 @@
     "file": "CITATION.cff",
     "codemeta_file": "codemeta.json",
     "doi": "10.5281/zenodo.19334062",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "repository": "https://github.com/joy7758/agent-evidence"
   },
   "attribution": {

@@ -1,5 +1,9 @@
 # 当前状态
 
+> Current release-prep status for v0.3.0 is tracked in
+> `docs/release-readiness.md` and `docs/release-checklist.md`. The historical
+> notes below include earlier v0.1/v0.2 readiness context.
+
 ## 仓库现状摘要
 - 已有资产：`spec/`、`schema/`、`examples/`、`scripts/`、`tests/`、`submission/`、`agent_evidence/cli`。
 - 已有实现：`execution-evidence-object` 原型、`agent_evidence.aep` bundle 校验链、若干导出和验证命令。
