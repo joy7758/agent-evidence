@@ -1,10 +1,10 @@
 # Release Notes
 
-## v0.6.0 Review Pack V0.3 Release Prep
+## v0.6.0 Review Pack V0.3 Release
 
-This release-prep entry prepares `agent-evidence` v0.6.0 after Review Pack
-V0.3 was merged and post-merge audited. It does not publish a GitHub Release,
-TestPyPI package, or PyPI package by itself.
+This release entry records `agent-evidence` v0.6.0 after Review Pack V0.3 was
+merged, post-merge audited, and published to GitHub, Zenodo, TestPyPI, and
+PyPI. The PyPI package is available as `agent-evidence==0.6.0`.
 
 ### Added
 
@@ -62,13 +62,17 @@ TestPyPI package, or PyPI package by itself.
 - No core validation rewrite.
 - No old NCS/media work.
 
-### Release Actions Still Required
+### Release Status
 
-- Confirm final v0.6.0 release authorization.
-- Confirm GitHub release body.
-- Confirm PyPI/TestPyPI publication intent.
-- Confirm Zenodo behavior after GitHub release.
-- Confirm v0.6.0 installed-package smoke after publication.
+- GitHub Release v0.6.0: completed.
+- Zenodo v0.6.0 archive: completed.
+- Zenodo v0.6.0 version DOI: `10.5281/zenodo.20013667`.
+- TestPyPI v0.6.0 publication: completed.
+- PyPI v0.6.0 publication: completed.
+- v0.6.0 clean install smoke: completed.
+- MCP extra smoke: completed.
+- Review Pack V0.3 smoke: completed.
+- This docs-only correction does not change package behavior.
 
 ## v0.5.0 Review Pack V0.2 Release
 

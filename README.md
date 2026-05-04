@@ -27,8 +27,9 @@ DOI: [10.5281/zenodo.19334061](https://doi.org/10.5281/zenodo.19334061)
 - runnable single-path demo
 - LangChain-first evidence exporter and offline bundle verification
 - FDO-style mapping material for discussion, not a claim of official standard adoption
-- v0.6.0 release-prep with Review Pack V0.3: local, offline, verify-first
-  reviewer-facing packaging for verified signed exports; not legal,
+- v0.6.0 released with Review Pack V0.3: local, offline, verify-first
+  reviewer-facing packaging for verified signed exports; available as
+  `agent-evidence==0.6.0` on PyPI and archived on Zenodo; not legal,
   compliance, or AI Act approval
 
 ## Quick Start

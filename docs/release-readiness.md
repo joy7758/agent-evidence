@@ -1,22 +1,25 @@
 # Release Readiness for v0.6.0
 
-This document records release-prep status for `agent-evidence` v0.6.0 after
-Review Pack V0.3 was merged and post-merge audited.
+This document records post-release status for `agent-evidence` v0.6.0 after
+Review Pack V0.3 was released and post-release audited.
 
-This is a release-state document. It records readiness for the next release and
-is not an active release authorization gate.
+This is a release-state document. It records the current released state and is
+not an active release authorization gate.
 
 ## Current Assessment
 
-Status: v0.6.0 release-prep ready after metadata, release notes, checklist,
-and generated metadata alignment.
+Status: v0.6.0 released and post-release audited after metadata, release
+notes, checklist, generated metadata, install smoke, and Review Pack V0.3
+smoke checks.
 
-- GitHub Release v0.6.0: not created.
-- Zenodo v0.6.0 archive: pending GitHub Release.
-- TestPyPI v0.6.0: not uploaded.
-- PyPI v0.6.0: not uploaded.
-- Post-merge release-prep smoke: required after this PR merges.
-- Urgent hotfix: not currently known.
+- GitHub Release v0.6.0: completed.
+- Zenodo v0.6.0 archive: completed.
+- Zenodo v0.6.0 version DOI: `10.5281/zenodo.20013667`.
+- TestPyPI v0.6.0: completed.
+- PyPI v0.6.0: published and latest.
+- Post-release install smoke: completed.
+- Review Pack V0.3 smoke: completed.
+- Urgent code or packaging hotfix: not currently known.
 
 Current package metadata version: `0.6.0`.
 
@@ -33,11 +36,11 @@ archived.
 - Exact v0.3.1 version DOI: `10.5281/zenodo.19998690`
 - Exact v0.4.0 version DOI: `10.5281/zenodo.20004271`
 - Exact v0.5.0 version DOI: `10.5281/zenodo.20011103`
+- Exact v0.6.0 version DOI: `10.5281/zenodo.20013667`
 
 Use the concept DOI in `CITATION.cff`, `codemeta.json`, `README.md`, and
 generated agent metadata. Use version DOIs only when citing or reproducing a
-specific archived release. Do not pre-fill a v0.6.0 version DOI before Zenodo
-archives the GitHub Release.
+specific archived release.
 
 ## Surface Status
 
@@ -90,7 +93,7 @@ The release must clearly state these boundaries:
 
 ## Release Notes Status
 
-`RELEASE_NOTES.md` records the planned v0.6.0 Review Pack release summary. The
+`RELEASE_NOTES.md` records the published v0.6.0 Review Pack release summary. The
 release notes cover:
 
 - local Review Pack V0.3
@@ -126,17 +129,18 @@ release notes cover:
 - Contamination from isolated old NCS/media work if release work is not done
   from a clean `origin/main` worktree.
 
-## Release Execution Still Required
+## Post-Release Verification
 
-After this release-prep PR merges, run a post-merge smoke before any release
-authorization. Release execution still requires explicit approval for:
+The v0.6.0 release execution has completed. Post-release verification covered:
 
-- GitHub Release v0.6.0
-- Zenodo archive check after GitHub Release
+- GitHub Release v0.6.0 latest release
+- Zenodo v0.6.0 archive and concept DOI strategy
 - TestPyPI v0.6.0 upload
-- PyPI v0.6.0 upload
+- PyPI v0.6.0 upload and latest version check
 - clean install smoke
 - MCP extra smoke
+- optional extras smoke
 - Review Pack V0.3 smoke
+- `--json-errors` smoke
 - generated metadata checks
 - release-facing claim boundary checks
