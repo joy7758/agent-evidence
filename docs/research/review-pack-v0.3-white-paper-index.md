@@ -13,10 +13,11 @@ Pack. It does not add implementation scope or publication claims.
 
 Canonical draft:
 
-- [Review Pack V0.3 Technical Note V3](review-pack-v0.3-technical-note-v3.md)
+- [Review Pack V0.3 Technical Note V3.1](review-pack-v0.3-technical-note-v3.1.md)
 
 Supporting background:
 
+- [Review Pack V0.3 Technical Note V3](review-pack-v0.3-technical-note-v3.md)
 - [Review Pack V0.3 Technical Note V2](review-pack-v0.3-technical-note-v2.md)
 - [Review Pack V0.3 Submission Plan](review-pack-v0.3-submission-plan.md)
 - [Operation Accountability Profile](operation-accountability-profile.md)
@@ -24,17 +25,18 @@ Supporting background:
 - [Strategic Positioning](../strategic-positioning.md)
 - [Review Pack Minimal Cookbook](../cookbooks/review_pack_minimal.md)
 
-The current recommendation is to treat V3 as the canonical repository white
-paper draft. No immediate V3.1 is required. A Zenodo technical report should
-wait until one more refinement cycle. arXiv and workshop submission remain
-deferred.
+The current recommendation is to treat V3.1 as the canonical repository white
+paper draft. V3 remains a previous draft and supporting background. V2 remains
+supporting background. The submission plan remains planning background. A
+Zenodo technical report should wait until one more refinement cycle. arXiv and
+workshop submission remain deferred.
 
 ## Reading Order
 
 1. [Strategic Positioning](../strategic-positioning.md)
    - Start here to understand the project boundary after v0.6.0: local
      evidence export, validation, verification, and review packaging.
-2. [Review Pack V0.3 Technical Note V3](review-pack-v0.3-technical-note-v3.md)
+2. [Review Pack V0.3 Technical Note V3.1](review-pack-v0.3-technical-note-v3.1.md)
    - Read this as the canonical technical note draft and repository white
      paper seed.
 3. [Review Pack Minimal Cookbook](../cookbooks/review_pack_minimal.md)
@@ -49,6 +51,10 @@ deferred.
 6. [Review Pack V0.3 Submission Plan](review-pack-v0.3-submission-plan.md)
    - Read this before external sharing to check target readers, contribution
      framing, figures, evaluation evidence, and claims boundaries.
+
+Previous drafts V3 and V2 remain useful supporting background when reviewing
+how the technical note was compressed and polished, but V3.1 is the current
+canonical draft.
 
 ## Target Readers
 
@@ -86,8 +92,8 @@ implemented contributions:
 
 1. A local verify-first / fail-closed Review Pack artifact model for signed
    agent evidence bundles.
-2. A dual human/agent review surface: `summary.md` plus `manifest.json`,
-   `receipt.json`, and `findings.json`.
+2. A dual human/tool-using-agent review surface: `summary.md` plus
+   `manifest.json`, `receipt.json`, and `findings.json`.
 3. Stable `RP-CHECK-*` reviewer checklist IDs and bounded findings/severity
    model.
 4. Conservative safety boundaries: no private key copying, no network
@@ -143,15 +149,17 @@ external sharing language.
 
 ## Next Writing Step
 
-Recommended next phase:
+Recommended next phase after this index update:
 
 ```text
-P50 Review Pack V0.3 white paper polish planning
+P54 Review Pack V0.3 white paper index post-merge sanity
 ```
 
-P50 should decide whether to prepare a V3.1 draft, refine diagrams, select the
-final abstract for external sharing, and decide whether and when to create a
-Zenodo technical report. arXiv and workshop submission should remain deferred.
+After post-merge sanity, the next writing-planning decision should be whether
+to prepare a concise Chinese summary or to plan a Zenodo technical report. The
+current recommendation is to consider Chinese summary planning first. Zenodo
+technical report, arXiv submission, and workshop submission should remain
+deferred until a separate readiness decision.
 
 Do not make AI Act Pack implementation the next step.
 
