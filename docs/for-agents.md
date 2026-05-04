@@ -7,6 +7,17 @@ Use `docs/project-facts.md` as the factual source for project name, version,
 license, DOI, repository URL, callable surface, integrations, and claim
 boundaries.
 
+Use [Strategic Positioning](strategic-positioning.md) and the files under
+`docs/research/` when the user asks for the project's research framing,
+Review Pack V0.3 positioning, Operation Accountability Profile context, FDO /
+data-space mapping, or paper / technical-note outline.
+
+Relevant research docs:
+[Review Pack V0.3 Technical Note](research/review-pack-v0.3-technical-note.md),
+[Operation Accountability Profile](research/operation-accountability-profile.md),
+[FDO / Data-Space Mapping](research/fdo-data-space-mapping.md), and
+[Paper / Technical Note Outline](research/paper-outline.md).
+
 ## How to Understand the Project
 
 `agent-evidence` is a runtime evidence exporter and validator for AI agent and
