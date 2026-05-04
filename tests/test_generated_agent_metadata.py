@@ -61,6 +61,9 @@ def test_agent_index_matches_capabilities_file_references() -> None:
         == payload["entrypoints"]["cli"]["capabilities_command"]
     )
     assert "openapi.yaml" in payload["entrypoints"]["metadata"]
+    assert (
+        "docs/cookbooks/agentic_engineering_consumption_loop.md" in payload["entrypoints"]["guides"]
+    )
     assert "docs/cookbooks/langchain_minimal_evidence.md" in payload["entrypoints"]["guides"]
     assert (
         "docs/cookbooks/openai_compatible_minimal_evidence.md" in payload["entrypoints"]["guides"]
@@ -72,3 +75,38 @@ def test_agent_index_matches_capabilities_file_references() -> None:
     assert "docs/release-readiness.md" in payload["entrypoints"]["guides"]
     assert "docs/release-checklist.md" in payload["entrypoints"]["guides"]
     assert "RELEASE_NOTES.md" in payload["entrypoints"]["guides"]
+
+
+def test_agentic_consumption_loop_is_discoverable_and_bounded() -> None:
+    cookbook_path = ROOT / "docs/cookbooks/agentic_engineering_consumption_loop.md"
+    assert cookbook_path.exists()
+
+    cookbook = cookbook_path.read_text(encoding="utf-8")
+    for required in [
+        "agent-evidence capabilities --json",
+        "verify-export",
+        "review-pack create",
+        "--json-errors",
+        "docs/how-to-cite.md",
+        "ATTRIBUTION.md",
+    ]:
+        assert required in cookbook
+
+    for boundary in [
+        "no legal non-repudiation",
+        "no compliance certification",
+        "no AI Act approval",
+        "no full AI governance platform",
+        "no comprehensive DLP",
+        "no automatic star/follow/fork/promotion",
+    ]:
+        assert boundary in cookbook
+
+    for path in [
+        "AGENTS.md",
+        "docs/for-agents.md",
+        "llms.txt",
+    ]:
+        assert "docs/cookbooks/agentic_engineering_consumption_loop.md" in (ROOT / path).read_text(
+            encoding="utf-8"
+        )

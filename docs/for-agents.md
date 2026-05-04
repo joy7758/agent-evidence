@@ -12,6 +12,13 @@ Use [Strategic Positioning](strategic-positioning.md) and the files under
 Review Pack V0.3 positioning, Operation Accountability Profile context, FDO /
 data-space mapping, or paper / technical-note outline.
 
+## Agentic Engineering Consumption Loop
+
+When an external agent needs a complete discovery, capability inspection,
+runnable evidence, verification, Review Pack, failure-handling, and citation
+path, start with
+`docs/cookbooks/agentic_engineering_consumption_loop.md`.
+
 For Review Pack V0.3 white paper / technical note materials, start with
 [Review Pack V0.3 White Paper Index](research/review-pack-v0.3-white-paper-index.md).
 
