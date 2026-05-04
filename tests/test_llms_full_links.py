@@ -6,6 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED_PATHS = [
     "AGENTS.md",
+    "CLAUDE.md",
     "llms.txt",
     "llms-full.txt",
     "docs/for-agents.md",

@@ -60,8 +60,9 @@ def render_llms_full() -> str:
 {index["summary"]}
 
 Use this file as the expanded LLM-readable guide. The compact guide is
-`llms.txt`; coding-agent instructions are in `AGENTS.md`; canonical project
-facts are in `docs/project-facts.md`.
+`llms.txt`; coding-agent instructions are in `AGENTS.md`; `CLAUDE.md` is a
+Claude Code bridge that imports `AGENTS.md`; canonical project facts are in
+`docs/project-facts.md`.
 
 ## Current status
 

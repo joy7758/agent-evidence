@@ -120,6 +120,7 @@
     "package": "agent_evidence/",
     "guides": [
       "AGENTS.md",
+      "CLAUDE.md",
       "llms.txt",
       "llms-full.txt",
       "docs/for-agents.md",

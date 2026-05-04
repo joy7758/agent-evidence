@@ -19,6 +19,10 @@ runnable evidence, verification, Review Pack, failure-handling, and citation
 path, start with
 `docs/cookbooks/agentic_engineering_consumption_loop.md`.
 
+Claude Code users may start from `CLAUDE.md`. That file imports `AGENTS.md`;
+`AGENTS.md` remains the canonical instruction file, and the full consumption
+loop remains `docs/cookbooks/agentic_engineering_consumption_loop.md`.
+
 For weekly monitoring of agentic compatibility assumptions, use
 `docs/agentic-intelligence/weekly-agentic-compatibility-loop.md`.
 
