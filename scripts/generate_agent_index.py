@@ -18,6 +18,7 @@ AGENT_INDEX_PATH = ROOT / "agent-index.json"
 SOURCE_PATHS = [
     "docs/project-facts.md",
     "AGENTS.md",
+    "CLAUDE.md",
     "llms.txt",
     "docs/for-agents.md",
     "docs/callable-surfaces.md",
@@ -39,6 +40,7 @@ SOURCE_PATHS = [
 
 GUIDE_PATHS = [
     "AGENTS.md",
+    "CLAUDE.md",
     "llms.txt",
     "llms-full.txt",
     "docs/for-agents.md",

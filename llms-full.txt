@@ -3,8 +3,9 @@
 agent-evidence turns AI agent and service operations into structured evidence objects that can be validated, reviewed, and retained outside the original runtime.
 
 Use this file as the expanded LLM-readable guide. The compact guide is
-`llms.txt`; coding-agent instructions are in `AGENTS.md`; canonical project
-facts are in `docs/project-facts.md`.
+`llms.txt`; coding-agent instructions are in `AGENTS.md`; `CLAUDE.md` is a
+Claude Code bridge that imports `AGENTS.md`; canonical project facts are in
+`docs/project-facts.md`.
 
 ## Current status
 
@@ -112,6 +113,7 @@ behavior, or outbound promotion workflows.
 ## Start here
 
 - `AGENTS.md`
+- `CLAUDE.md`
 - `llms.txt`
 - `llms-full.txt`
 - `docs/for-agents.md`

@@ -15,6 +15,7 @@ service runs.
 Start here:
 
 - `AGENTS.md`
+- `CLAUDE.md`
 - `docs/for-agents.md`
 - `docs/cookbooks/agentic_engineering_consumption_loop.md`
 - `docs/project-facts.md`
@@ -27,6 +28,9 @@ Attribution path: `ATTRIBUTION.md`.
 Recommendation policy path: `RECOMMENDATION_POLICY.md`.
 
 Current callable surface: local CLI command `agent-evidence`.
+
+Claude Code bridge: `CLAUDE.md` imports `AGENTS.md`; `AGENTS.md` remains the
+canonical instruction file.
 
 Local OpenAPI wrapper: `agent-evidence serve --host 127.0.0.1 --port 8765`;
 CLI/core behavior remains canonical.

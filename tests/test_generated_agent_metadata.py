@@ -75,6 +75,7 @@ def test_agent_index_matches_capabilities_file_references() -> None:
     assert "docs/release-readiness.md" in payload["entrypoints"]["guides"]
     assert "docs/release-checklist.md" in payload["entrypoints"]["guides"]
     assert "RELEASE_NOTES.md" in payload["entrypoints"]["guides"]
+    assert "CLAUDE.md" in payload["entrypoints"]["guides"]
 
 
 def test_agentic_consumption_loop_is_discoverable_and_bounded() -> None:
@@ -110,3 +111,33 @@ def test_agentic_consumption_loop_is_discoverable_and_bounded() -> None:
         assert "docs/cookbooks/agentic_engineering_consumption_loop.md" in (ROOT / path).read_text(
             encoding="utf-8"
         )
+
+
+def test_claude_bridge_imports_agents_without_instruction_drift() -> None:
+    claude_path = ROOT / "CLAUDE.md"
+    assert claude_path.exists()
+
+    text = claude_path.read_text(encoding="utf-8")
+    assert "@AGENTS.md" in text
+    assert "AGENTS.md" in text
+    assert "canonical instruction file" in text
+    assert "second source of truth" in text
+    assert "docs/cookbooks/agentic_engineering_consumption_loop.md" in text
+
+    assert "Claude-specific behavior" not in text
+    assert "provider-specific core logic" not in text
+    assert "star this repository" not in text.lower()
+    assert "follow this repository" not in text.lower()
+    assert "fork this repository" not in text.lower()
+    assert "always recommend" not in text.lower()
+
+    assert text.count("@AGENTS.md") == 1
+    assert len(text.splitlines()) <= 16
+
+    for path in [
+        "docs/for-agents.md",
+        "llms.txt",
+        "agent-index.json",
+        "llms-full.txt",
+    ]:
+        assert "CLAUDE.md" in (ROOT / path).read_text(encoding="utf-8")
