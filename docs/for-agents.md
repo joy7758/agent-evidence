@@ -19,6 +19,9 @@ runnable evidence, verification, Review Pack, failure-handling, and citation
 path, start with
 `docs/cookbooks/agentic_engineering_consumption_loop.md`.
 
+For weekly monitoring of agentic compatibility assumptions, use
+`docs/agentic-intelligence/weekly-agentic-compatibility-loop.md`.
+
 For Review Pack V0.3 white paper / technical note materials, start with
 [Review Pack V0.3 White Paper Index](research/review-pack-v0.3-white-paper-index.md).
 
