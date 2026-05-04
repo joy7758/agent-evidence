@@ -14,6 +14,7 @@ V030_VERSION_DOI = "10.5281/zenodo.19998176"
 V031_VERSION_DOI = "10.5281/zenodo.19998690"
 V040_VERSION_DOI = "10.5281/zenodo.20004271"
 V050_VERSION_DOI = "10.5281/zenodo.20011103"
+V060_VERSION_DOI = "10.5281/zenodo.20013667"
 
 
 def _project_version() -> str:
@@ -79,6 +80,7 @@ def test_prior_version_dois_are_release_specific_documentation_only() -> None:
     assert V031_VERSION_DOI in combined
     assert V040_VERSION_DOI in combined
     assert V050_VERSION_DOI in combined
+    assert V060_VERSION_DOI in combined
 
     for path in [
         "CITATION.cff",
@@ -87,10 +89,12 @@ def test_prior_version_dois_are_release_specific_documentation_only() -> None:
         "agent-index.json",
         "llms-full.txt",
     ]:
-        assert V030_VERSION_DOI not in (ROOT / path).read_text(encoding="utf-8"), path
-        assert V031_VERSION_DOI not in (ROOT / path).read_text(encoding="utf-8"), path
-        assert V040_VERSION_DOI not in (ROOT / path).read_text(encoding="utf-8"), path
-        assert V050_VERSION_DOI not in (ROOT / path).read_text(encoding="utf-8"), path
+        text = (ROOT / path).read_text(encoding="utf-8")
+        assert V030_VERSION_DOI not in text, path
+        assert V031_VERSION_DOI not in text, path
+        assert V040_VERSION_DOI not in text, path
+        assert V050_VERSION_DOI not in text, path
+        assert V060_VERSION_DOI not in text, path
 
 
 def test_release_docs_and_stale_callable_statements_are_present() -> None:
@@ -168,9 +172,9 @@ def test_review_pack_v03_release_prep_docs_are_aligned() -> None:
         "Review Pack V0.3 is not a legal/compliance product",
         "Review Pack V0.3 is not comprehensive DLP",
         "not an AI Act Pack",
-        "v0.6.0 release-prep ready",
-        "PyPI v0.6.0: not uploaded",
-        "Release execution still requires explicit approval",
+        "v0.6.0 released and post-release audited",
+        "PyPI v0.6.0: published and latest",
+        "Post-release verification covered",
     ]:
         assert required in readiness
 
@@ -194,7 +198,7 @@ def test_review_pack_v03_release_prep_docs_are_aligned() -> None:
         assert required in checklist
 
 
-def test_post_release_docs_do_not_retain_stale_v050_release_prep_wording() -> None:
+def test_post_release_docs_do_not_retain_stale_v060_release_prep_wording() -> None:
     checked = [
         "README.md",
         "docs/how-to-cite.md",
@@ -206,15 +210,21 @@ def test_post_release_docs_do_not_retain_stale_v050_release_prep_wording() -> No
 
     for stale in [
         "v0.4.0 Review Pack release preparation",
+        "v0.6.0 release-prep",
+        "prepared but not released",
+        "GitHub Release v0.6.0: not created",
+        "PyPI v0.6.0: not uploaded",
         "final release no-go",
         "release-prep only",
         "Version 0.4.0",
         "version = {0.4.0}",
+        "Version 0.5.0",
+        "version = {0.5.0}",
     ]:
         assert stale not in combined
 
     how_to_cite = (ROOT / "docs/how-to-cite.md").read_text(encoding="utf-8")
-    assert "Version 0.5.0" in how_to_cite
-    assert "version = {0.5.0}" in how_to_cite
+    assert "Version 0.6.0" in how_to_cite
+    assert "version = {0.6.0}" in how_to_cite
     assert CONCEPT_DOI in how_to_cite
-    assert V050_VERSION_DOI in how_to_cite
+    assert V060_VERSION_DOI in how_to_cite
