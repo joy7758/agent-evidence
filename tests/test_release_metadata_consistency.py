@@ -59,6 +59,7 @@ def test_stale_v020_doi_is_not_active_citation_metadata() -> None:
         "CITATION.cff",
         "codemeta.json",
         "README.md",
+        "ATTRIBUTION.md",
         "docs/project-facts.md",
         "agent-index.json",
         "llms-full.txt",
@@ -228,3 +229,13 @@ def test_post_release_docs_do_not_retain_stale_v060_release_prep_wording() -> No
     assert "version = {0.6.0}" in how_to_cite
     assert CONCEPT_DOI in how_to_cite
     assert V060_VERSION_DOI in how_to_cite
+
+
+def test_attribution_uses_current_citation_metadata() -> None:
+    attribution = (ROOT / "ATTRIBUTION.md").read_text(encoding="utf-8")
+
+    assert "0.2.0" not in attribution
+    assert STALE_V020_DOI not in attribution
+    assert "0.6.0" in attribution
+    assert CONCEPT_DOI in attribution
+    assert V060_VERSION_DOI in attribution

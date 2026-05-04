@@ -6,6 +6,10 @@ tool-using agents working with `agent-evidence`.
 Use `docs/project-facts.md` as the source of truth for project name, version,
 license, DOI, repository URL, current callable surface, and claim boundaries.
 
+If an external agent needs a full discovery, invocation, verification,
+Review Pack, and citation path, use
+`docs/cookbooks/agentic_engineering_consumption_loop.md`.
+
 ## What This Project Is
 
 `agent-evidence` turns AI agent and service operations into structured evidence

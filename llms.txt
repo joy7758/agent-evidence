@@ -16,6 +16,7 @@ Start here:
 
 - `AGENTS.md`
 - `docs/for-agents.md`
+- `docs/cookbooks/agentic_engineering_consumption_loop.md`
 - `docs/project-facts.md`
 - `README.md`
 

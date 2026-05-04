@@ -10,6 +10,7 @@ REQUIRED_PATHS = [
     "llms-full.txt",
     "docs/for-agents.md",
     "docs/callable-surfaces.md",
+    "docs/cookbooks/agentic_engineering_consumption_loop.md",
     "docs/cookbooks/langchain_minimal_evidence.md",
     "docs/cookbooks/openai_compatible_minimal_evidence.md",
     "examples/openai_compatible_minimal_evidence.py",
