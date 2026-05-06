@@ -22,10 +22,10 @@ jobs:
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:
-          # These DOI resolver URLs return 403 in CI even though the DOI text is valid.
+          # These DOI resolver URLs return 403 or time out in CI even though the DOI text is valid.
           args: >-
             --root-dir "${{ github.workspace }}"
             --no-progress
-            --exclude '^https://doi\.org/10\.1145/(317087\.317089|1084805\.1084812|2076450\.2076466)$'
+            --exclude '^https://doi\.org/10\.(1145/(317087\.317089|1084805\.1084812|2076450\.2076466)|6028/NIST\.SP\.800-162)$'
             './**/*.md'
           fail: true
