@@ -69,6 +69,24 @@ Recommended action:
 
 ```
 
+## Email Notification Summary
+
+Use this section when a GitHub Issue notification is created for the weekly
+report.
+
+- Issue title:
+- Top recommendations:
+- Human decision needed:
+
+Decision checklist:
+
+- [ ] no action / watch
+- [ ] docs-only candidate
+- [ ] metadata-only candidate
+- [ ] test-only candidate
+- [ ] code-affecting PR needs separate planning
+- [ ] reject / no-go
+
 ## Priority
 
 Choose one:

@@ -46,6 +46,16 @@ Use a weekly review window:
 7. send the report to human review
 8. create a separate pull request only when approved
 
+## Email Notification
+
+Weekly reminders and report notifications can be delivered through GitHub Issue
+notifications. See
+`docs/agentic-intelligence/email-notification-protocol.md`.
+
+The notification issue is a reminder and human decision prompt. It does not
+auto-generate reports, auto-create pull requests, change repository behavior,
+publish releases, or promote the project.
+
 ## Public Source Categories
 
 Use only legitimate public sources:
