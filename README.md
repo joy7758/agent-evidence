@@ -32,6 +32,18 @@ DOI: [10.5281/zenodo.19334061](https://doi.org/10.5281/zenodo.19334061)
   `agent-evidence==0.6.0` on PyPI and archived on Zenodo; not legal,
   compliance, or AI Act approval
 
+## AI / agent entry points
+
+- `llms.txt`
+- `AGENTS.md`
+- `CITATION.cff`
+- Canonical AI discovery index: [https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/ai-discovery-index.md](https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/ai-discovery-index.md)
+- Canonical AI citation map: [https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/ai-citation-map.json](https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/ai-citation-map.json)
+
+These files help AI systems and agents discover, cite, and verify this
+repository role faster. The canonical cross-repository discovery surface stays
+in `digital-biosphere-architecture`.
+
 ## Quick Start
 
 Install from source:

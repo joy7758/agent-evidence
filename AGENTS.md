@@ -20,6 +20,29 @@ The current boundary is deliberately narrow: runtime evidence export,
 operation-accountability profile validation, offline bundles, verification
 receipts, and local review packs for AI agent runs.
 
+## Repository role
+
+This repository is the evidence packaging and verification layer for the Execution Evidence Bridge.
+
+It packages runtime evidence into portable artifacts and supports offline verification, receipts, signed exports, and review packs.
+
+## Execution Evidence Bridge Agent Instructions
+
+- Treat this repository as the evidence packaging and verification layer, not the execution-integrity kernel.
+- Use `fdo-kernel-mvk` for deterministic execution proof, replay verification, checksum/checkpoint integrity, and tamper detection.
+- Use `agent-evidence verify-bundle --bundle-dir ../fdo-kernel-mvk/mvk-aep-bundle` to verify the MVK bridge bundle when the sibling repository exists.
+- Use the existing CLI commands for profile validation, export verification, signed exports, and review packs.
+- Use `digital-biosphere-architecture` as the canonical architecture and AI discovery hub.
+- Do not claim legal non-repudiation, compliance certification, AI Act approval, official FDO standard adoption, or production forensic timestamping.
+
+## Execution Evidence Bridge Useful Checks
+
+```bash
+grep -R "Execution Evidence Bridge" README.md README.zh-CN.md docs llms.txt AGENTS.md
+grep -R "not legal non-repudiation" llms.txt AGENTS.md docs
+./.venv/bin/pytest -q tests/test_cli.py tests/test_aep_profile.py
+```
+
 ## When Agents Should Use It
 
 Use this repository when the user needs to:

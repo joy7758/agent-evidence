@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use agent-evidence in derived work, cite it using this metadata."
 type: software
 title: "agent-evidence"
-abstract: "Runtime evidence exporter and validator for AI agent and service operations."
+abstract: "Evidence packaging and verification layer for the Execution Evidence Bridge. It supports portable evidence bundles, offline verification, receipts, signed exports, and reviewer-facing review packs for AI agent and service operations."
 authors:
   - family-names: "Zhang"
     given-names: "Bin"
@@ -18,3 +18,8 @@ keywords:
   - "operation accountability"
   - "validation"
   - "evidence bundles"
+  - "Execution Evidence Bridge"
+  - "offline verification"
+  - "signed export"
+  - "review pack"
+  - "verifiable AI"
