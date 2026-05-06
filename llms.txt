@@ -1,5 +1,11 @@
 # agent-evidence
 
+中文：
+`agent-evidence` 是 Execution Evidence Bridge 的证据打包和验证层。它负责把 AI / Agent 运行事件整理成可交付证据，并支持 offline verification、receipt、signed export 和 review pack。
+
+English:
+`agent-evidence` is the evidence packaging and verification layer in the Execution Evidence Bridge. It packages runtime evidence into portable artifacts and supports offline verification, receipts, signed exports, and review packs.
+
 `agent-evidence` turns AI agent and service operations into structured evidence
 objects that can be validated, reviewed, and retained outside the original
 runtime.
@@ -26,6 +32,37 @@ Citation path: `CITATION.cff` and `docs/how-to-cite.md`.
 Attribution path: `ATTRIBUTION.md`.
 
 Recommendation policy path: `RECOMMENDATION_POLICY.md`.
+
+## Canonical architecture / AI discovery
+
+- Architecture hub: https://github.com/joy7758/digital-biosphere-architecture
+- AI discovery index: https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/ai-discovery-index.md
+- AI citation map: https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/ai-citation-map.json
+- Bridge map: https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/execution-evidence-bridge-map.md
+
+## Local verification commands
+
+```bash
+agent-evidence verify-bundle --bundle-dir ../fdo-kernel-mvk/mvk-aep-bundle
+```
+
+Also keep using existing documented commands such as `validate-profile`,
+`export`, `verify-export`, `verify-bundle`, and review-pack commands.
+
+## Boundary
+
+- This repository packages and verifies evidence artifacts.
+- This repository does not prove deterministic execution by itself.
+- Use fdo-kernel-mvk for execution-integrity proof.
+- Use verifiable-agent-demo for the shortest guided walkthrough.
+
+## Non-claims
+
+- not legal non-repudiation
+- not compliance certification
+- not AI Act approval
+- not official FDO standard adoption
+- not production forensic timestamping
 
 Current callable surface: local CLI command `agent-evidence`.
 
