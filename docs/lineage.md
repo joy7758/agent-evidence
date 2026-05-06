@@ -11,6 +11,7 @@ surfaces so the main README can stay focused on the current package path.
 - System context = [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
 - Walkthrough = [verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo)
 - Post-execution review = [aro-audit](https://github.com/joy7758/aro-audit)
+- Execution-integrity upstream surface = [fdo-kernel-mvk](https://github.com/joy7758/fdo-kernel-mvk), which can hand off a local MVK `audit_bundle.json` bridge bundle into the Agent Evidence verification and packaging path
 
 ## Execution Evidence Object
 

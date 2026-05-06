@@ -266,7 +266,12 @@ It is not:
 - Architecture: [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
 - Demo: [verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo)
 - Audit: [aro-audit](https://github.com/joy7758/aro-audit)
+- Execution integrity kernel: [fdo-kernel-mvk](https://github.com/joy7758/fdo-kernel-mvk) proves deterministic execution, replay validation, tamper detection, and runtime integrity. It now includes a local bridge that exports MVK `audit_bundle.json` into an Agent Evidence Profile-compatible bundle shape; `agent-evidence` remains the canonical packaging, signed export, verification, and review pack surface.
+- MVK bridge note: [docs/integrations/mvk_bridge.md](./docs/integrations/mvk_bridge.md)
 - Historical map: [docs/lineage.md](./docs/lineage.md)
+
+MVK bridge path:
+`fdo-kernel-mvk audit_bundle.json -> AEP-compatible bundle -> agent-evidence verify-bundle / signed export / review pack workflows`.
 
 ## English Summary
 
