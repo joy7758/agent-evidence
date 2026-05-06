@@ -118,8 +118,13 @@ agent governance 平台。
 - 架构总入口 -> `digital-biosphere-architecture`
 - 最短演练路径 -> `verifiable-agent-demo`
 - 执行后审阅入口 -> `aro-audit`
+- 执行完整性内核 -> `fdo-kernel-mvk`。它证明 deterministic execution、replay validation、tamper detection 和 runtime integrity。它现在有一个本地 bridge，可把 `audit_bundle.json` 导出成 AEP-compatible bundle；`agent-evidence` 仍然负责 evidence packaging、signed export、offline verification 和 review pack。
+- MVK bridge 说明 -> `docs/integrations/mvk_bridge.md`
 - EDC Java spike 入口 -> `docs/edc-java-spike/README.md`
 - 历史脉络图 -> `docs/lineage.md`
+
+MVK bridge path：
+`fdo-kernel-mvk audit_bundle.json -> AEP-compatible bundle -> agent-evidence verify-bundle / signed export / review pack workflows`。
 
 ## 下一步重点
 
