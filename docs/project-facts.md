@@ -159,6 +159,7 @@ GitHub Pages callable surface in the current project boundary.
 
 ## TBD / Uncertain Fields
 
-- AEP-Media-specific DOI: pending release archive confirmation.
+- AEP-Media-specific DOI is confirmed as `10.5281/zenodo.20107097` for
+  `aep-media-v0.1.0`.
 - Organization/funder/adopter metadata: TBD because no canonical organization,
   funder, or adoption claim is confirmed in project metadata.

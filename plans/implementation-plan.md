@@ -5,9 +5,39 @@
 - Release: <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
 - DOI: `10.5281/zenodo.20107097`
 - Final pack: `docs/paper/softwarex/final/submission-pack/`
-- Local upload zip: `AEP-Media-SoftwareX-Submission-Ready.zip`
+- Local upload zip: `AEP-Media-SoftwareX-Upload-Final.zip`
+- Mission 022: authoritative upload freeze completed. The final DOCX/PDF pair,
+  Supplementary file S1, cover letter, upload manifest, and local final upload
+  folder are regenerated from the authoritative SoftwareX manuscript source.
 - Mission 021: SoftwareX manuscript editorial hardening completed. The final manuscript now has complete Software Availability, explicit supplementary citation, v0.1.0 validation narrative, strengthened impact, declarations, and 15 closed references.
 - Next action: upload the SoftwareX DOCX manuscript, PDF preview if requested, supplementary package, cover letter, and DOI-synchronized metadata through the portal. Do not upload generic TeX source.
+
+## M29 AEP-Media SoftwareX Final Upload Authority Freeze
+- 输入：
+  - Hardened Mission 021 SoftwareX manuscript.
+  - AEP-Media v0.1.0 release metadata and DOI.
+  - SoftwareX final submission pack.
+- 输出：
+  - Authoritative manuscript source retained at `docs/paper/softwarex/final/aep_media_softwarex_final_manuscript.md`.
+  - Regenerated `docs/paper/softwarex/final/submission-pack/main/AEP-Media_SoftwareX_Manuscript.docx`.
+  - Regenerated `docs/paper/softwarex/final/submission-pack/main/AEP-Media_SoftwareX_Manuscript.pdf`.
+  - Regenerated `docs/paper/softwarex/final/submission-pack/AEP-Media_SoftwareX_Supplementary.zip`.
+  - Added `docs/paper/softwarex/final/submission-pack/UPLOAD_MANIFEST.md`.
+  - Added Mission 022 metadata parity, red-line scan, and upload-freeze reports.
+  - Created local final upload folder and local convenience zip under Downloads.
+- 验收结果：
+  - Front matter includes `Independent Researcher, China` and corresponding author line.
+  - Software Availability includes install command and adapter ingestion commands.
+  - Manuscript cites `Supplementary file S1`.
+  - Metadata parity passes across citation/archive/release/manuscript metadata.
+  - Markdown, DOCX XML, and PDF extracted text contain required upload fields.
+  - Red-line scan passes.
+  - No `.tex` file is included in final upload folder.
+- 非目标：
+  - No implementation changes.
+  - No validator/schema/adapter/evaluation semantic changes.
+  - No DOI changes.
+  - No old TSE/IEEE or unrelated paper workspace uploads.
 
 ## M28 AEP-Media SoftwareX Manuscript Editorial Hardening
 - 输入：

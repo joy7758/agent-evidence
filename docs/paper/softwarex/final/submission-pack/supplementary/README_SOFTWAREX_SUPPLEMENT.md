@@ -1,6 +1,6 @@
-# AEP-Media SoftwareX Supplement
+# AEP-Media SoftwareX Supplementary File S1
 
-This supplement supports the SoftwareX submission for AEP-Media v0.1.0.
+This is Supplementary file S1 for the SoftwareX submission for AEP-Media v0.1.0.
 
 ## Release and Archive
 
@@ -8,6 +8,7 @@ This supplement supports the SoftwareX submission for AEP-Media v0.1.0.
 - GitHub release: <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
 - Zenodo DOI: `10.5281/zenodo.20107097`
 - Zenodo record: <https://zenodo.org/records/20107097>
+- License: Apache-2.0
 
 ## Contents
 
@@ -16,7 +17,7 @@ This supplement supports the SoftwareX submission for AEP-Media v0.1.0.
 - `SOFTWARE_INVENTORY.md`: major software modules, specs, schemas, examples, demos, and reports.
 - `EVALUATION_SUMMARY.md`: final v0.1.0 evaluation and test outcomes.
 - `CHECKSUMS.sha256`: checksums for supplement files.
-- `reports/`: selected AEP-Media mission and evaluation reports.
+- `reports/`: selected validation, reproducibility, claim-boundary, and DOI confirmation reports.
 - `schemas/`: selected AEP-Media JSON schemas.
 - `examples/`: selected valid and invalid media examples.
 - `specs/`: selected AEP-Media profile and bundle specifications.

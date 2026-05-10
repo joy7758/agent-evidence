@@ -1,7 +1,7 @@
 {
-  "title": "AEP-Media v0.1.0: Offline Validation of Time-Aware Media Evidence Bundles",
+  "title": "AEP-Media: Reusable Research Software for Offline Validation of Time-Aware Media Evidence Bundles",
   "upload_type": "software",
-  "description": "AEP-Media is reusable research software for local validation of time-aware media evidence bundles. It provides profiles, schemas, command-line validators, offline bundle verification, strict declared time-trace validation, adapter-only ingestion, and reproducible evaluation matrices.",
+  "description": "AEP-Media is reusable research software for local validation of time-aware media evidence bundles. It provides profiles, schemas, command-line validators, offline bundle verification, strict declared time-trace validation, adapter-only ingestion, and reproducible evaluation matrices. Version aep-media-v0.1.0 is available from https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0 and archived at https://zenodo.org/records/20107097.",
   "creators": [
     {
       "name": "Zhang, Bin",
@@ -23,6 +23,11 @@
   "related_identifiers": [
     {
       "identifier": "https://github.com/joy7758/agent-evidence",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0",
       "relation": "isSupplementTo",
       "scheme": "url"
     },

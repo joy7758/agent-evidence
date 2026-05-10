@@ -24,6 +24,10 @@ The main manuscript was revised to read as a SoftwareX-style software paper:
 - hardened references from skeletal placeholders to 15 cited references;
 - regenerated the DOCX and PDF manuscript outputs.
 
+Post-review cleanup also shortened the DONA reference URL to prevent an orphan
+PDF reference line and removed internal red-line scan reports from the
+reviewer-facing supplementary package.
+
 ## 2. Word Count
 
 - Before hardening: 1643 words.

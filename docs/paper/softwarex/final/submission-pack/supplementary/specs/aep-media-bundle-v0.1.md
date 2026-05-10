@@ -28,7 +28,7 @@ aep-media-bundle/
 
 ## 3. Build process
 
-The build process reads a Mission 001 AEP-Media statement, resolves each `media.artifacts[].path` relative to the statement JSON file, copies each source artifact into the bundle `artifacts/` directory, and rewrites `statement.json` so every artifact path points to the bundle-local copy.
+The build process reads an AEP-Media statement, resolves each `media.artifacts[].path` relative to the statement JSON file, copies each source artifact into the bundle `artifacts/` directory, and rewrites `statement.json` so every artifact path points to the bundle-local copy.
 
 After copying, the builder recomputes each artifact `sha256` and `size_bytes`, writes `statement.json`, runs the AEP-Media profile validator, writes `validation-report.json`, writes `bundle.json`, writes `checksums.txt`, and writes `summary.json`.
 

@@ -2,11 +2,14 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "name": "AEP-Media",
+  "title": "AEP-Media: Reusable Research Software for Offline Validation of Time-Aware Media Evidence Bundles",
   "description": "Reusable research software for local validation of time-aware media evidence bundles, including profiles, schemas, CLI validators, offline bundle verification, strict declared time-trace validation, adapter-only ingestion, and reproducible evaluation matrices.",
   "version": "aep-media-v0.1.0",
   "identifier": "https://doi.org/10.5281/zenodo.20107097",
   "codeRepository": "https://github.com/joy7758/agent-evidence",
-  "url": "https://doi.org/10.5281/zenodo.20107097",
+  "url": "https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0",
+  "downloadUrl": "https://zenodo.org/records/20107097",
+  "releaseNotes": "https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0",
   "license": "https://spdx.org/licenses/Apache-2.0.html",
   "programmingLanguage": "Python",
   "runtimePlatform": "Python 3.11+",
@@ -29,7 +32,12 @@
       "name": "Bin Zhang",
       "givenName": "Bin",
       "familyName": "Zhang",
-      "identifier": "https://orcid.org/0009-0002-8861-1481"
+      "identifier": "https://orcid.org/0009-0002-8861-1481",
+      "email": "joy7759@gmail.com",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Independent Researcher, China"
+      }
     }
   ],
   "softwareRequirements": [

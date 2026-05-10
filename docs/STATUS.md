@@ -5,9 +5,37 @@
 - GitHub Release：<https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
 - AEP-Media DOI：`10.5281/zenodo.20107097`
 - SoftwareX final pack：`docs/paper/softwarex/final/submission-pack/`
-- 本地上传包：`AEP-Media-SoftwareX-Submission-Ready.zip`
+- 本地上传包：`AEP-Media-SoftwareX-Upload-Final.zip`
+- Mission 022：已完成上传前权威封箱。唯一权威源为 `docs/paper/softwarex/final/aep_media_softwarex_final_manuscript.md`；DOCX/PDF 已从该源重新生成；Supplementary file S1 已清理内部 red-line / release-process 报告；metadata parity、red-line scan、DOCX/PDF parity 和本地最终上传目录均通过。
 - Mission 021：已完成 SoftwareX manuscript editorial hardening。主稿已补强 Software Availability、supplementary citation、v0.1.0 validation narrative、impact、declarations 和 15 条闭合引用；generic `.tex` 不再作为上传材料。
 - 说明：下方 M27 / M26 的 NOT READY / NEAR READY 是历史中间状态，已被 Mission 018-020 修复和完成。
+
+## M29 AEP-Media SoftwareX Final Upload Authority Freeze
+- 状态：已完成；最终建议为 READY FOR SOFTWAREX PORTAL UPLOAD。
+- 本轮边界：
+  - 不改 implementation code、validators、schemas、adapters、tests 或 evaluation semantics。
+  - 只做 SoftwareX 上传前权威源、metadata parity、DOCX/PDF regeneration、Supplementary file S1 和 upload manifest 封箱。
+- 主要修正：
+  - Title page/front matter 增加 `Independent Researcher, China` 和 `Corresponding author: Bin Zhang (joy7759@gmail.com)`。
+  - Software Availability 增加 install command 和 adapter ingestion commands。
+  - 正文引用改为 `Supplementary file S1 (AEP-Media_SoftwareX_Supplementary.zip)`。
+  - AI disclosure 调整为 Elsevier 风格的作者负责声明。
+  - Metadata parity 同步 `CITATION.cff`、`.zenodo.json`、`codemeta.json`、README、how-to-cite、release notes、manuscript 和 submission metadata。
+  - Supplementary S1 移除内部 red-line / release-process 报告，仅保留 reviewer-facing material。
+  - 新增 `docs/paper/softwarex/final/submission-pack/UPLOAD_MANIFEST.md`。
+- 验证：
+  - Manuscript word count：1969 words。
+  - References：15 条，citation closure 通过。
+  - DOCX：zip/XML 结构有效。
+  - PDF：8 页 Letter，未加密。
+  - Supplementary S1：zip 完整，22 个文件。
+  - Red-line scan：通过。
+  - `git diff --check`：通过。
+- 上传材料：
+  - DOCX 主文：`docs/paper/softwarex/final/submission-pack/main/AEP-Media_SoftwareX_Manuscript.docx`
+  - PDF preview：`docs/paper/softwarex/final/submission-pack/main/AEP-Media_SoftwareX_Manuscript.pdf`
+  - Supplementary S1：`docs/paper/softwarex/final/submission-pack/AEP-Media_SoftwareX_Supplementary.zip`
+  - Cover letter：`docs/paper/softwarex/final/submission-pack/cover-letter/AEP-Media_SoftwareX_Cover_Letter.md`
 
 ## M28 AEP-Media SoftwareX Manuscript Editorial Hardening
 - 状态：已完成；最终建议为 READY FOR SOFTWAREX PORTAL UPLOAD。

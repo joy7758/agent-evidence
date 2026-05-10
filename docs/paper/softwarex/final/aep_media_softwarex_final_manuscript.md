@@ -4,11 +4,13 @@
 
 Bin Zhang
 
-Independent Researcher
+Independent Researcher, China
 
 ORCID: 0009-0002-8861-1481
 
 Email: joy7759@gmail.com
+
+Corresponding author: Bin Zhang (joy7759@gmail.com)
 
 ## Abstract
 
@@ -29,10 +31,12 @@ media evidence; operation accountability; research software; provenance; offline
 - Zenodo record: <https://zenodo.org/records/20107097>
 - License: Apache-2.0
 - Programming language: Python
+- Installation: `python -m pip install -e .`
 - Operating system: platform-independent Python package; validated in the repository test environment described in the release reports.
 - Documentation: `README.md`, `spec/`, `schema/`, `examples/media/`, `demo/`, `docs/reports/`, and `docs/paper/softwarex/`.
 - Tests: `tests/test_media_*.py` and related readiness tests.
 - Main commands: `validate-media-profile`, `build-media-bundle`, `verify-media-bundle`, `validate-media-time-profile`, `run-media-evaluation`, and `build-aep-media-release-pack`.
+- Additional ingestion commands: `ingest-linuxptp-trace`, `ingest-ffmpeg-prft`, and `ingest-c2pa-manifest`.
 
 ## Metadata
 
@@ -118,7 +122,7 @@ For the AEP-Media v0.1.0 release, the final validation run reports:
 
 The case categories include valid conformance cases, invalid single-rule cases, bundle tamper cases, strict-time failures, adapter-ingestion cases, and optional-tool reporting cases. Expected failures include missing time context, media hash mismatch, unresolved policy reference, bundle checksum mismatch, path escape, missing clock-trace reference, clock offset threshold exceedance, clock window mismatch, missing PRFT metadata, and declared invalid C2PA-like signature status.
 
-The supplementary material, `AEP-Media_SoftwareX_Supplementary.zip`, contains reproducibility notes, the claim-boundary statement, software inventory, selected schemas, selected examples, evaluation summaries, checksums, and generated reports used to support the release-level validation described in this paper.
+Supplementary file S1 (`AEP-Media_SoftwareX_Supplementary.zip`) contains the supplement README, reproducibility instructions, claim-boundary statement, software inventory, evaluation summary, selected schemas, selected examples, checksums, and release-validation reports used to support the results reported in this paper.
 
 ## 4. Impact
 
@@ -148,13 +152,15 @@ The author declares no known competing financial interests or personal relations
 
 No specific funding was received for this work.
 
+This work is a software and documentation release; no human participants, animal subjects, or external experimental dataset were used.
+
 ## Data and software availability
 
 No separate dataset was used. The software, schemas, examples, reproducibility materials, release archive, and supplementary package are available through the GitHub repository, GitHub release, Zenodo archive, and submitted supplementary material.
 
 ## Declaration of generative AI and AI-assisted technologies in the manuscript preparation process
 
-The author used OpenAI ChatGPT/Codex for manuscript organization, implementation scaffolding, command generation, and wording refinement. After using these tools, the author reviewed and edited the content as needed and takes full responsibility for the content of the submitted article.
+The author used OpenAI ChatGPT/Codex for manuscript organization, command generation, implementation-facing drafting support, and wording refinement. After using these tools, the author reviewed and edited the content as needed and takes full responsibility for the content of the submitted article.
 
 ## References
 
@@ -186,4 +192,4 @@ The author used OpenAI ChatGPT/Codex for manuscript organization, implementation
 
 [14] Kahn R, Wilensky R. A framework for distributed digital object services. International Journal on Digital Libraries. 2006;6:115-123. doi:10.1007/s00799-005-0128-x.
 
-[15] DONA Foundation. Digital Object Interface Protocol Specification, version 2.0; 2018. Available: <https://www.dona.net/sites/default/files/2018-11/DOIPv2Spec_1.pdf>.
+[15] DONA Foundation. Digital Object Interface Protocol Specification, version 2.0; 2018. Available: <https://www.dona.net/doip>.

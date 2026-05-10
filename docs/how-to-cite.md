@@ -11,6 +11,14 @@ Time-Aware Media Evidence Bundles. Version `aep-media-v0.1.0`. Repository:
 <https://github.com/joy7758/agent-evidence>. DOI:
 <https://doi.org/10.5281/zenodo.20107097>.
 
+Release URL: <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>.
+
+Zenodo record: <https://zenodo.org/records/20107097>.
+
+Author ORCID: <https://orcid.org/0009-0002-8861-1481>.
+
+Correspondence: joy7759@gmail.com.
+
 ## BibTeX Draft
 
 ```bibtex

@@ -1,5 +1,23 @@
 # AEP-Media v0.1.0
 
+Title: AEP-Media: Reusable Research Software for Offline Validation of Time-Aware Media Evidence Bundles
+
+Author: Bin Zhang
+
+ORCID: 0009-0002-8861-1481
+
+Email: joy7759@gmail.com
+
+License: Apache-2.0
+
+Repository: <https://github.com/joy7758/agent-evidence>
+
+GitHub release: <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
+
+Zenodo DOI: `10.5281/zenodo.20107097`
+
+Zenodo record: <https://zenodo.org/records/20107097>
+
 ## Scope
 
 Reusable research software for offline validation of time-aware media evidence bundles.

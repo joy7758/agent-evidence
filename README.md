@@ -73,6 +73,18 @@ time-aware media evidence bundles. It provides a media evidence profile, schemas
 offline bundle verification, strict declared time-trace checks, adapter-only ingestion fixtures,
 and reproducible evaluation reports.
 
+Release metadata:
+
+- Title: AEP-Media: Reusable Research Software for Offline Validation of Time-Aware Media Evidence Bundles
+- Author: Bin Zhang
+- ORCID: 0009-0002-8861-1481
+- Email: joy7759@gmail.com
+- Version: `aep-media-v0.1.0`
+- GitHub release: <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
+- Zenodo DOI: `10.5281/zenodo.20107097`
+- Zenodo record: <https://zenodo.org/records/20107097>
+- License: Apache-2.0
+
 Install from source:
 
 ```bash
@@ -106,6 +118,14 @@ Generate the media evaluation matrix:
 
 ```bash
 agent-evidence run-media-evaluation --out demo/output/media_evaluation_demo
+```
+
+Adapter ingestion commands are also exposed for fixture-based workflows:
+
+```bash
+agent-evidence ingest-linuxptp-trace --help
+agent-evidence ingest-ffmpeg-prft --help
+agent-evidence ingest-c2pa-manifest --help
 ```
 
 Adapter fixtures normalize LinuxPTP-style logs, FFmpeg PRFT-style metadata, and C2PA-like
