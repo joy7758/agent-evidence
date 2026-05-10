@@ -1,24 +1,26 @@
 {
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
-  "name": "agent-evidence",
-  "description": "Runtime evidence exporter and validator for AI agent and service operations.",
-  "version": "0.2.0",
-  "identifier": "https://doi.org/10.5281/zenodo.19334062",
+  "name": "AEP-Media",
+  "description": "Reusable research software for local validation of time-aware media evidence bundles, including profiles, schemas, CLI validators, offline bundle verification, strict declared time-trace validation, adapter-only ingestion, and reproducible evaluation matrices.",
+  "version": "aep-media-v0.1.0",
   "codeRepository": "https://github.com/joy7758/agent-evidence",
   "url": "https://github.com/joy7758/agent-evidence",
   "license": "https://spdx.org/licenses/Apache-2.0.html",
   "programmingLanguage": "Python",
   "runtimePlatform": "Python 3.11+",
-  "applicationCategory": "DeveloperApplication",
-  "developmentStatus": "experimental",
+  "applicationCategory": "ResearchSoftware",
+  "developmentStatus": "active",
   "isAccessibleForFree": true,
   "keywords": [
-    "AI agents",
-    "runtime evidence",
+    "media evidence",
     "operation accountability",
-    "validation",
-    "evidence bundles"
+    "research software",
+    "provenance",
+    "offline validation",
+    "evidence bundle",
+    "time trace",
+    "reproducibility"
   ],
   "author": [
     {
@@ -29,7 +31,6 @@
       "identifier": "https://orcid.org/0009-0002-8861-1481"
     }
   ],
-  "citation": "https://doi.org/10.5281/zenodo.19334062",
   "softwareRequirements": [
     "click>=8.1",
     "jsonschema>=4.23",

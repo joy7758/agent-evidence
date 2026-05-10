@@ -46,9 +46,20 @@ AVAILABLE_CLI_COMMANDS = [
     "export automaton",
     "verify-export",
     "validate-profile",
-    "validate-pack",
     "verify-bundle",
     "schema",
+    "validate-media-profile",
+    "build-media-bundle",
+    "verify-media-bundle",
+    "validate-media-time-profile",
+    "ingest-linuxptp-trace",
+    "ingest-ffmpeg-prft",
+    "ingest-c2pa-manifest",
+    "run-media-evaluation",
+    "build-aep-media-release-pack",
+    "build-aep-media-submission-pack",
+    "build-aep-media-ieee-word-pack",
+    "build-aep-media-high-revision-pack",
 ]
 
 CLAIMS_TO_AVOID = [
@@ -184,6 +195,22 @@ def load_json_file(path: Path) -> Any:
         return json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise click.ClickException(f"Invalid JSON file: {path}") from exc
+
+
+def echo_json_report(report: dict[str, Any], failure_message: str) -> None:
+    click.echo(json.dumps(report, indent=2, sort_keys=True))
+    if not report.get("ok"):
+        raise click.ClickException(failure_message)
+
+
+def echo_summary_report(report: dict[str, Any], failure_message: str) -> None:
+    summary = report.get("summary")
+    if isinstance(summary, str) and summary:
+        click.echo(summary)
+    else:
+        click.echo(json.dumps(report, indent=2, sort_keys=True))
+    if not report.get("ok"):
+        raise click.ClickException(failure_message)
 
 
 def resolve_path_reference(config_path: Path, raw_path: str) -> Path:
@@ -1047,6 +1074,225 @@ def verify_bundle_command(bundle_dir: Path) -> None:
     click.echo(json.dumps(result, indent=2, sort_keys=True))
     if not result["ok"]:
         raise click.ClickException("Bundle verification failed.")
+
+
+@main.command(name="validate-media-profile")
+@click.argument("profile_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option(
+    "--schema",
+    "schema_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+)
+def validate_media_profile_command(profile_path: Path, schema_path: Path | None) -> None:
+    """Validate an AEP-Media profile statement."""
+
+    from agent_evidence.media_profile import validate_media_profile_file
+
+    report = validate_media_profile_file(profile_path, schema_path=schema_path)
+    echo_json_report(report, "AEP-Media profile validation failed.")
+
+
+@main.command(name="build-media-bundle")
+@click.argument("statement_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option(
+    "--out",
+    "bundle_dir",
+    required=True,
+    type=click.Path(file_okay=False, path_type=Path),
+)
+def build_media_bundle_command(statement_path: Path, bundle_dir: Path) -> None:
+    """Build an offline AEP-Media bundle from a media evidence statement."""
+
+    from agent_evidence.media_bundle import build_media_bundle
+
+    report = build_media_bundle(statement_path, bundle_dir)
+    echo_summary_report(report, "AEP-Media bundle build failed.")
+
+
+@main.command(name="verify-media-bundle")
+@click.argument("bundle_dir", type=click.Path(exists=True, file_okay=False, path_type=Path))
+@click.option("--strict-time", is_flag=True, help="Run strict declared time-trace checks.")
+def verify_media_bundle_command(bundle_dir: Path, strict_time: bool) -> None:
+    """Verify an offline AEP-Media bundle."""
+
+    from agent_evidence.media_bundle import verify_media_bundle
+
+    report = verify_media_bundle(bundle_dir, strict_time=strict_time)
+    echo_json_report(report, "AEP-Media bundle verification failed.")
+
+
+@main.command(name="validate-media-time-profile")
+@click.argument("statement_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+def validate_media_time_profile_command(statement_path: Path) -> None:
+    """Validate an AEP-Media statement with strict declared time-trace checks."""
+
+    from agent_evidence.media_time import validate_media_time_profile
+
+    report = validate_media_time_profile(statement_path)
+    echo_json_report(report, "AEP-Media strict-time validation failed.")
+
+
+@main.command(name="ingest-linuxptp-trace")
+@click.argument("input_log", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option(
+    "--out",
+    "out_json",
+    required=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+)
+@click.option(
+    "--source",
+    type=click.Choice(["auto", "ptp4l", "phc2sys"]),
+    default="auto",
+    show_default=True,
+)
+def ingest_linuxptp_trace_command(input_log: Path, out_json: Path, source: str) -> None:
+    """Normalize a LinuxPTP-style fixture log into an AEP-Media time trace."""
+
+    from agent_evidence.adapters.linuxptp import ingest_linuxptp_trace
+
+    report = ingest_linuxptp_trace(input_log, out_json, source=source)
+    echo_json_report(report, "LinuxPTP adapter ingestion failed.")
+
+
+@main.command(name="ingest-ffmpeg-prft")
+@click.argument("input_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option(
+    "--out",
+    "out_json",
+    required=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+)
+@click.option("--use-external-tool", is_flag=True)
+def ingest_ffmpeg_prft_command(
+    input_path: Path,
+    out_json: Path,
+    use_external_tool: bool,
+) -> None:
+    """Normalize ffprobe/FFmpeg PRFT-style timing metadata."""
+
+    from agent_evidence.adapters.ffmpeg_prft import ingest_ffmpeg_prft
+
+    report = ingest_ffmpeg_prft(input_path, out_json, use_external_tool=use_external_tool)
+    echo_json_report(report, "FFmpeg PRFT adapter ingestion failed.")
+
+
+@main.command(name="ingest-c2pa-manifest")
+@click.argument("input_manifest", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option(
+    "--out",
+    "out_json",
+    required=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+)
+@click.option("--use-external-tool", is_flag=True)
+def ingest_c2pa_manifest_command(
+    input_manifest: Path,
+    out_json: Path,
+    use_external_tool: bool,
+) -> None:
+    """Normalize C2PA-like manifest metadata for AEP-Media review."""
+
+    from agent_evidence.adapters.c2pa_manifest import ingest_c2pa_manifest
+
+    report = ingest_c2pa_manifest(
+        input_manifest,
+        out_json,
+        use_external_tool=use_external_tool,
+    )
+    echo_json_report(report, "C2PA manifest adapter ingestion failed.")
+
+
+@main.command(name="run-media-evaluation")
+@click.option(
+    "--out",
+    "out_dir",
+    required=True,
+    type=click.Path(file_okay=False, path_type=Path),
+)
+@click.option("--include-adapters", is_flag=True)
+@click.option("--include-optional-tools", is_flag=True)
+def run_media_evaluation_command(
+    out_dir: Path,
+    include_adapters: bool,
+    include_optional_tools: bool,
+) -> None:
+    """Generate an AEP-Media evaluation evidence pack."""
+
+    from agent_evidence.media_evaluation import run_media_evaluation
+
+    report = run_media_evaluation(
+        out_dir,
+        include_adapters=include_adapters,
+        include_optional_tools=include_optional_tools,
+    )
+    echo_summary_report(report, "AEP-Media evaluation failed.")
+
+
+@main.command(name="build-aep-media-release-pack")
+@click.option(
+    "--out",
+    "out_dir",
+    required=True,
+    type=click.Path(file_okay=False, path_type=Path),
+)
+def build_aep_media_release_pack_command(out_dir: Path) -> None:
+    """Build the AEP-Media v0.1 release evidence pack."""
+
+    from agent_evidence.media_release_pack import build_aep_media_release_pack
+
+    report = build_aep_media_release_pack(out_dir)
+    echo_summary_report(report, "AEP-Media release pack build failed.")
+
+
+@main.command(name="build-aep-media-submission-pack")
+@click.option(
+    "--out",
+    "out_dir",
+    required=True,
+    type=click.Path(file_okay=False, path_type=Path),
+)
+def build_aep_media_submission_pack_command(out_dir: Path) -> None:
+    """Build the local AEP-Media submission preparation pack."""
+
+    from agent_evidence.media_submission_pack import build_aep_media_submission_pack
+
+    report = build_aep_media_submission_pack(out_dir)
+    echo_summary_report(report, "AEP-Media submission pack build failed.")
+
+
+@main.command(name="build-aep-media-ieee-word-pack")
+@click.option(
+    "--out",
+    "out_dir",
+    required=True,
+    type=click.Path(file_okay=False, path_type=Path),
+)
+def build_aep_media_ieee_word_pack_command(out_dir: Path) -> None:
+    """Build the local IEEE Word staging pack for AEP-Media."""
+
+    from agent_evidence.media_ieee_word_pack import build_aep_media_ieee_word_pack
+
+    report = build_aep_media_ieee_word_pack(out_dir)
+    echo_summary_report(report, "AEP-Media IEEE Word pack build failed.")
+
+
+@main.command(name="build-aep-media-high-revision-pack")
+@click.option(
+    "--out",
+    "out_dir",
+    required=True,
+    type=click.Path(file_okay=False, path_type=Path),
+)
+def build_aep_media_high_revision_pack_command(out_dir: Path) -> None:
+    """Build the local high-revision journal staging pack for AEP-Media."""
+
+    from agent_evidence.media_final_journal_revision_pack import (
+        build_aep_media_high_revision_pack,
+    )
+
+    report = build_aep_media_high_revision_pack(out_dir)
+    echo_summary_report(report, "AEP-Media high-revision pack build failed.")
 
 
 @main.command()

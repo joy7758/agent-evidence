@@ -121,6 +121,18 @@ def test_cli_capabilities_json_does_not_claim_openapi_or_mcp_available() -> None
     assert planned_surfaces["mcp"]["available"] is False
 
 
+def test_cli_capabilities_json_matches_registered_commands() -> None:
+    runner = CliRunner()
+
+    result = runner.invoke(main, ["capabilities", "--json"])
+
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.output)
+    expected_commands = set(main.commands)
+    expected_commands.add("export automaton")
+    assert set(payload["available_cli_commands"]) == expected_commands
+
+
 def test_cli_export_automaton_help_marks_experimental() -> None:
     runner = CliRunner()
 

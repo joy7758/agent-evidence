@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/agent-evidence/aep_media_adapter_report_v0_1.schema.json",
+  "title": "AEPMediaAdapterReportV0_1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "profile",
+    "adapter",
+    "source",
+    "normalized_output",
+    "claim_boundary",
+    "ok",
+    "issue_count",
+    "issues",
+    "summary"
+  ],
+  "properties": {
+    "profile": {
+      "type": "object",
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "aep-media-adapter-ingestion-report"
+        },
+        "version": {
+          "type": "string",
+          "const": "0.1"
+        }
+      }
+    },
+    "adapter": {
+      "type": "object",
+      "required": [
+        "name",
+        "version",
+        "mode"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": [
+            "linuxptp",
+            "ffmpeg_prft",
+            "c2pa_manifest"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "const": "0.1"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "fixture_ingestion",
+            "optional_external_smoke"
+          ]
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "kind",
+        "input_path",
+        "tool_available",
+        "external_verification_performed"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "input_path": {
+          "type": "string"
+        },
+        "tool_available": {
+          "type": "boolean"
+        },
+        "external_verification_performed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "normalized_output": {
+      "type": "object",
+      "required": [
+        "kind",
+        "path",
+        "sha256",
+        "size_bytes"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "claim_boundary": {
+      "type": "object",
+      "required": [
+        "adapter_ingestion",
+        "external_verification",
+        "local_validation_only"
+      ],
+      "properties": {
+        "adapter_ingestion": {
+          "type": "boolean"
+        },
+        "external_verification": {
+          "type": "boolean"
+        },
+        "local_validation_only": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "issue_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "issues": {
+      "type": "array"
+    },
+    "summary": {
+      "type": "string"
+    }
+  }
+}

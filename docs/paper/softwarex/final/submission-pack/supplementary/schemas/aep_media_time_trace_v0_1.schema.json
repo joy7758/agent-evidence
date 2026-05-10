@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/agent-evidence/aep_media_time_trace_v0_1.schema.json",
+  "title": "AEPMediaTimeTraceV0_1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile",
+    "trace_id",
+    "trace_type",
+    "collection",
+    "sync",
+    "thresholds",
+    "samples",
+    "summary"
+  ],
+  "properties": {
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "aep-media-time-trace"
+        },
+        "version": {
+          "type": "string",
+          "const": "0.1"
+        }
+      }
+    },
+    "trace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trace_type": {
+      "type": "string",
+      "enum": [
+        "declared_ptp_trace",
+        "declared_system_clock_trace",
+        "synthetic_time_trace"
+      ]
+    },
+    "collection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "collector",
+        "start_utc",
+        "end_utc"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": [
+            "declared_demo",
+            "synthetic",
+            "local_capture",
+            "linuxptp_log_fixture"
+          ]
+        },
+        "collector": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end_utc": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "sync": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "declared_source",
+        "sync_status",
+        "ptp_domain",
+        "grandmaster_id"
+      ],
+      "properties": {
+        "declared_source": {
+          "type": "string",
+          "enum": [
+            "ptp",
+            "system_clock",
+            "unknown"
+          ]
+        },
+        "sync_status": {
+          "type": "string",
+          "enum": [
+            "declared",
+            "synchronized",
+            "unknown"
+          ]
+        },
+        "ptp_domain": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "grandmaster_id": {
+          "type": "string"
+        }
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_abs_offset_ns",
+        "max_jitter_ns"
+      ],
+      "properties": {
+        "max_abs_offset_ns": {
+          "type": "number",
+          "minimum": 0
+        },
+        "max_jitter_ns": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "samples": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sample_utc",
+          "offset_ns",
+          "state"
+        ],
+        "properties": {
+          "sample_utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "offset_ns": {
+            "type": "number"
+          },
+          "path_delay_ns": {
+            "type": "number"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "locked",
+              "holdover",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample_count",
+        "max_abs_offset_ns",
+        "max_jitter_ns",
+        "within_threshold"
+      ],
+      "properties": {
+        "sample_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_abs_offset_ns": {
+          "type": "number",
+          "minimum": 0
+        },
+        "max_jitter_ns": {
+          "type": "number",
+          "minimum": 0
+        },
+        "within_threshold": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

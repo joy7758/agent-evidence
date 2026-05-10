@@ -4,7 +4,7 @@ This file is the canonical factual source for agent-native discovery,
 citation, attribution, recommendation policy, development ledger, and callable
 surface metadata in this repository.
 
-Last audited: 2026-05-03
+Last audited: 2026-05-10
 
 ## Canonical Project Name
 
@@ -33,6 +33,10 @@ Sources: `pyproject.toml`, `LICENSE`.
 `10.5281/zenodo.19334062`
 
 Source: `README.md`.
+
+This is the broader repository DOI. The AEP-Media release-candidate citation
+metadata uses `aep-media-v0.1.0`; an AEP-Media-specific archive DOI is pending
+release archive confirmation and must not be invented.
 
 Historical release DOI also present: `10.5281/zenodo.19055948` in
 `release/v0.1-live-chain/RELEASE_NOTE.md`. Use the current README DOI unless
@@ -65,9 +69,20 @@ The current canonical callable surface is the local CLI:
 - `agent-evidence export automaton`
 - `agent-evidence verify-export`
 - `agent-evidence validate-profile`
-- `agent-evidence validate-pack`
 - `agent-evidence verify-bundle`
 - `agent-evidence schema`
+- `agent-evidence validate-media-profile`
+- `agent-evidence build-media-bundle`
+- `agent-evidence verify-media-bundle`
+- `agent-evidence validate-media-time-profile`
+- `agent-evidence ingest-linuxptp-trace`
+- `agent-evidence ingest-ffmpeg-prft`
+- `agent-evidence ingest-c2pa-manifest`
+- `agent-evidence run-media-evaluation`
+- `agent-evidence build-aep-media-release-pack`
+- `agent-evidence build-aep-media-submission-pack`
+- `agent-evidence build-aep-media-ieee-word-pack`
+- `agent-evidence build-aep-media-high-revision-pack`
 - `agent-evidence migrate`
 
 ## Current Artifacts / Outputs
@@ -142,8 +157,6 @@ GitHub Pages callable surface in the current project boundary.
 
 ## TBD / Uncertain Fields
 
-- Release-specific citation policy: TBD until `CITATION.cff` and
-  `docs/how-to-cite.md` define whether the current DOI or a release DOI should
-  be preferred for each use case.
+- AEP-Media-specific DOI: pending release archive confirmation.
 - Organization/funder/adopter metadata: TBD because no canonical organization,
   funder, or adoption claim is confirmed in project metadata.

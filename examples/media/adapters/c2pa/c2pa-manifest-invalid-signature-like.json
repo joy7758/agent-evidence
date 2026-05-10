@@ -1,0 +1,19 @@
+{
+  "manifest": {
+    "manifest_id": "urn:c2pa:fixture:002",
+    "claim_generator": "aep-media-demo",
+    "signature_status": "declared_invalid",
+    "ingredients": [
+      {
+        "title": "demo-media.mp4",
+        "relationship": "parentOf"
+      }
+    ],
+    "assertions": [
+      {
+        "label": "c2pa.hash.data",
+        "kind": "fixture"
+      }
+    ]
+  }
+}

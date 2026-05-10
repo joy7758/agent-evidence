@@ -63,6 +63,67 @@ Expected result:
 - the invalid example returns JSON with `"ok": false` and one primary error code
 - the demo writes artifacts under `demo/artifacts/` and ends with one `PASS` summary line
 
+## AEP-Media: time-aware media evidence validation
+
+AEP-Media is a small research-software path inside `agent-evidence` for local validation of
+time-aware media evidence bundles. It provides a media evidence profile, schemas, examples,
+offline bundle verification, strict declared time-trace checks, adapter-only ingestion fixtures,
+and reproducible evaluation reports.
+
+Install from source:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+```
+
+Validate the minimal media profile example:
+
+```bash
+agent-evidence validate-media-profile examples/media/minimal-valid-media-evidence.json
+```
+
+Build and verify an offline media bundle:
+
+```bash
+agent-evidence build-media-bundle examples/media/minimal-valid-media-evidence.json --out /tmp/aep-media-bundle-check
+agent-evidence verify-media-bundle /tmp/aep-media-bundle-check
+```
+
+Run strict declared time-trace validation:
+
+```bash
+agent-evidence validate-media-time-profile examples/media/time/minimal-valid-time-aware-media-evidence.json
+agent-evidence build-media-bundle examples/media/time/minimal-valid-time-aware-media-evidence.json --out /tmp/aep-media-time-bundle-check
+agent-evidence verify-media-bundle /tmp/aep-media-time-bundle-check --strict-time
+```
+
+Generate the media evaluation matrix:
+
+```bash
+agent-evidence run-media-evaluation --out demo/output/media_evaluation_demo
+```
+
+Adapter fixtures normalize LinuxPTP-style logs, FFmpeg PRFT-style metadata, and C2PA-like
+manifest metadata into local AEP-Media reports. They are ingestion adapters, not proof that
+external tools or signatures were verified.
+
+AEP-Media does not claim legal admissibility, non-repudiation, trusted timestamping, real PTP
+proof, a full MP4 PRFT parser, real C2PA signature verification, chain of custody, or production
+deployment.
+
+Key AEP-Media entry points:
+
+- Profile spec: [spec/aep-media-profile-v0.1.md](./spec/aep-media-profile-v0.1.md)
+- Bundle spec: [spec/aep-media-bundle-v0.1.md](./spec/aep-media-bundle-v0.1.md)
+- Time-trace spec: [spec/aep-media-time-trace-v0.1.md](./spec/aep-media-time-trace-v0.1.md)
+- Adapter spec: [spec/aep-media-adapters-v0.1.md](./spec/aep-media-adapters-v0.1.md)
+- Schemas: [schema/](./schema/)
+- Examples: [examples/media/](./examples/media/)
+- Demos: [demo/](./demo/)
+- Reports: [docs/reports/](./docs/reports/)
+
 ## Fastest LangChain proof
 
 For the current LangChain-first path:

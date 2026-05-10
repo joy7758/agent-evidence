@@ -1,0 +1,133 @@
+{
+  "profile": {
+    "name": "aep-media-evidence-profile",
+    "version": "0.1"
+  },
+  "statement_id": "aep-media:statement:demo-001",
+  "timestamp": "2026-04-26T08:00:05Z",
+  "actor": {
+    "id": "actor:demo-media-agent",
+    "type": "agent",
+    "label": "demo media evidence agent"
+  },
+  "subject": {
+    "id": "subject:demo-scene-001",
+    "type": "media-observed-event",
+    "label": "declared demo scene"
+  },
+  "operation": {
+    "id": "operation:media-capture-demo-001",
+    "type": "media.capture.declared_demo",
+    "subject_ref": "subject:demo-scene-001",
+    "policy_ref": "policy:missing-media-policy",
+    "media_refs": [
+      "media:demo-primary",
+      "media:demo-c2pa-placeholder"
+    ],
+    "evidence_refs": [
+      "evidence:media-capture-demo-001"
+    ],
+    "status": "succeeded"
+  },
+  "policy": {
+    "id": "policy:media-hash-and-time-v0",
+    "label": "hash and declared time context required",
+    "constraint_refs": [
+      "constraint:media-hash-required",
+      "constraint:time-context-required",
+      "constraint:manifest-reference-closed"
+    ]
+  },
+  "constraints": [
+    {
+      "id": "constraint:media-hash-required",
+      "type": "media_hash",
+      "rule": "Every local media artifact must include a recomputable sha256 digest and size."
+    },
+    {
+      "id": "constraint:time-context-required",
+      "type": "time_context",
+      "rule": "Primary media must resolve to the declared statement time context."
+    },
+    {
+      "id": "constraint:manifest-reference-closed",
+      "type": "manifest_reference",
+      "rule": "If a C2PA manifest reference is declared, it must resolve to a media artifact."
+    }
+  ],
+  "time_context": {
+    "id": "time:declared-demo-001",
+    "source": "declared_demo",
+    "sync_status": "declared",
+    "start_utc": "2026-04-26T08:00:00Z",
+    "end_utc": "2026-04-26T08:00:03Z",
+    "clock_trace_refs": []
+  },
+  "media": {
+    "artifacts": [
+      {
+        "id": "media:demo-primary",
+        "role": "primary_media",
+        "path": "fixtures/demo-media.bin",
+        "sha256": "e46f23ae3d31599396d06c2f827e09eeb3b744178082df3065a0daad0bca27a7",
+        "mime_type": "application/octet-stream",
+        "size_bytes": 83,
+        "time_context_ref": "time:declared-demo-001",
+        "container": "demo-binary",
+        "timing": {
+          "prft_declared": false,
+          "timecode_declared": false
+        }
+      },
+      {
+        "id": "media:demo-c2pa-placeholder",
+        "role": "sidecar_manifest",
+        "path": "fixtures/c2pa-manifest-placeholder.json",
+        "sha256": "b58a4a161125405d61c2f7d550d7f564d8149531879dd6827d7383313e9f0a80",
+        "mime_type": "application/json",
+        "size_bytes": 149,
+        "time_context_ref": "time:declared-demo-001",
+        "container": "json",
+        "timing": {
+          "prft_declared": false,
+          "timecode_declared": false
+        }
+      }
+    ]
+  },
+  "provenance": {
+    "id": "provenance:media-capture-demo-001",
+    "actor_ref": "actor:demo-media-agent",
+    "subject_ref": "subject:demo-scene-001",
+    "operation_ref": "operation:media-capture-demo-001",
+    "media_refs": [
+      "media:demo-primary",
+      "media:demo-c2pa-placeholder"
+    ],
+    "c2pa_manifest_ref": "media:demo-c2pa-placeholder",
+    "claim_generator": "agent-evidence demo placeholder"
+  },
+  "evidence": {
+    "id": "evidence:media-capture-demo-001",
+    "policy_refs": [
+      "policy:media-hash-and-time-v0"
+    ],
+    "artifact_refs": [
+      "media:demo-primary",
+      "media:demo-c2pa-placeholder"
+    ],
+    "notes": "Declared demo-level media evidence object. This does not verify a real C2PA signature or PTP clock trace."
+  },
+  "validation": {
+    "method": "schema+reference+media-hash+declared-time",
+    "validator": "agent-evidence validate-media-profile",
+    "required_checks": [
+      "schema_conformance",
+      "reference_closure",
+      "media_hash_recomputation",
+      "time_context_completeness",
+      "provenance_manifest_reference"
+    ],
+    "expected_result": "fail"
+  }
+}

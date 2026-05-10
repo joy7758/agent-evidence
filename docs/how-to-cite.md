@@ -2,43 +2,45 @@
 
 Use `CITATION.cff` as the machine-readable source for citation metadata.
 
-## Preferred Citation
+## Preferred Citation for AEP-Media v0.1.0
 
 Plain-text citation:
 
-Bin Zhang. `agent-evidence`: Runtime evidence exporter and validator for AI
-agent and service operations. Version 0.2.0. DOI:
-10.5281/zenodo.19334062.
+Bin Zhang. `AEP-Media`: Reusable Research Software for Offline Validation of
+Time-Aware Media Evidence Bundles. Version `aep-media-v0.1.0`. Repository:
+<https://github.com/joy7758/agent-evidence>.
 
-Repository: <https://github.com/joy7758/agent-evidence>
+An AEP-Media-specific release DOI is pending release archive confirmation. Do
+not cite an AEP-Media-specific DOI until the archive exists and the DOI is
+recorded in `CITATION.cff`.
 
-## BibTeX
+## BibTeX Draft
 
 ```bibtex
-@software{zhang_agent_evidence_2026,
+@software{zhang_aep_media_2026,
   author = {Zhang, Bin},
-  title = {agent-evidence},
-  version = {0.2.0},
-  doi = {10.5281/zenodo.19334062},
+  title = {AEP-Media: Reusable Research Software for Offline Validation of Time-Aware Media Evidence Bundles},
+  version = {aep-media-v0.1.0},
   url = {https://github.com/joy7758/agent-evidence},
   license = {Apache-2.0},
-  note = {Runtime evidence exporter and validator for AI agent and service operations}
+  note = {AEP-Media-specific DOI pending release archive confirmation}
 }
 ```
 
-## Citing a Specific Version or Release
+## Repository-Level DOI
 
-When citing a specific release, prefer the DOI and version recorded for that
-release. The current repository-level DOI in `README.md` is
-`10.5281/zenodo.19334062`.
+The broader `agent-evidence` repository has previously recorded DOI
+`10.5281/zenodo.19334062`. Before using that DOI for SoftwareX, confirm whether
+it resolves to the exact AEP-Media release intended for citation.
+
+## Historical Release DOI
 
 Historical release DOI present in this repository:
 
 - `10.5281/zenodo.19055948` for the v0.1 live-chain release note in
   `release/v0.1-live-chain/RELEASE_NOTE.md`
 
-Use release-specific metadata when reproducing or discussing that release
-instead of the current repository-level artifact.
+Use release-specific metadata when reproducing or discussing a specific release.
 
 ## Uncertain Fields
 

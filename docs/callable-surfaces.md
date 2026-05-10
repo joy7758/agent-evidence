@@ -23,6 +23,29 @@ The CLI calls the repository's existing validation, export, storage, bundle,
 and pack-building logic. New wrappers should reuse these same implementation
 paths instead of duplicating validation logic.
 
+## AEP-Media CLI Surface
+
+Mission 018 registered the AEP-Media commands that back the SoftwareX
+reproducibility path:
+
+- `agent-evidence validate-media-profile`
+- `agent-evidence build-media-bundle`
+- `agent-evidence verify-media-bundle`
+- `agent-evidence validate-media-time-profile`
+- `agent-evidence ingest-linuxptp-trace`
+- `agent-evidence ingest-ffmpeg-prft`
+- `agent-evidence ingest-c2pa-manifest`
+- `agent-evidence run-media-evaluation`
+- `agent-evidence build-aep-media-release-pack`
+- `agent-evidence build-aep-media-submission-pack`
+- `agent-evidence build-aep-media-ieee-word-pack`
+- `agent-evidence build-aep-media-high-revision-pack`
+
+These commands call existing AEP-Media modules. They do not add real PTP proof,
+full MP4 PRFT parsing, real C2PA signature verification, legal admissibility,
+non-repudiation, trusted timestamping, production deployment, or chain of
+custody.
+
 ## OpenAPI Status
 
 OpenAPI is planned only after a real local HTTP wrapper exists.

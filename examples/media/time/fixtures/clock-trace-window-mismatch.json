@@ -1,0 +1,44 @@
+{
+  "profile": {
+    "name": "aep-media-time-trace",
+    "version": "0.1"
+  },
+  "trace_id": "clock-trace-demo-window-mismatch-001",
+  "trace_type": "declared_ptp_trace",
+  "collection": {
+    "source": "declared_demo",
+    "collector": "aep-media-demo",
+    "start_utc": "2026-04-26T08:20:01Z",
+    "end_utc": "2026-04-26T08:20:02Z"
+  },
+  "sync": {
+    "declared_source": "ptp",
+    "sync_status": "declared",
+    "ptp_domain": 0,
+    "grandmaster_id": "gm-demo-001"
+  },
+  "thresholds": {
+    "max_abs_offset_ns": 1000000,
+    "max_jitter_ns": 1000000
+  },
+  "samples": [
+    {
+      "sample_utc": "2026-04-26T08:20:01Z",
+      "offset_ns": 1000,
+      "path_delay_ns": 5000,
+      "state": "locked"
+    },
+    {
+      "sample_utc": "2026-04-26T08:20:02Z",
+      "offset_ns": 1200,
+      "path_delay_ns": 5200,
+      "state": "locked"
+    }
+  ],
+  "summary": {
+    "sample_count": 2,
+    "max_abs_offset_ns": 1200,
+    "max_jitter_ns": 200,
+    "within_threshold": true
+  }
+}

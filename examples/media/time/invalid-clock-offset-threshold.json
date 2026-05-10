@@ -1,0 +1,160 @@
+{
+  "profile": {
+    "name": "aep-media-evidence-profile",
+    "version": "0.1"
+  },
+  "statement_id": "aep-media-time:statement:demo-001",
+  "timestamp": "2026-04-26T08:20:05Z",
+  "actor": {
+    "id": "actor:demo-media-time-agent",
+    "type": "agent",
+    "label": "demo media time evidence agent"
+  },
+  "subject": {
+    "id": "subject:demo-time-scene-001",
+    "type": "media-observed-event",
+    "label": "declared demo time scene"
+  },
+  "operation": {
+    "id": "operation:media-time-capture-demo-001",
+    "type": "media.capture.declared_demo",
+    "subject_ref": "subject:demo-time-scene-001",
+    "policy_ref": "policy:media-time-trace-v0",
+    "media_refs": [
+      "media:time-demo-primary",
+      "media:time-demo-c2pa-placeholder",
+      "media:time-demo-clock-trace"
+    ],
+    "evidence_refs": [
+      "evidence:media-time-capture-demo-001"
+    ],
+    "status": "succeeded"
+  },
+  "policy": {
+    "id": "policy:media-time-trace-v0",
+    "label": "hash, declared time context, and clock trace required",
+    "constraint_refs": [
+      "constraint:media-hash-required",
+      "constraint:time-context-required",
+      "constraint:clock-trace-required",
+      "constraint:clock-trace-threshold"
+    ]
+  },
+  "constraints": [
+    {
+      "id": "constraint:media-hash-required",
+      "type": "media_hash",
+      "rule": "Every local media artifact must include a recomputable sha256 digest and size."
+    },
+    {
+      "id": "constraint:time-context-required",
+      "type": "time_context",
+      "rule": "Primary media must resolve to the declared statement time context."
+    },
+    {
+      "id": "constraint:clock-trace-required",
+      "type": "clock_trace",
+      "rule": "Strict time validation requires a local clock trace artifact reference."
+    },
+    {
+      "id": "constraint:clock-trace-threshold",
+      "type": "clock_trace_threshold",
+      "rule": "Declared clock trace summary must remain within the declared offset and jitter thresholds."
+    }
+  ],
+  "time_context": {
+    "id": "time:declared-demo-strict-001",
+    "source": "declared_demo",
+    "sync_status": "declared",
+    "start_utc": "2026-04-26T08:20:00Z",
+    "end_utc": "2026-04-26T08:20:03Z",
+    "clock_trace_refs": [
+      "media:time-demo-clock-trace"
+    ]
+  },
+  "media": {
+    "artifacts": [
+      {
+        "id": "media:time-demo-primary",
+        "role": "primary_media",
+        "path": "fixtures/demo-media.bin",
+        "sha256": "0bbe7bc27b7b195556056fed9666d86ab88389f44610c825f394bae7f458744f",
+        "mime_type": "application/octet-stream",
+        "size_bytes": 95,
+        "time_context_ref": "time:declared-demo-strict-001",
+        "container": "demo-binary",
+        "timing": {
+          "prft_declared": false,
+          "timecode_declared": false
+        }
+      },
+      {
+        "id": "media:time-demo-c2pa-placeholder",
+        "role": "sidecar_manifest",
+        "path": "fixtures/c2pa-manifest-placeholder.json",
+        "sha256": "5061234896fc60ee7e2699d3bb141c144d3960c61944a65c46c24d579c716d7b",
+        "mime_type": "application/json",
+        "size_bytes": 146,
+        "time_context_ref": "time:declared-demo-strict-001",
+        "container": "json",
+        "timing": {
+          "prft_declared": false,
+          "timecode_declared": false
+        }
+      },
+      {
+        "id": "media:time-demo-clock-trace",
+        "role": "clock_trace",
+        "path": "fixtures/clock-trace-offset-exceeded.json",
+        "sha256": "69d7d35300640c408731fc47815d0d0732c64aff0899dd2b6ec5fc61cf076d83",
+        "mime_type": "application/json",
+        "size_bytes": 1131,
+        "time_context_ref": "time:declared-demo-strict-001",
+        "container": "json",
+        "timing": {
+          "prft_declared": false,
+          "timecode_declared": false
+        }
+      }
+    ]
+  },
+  "provenance": {
+    "id": "provenance:media-time-capture-demo-001",
+    "actor_ref": "actor:demo-media-time-agent",
+    "subject_ref": "subject:demo-time-scene-001",
+    "operation_ref": "operation:media-time-capture-demo-001",
+    "media_refs": [
+      "media:time-demo-primary",
+      "media:time-demo-c2pa-placeholder",
+      "media:time-demo-clock-trace"
+    ],
+    "c2pa_manifest_ref": "media:time-demo-c2pa-placeholder",
+    "claim_generator": "agent-evidence strict time demo placeholder"
+  },
+  "evidence": {
+    "id": "evidence:media-time-capture-demo-001",
+    "policy_refs": [
+      "policy:media-time-trace-v0"
+    ],
+    "artifact_refs": [
+      "media:time-demo-primary",
+      "media:time-demo-c2pa-placeholder",
+      "media:time-demo-clock-trace"
+    ],
+    "notes": "Declared demo-level media evidence object with synthetic clock trace validation. This is not hardware-verified PTP."
+  },
+  "validation": {
+    "method": "schema+reference+media-hash+declared-time+clock-trace",
+    "validator": "agent-evidence validate-media-time-profile",
+    "required_checks": [
+      "schema_conformance",
+      "reference_closure",
+      "media_hash_recomputation",
+      "time_context_completeness",
+      "clock_trace_reference_closure",
+      "clock_trace_summary_recomputation",
+      "clock_trace_threshold_check"
+    ],
+    "expected_result": "fail"
+  }
+}

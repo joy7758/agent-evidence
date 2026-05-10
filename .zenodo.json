@@ -1,0 +1,29 @@
+{
+  "title": "AEP-Media v0.1.0: Offline Validation of Time-Aware Media Evidence Bundles",
+  "upload_type": "software",
+  "description": "AEP-Media is reusable research software for local validation of time-aware media evidence bundles. It provides profiles, schemas, command-line validators, offline bundle verification, strict declared time-trace validation, adapter-only ingestion, and reproducible evaluation matrices.",
+  "creators": [
+    {
+      "name": "Zhang, Bin",
+      "orcid": "0009-0002-8861-1481"
+    }
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "operation accountability",
+    "media evidence",
+    "provenance",
+    "auditability",
+    "validation",
+    "time trace",
+    "reproducible research software",
+    "evidence bundle"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/joy7758/agent-evidence",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}

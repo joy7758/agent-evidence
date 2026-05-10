@@ -1,0 +1,3 @@
+ptp4l[fixture]: 2026-04-26T08:20:00Z master offset 120 ns s2 freq +10 path delay 5100 ns locked
+ptp4l[fixture]: 2026-04-26T08:20:01Z master offset -80 ns s2 freq +11 path delay 5080 ns locked
+ptp4l[fixture]: 2026-04-26T08:20:02Z master offset 40 ns s2 freq +10 path delay 5090 ns locked

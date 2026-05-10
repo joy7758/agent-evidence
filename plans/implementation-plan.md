@@ -1,5 +1,460 @@
 # implementation plan
 
+## M27 AEP-Media Repository Readiness Audit + SoftwareX Final Pack
+- 输入：
+  - M26 SoftwareX Path A preparation package.
+  - SoftwareX official Guide for Authors and official Original Software Publication Word template.
+  - Repository metadata: README, LICENSE, CITATION, pyproject, specs, schemas, examples, tests, reports.
+- 输出：
+  - README AEP-Media section.
+  - `.zenodo.json` draft metadata.
+  - `docs/paper/softwarex/final/aep_media_softwarex_final_manuscript.md`
+  - `docs/paper/softwarex/final/aep_media_softwarex_cover_letter_final.md`
+  - `docs/paper/softwarex/final/submission-pack/main/AEP-Media_SoftwareX_Manuscript.docx`
+  - `docs/paper/softwarex/final/submission-pack/main/AEP-Media_SoftwareX_Manuscript.pdf`
+  - `docs/paper/softwarex/final/submission-pack/AEP-Media_SoftwareX_Supplementary.zip`
+  - `docs/paper/softwarex/final/reports/softwarex_template_download_log.md`
+  - `docs/paper/softwarex/final/reports/repository_readiness_audit.md`
+  - `docs/paper/softwarex/final/reports/zenodo_release_plan.md`
+  - `docs/reports/aep_media_mission017_softwarex_final_pack_report.md`
+- 验收结果：
+  - Official SoftwareX Word template acquired from official Elsevier / SoftwareX source and hash recorded.
+  - Repository public visibility confirmed.
+  - Apache-2.0 license confirmed.
+  - README now exposes AEP-Media commands and boundaries.
+  - Final SoftwareX manuscript is under 3000 words.
+  - Supplementary zip generated.
+  - Red-line scan passed.
+  - Internal AEP-Media evaluation functions pass for 18, 26, 23, and 31 cases with `unexpected=0`.
+- 当前 blocker：
+  - CLI command registration is missing for AEP-Media commands expected by tests and docs.
+  - Targeted media pytest result: `44 passed, 2 failed, 1 warning`.
+  - Full pytest result: `148 passed, 5 failed, 1 skipped, 15 warnings`.
+  - AEP-Media-specific DOI / archive is not confirmed.
+- 当前 readiness：
+  - SoftwareX readiness: NOT READY.
+  - JOSS compatibility: POSSIBLE.
+  - FSIDI backup suitability: POSSIBLE.
+- 非目标：
+  - 不改 validator logic.
+  - 不改 schemas.
+  - 不改 adapters.
+  - 不新增 features.
+  - 不触碰 unrelated paper workspaces.
+- 下一阶段：
+  - Mission 018: narrow CLI registration and release DOI/archive readiness fix, then rerun tests and regenerate the SoftwareX final pack.
+
+## M26 AEP-Media Path A SoftwareX Preparation
+- 输入：
+  - M25 TSE rejection analysis and retargeting strategy。
+  - Existing AEP-Media specs, schemas, reports, non-claims, reproducibility checklist, and Mission 004-007 evidence.
+  - Repository metadata: package, license, README, DOI, CLI entry points.
+- 输出：
+  - `docs/paper/softwarex/aep_media_softwarex_manuscript_draft.md`
+  - `docs/paper/softwarex/aep_media_softwarex_metadata.md`
+  - `docs/paper/softwarex/aep_media_softwarex_software_description.md`
+  - `docs/paper/softwarex/aep_media_softwarex_statement_of_need.md`
+  - `docs/paper/softwarex/aep_media_softwarex_reproducibility.md`
+  - `docs/paper/softwarex/aep_media_softwarex_limitations.md`
+  - `docs/paper/softwarex/aep_media_softwarex_cover_letter.md`
+  - `docs/paper/softwarex/aep_media_softwarex_submission_checklist.md`
+  - `docs/paper/softwarex/aep_media_softwarex_joss_compatibility_check.md`
+  - `docs/paper/softwarex/aep_media_softwarex_fsidi_backup_positioning.md`
+  - `docs/reports/aep_media_mission016_softwarex_preparation_report.md`
+  - `docs/STATUS.md` updated with Path A SoftwareX readiness.
+- 验收条件：
+  - Primary target is SoftwareX-style research software / artifact paper.
+  - JOSS is recorded as possible but secondary.
+  - FSIDI is recorded as possible Path B backup.
+  - Metadata records repository, package, modules, CLI commands, language, OS assumptions, license, docs, test evidence, and DOI status.
+  - SoftwareX manuscript draft frames AEP-Media as reusable research software, not a TSE lifecycle paper.
+  - Reproducibility file records prior supported evaluation numbers: 18, 26, 23, and 31 cases with `unexpected=0`, with rerun-before-submission caveat where appropriate.
+  - Limitations preserve all non-claims.
+  - No implementation code changes.
+- 非目标：
+  - 不新增 validators, schemas, adapters, demos, tests, or features.
+  - 不 run full pytest unless needed.
+  - 不继续修 TSE.
+  - 不触碰 `unrelated paper workspace/`.
+- 下一阶段：
+  - Mission 017 Repository Readiness Audit + SoftwareX Final Pack.
+  - Check README discoverability, public repository state, release archive, AEP-Media-specific DOI, fresh test/evaluation output, and final SoftwareX template formatting.
+
+## M25 AEP-Media Post-TSE Desk-Reject Retargeting
+- 输入：
+  - IEEE/TSE decision letter for `TSE-2026-04-0383`。
+  - 决策类型：desk reject / initial editorial review。
+  - 决策原因：不符合 TSE Editorial Charter；未充分展开为大型复杂软件系统开发生命周期的软件工程问题。
+- 输出：
+  - `docs/reports/aep_media_tse_rejection_analysis.md`
+  - `docs/paper/aep_media_retargeting_strategy.md`
+  - `docs/paper/aep_media_software_artifact_abstract.md`
+  - `docs/paper/aep_media_digital_evidence_abstract.md`
+  - `docs/reports/aep_media_tse_decision_archive_note.md`
+  - `docs/STATUS.md` 当前状态更新为 TSE initial editorial scope rejection 后转投。
+  - `plans/implementation-plan.md` 当前计划更新为 TSE initial editorial scope rejection 后转投。
+- 验收条件：
+  - 清楚说明这是 scope / positioning rejection，不是 implementation failure。
+  - 不写成 reviewer rejection。
+  - 不建议申诉；推荐转投。
+  - Path A 指向 software/artifact paper。
+  - Path B 指向 digital evidence / media provenance paper。
+  - Path C 指向未来更大的 evidence-aware software engineering lifecycle paper。
+  - 保持所有 non-claims：no legal admissibility, no non-repudiation, no trusted timestamping, no real PTP proof, no full MP4 PRFT parser, no real C2PA signature verification, no production deployment。
+- 下一步：
+  - 准备 software/artifact-oriented submission package。
+- 非目标：
+  - 不改 validator、schema、adapter、demo 或 tests。
+  - 不新增真实外部工具验证。
+  - 不继续修 TSE 稿件。
+  - 不触碰 `unrelated paper workspace/`。
+
+## M24 AEP-Media TSE Official Template Resubmission Status Sync
+- 输入：
+  - IEEE/TSE 管理员邮件：稿件因 approved IEEE Manuscript Template 要求被退回更新。
+  - Mission 013 官方 IEEE Template Selector 重建目录。
+  - Mission 014 upload-safe LaTeX source zip。
+  - IEEE/TSE confirmation email showing `Manuscript Received / 稿件已收到` for `TSE-2026-04-0383` on `2026-04-27`。
+- 输出：
+  - `docs/STATUS.md` 同步 AEP-Media TSE 当前投稿状态。
+  - `submission/manuscript-baselines.md` 的 Live submission status sync 增加 AEP-Media active submission。
+- 验收条件：
+  - 状态写为 `Manuscript Received / 稿件已收到`，不写成 accepted / published。
+  - 记录 manuscript ID、title、venue、manuscript type、received date 和 template-resubmission history。
+  - 明确 full staging pack 仅归档，upload-safe LaTeX zip 是 Main Manuscript 首选材料。
+  - 保持 claim boundary，不新增真实 PTP / FFmpeg PRFT / C2PA / legal evidence / non-repudiation 声称。
+- 非目标：
+  - 不改系统功能。
+  - 不改论文主张。
+  - 不登录投稿系统。
+  - 不触碰 `unrelated paper workspace/`。
+
+## M23 AEP-Media Journal Surgery High Revision
+- 输入：
+  - M20-M22 manuscript, cover letter, IEEE Word pack, final staging pack, release/evaluation reports, and supplementary materials
+  - pre-submission editor attack/defense critique
+- 输出：
+  - `agent_evidence/media_final_journal_revision_pack.py`
+  - `agent-evidence build-aep-media-high-revision-pack --out <dir>`
+  - `demo/build_aep_media_high_revision_pack.py`
+  - `tests/test_media_high_revision_pack.py`
+  - high-revision manuscript Markdown, Word, and PDF
+  - high-revision cover letter Markdown and Word
+  - related work matrix
+  - editor defense notes
+  - submission risk register
+  - reviewer-readable supplementary zip
+  - full high-revision submission package zip
+  - Mission 011 high revision report and editor attack/defense report
+- 验收条件：
+  - title shortened and synchronized across manuscript and cover letter
+  - manuscript has journal-native structure: Introduction, Problem Statement and Design Goals, Object Model, Validation Semantics and Offline Bundle, Time-Trace Validation and Adapter Ingestion, Evaluation Design, Results, Related Work, Threats, Conclusion
+  - red-flag preparation text absent from editor-facing files
+  - Related Work includes PROV, JSON Schema, C2PA, FFmpeg/ffprobe, LinuxPTP, GStreamer, ACM artifact review, in-toto, SLSA, DOIP, and FAIR Digital Objects
+  - evaluation narrative is framed as bounded evidence matrices, not a test checklist
+  - optional-tool unavailability is treated as a limitation, not a core result
+  - cover letter is single-author and editor-facing
+  - references are present and citation closure passes
+  - docx, PDF, supplementary zip, and full pack zip are generated
+  - no local home absolute path and no `unrelated paper workspace/` copy in the high-revision package
+- 非目标：
+  - 不新增 validator or adapter functionality
+  - 不登录或上传到 IEEE / TSE portal
+  - 不声明已投稿
+  - 不新增真实 PTP、FFmpeg PRFT、C2PA signature verification、legal evidence、non-repudiation 或 production claims
+
+## M22 AEP-Media IEEE Final Formatting and Submission Staging
+- 输入：
+  - M21 IEEE Computer Society Word staging pack
+  - AEP-Media TSE manuscript draft, appendix, cover letter, claim boundary, and release/evaluation summaries
+  - local conversion tools: pandoc and TeX for final Word/PDF staging
+- 输出：
+  - final local staging directory under `/tmp/aep-media-final-submission-staging`
+  - IEEE-style Word manuscript
+  - IEEE-style PDF manuscript
+  - final cover letter Markdown and Word copy
+  - supplementary zip
+  - final reference list
+  - final submission checklist
+  - final staging pack zip
+  - Mission 010 report and final checklist docs
+- 验收条件：
+  - abstract remains within the journal-ready range and contains no citations
+  - references are numbered in IEEE style without fabricated DOI values
+  - Word manuscript and PDF are generated locally
+  - supplementary package and all-in-one staging zip pass archive integrity checks
+  - pack status remains `local-preparation status`
+  - no local home absolute path appears in fixed staging text files
+  - no copy of `unrelated paper workspace/`
+- 非目标：
+  - 不登录或上传到 IEEE / TSE portal
+  - 不声明已投稿、已接收或已发表
+  - 不新增真实 PTP、FFmpeg PRFT、C2PA signature verification、legal evidence、non-repudiation 或 production claims
+
+## M21 AEP-Media IEEE Computer Society Word Staging Pack
+- 输入：
+  - M20 local submission-preparation manuscript and appendix
+  - official IEEE Computer Society Word template archive
+  - local conversion tools: pandoc preferred, python-docx fallback, LibreOffice optional for PDF
+- 输出：
+  - `agent_evidence/media_ieee_word_pack.py`
+  - `agent-evidence build-aep-media-ieee-word-pack --out <dir>`
+  - `demo/build_aep_media_ieee_word_pack.py`
+  - `tests/test_media_ieee_word_pack.py`
+  - Word-ready manuscript Markdown
+  - IEEE Word `.docx` staging manuscript
+  - optional PDF when LibreOffice is available
+  - supplementary zip and pack manifest
+  - style, metadata, and final author checklists
+- 验收条件：
+  - template zip is detected locally
+  - Word-ready Markdown and supplementary zip are generated
+  - `.docx` is generated when pandoc or python-docx is available
+  - PDF generation is attempted only when LibreOffice / soffice is available
+  - pack manifest records `local-preparation status`
+  - non-claims and evaluation numbers are preserved
+  - no local home absolute paths in fixed staging files
+  - no copy of `unrelated paper workspace/`
+- 非目标：
+  - 不登录或上传到 IEEE / TSE portal
+  - 不声明已投稿
+  - 不新增真实 PTP、FFmpeg PRFT、C2PA signature verification、legal evidence、non-repudiation 或 production claims
+
+## M20 AEP-Media Final Paper Draft and Submission Preparation
+- 输入：
+  - M13-M19 AEP-Media profile, bundle, strict time, adapters, optional tools, evaluation pack, release pack
+  - IEEE Author Center and IEEE Computer Society TSE submission-format source checks
+- 输出：
+  - `agent_evidence/media_submission_pack.py`
+  - `agent-evidence build-aep-media-submission-pack --out <dir>`
+  - `demo/build_aep_media_submission_pack.py`
+  - `tests/test_media_submission_pack.py`
+  - final TSE-oriented Markdown manuscript draft
+  - submission appendix
+  - TSE format preflight
+  - submission checklist
+  - cover letter draft
+  - Mission 008 report
+- 验收条件：
+  - manuscript contains Introduction, Methodology, Evaluation, Non-Claims, Discussion, Threats, Related Work, and Conclusion
+  - appendix consolidates Mission 001-007 artifacts, reports, demo outputs, evaluation matrices, and reviewer file map
+  - submission pack can be generated locally
+  - submission pack records `local-preparation status`
+  - no local home absolute paths in fixed submission-pack files
+  - non-claims remain explicit: no legal admissibility, no non-repudiation, no trusted timestamping, no real PTP proof, no full MP4 PRFT parser, no real C2PA signature verification, no production deployment
+- 非目标：
+  - 不登录或上传到外部期刊系统
+  - 不生成最终 IEEE PDF in repository automation
+  - 不伪造引用
+  - 不新增真实外部验证声称
+
+## M19 AEP-Media v0.1 Release Pack
+- 输入：
+  - M13 media profile validator / examples
+  - M14 offline bundle build / verify
+  - M15 strict declared time trace validator
+  - M16 default evaluation evidence pack
+  - M17 adapter-only ingestion evaluation
+  - M18 optional external-tool detection
+- 输出：
+  - `agent_evidence/media_release_pack.py`
+  - `agent-evidence build-aep-media-release-pack --out <dir>`
+  - `demo/build_aep_media_release_pack.py`
+  - `tests/test_media_release_pack.py`
+  - final claim boundary, reproducibility checklist, artifact inventory, evaluation summary, release notes, and paper scaffold
+- 验收条件：
+  - release pack can be generated reproducibly
+  - default evaluation remains 18 cases with `unexpected=0`
+  - adapter evaluation remains at least 26 cases with `unexpected=0`
+  - optional-tool evaluation remains at least 23 cases with `unexpected=0`, with missing tools skipped
+  - release pack contains checksums, paper scaffold, copied specs/schemas/examples/demos/reports, and no local absolute home paths
+  - release pack excludes unrelated paper workspaces, virtual environments, `.git`, bytecode caches, and historical demo outputs
+  - claim boundary explicitly denies legal admissibility, non-repudiation, trusted timestamping, real PTP proof, full MP4 PRFT parsing, and real C2PA signature verification
+- 下一阶段：
+  - paper polishing
+  - artifact archive
+  - optional external evidence appendix on Linux/FFmpeg/C2PA-equipped environments
+- 非目标：
+  - 不新增核心功能
+  - 不启动真实 PTP 同步
+  - 不声明真实 FFmpeg PRFT 或 C2PA verification 结果
+  - 不提供 production deployment、legal evidence 或 non-repudiation claims
+
+## M18 AEP-Media Optional External Tool Support
+- 输入：
+  - M17 adapter-only ingestion layer
+  - optional local tools: `ptp4l`, `phc2sys`, `ffmpeg`, `ffprobe`, `c2pa`
+- 输出：
+  - `agent_evidence/media_optional_tools.py`
+  - `agent-evidence run-media-evaluation --include-optional-tools`
+  - external-tool mode metadata in FFmpeg and C2PA adapters
+  - `docs/reports/aep_media_mission006_report.md`
+- 验收条件：
+  - missing external tools are recorded as skipped, not as fixture test failures
+  - default `run-media-evaluation` remains unchanged
+  - `--include-optional-tools` writes machine-readable optional tool reports
+  - no automatic PTP clock discipline process is started by tests or evaluation
+  - external verification claims are only set when an external tool actually runs
+- 非目标：
+  - 不自动运行 clock-affecting linuxptp commands
+  - 不提供 legal evidence, non-repudiation, trusted timestamping, or transparency log anchoring
+
+## M17 AEP-Media Adapter-only Ingestion Interfaces
+- 输入：
+  - M13 media profile validator / examples
+  - M14 media bundle build / verify
+  - M15 strict declared time trace validator
+  - M16 evaluation evidence pack
+  - fixture-style outputs for LinuxPTP, ffprobe PRFT metadata, and C2PA-like manifests
+- 输出：
+  - `agent_evidence/adapters/linuxptp.py`
+  - `agent_evidence/adapters/ffmpeg_prft.py`
+  - `agent_evidence/adapters/c2pa_manifest.py`
+  - `agent_evidence/media_adapter_evaluation.py`
+  - `schema/aep_media_adapter_report_v0_1.schema.json`
+  - `spec/aep-media-adapters-v0.1.md`
+  - `examples/media/adapters/`
+  - `demo/run_media_adapter_demo.py`
+  - `tests/test_media_adapters.py`
+  - `agent-evidence ingest-linuxptp-trace`
+  - `agent-evidence ingest-ffmpeg-prft`
+  - `agent-evidence ingest-c2pa-manifest`
+  - `agent-evidence run-media-evaluation --include-adapters`
+- 验收条件：
+  - fixture tests do not require linuxptp, ffmpeg, ffprobe, or c2pa to be installed
+  - LinuxPTP-style fixtures normalize into `aep-media-time-trace@0.1`
+  - ffprobe-style fixture normalizes into PRFT timing metadata and missing PRFT fails with `ffmpeg_prft_not_found`
+  - C2PA-like manifest fixture normalizes into manifest metadata and declared invalid signature fails with `c2pa_signature_invalid_declared`
+  - adapter-backed statement passes `validate-media-time-profile`, bundle build, and `verify-media-bundle --strict-time`
+  - default `run-media-evaluation` remains the M16 18-case pack
+  - `run-media-evaluation --include-adapters` adds adapter cases and keeps `unexpected_count` at 0
+  - docs distinguish adapter ingestion, optional external verification, and local validation claim
+- 非目标：
+  - 不证明真实 PTP 同步或硬件时钟纪律
+  - 不直接解析 MP4 boxes
+  - 不默认创建或验证真实 C2PA signatures
+  - 不提供法律证据、非抵赖、可信时间戳或外部 transparency log anchoring
+
+## M16 AEP-Media Evaluation Evidence Pack
+- 输入：
+  - M13 media profile validator / examples / demo
+  - M14 media bundle build / verify / tamper behavior
+  - M15 strict declared time trace validator / examples / demo
+- 输出：
+  - `agent_evidence/media_evaluation.py`
+  - `demo/run_media_evaluation_demo.py`
+  - `tests/test_media_evaluation.py`
+  - `docs/reports/aep_media_mission004_report.md`
+  - `docs/reports/aep_media_paper_evaluation_tables.md`
+  - `docs/reports/aep_media_non_claims_matrix.md`
+  - `docs/reports/aep_media_reproducibility_checklist.md`
+  - `docs/paper/aep_media_paper_outline.md`
+  - `agent-evidence run-media-evaluation --out <dir>`
+- 验收条件：
+  - evaluation pack contains summary, matrix JSON/Markdown/CSV, artifact inventory, reproducibility commands, non-claims matrix, environment, per-case reports, and bundles
+  - 18 required cases are present and `matched_expectation` is true for each
+  - time tamper cases include time-specific error codes
+  - artifact inventory includes sha256 and size for existing files
+  - Mission 001/002/003 tests still pass
+  - no real PTP / FFmpeg / C2PA / legal-evidence claims
+  - no changes under `unrelated paper workspace/`
+- M17 future integration proposal:
+  - linuxptp trace ingestion adapter
+  - FFmpeg PRFT extraction adapter
+  - C2PA placeholder-to-real manifest adapter
+  - status: future integration only, not a current claim
+
+## M15 AEP-Media Time Trace Strictness
+- 输入：
+  - M13 AEP-Media Profile v0.1 statement / validator / examples
+  - M14 AEP-Media Bundle v0.1 build / verify closure
+  - 现有 `time_context.clock_trace_refs` optional field
+- 输出：
+  - `agent_evidence/media_time.py`
+  - `schema/aep_media_time_trace_v0_1.schema.json`
+  - `spec/aep-media-time-trace-v0.1.md`
+  - `examples/media/time/` valid / invalid strict time examples and fixtures
+  - `agent-evidence validate-media-time-profile <statement_json>`
+  - `agent-evidence verify-media-bundle <bundle_dir> --strict-time`
+  - `demo/run_media_time_demo.py`
+  - `tests/test_media_time.py`
+  - `docs/reports/aep_media_mission003_report.md`
+- 验收条件：
+  - base `validate-media-profile` behavior remains unchanged
+  - default `verify-media-bundle` behavior remains unchanged
+  - strict time validator requires closed `clock_trace_refs`
+  - strict time validator checks clock trace artifact hash, schema/profile, window coverage, sample validity, summary recomputation, thresholds, and primary media time binding
+  - strict time valid example passes
+  - missing clock ref, offset threshold, and window mismatch examples fail with explicit time codes
+  - strict bundle verification can still emit time-specific codes even when checksum mismatch is also present
+  - demo generates a time tamper matrix with one pass and three fail cases
+- 非目标：
+  - 不执行真实 PTP 同步
+  - 不验证硬件时钟纪律
+  - 不解析真实 MP4 PRFT boxes
+  - 不验证可信时间戳
+  - 不创建或验证真实 C2PA signatures
+  - 不提供法律级时间证明
+
+## M14 AEP-Media Bundle Closure and Tamper Matrix
+- 输入：
+  - M13 AEP-Media Profile v0.1 statement、validator、examples、demo
+  - 现有 `agent_evidence` Python 包与 click CLI
+  - 现有 `schema/`、`spec/`、`demo/`、`tests/`、`docs/` 目录
+- 输出：
+  - `agent_evidence/media_bundle.py`
+  - `schema/aep_media_bundle_v0_1.schema.json`
+  - `spec/aep-media-bundle-v0.1.md`
+  - `agent-evidence build-media-bundle <statement> --out <bundle_dir>`
+  - `agent-evidence verify-media-bundle <bundle_dir>`
+  - `demo/run_media_bundle_demo.py`
+  - `tests/test_media_bundle.py`
+  - `docs/reports/aep_media_mission002_report.md`
+- 验收条件：
+  - build 命令能把 media statement 和本地 artifacts 封装为离线 bundle
+  - verify 命令能拒绝绝对路径、`..`、path escape、checksum mismatch 和 media profile failure
+  - bundle 内 `statement.json` 的 media artifact paths 均指向 bundle-local `artifacts/`
+  - demo 能生成 valid bundle 和三个 tampered bundle，并写出 `tamper-matrix.json`
+  - tests 覆盖 build、verify、artifact tamper、missing time context、unresolved policy ref、path escape、demo
+  - 不修改 `unrelated paper workspace/`，不引入真实 PTP / FFmpeg / C2PA claims
+- 非目标：
+  - 不做真实摄像头采集
+  - 不解析真实 MP4 PRFT boxes
+  - 不执行真实 PTP 同步
+  - 不创建或验证真实 C2PA signature
+  - 不提供法律存证、非抵赖或可信时间戳基础设施
+
+## M13 AEP-Media Profile v0.1 minimal loop
+- 输入：
+  - 现有 operation-accountability 主线：profile + schema + validator + examples + demo
+  - 现有 `agent_evidence` Python 包与 `click` CLI
+  - 现有 `schema/`、`examples/`、`demo/`、`tests/` 目录
+- 输出：
+  - `spec/aep-media-profile-v0.1.md`
+  - `schema/aep_media_profile_v0_1.schema.json`
+  - `agent_evidence/media_profile.py`
+  - `agent-evidence validate-media-profile <file>`
+  - `examples/media/minimal-valid-media-evidence.json`
+  - `examples/media/invalid-missing-time-context.json`
+  - `examples/media/invalid-broken-media-hash.json`
+  - `examples/media/invalid-unresolved-policy-ref.json`
+  - `examples/media/fixtures/demo-media.bin`
+  - `examples/media/fixtures/c2pa-manifest-placeholder.json`
+  - `demo/run_media_evidence_demo.py`
+  - `tests/test_media_profile.py`
+- 验收条件：
+  - validator 输出机器可读 JSON、明确 summary、明确 error code
+  - 检查 profile identity、required field completeness、reference closure、media hash、time range、primary media time context
+  - valid example pass
+  - 三个 invalid examples fail，且每个 invalid 只故意破坏一条主规则
+  - demo 完成 media object 创建、profile 检查、operation 调用、evidence 生成、validator 验证、结果输出
+  - 不破坏既有 `validate-profile` 命令和测试
+- 非目标：
+  - 不做真实 PTP 同步
+  - 不解析真实 MP4 PRFT boxes
+  - 不创建或验证真实 C2PA 签名
+  - 不引入大平台或通用治理 registry
+
 ## M1 仓库扫描与计划
 - 输入：现有 `spec/`、`schema/`、`examples/`、`scripts/`、`tests/`、CLI 结构。
 - 输出：`docs/STATUS.md`、`plans/implementation-plan.md`。
@@ -93,3 +548,65 @@
   - AGT-specific runtime material 被保留为 `evidence.artifacts[]` 中的 artifact 引用，不新增顶层字段
   - 不修改 EEOAP v0.1 schema、不修改 validator 语义、不引入 AGT package dependency
   - 文档明确 non-goals：不改 AGT runtime、不改 AGT policy engine、不新增 EEOAP 字段、不替代 `agt verify --evidence`
+
+## Mission 018 AEP-Media CLI registration and archive readiness
+- 输入：
+  - Mission 017 SoftwareX final pack readiness result
+  - Existing AEP-Media modules for profile validation, bundle build/verify, strict-time validation, adapters, evaluation, and release/submission pack builders
+  - Existing CLI in `agent_evidence/cli/main.py`
+- 输出：
+  - AEP-Media CLI commands registered through `agent-evidence`
+  - `tests/test_media_cli_registration.py`
+  - `docs/reports/aep_media_mission018_cli_archive_readiness_report.md`
+  - `docs/paper/softwarex/final/reports/aep_media_archive_doi_readiness.md`
+  - refreshed SoftwareX readiness notes
+- 验收条件：
+  - `agent-evidence --help` lists documented AEP-Media commands
+  - media profile, media bundle, strict-time, evaluation, and release-pack CLI smoke paths pass
+  - targeted media pytest passes
+  - full pytest passes
+  - evaluation CLI preserves existing case counts: 18 / 26 / 23 / 31 with `unexpected=0`
+  - validator, schema, time, adapter, and evaluation semantics are not changed
+  - SoftwareX readiness moves from NOT READY to NEAR READY if the only remaining blocker is AEP-Media-specific archive DOI confirmation
+- 非目标：
+  - 不新增 AEP-Media validation feature
+  - 不修改 schemas
+  - 不修改 adapter parsing logic
+  - 不创建或伪造 DOI
+  - 不上传 Zenodo
+  - 不声称法律证据、非抵赖、可信时间戳、真实 PTP、完整 MP4 PRFT 解析、真实 C2PA 签名验证、生产部署或 chain of custody
+
+## Mission 019 AEP-Media release archive and SoftwareX finalization
+- 输入：
+  - Mission 018 CLI-fixed repository state
+  - SoftwareX final manuscript and supplementary pack
+  - AEP-Media release/archive DOI readiness report
+- 输出：
+  - AEP-Media v0.1.0 release notes
+  - local release-candidate archive and checksum
+  - refreshed SoftwareX submission metadata
+  - release baseline audit
+  - git release scope audit
+  - final pre-release validation report
+  - release red-line scan report
+  - DOI action-required report
+  - Mission 019 finalization report
+- 发布规则：
+  - 默认不创建 tag、不 push tag、不创建 GitHub release
+  - 只有 `AEP_MEDIA_PUBLISH_RELEASE=1` 时才允许进入发布路径
+  - 不伪造 DOI，不上传 Zenodo，除非用户明确允许并且发布守卫打开
+- 验收条件：
+  - targeted media tests pass
+  - SoftwareX/readiness tests pass
+  - full pytest pass
+  - evaluation CLI preserves 18 / 26 / 23 / 31 case counts with `unexpected=0`
+  - release candidate archive excludes virtualenvs, bytecode caches, unrelated paper workspaces, old staging packs, and local absolute paths
+  - SoftwareX final pack states DOI action required if no AEP-Media-specific DOI exists
+- 当前结果：
+  - Release candidate ready
+  - SoftwareX readiness remains NEAR READY
+  - Remaining blocker: create/confirm AEP-Media-specific archive DOI
+- 非目标：
+  - 不改 AEP-Media validator/schema/adapter semantics
+  - 不新增功能
+  - 不声称法律证据、非抵赖、可信时间戳、真实 PTP、完整 MP4 PRFT 解析、真实 C2PA 签名验证、生产部署或 chain of custody

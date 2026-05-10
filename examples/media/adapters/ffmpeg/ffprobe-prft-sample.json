@@ -1,0 +1,46 @@
+{
+  "format": {
+    "filename": "demo-media.mp4",
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "duration": "1.000000",
+    "tags": {
+      "timecode": "00:00:00:00"
+    }
+  },
+  "streams": [
+    {
+      "index": 0,
+      "codec_type": "video",
+      "nb_frames": "3",
+      "tags": {
+        "timecode": "00:00:00:00"
+      },
+      "side_data_list": [
+        {
+          "side_data_type": "Producer Reference Time",
+          "wallclock": "2026-04-26T08:20:00Z"
+        }
+      ]
+    }
+  ],
+  "frames": [
+    {
+      "media_type": "video",
+      "pkt_pts_time": "0.000000",
+      "side_data_list": [
+        {
+          "side_data_type": "Producer Reference Time",
+          "wallclock": "2026-04-26T08:20:00Z"
+        }
+      ]
+    },
+    {
+      "media_type": "video",
+      "pkt_pts_time": "0.333333"
+    },
+    {
+      "media_type": "video",
+      "pkt_pts_time": "0.666667"
+    }
+  ]
+}

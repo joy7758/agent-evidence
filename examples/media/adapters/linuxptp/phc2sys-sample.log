@@ -1,0 +1,3 @@
+phc2sys[fixture]: 2026-04-26T08:20:00Z CLOCK_REALTIME phc offset 90 ns s2 freq -4 delay 4100 ns locked
+phc2sys[fixture]: 2026-04-26T08:20:01Z CLOCK_REALTIME phc offset 60 ns s2 freq -3 delay 4090 ns locked
+phc2sys[fixture]: 2026-04-26T08:20:02Z CLOCK_REALTIME phc offset -70 ns s2 freq -5 delay 4110 ns locked
