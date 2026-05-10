@@ -8,6 +8,10 @@ AEP-Media, within `agent-evidence`
 
 https://github.com/joy7758/agent-evidence
 
+## GitHub Release
+
+https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0
+
 ## Primary Package / Module
 
 `agent_evidence`
@@ -42,7 +46,7 @@ Python 3.11+
 
 ## Operating Systems
 
-The repository is developed and tested in a local Python 3.11+ environment. Prior AEP-Media reports record fixture-based validation paths that do not require LinuxPTP, FFmpeg, ffprobe, or C2PA to be installed. Before SoftwareX submission, rerun the test suite on the target release environment and record the exact operating system, Python version, and dependency versions.
+The repository is developed and tested in a Python 3.11+ environment. AEP-Media v0.1.0 reports record fixture-based validation paths that do not require LinuxPTP, FFmpeg, ffprobe, or C2PA to be installed.
 
 ## License
 
@@ -59,7 +63,7 @@ Apache-2.0. The repository contains `LICENSE`, and `pyproject.toml` declares `li
 
 ## Test Suite
 
-Mission 018 current release-candidate results:
+AEP-Media v0.1.0 final validation results:
 
 - Targeted AEP-Media tests: `48 passed, 1 warning`;
 - SoftwareX/readiness tests: `23 passed, 1 warning`;

@@ -32,4 +32,4 @@ pip install -e ".[dev]"
 - Optional-tool reporting evaluation: 23 cases, `unexpected=0`.
 - Combined adapter and optional-tool evaluation: 31 cases, `unexpected=0`.
 
-The combined result should be rerun before final submission and recorded in the release report.
+These are local conformance and reporting checks. They do not require LinuxPTP, FFmpeg, ffprobe, or C2PA for the fixture-based path.

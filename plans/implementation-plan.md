@@ -6,7 +6,34 @@
 - DOI: `10.5281/zenodo.20107097`
 - Final pack: `docs/paper/softwarex/final/submission-pack/`
 - Local upload zip: `AEP-Media-SoftwareX-Submission-Ready.zip`
-- Next action: upload SoftwareX manuscript, supplementary package, cover letter, and DOI-synchronized metadata through the portal.
+- Mission 021: SoftwareX manuscript editorial hardening completed. The final manuscript now has complete Software Availability, explicit supplementary citation, v0.1.0 validation narrative, strengthened impact, declarations, and 15 closed references.
+- Next action: upload the SoftwareX DOCX manuscript, PDF preview if requested, supplementary package, cover letter, and DOI-synchronized metadata through the portal. Do not upload generic TeX source.
+
+## M28 AEP-Media SoftwareX Manuscript Editorial Hardening
+- 输入：
+  - AEP-Media v0.1.0 release and DOI.
+  - Mission 020 SoftwareX final pack.
+  - SoftwareX editorial hardening checklist.
+- 输出：
+  - Hardened `docs/paper/softwarex/final/aep_media_softwarex_final_manuscript.md`.
+  - Regenerated `docs/paper/softwarex/final/submission-pack/main/AEP-Media_SoftwareX_Manuscript.docx`.
+  - Regenerated `docs/paper/softwarex/final/submission-pack/main/AEP-Media_SoftwareX_Manuscript.pdf`.
+  - Refreshed `docs/paper/softwarex/final/submission-pack/AEP-Media_SoftwareX_Supplementary.zip`.
+  - Updated SoftwareX submission metadata and cover letter.
+  - Added Mission 021 editorial hardening report and red-line scan report.
+- 验收结果：
+  - Manuscript word count: 1926 words.
+  - References: 15; citation closure passes.
+  - Supplementary zip is explicitly cited in the manuscript.
+  - CRediT, competing interest, funding, data/software availability, and AI-assisted writing disclosure are present.
+  - Generic TeX source is excluded from upload recommendation and removed from the submission-pack main directory.
+  - Red-line scan passes.
+  - Lightweight verification: `8 passed, 1 warning`.
+- 非目标：
+  - No implementation changes.
+  - No validator/schema/adapter/evaluation semantic changes.
+  - No TSE-facing external language.
+  - No inflated legal, forensic, security, timestamping, PTP, PRFT, C2PA, chain-of-custody, or production-deployment claims.
 
 ## M27 AEP-Media Repository Readiness Audit + SoftwareX Final Pack
 - 输入：

@@ -12,6 +12,10 @@ AEP-Media
 
 https://github.com/joy7758/agent-evidence
 
+## GitHub Release
+
+https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0
+
 ## Version
 
 `aep-media-v0.1.0`
@@ -24,6 +28,10 @@ Apache-2.0
 
 `10.5281/zenodo.20107097`
 
+## Zenodo Record
+
+https://zenodo.org/records/20107097
+
 ## Article Type
 
 Original Software Publication
@@ -35,6 +43,10 @@ media evidence; operation accountability; provenance; auditability; validation; 
 ## Short Description
 
 AEP-Media is reusable research software for local validation of time-aware media evidence bundles. It provides profiles, schemas, command-line validators, offline bundle verification, strict declared time-trace validation, adapter-only ingestion, and reproducible evaluation matrices.
+
+## Supplementary Material
+
+`AEP-Media_SoftwareX_Supplementary.zip` contains reproducibility notes, the claim-boundary statement, software inventory, selected schemas, selected examples, evaluation summaries, checksums, and generated reports.
 
 ## AI-Assisted Writing Disclosure
 

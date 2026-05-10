@@ -6,7 +6,33 @@
 - AEP-Media DOI：`10.5281/zenodo.20107097`
 - SoftwareX final pack：`docs/paper/softwarex/final/submission-pack/`
 - 本地上传包：`AEP-Media-SoftwareX-Submission-Ready.zip`
+- Mission 021：已完成 SoftwareX manuscript editorial hardening。主稿已补强 Software Availability、supplementary citation、v0.1.0 validation narrative、impact、declarations 和 15 条闭合引用；generic `.tex` 不再作为上传材料。
 - 说明：下方 M27 / M26 的 NOT READY / NEAR READY 是历史中间状态，已被 Mission 018-020 修复和完成。
+
+## M28 AEP-Media SoftwareX Manuscript Editorial Hardening
+- 状态：已完成；最终建议为 READY FOR SOFTWAREX PORTAL UPLOAD。
+- 本轮边界：
+  - 只改 SoftwareX manuscript、metadata、cover letter、supplementary package 和报告。
+  - 未改 implementation code、validators、schemas、adapters、tests、demos 或 evaluation semantics。
+- 主要修正：
+  - Abstract 压缩为 software-value-first 叙述。
+  - Software Availability 补入 repository、GitHub release、Zenodo DOI、Zenodo record、license、commands 和文档入口。
+  - 正文明确引用 `AEP-Media_SoftwareX_Supplementary.zip`。
+  - Reproducibility 改为 AEP-Media v0.1.0 final validation results。
+  - Impact 加强为 researcher / developer / reviewer 三类复用场景。
+  - References 从 11 条占位式列表扩展为 15 条，并完成正文 citation closure。
+  - 补充包 README / reproducibility / evaluation summary 同步 v0.1.0 release 和 DOI。
+  - submission-pack main 目录不再包含 generic `.tex`。
+- 验证：
+  - Manuscript word count：1926 words。
+  - References：15 条，全部被正文引用。
+  - DOCX：可解压检查，2 个表格，无红线词。
+  - PDF：8 页 Letter，未加密，无红线词；作为预览文件，DOCX 为主上传文件。
+  - `git diff --check`：通过。
+  - Lightweight pytest：`8 passed, 1 warning`。
+- 上传建议：
+  - 上传 DOCX 主文、PDF preview（如系统需要）、SoftwareX supplementary zip、cover letter。
+  - 不上传 generic TeX source。
 
 ## M27 AEP-Media SoftwareX Final Pack Audit
 - 状态：已完成；最终结果为 NOT READY。
