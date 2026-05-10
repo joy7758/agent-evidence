@@ -829,3 +829,21 @@
 - 当前 SoftwareX readiness：
   - NEAR READY
   - 剩余 blocker：发布 `aep-media-v0.1.0` release 并取得真实 AEP-Media-specific DOI
+
+## Mission 020 AEP-Media release publication and DOI check
+- 状态：GitHub release 已发布；Zenodo DOI 待确认
+- 发布结果：
+  - Tag：`aep-media-v0.1.0`
+  - GitHub Release：<https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
+  - Release commit：`1c344e3 Prepare AEP-Media v0.1.0 SoftwareX release`
+- DOI 状态：
+  - 自动检查未确认 AEP-Media-specific Zenodo DOI
+  - 未写入占位 DOI，未伪造 Zenodo 状态
+  - 当前 SoftwareX readiness：NEAR READY
+- 剩余 blocker：
+  - 在 Zenodo 确认 GitHub integration 已启用并处理 `aep-media-v0.1.0`
+  - 拿到真实 DOI 后同步 `CITATION.cff`、`codemeta.json`、`docs/how-to-cite.md`、README 和 SoftwareX 投稿材料
+- 边界：
+  - 未修改 validator/schema/adapter/evaluation 语义
+  - 未触碰 unrelated paper workspace
+  - 未声称法律证据、非抵赖、可信时间戳、真实 PTP、完整 MP4 PRFT 解析、真实 C2PA 签名验证、生产部署或 chain of custody。

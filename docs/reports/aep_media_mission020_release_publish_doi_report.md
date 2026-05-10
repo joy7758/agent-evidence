@@ -42,38 +42,45 @@ Release-facing materials and release candidate archive passed the red-line scan.
 
 ## 6. Staged Files Summary
 
-Pending. This section will be finalized after staging and commit.
+The release-readiness commit staged AEP-Media, SoftwareX, citation, archive,
+CLI, tests, reports, examples, schemas, specs, and release-candidate materials.
+The unrelated paper workspace was not staged.
 
 ## 7. Commit Hash
 
-Pending.
+`1c344e3 Prepare AEP-Media v0.1.0 SoftwareX release`
 
 ## 8. Tag Status
 
-Pending.
+Published tag: `aep-media-v0.1.0`
 
 ## 9. GitHub Release URL
 
-Pending.
+<https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
 
 ## 10. Zenodo DOI Status
 
-Pending.
+DOI pending.
 
-No DOI will be guessed or invented.
+Zenodo search did not confirm an AEP-Media-specific DOI immediately after the
+GitHub release was created. No DOI was guessed or invented.
 
 ## 11. SoftwareX Final Pack Status
 
-Pending.
+SoftwareX final pack exists and remains synchronized with the release-candidate
+state, except that the AEP-Media-specific DOI is still pending.
 
 ## 12. Current Readiness
 
-Pending.
+NEAR READY.
 
 ## 13. Remaining Blockers
 
-Pending.
+- Confirm Zenodo GitHub integration for `joy7758/agent-evidence`.
+- Wait for or reprocess the `aep-media-v0.1.0` Zenodo archive.
+- Copy the exact DOI into citation and SoftwareX-facing metadata.
+- Regenerate the final SoftwareX submission pack after DOI sync.
 
 ## 14. Next Action
 
-Pending.
+Run a DOI sync mission after Zenodo publishes the AEP-Media v0.1.0 archive DOI.

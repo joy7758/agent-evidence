@@ -610,3 +610,29 @@
   - 不改 AEP-Media validator/schema/adapter semantics
   - 不新增功能
   - 不声称法律证据、非抵赖、可信时间戳、真实 PTP、完整 MP4 PRFT 解析、真实 C2PA 签名验证、生产部署或 chain of custody
+
+## Mission 020 AEP-Media release publication and Zenodo DOI check
+- 输入：
+  - Mission 019 release candidate
+  - SoftwareX final pack
+  - GitHub release notes and archive metadata
+- 输出：
+  - Published GitHub tag `aep-media-v0.1.0`
+  - Published GitHub Release at <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
+  - DOI pending report for Zenodo follow-up
+  - Updated Mission 020 report and status ledger
+- 验收结果：
+  - Release published successfully
+  - Release assets uploaded:
+    - `AEP-Media-v0.1.0-release-candidate.zip`
+    - `AEP-Media-v0.1.0-release-candidate.sha256`
+    - `AEP-Media_SoftwareX_Supplementary.zip`
+  - Zenodo DOI was not confirmed by automated search immediately after release
+  - SoftwareX readiness remains NEAR READY
+- 下一步：
+  - Confirm Zenodo GitHub integration and processing state
+  - Sync exact DOI into citation and SoftwareX submission metadata after Zenodo publishes the record
+- 非目标：
+  - 不伪造 DOI
+  - 不改 AEP-Media validation semantics
+  - 不声称法律证据、非抵赖、可信时间戳、真实 PTP、完整 MP4 PRFT 解析、真实 C2PA 签名验证、生产部署或 chain of custody
