@@ -4,33 +4,32 @@ Date: 2026-05-10
 
 ## Status
 
+This report records the short interval after GitHub release creation when no DOI
+was visible yet. It is now superseded by the confirmed DOI report:
+
+`docs/paper/softwarex/final/release/reports/aep_media_v0.1.0_doi_confirmation.md`
+
+Confirmed DOI: `10.5281/zenodo.20107097`
+
+Confirmed record: <https://zenodo.org/records/20107097>
+
 The GitHub release `aep-media-v0.1.0` was created successfully:
 
 <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
 
-No AEP-Media-specific Zenodo DOI was confirmed during the automated check.
-Zenodo search results did not return a record matching the AEP-Media release.
+The initial automated check did not confirm a DOI, but a later exact Zenodo
+query confirmed the record above.
 
 ## Interpretation
 
-The release publication step is complete, but the SoftwareX archive DOI blocker
-is not resolved yet. SoftwareX readiness therefore remains NEAR READY rather
-than READY.
+The release publication step is complete and the DOI blocker is now resolved.
+SoftwareX readiness can move to READY after final DOI-synchronized pack checks.
 
-## Manual Zenodo Follow-Up
+## Follow-Up
 
-1. Open Zenodo.
-2. Confirm that the GitHub account is linked.
-3. Confirm that the `joy7758/agent-evidence` repository is enabled in Zenodo's
-   GitHub integration.
-4. Check whether release `aep-media-v0.1.0` is queued, processed, or failed.
-5. If processing failed, inspect metadata errors and reprocess the release.
-6. Once Zenodo publishes the record, copy the exact DOI.
-7. Return to the DOI sync step and update `CITATION.cff`, `codemeta.json`,
-   `docs/how-to-cite.md`, README, SoftwareX manuscript metadata, release notes,
-   and the SoftwareX submission pack.
+Use `10.5281/zenodo.20107097` in citation metadata and SoftwareX-facing
+submission materials.
 
 ## Rule
 
-Do not invent a DOI. Use only the DOI shown by Zenodo for the AEP-Media v0.1.0
-release archive.
+Do not invent a DOI. The confirmed DOI is the Zenodo DOI shown above.

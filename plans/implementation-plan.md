@@ -1,5 +1,13 @@
 # implementation plan
 
+## Latest AEP-Media SoftwareX State
+- Current state: READY for manual SoftwareX portal submission after human visual check.
+- Release: <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
+- DOI: `10.5281/zenodo.20107097`
+- Final pack: `docs/paper/softwarex/final/submission-pack/`
+- Local upload zip: `AEP-Media-SoftwareX-Submission-Ready.zip`
+- Next action: upload SoftwareX manuscript, supplementary package, cover letter, and DOI-synchronized metadata through the portal.
+
 ## M27 AEP-Media Repository Readiness Audit + SoftwareX Final Pack
 - 输入：
   - M26 SoftwareX Path A preparation package.
@@ -619,7 +627,7 @@
 - 输出：
   - Published GitHub tag `aep-media-v0.1.0`
   - Published GitHub Release at <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
-  - DOI pending report for Zenodo follow-up
+  - Zenodo DOI confirmation report
   - Updated Mission 020 report and status ledger
 - 验收结果：
   - Release published successfully
@@ -627,11 +635,11 @@
     - `AEP-Media-v0.1.0-release-candidate.zip`
     - `AEP-Media-v0.1.0-release-candidate.sha256`
     - `AEP-Media_SoftwareX_Supplementary.zip`
-  - Zenodo DOI was not confirmed by automated search immediately after release
-  - SoftwareX readiness remains NEAR READY
+  - Zenodo DOI confirmed: `10.5281/zenodo.20107097`
+  - SoftwareX readiness is READY
 - 下一步：
-  - Confirm Zenodo GitHub integration and processing state
-  - Sync exact DOI into citation and SoftwareX submission metadata after Zenodo publishes the record
+  - Perform final human visual check of SoftwareX manuscript PDF/DOCX
+  - Submit SoftwareX package using DOI-synchronized metadata
 - 非目标：
   - 不伪造 DOI
   - 不改 AEP-Media validation semantics

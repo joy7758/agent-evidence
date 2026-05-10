@@ -8,9 +8,11 @@ authors:
     given-names: "Bin"
     orcid: "https://orcid.org/0009-0002-8861-1481"
 version: "aep-media-v0.1.0"
+date-released: "2026-05-10"
+doi: "10.5281/zenodo.20107097"
 license: "Apache-2.0"
 repository-code: "https://github.com/joy7758/agent-evidence"
-url: "https://github.com/joy7758/agent-evidence"
+url: "https://doi.org/10.5281/zenodo.20107097"
 keywords:
   - "media evidence"
   - "operation accountability"

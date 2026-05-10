@@ -129,23 +129,24 @@ Result: PASS.
 
 Observed:
 
-- `CITATION.cff` exists and records DOI `10.5281/zenodo.19334062`.
-- `.zenodo.json` was added in Mission 017 with AEP-Media-specific metadata for future archival use.
+- `CITATION.cff` exists and records AEP-Media DOI `10.5281/zenodo.20107097`.
+- `.zenodo.json` contains AEP-Media-specific metadata.
+- GitHub release `aep-media-v0.1.0` exists.
+- Zenodo record `20107097` exists.
 
 Status:
 
-- Repository DOI exists.
-- Action required: confirm whether the existing DOI resolves to the exact AEP-Media release intended for SoftwareX. If not, create a tagged AEP-Media release and archive it before final submission.
+- AEP-Media-specific archive DOI confirmed.
+- DOI: `10.5281/zenodo.20107097`.
 
-Result: NEAR READY, with DOI/archive confirmation pending.
+Result: READY.
 
 ## Overall Readiness
 
-Repository readiness: NEAR READY.
+Repository readiness: READY.
 
 Remaining blockers:
 
-- AEP-Media-specific release archive / DOI confirmation.
 - Final SoftwareX submission pack review by the author before upload.
 
 ## Mission 018 Refresh
@@ -162,4 +163,5 @@ Current result:
 - Optional-tool reporting evaluation: `23 cases, unexpected=0`
 - Combined evaluation: `31 cases, unexpected=0`
 
-Repository readiness remains NEAR READY because an AEP-Media-specific release archive DOI is still pending confirmation.
+Repository readiness is READY after DOI confirmation and DOI-synchronized
+SoftwareX pack refresh.

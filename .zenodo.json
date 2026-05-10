@@ -9,6 +9,7 @@
     }
   ],
   "license": "Apache-2.0",
+  "version": "aep-media-v0.1.0",
   "keywords": [
     "operation accountability",
     "media evidence",
@@ -24,6 +25,11 @@
       "identifier": "https://github.com/joy7758/agent-evidence",
       "relation": "isSupplementTo",
       "scheme": "url"
+    },
+    {
+      "identifier": "https://doi.org/10.5281/zenodo.20107097",
+      "relation": "isVersionOf",
+      "scheme": "doi"
     }
   ]
 }

@@ -22,7 +22,7 @@ Apache-2.0
 
 ## Archive DOI
 
-ACTION REQUIRED: AEP-Media-specific archive DOI pending release archive.
+`10.5281/zenodo.20107097`
 
 ## Article Type
 

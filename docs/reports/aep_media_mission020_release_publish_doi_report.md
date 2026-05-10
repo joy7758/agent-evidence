@@ -60,27 +60,28 @@ Published tag: `aep-media-v0.1.0`
 
 ## 10. Zenodo DOI Status
 
-DOI pending.
+Confirmed.
 
-Zenodo search did not confirm an AEP-Media-specific DOI immediately after the
-GitHub release was created. No DOI was guessed or invented.
+- DOI: `10.5281/zenodo.20107097`
+- Record: <https://zenodo.org/records/20107097>
+- Concept DOI: `10.5281/zenodo.19334061`
+
+The DOI was obtained from the Zenodo API after the GitHub release was processed.
+No DOI was guessed or invented.
 
 ## 11. SoftwareX Final Pack Status
 
-SoftwareX final pack exists and remains synchronized with the release-candidate
-state, except that the AEP-Media-specific DOI is still pending.
+SoftwareX final pack was regenerated after DOI synchronization.
 
 ## 12. Current Readiness
 
-NEAR READY.
+READY.
 
 ## 13. Remaining Blockers
 
-- Confirm Zenodo GitHub integration for `joy7758/agent-evidence`.
-- Wait for or reprocess the `aep-media-v0.1.0` Zenodo archive.
-- Copy the exact DOI into citation and SoftwareX-facing metadata.
-- Regenerate the final SoftwareX submission pack after DOI sync.
+No release/DOI blocker remains.
 
 ## 14. Next Action
 
-Run a DOI sync mission after Zenodo publishes the AEP-Media v0.1.0 archive DOI.
+Proceed with SoftwareX portal submission after a final human visual check of
+the manuscript PDF/DOCX and upload package.

@@ -4,11 +4,11 @@ Date: 2026-05-10
 
 ## Current DOI Status
 
-- `CITATION.cff` records repository DOI `10.5281/zenodo.19334062`.
-- The current GitHub releases include repository-level releases, including `v0.2.1`.
-- No confirmed AEP-Media-specific release DOI was found during Mission 018.
+- AEP-Media-specific release DOI: `10.5281/zenodo.20107097`.
+- Zenodo record: <https://zenodo.org/records/20107097>.
+- GitHub release: <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>.
 
-Interpretation: the repository has citation metadata, but SoftwareX final submission should still confirm or create an AEP-Media-focused release archive before claiming a software artifact DOI for this specific component.
+Interpretation: the AEP-Media release archive DOI is confirmed for SoftwareX-facing citation metadata.
 
 ## Proposed AEP-Media Release
 
@@ -44,19 +44,16 @@ Do not include:
 
 ## Action Required
 
-1. Create a clean AEP-Media release tag.
-2. Archive the release through Zenodo or an equivalent archival repository.
-3. Record the resulting AEP-Media-specific DOI in `CITATION.cff`, README, SoftwareX metadata, and the SoftwareX manuscript.
-4. Do not invent a DOI before the archive exists.
+No archive DOI action remains. Use the confirmed DOI above in SoftwareX metadata.
 
 ## Readiness Result
 
-Archive/DOI readiness: NEAR READY.
+Archive/DOI readiness: READY.
 
-Reason: repository-level DOI metadata exists, but an AEP-Media-specific release DOI is not yet confirmed.
+Reason: the AEP-Media-specific release DOI is confirmed.
 
 ## Mission 019 Update
 
 Mission 019 prepared a local release candidate for `aep-media-v0.1.0`, refreshed AEP-Media citation/archive metadata, and generated a release command preview. Because `AEP_MEDIA_PUBLISH_RELEASE` was not set to `1`, no tag was pushed and no GitHub release or Zenodo archive DOI was created.
 
-Current result remains NEAR READY.
+Mission 020 published the release and confirmed DOI `10.5281/zenodo.20107097`.

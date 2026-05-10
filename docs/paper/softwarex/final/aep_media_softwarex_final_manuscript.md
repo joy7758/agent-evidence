@@ -21,7 +21,7 @@ media evidence; operation accountability; research software; provenance; offline
 - Programming language: Python
 - Documentation: `spec/`, `schema/`, `examples/media/`, `demo/`, and `docs/reports/`
 - Tests: media profile, bundle, strict-time, adapter, evaluation, and release-pack tests under `tests/`
-- Archive: AEP-Media-specific archive DOI pending release archive; action required before final submission
+- Archive: `10.5281/zenodo.20107097`
 
 ## Statement of Need
 
@@ -91,7 +91,7 @@ Optional external-tool paths are reporting paths. The reproducible baseline rema
 
 ## Future Work
 
-Future work should keep the local profile semantics stable while adding environment-specific evidence appendices: LinuxPTP traces captured on equipped Linux hosts, ffprobe output from PRFT-bearing media, C2PA CLI reports for real signed assets, independent reproduction of the evaluation matrix, and an AEP-Media-specific archived release DOI.
+Future work should keep the local profile semantics stable while adding environment-specific evidence appendices: LinuxPTP traces captured on equipped Linux hosts, ffprobe output from PRFT-bearing media, C2PA CLI reports for real signed assets, and independent reproduction of the evaluation matrix.
 
 ## Declaration of Generative AI and AI-assisted Technologies in the Manuscript Preparation Process
 

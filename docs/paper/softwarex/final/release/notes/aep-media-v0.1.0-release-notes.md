@@ -33,6 +33,6 @@ AEP-Media supports local validation and fixture-based adapter ingestion. It does
 
 ## Citation
 
-AEP-Media-specific Zenodo DOI pending release archive.
+Zenodo DOI: `10.5281/zenodo.20107097`.
 
-Do not cite an AEP-Media-specific DOI until the release archive exists and the DOI is recorded in `CITATION.cff`.
+Record: <https://zenodo.org/records/20107097>.

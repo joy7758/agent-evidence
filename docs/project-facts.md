@@ -34,9 +34,11 @@ Sources: `pyproject.toml`, `LICENSE`.
 
 Source: `README.md`.
 
-This is the broader repository DOI. The AEP-Media release-candidate citation
-metadata uses `aep-media-v0.1.0`; an AEP-Media-specific archive DOI is pending
-release archive confirmation and must not be invented.
+This is the broader repository DOI.
+
+AEP-Media v0.1.0 release DOI: `10.5281/zenodo.20107097`.
+
+Use the AEP-Media-specific DOI when citing the AEP-Media SoftwareX artifact.
 
 Historical release DOI also present: `10.5281/zenodo.19055948` in
 `release/v0.1-live-chain/RELEASE_NOTE.md`. Use the current README DOI unless

@@ -5,6 +5,9 @@ Turn AI agent operations into auditable and verifiable evidence objects.
 
 DOI: [10.5281/zenodo.19334062](https://doi.org/10.5281/zenodo.19334062)
 
+AEP-Media v0.1.0 DOI:
+[10.5281/zenodo.20107097](https://doi.org/10.5281/zenodo.20107097)
+
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
 ![Semantic Events](https://img.shields.io/badge/semantic%20events-v2.0.0-1f6feb)

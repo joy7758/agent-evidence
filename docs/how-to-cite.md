@@ -8,11 +8,8 @@ Plain-text citation:
 
 Bin Zhang. `AEP-Media`: Reusable Research Software for Offline Validation of
 Time-Aware Media Evidence Bundles. Version `aep-media-v0.1.0`. Repository:
-<https://github.com/joy7758/agent-evidence>.
-
-An AEP-Media-specific release DOI is pending release archive confirmation. Do
-not cite an AEP-Media-specific DOI until the archive exists and the DOI is
-recorded in `CITATION.cff`.
+<https://github.com/joy7758/agent-evidence>. DOI:
+<https://doi.org/10.5281/zenodo.20107097>.
 
 ## BibTeX Draft
 
@@ -21,9 +18,9 @@ recorded in `CITATION.cff`.
   author = {Zhang, Bin},
   title = {AEP-Media: Reusable Research Software for Offline Validation of Time-Aware Media Evidence Bundles},
   version = {aep-media-v0.1.0},
+  doi = {10.5281/zenodo.20107097},
   url = {https://github.com/joy7758/agent-evidence},
-  license = {Apache-2.0},
-  note = {AEP-Media-specific DOI pending release archive confirmation}
+  license = {Apache-2.0}
 }
 ```
 

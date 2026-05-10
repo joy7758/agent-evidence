@@ -1,5 +1,13 @@
 # 当前状态
 
+## Latest AEP-Media SoftwareX Status
+- 状态：READY，等待人工进入 SoftwareX portal 上传。
+- GitHub Release：<https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
+- AEP-Media DOI：`10.5281/zenodo.20107097`
+- SoftwareX final pack：`docs/paper/softwarex/final/submission-pack/`
+- 本地上传包：`AEP-Media-SoftwareX-Submission-Ready.zip`
+- 说明：下方 M27 / M26 的 NOT READY / NEAR READY 是历史中间状态，已被 Mission 018-020 修复和完成。
+
 ## M27 AEP-Media SoftwareX Final Pack Audit
 - 状态：已完成；最终结果为 NOT READY。
 - 本轮边界：
@@ -831,18 +839,18 @@
   - 剩余 blocker：发布 `aep-media-v0.1.0` release 并取得真实 AEP-Media-specific DOI
 
 ## Mission 020 AEP-Media release publication and DOI check
-- 状态：GitHub release 已发布；Zenodo DOI 待确认
+- 状态：GitHub release 已发布；Zenodo DOI 已确认
 - 发布结果：
   - Tag：`aep-media-v0.1.0`
   - GitHub Release：<https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
   - Release commit：`1c344e3 Prepare AEP-Media v0.1.0 SoftwareX release`
 - DOI 状态：
-  - 自动检查未确认 AEP-Media-specific Zenodo DOI
-  - 未写入占位 DOI，未伪造 Zenodo 状态
-  - 当前 SoftwareX readiness：NEAR READY
+  - AEP-Media-specific DOI：`10.5281/zenodo.20107097`
+  - Zenodo record：<https://zenodo.org/records/20107097>
+  - 当前 SoftwareX readiness：READY
 - 剩余 blocker：
-  - 在 Zenodo 确认 GitHub integration 已启用并处理 `aep-media-v0.1.0`
-  - 拿到真实 DOI 后同步 `CITATION.cff`、`codemeta.json`、`docs/how-to-cite.md`、README 和 SoftwareX 投稿材料
+  - 无 release / DOI blocker
+  - 投稿前只需要人工检查 SoftwareX portal 字段、PDF/DOCX 视觉版式和上传文件选择
 - 边界：
   - 未修改 validator/schema/adapter/evaluation 语义
   - 未触碰 unrelated paper workspace

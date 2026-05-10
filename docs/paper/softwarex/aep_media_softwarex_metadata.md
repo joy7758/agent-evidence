@@ -71,10 +71,10 @@ Mission 018 current release-candidate results:
 
 ## Archive / DOI
 
-AEP-Media-specific archive DOI: ACTION REQUIRED.
+AEP-Media-specific archive DOI: `10.5281/zenodo.20107097`.
 
-The broader repository has previously recorded DOI `10.5281/zenodo.19334062`, but this must not be treated as the AEP-Media v0.1.0 DOI unless it is confirmed to resolve to the exact AEP-Media release intended for SoftwareX. If not, create an AEP-Media-specific release archive and DOI.
+Zenodo record: <https://zenodo.org/records/20107097>.
 
 ## Software Availability Notes
 
-The SoftwareX package should point to a tagged release, an archived DOI, installation instructions, examples, test commands, and release notes. The current repository has the core ingredients, but a final repository readiness audit should confirm public accessibility, release tagging, archive metadata, and README discoverability for the AEP-Media path.
+The SoftwareX package points to the tagged release, archived DOI, installation instructions, examples, test commands, and release notes. Final portal metadata should use the AEP-Media-specific DOI above.
