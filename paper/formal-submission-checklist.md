@@ -19,6 +19,9 @@
 ## 3. Citation cleanup
 
 - Use `paper/citation-audit.md` to map claims to citations or internal artifact facts.
+- Confirm `paper/verified-source-anchors.md` and
+  `paper/source-verification-status.md` are reviewed before integrating
+  citations into the final manuscript.
 - Cite logs, traces, observability, provenance, JSON (JavaScript Object Notation, JavaScript 对象表示法) Schema, attestation, FDO (FAIR Digital Object, 公平数字对象), DOIP (Digital Object Interface Protocol，数字对象接口协议), data-space systems, agent governance, and artifact reproducibility claims where needed.
 - Keep `make paper-demo` as an internal artifact fact, not an external literature citation.
 - Keep `references_digest_mismatch` as an internal validator result.

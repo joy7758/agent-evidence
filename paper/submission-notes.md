@@ -8,6 +8,11 @@ The strongest result is narrow: `make paper-demo` shows a valid evidence bundle 
 
 After the current text-risk pass, the paper can be treated as workshop-submission ready. It should not be treated as a formal-submission candidate until bibliography completion, venue formatting, citation cleanup, and final artifact-availability wording are completed.
 
+The new source verification layer reduces citation risk while preserving that
+boundary. The paper remains workshop-submission ready, but it is still not
+formal-submission ready until venue-specific formatting, final bibliography
+integration, and final artifact availability wording are completed.
+
 ## 2. Best-fit venue types
 
 Good fits:

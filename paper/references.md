@@ -6,6 +6,15 @@ This file is a candidate reference inventory for EEOAP (Execution Evidence and O
 
 The purpose is to identify source areas that must be verified before a formal submission pass. Exact author names, years, venue names, DOI values, standard versions, and official titles should be added only after manual source verification.
 
+## Verified source anchors added
+
+A separate file, `paper/verified-source-anchors.md`, now records verified
+anchors for provenance, JSON (JavaScript Object Notation, JavaScript 对象表示法)
+Schema, artifact review, digital objects, DOIP (Digital Object Interface
+Protocol，数字对象接口协议), SLSA (Supply-chain Levels for Software Artifacts,
+软件制品供应链等级), in-toto, and OpenTelemetry (开放遥测). These anchors support
+internal citation planning only; they do not finalize all candidate references.
+
 ## 2. Core reference clusters
 
 - Logs, traces, and observability

@@ -4,6 +4,16 @@
 
 This audit maps EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件) paper claims to citation needs, internal artifact evidence, and non-claim boundaries. It is a preparation document for later formal submission work. It is not a completed bibliography and does not assert formal submission readiness.
 
+## Verified source anchors available
+
+Verified anchors now exist for provenance and validity constraints, JSON
+(JavaScript Object Notation, JavaScript 对象表示法) Schema and conformance
+validation, artifact review and reproducibility, digital object / DOIP
+(Digital Object Interface Protocol，数字对象接口协议) / FDO (FAIR Digital Object,
+公平数字对象)-adjacent background, supply-chain provenance and attestation
+background, and observability / telemetry background. Internal artifact facts
+remain uncited internal facts.
+
 ## 2. Claims that need citations
 
 - Logs, traces, spans, transcripts, and observability systems help reconstruct runtime behavior but do not automatically define a bounded operation evidence object.
