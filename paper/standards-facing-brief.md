@@ -24,13 +24,13 @@ The local CLI (Command Line Interface, 命令行界面) path is `make paper-demo
 
 The mapping is for discussion. An FDO (FAIR Digital Object, 公平数字对象)-style descriptor can identify the subject object. EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件) can record the operation performed against that subject, the policy reference, the output reference, and the integrity binding. This is not official FDO standard adoption, certification, or conformance.
 
-## 7. What this proves
+## 7. What this demonstrates
 
-The artifact proves a bounded reproducibility claim: a valid operation evidence object can pass local validation, and a tampered output reference can be rejected with `references_digest_mismatch`. It also shows that a reviewer can inspect and replay the PASS/FAIL boundary offline.
+The artifact demonstrates a bounded reproducibility claim: a valid operation evidence object can pass local validation, and the demonstrated tampered-output case fails with `references_digest_mismatch`. It supports independent review of the evidence object by allowing a reviewer to inspect and replay the PASS/FAIL boundary offline.
 
-## 8. What this does not prove
+## 8. What this does not demonstrate
 
-It does not prove semantic correctness of AI (Artificial Intelligence, 人工智能) output, production readiness, legal compliance, official FDO (FAIR Digital Object, 公平数字对象) standard status, broad cross-framework validation, a full cryptographic trust fabric, or ZKP (Zero-Knowledge Proof, 零知识证明) implementation.
+It does not demonstrate semantic correctness of AI (Artificial Intelligence, 人工智能) output, production readiness, legal compliance, official FDO (FAIR Digital Object, 公平数字对象) standard status, broad cross-framework validation, a full cryptographic trust fabric, or ZKP (Zero-Knowledge Proof, 零知识证明) implementation.
 
 ## 9. Discussion proposal
 

@@ -2,7 +2,7 @@
 
 ## 1. Abstract
 
-Logs, traces, and chat transcripts help developers understand what an AI (Artificial Intelligence, 人工智能) agent did, but they do not automatically become independently checkable operation evidence. This paper introduces EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件), a minimal profile for representing one AI agent operation as a bounded evidence object. EEOAP packages actor, action, subject, policy, output, provenance, evidence references, and integrity binding into a structured object that can be reviewed outside the original runtime. The accompanying artifact includes a profile, evidence bundle, validator path, and reproducible `paper_case` example. Running `make paper-demo` validates the positive case and exercises a paired negative case: the valid evidence bundle reports `PASS valid evidence bundle`, while the tampered-output case reports `FAIL tampered output hash mismatch` and exposes `tampered_primary_error_code=references_digest_mismatch`. The contribution is deliberately narrow. EEOAP does not prove semantic correctness of AI outputs, production readiness, legal compliance, official FDO (FAIR Digital Object, 公平数字对象) standard adoption, a full cryptographic trust fabric, or ZKP (Zero-Knowledge Proof, 零知识证明) support. Instead, it shows how a small operation-level evidence profile and validator can make selected execution claims inspectable and falsifiable offline.
+Logs, traces, and chat transcripts help developers understand what an AI (Artificial Intelligence, 人工智能) agent did, but they do not automatically become independently checkable operation evidence. This paper introduces EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件), a minimal profile for representing one AI agent operation as a bounded evidence object. EEOAP packages actor, action, subject, policy, output, provenance, evidence references, and integrity binding into a structured object that can be reviewed outside the original runtime. The accompanying artifact includes a profile, evidence bundle, validator path, and reproducible `paper_case` example. Running `make paper-demo` validates the positive case and exercises a paired negative case: the valid evidence bundle reports `PASS valid evidence bundle`, while the tampered-output case reports `FAIL tampered output hash mismatch` and exposes `tampered_primary_error_code=references_digest_mismatch`. The contribution is deliberately narrow. EEOAP does not establish semantic correctness of AI outputs, production readiness, legal compliance, official FDO (FAIR Digital Object, 公平数字对象) standard adoption, a full cryptographic trust fabric, or ZKP (Zero-Knowledge Proof, 零知识证明) support. Instead, it shows how a small operation-level evidence profile and validator can make selected execution claims inspectable and falsifiable offline.
 
 ## 2. Introduction
 
@@ -14,7 +14,7 @@ EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与�
 
 The current paper artifact is intentionally scoped. It demonstrates one aggregate-only operation over an FDO (FAIR Digital Object, 公平数字对象)-style dataset descriptor. The valid evidence object passes validation. A paired tampered object changes the output reference digest while leaving the integrity binding stale. The validator rejects the tampered object with `references_digest_mismatch`, and the demo reports the expected negative result.
 
-This scope matters. The paper does not claim that EEOAP is a governance platform, production forensic system, legal proof system, official FDO standard, or privacy-preserving ZKP implementation. It also does not claim that the AI output is semantically correct. The claim is narrower and more testable: a minimal evidence object can make selected operation-level claims checkable after execution.
+This scope matters. The paper does not claim that EEOAP is a governance platform, production forensic system, legal compliance system, official FDO standard, or privacy-preserving ZKP implementation. It also does not claim that the AI output is semantically correct. The claim is narrower and more testable: a minimal evidence object can make selected operation-level claims checkable after execution.
 
 ## 3. Problem Statement
 
@@ -30,7 +30,7 @@ The motivating problem is independent review of an AI agent operation after the 
 
 Logs and traces can help answer some of these questions, but they do not usually impose an operation-level evidence boundary. A log line may say that a tool call occurred without binding the actor, subject, policy, output reference, provenance statement, and validation status into one independently checkable object. A trace can be detailed but environment-specific. A signed file can show that some bytes were signed, yet still leave unclear whether the policy reference, output reference, and validation record are mutually consistent.
 
-EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件) frames the problem as a profile and validation problem. The profile makes the operation components explicit. The validator checks that references close, policy and evidence linkages are coherent, and integrity digests still match canonicalized evidence material. The intended result is not a complete proof of truth or compliance. It is a reviewable operation object whose basic structural and integrity claims can be accepted or rejected offline.
+EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件) frames the problem as a profile and validation problem. The profile makes the operation components explicit. The validator checks that references close, policy and evidence linkages are coherent, and integrity digests still match canonicalized evidence material. The intended result is not a complete demonstration of truth or compliance. It is a reviewable operation object whose basic structural and integrity claims can be accepted or rejected offline.
 
 The paper artifact fixes this problem statement to a single reproducible case. An AI agent operation emits an aggregate summary from an FDO (FAIR Digital Object, 公平数字对象)-style dataset descriptor under an aggregate-only policy. The valid evidence bundle should pass. If the output reference is changed, the validator should reject the object. This is the minimum behavior the artifact must show.
 
@@ -49,7 +49,7 @@ The profile contains an actor, a subject, an operation statement, a policy refer
 
 This design treats operation evidence as more than descriptive logging. In the `paper_case` example, the output reference digest is not just a note in a JSON (JavaScript Object Notation, JavaScript 对象表示法) file. It is part of an evidence structure whose reference digest can be recomputed. When the output digest is changed without updating the integrity binding, the validator reports `references_digest_mismatch`.
 
-The design also keeps policy visible without inflating the policy claim. The example policy is aggregate-only. It can state that row-level records, personal data, raw prompts, and unredacted runtime logs are denied outputs. EEOAP can record that the operation referenced this policy and that the evidence object links to that policy. It does not prove that the policy is legally sufficient, correctly enforced by every runtime layer, or accepted by any regulator.
+The design also keeps policy visible without inflating the policy claim. The example policy is aggregate-only. It can state that row-level records, personal data, raw prompts, and unredacted runtime logs are denied outputs. EEOAP can record that the operation referenced this policy and that the evidence object links to that policy. It does not establish that the policy is legally sufficient, correctly enforced by every runtime layer, or accepted by any regulator.
 
 The profile is therefore a composition boundary. Existing systems may already provide logs, traces, provenance records, policy metadata, signatures, or attestations. EEOAP composes a small subset of such information into one operation-level evidence object and makes the validation path explicit.
 
@@ -92,14 +92,23 @@ This complementarity is the main standards-facing point. FDO and data-space syst
 
 The evaluation is scoped to the current paper artifact. It checks whether the repository contains a reproducible positive case and a reproducible negative case for the core EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件) claim. The command `make paper-demo` passes in the intended artifact state. Its expected output includes `PASS valid evidence bundle` for the valid evidence object and `FAIL tampered output hash mismatch` for the tampered-output case. The tampered case exposes `tampered_primary_error_code=references_digest_mismatch`.
 
+The explicit evaluation facts for this paper text are:
+
+- `make paper-demo`: PASS.
+- Valid evidence bundle: PASS.
+- Tampered output: FAIL as expected.
+- `tampered_primary_error_code=references_digest_mismatch`.
+- Targeted EEOAP tests: 19 passed, 1 warning.
+- Full repository pytest success is not claimed.
+
 The positive case demonstrates that the valid evidence bundle is structurally complete, internally linked, policy-bound, and integrity-checkable under the repository validator path. The negative case demonstrates that a modified output reference is not silently accepted. When the output digest is altered while the integrity binding remains stale, the validator rejects the object.
 
-The paper artifact also records that the targeted EEOAP tests previously passed:
+The paper artifact also records that the targeted EEOAP tests previously passed with `19 passed, 1 warning`:
 
 - `tests/test_paper_case.py`
 - `tests/test_operation_accountability_profile.py`
 
-Those tests cover the paper case files, output hash binding, demo PASS/FAIL lines, valid profile behavior, invalid profile behavior, issue summary reporting, fail-fast behavior, aggregation of structurally safe later-stage errors, schema-failure stage skipping, and the `validate-profile` command path used by the local CLI (Command Line Interface, 命令行界面). This paper does not claim full repository pytest success. It also does not claim release validation for the entire repository. The evaluation is limited to the EEOAP paper case, the validator path relevant to that case, and the previously passed targeted tests.
+Those tests cover the paper case files, output hash binding, demo PASS/FAIL lines, valid profile behavior, invalid profile behavior, issue summary reporting, fail-fast behavior, aggregation of structurally safe later-stage errors, schema-failure stage skipping, and the `validate-profile` command path used by the local CLI (Command Line Interface, 命令行界面). The targeted test result is reported only for that EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件) scope. This paper does not claim full repository pytest success. It also does not claim release validation for the entire repository. The evaluation is limited to the EEOAP paper case, the validator path relevant to that case, and the previously passed targeted tests.
 
 This is not a model-performance benchmark. It does not measure accuracy, latency, robustness, policy enforcement strength, or cross-framework portability. It is an artifact validation check: one valid operation evidence object should pass, and one intentionally tampered output reference should fail with the expected error code.
 
@@ -131,7 +140,7 @@ Agent governance work addresses monitoring, control, approval, auditability, pol
 
 ## 10. Limitations
 
-The current artifact has strict non-claims. First, it does not prove semantic correctness of AI (Artificial Intelligence, 人工智能) output. A summary or tool result can be structurally bound and still be wrong, incomplete, biased, or misleading. Domain-specific validation remains outside the current profile.
+The current artifact has strict non-claims. First, it does not establish semantic correctness of AI (Artificial Intelligence, 人工智能) output. A summary or tool result can be structurally bound and still be wrong, incomplete, biased, or misleading. Domain-specific validation remains outside the current profile.
 
 Second, it does not claim production readiness. The artifact is a scoped paper case and validator path, not a hardened multi-tenant service, deployment package, or operational compliance product. It does not claim broad cross-framework validation across agent runtimes.
 
@@ -139,7 +148,7 @@ Third, it does not claim official FDO (FAIR Digital Object, 公平数字对象) 
 
 Fourth, it does not claim full repository pytest success. The evaluation is limited to `make paper-demo`, the valid and tampered paper cases, and the targeted EEOAP tests previously reported as passing.
 
-Fifth, it does not provide a full cryptographic trust fabric. The current artifact uses inspectable JSON (JavaScript Object Notation, JavaScript 对象表示法) evidence objects and hash bindings. It does not prove uncompromised runtime state, signer identity, secure time, key custody, trusted execution, or transparency-log inclusion.
+Fifth, it does not provide a full cryptographic trust fabric. The current artifact uses inspectable JSON (JavaScript Object Notation, JavaScript 对象表示法) evidence objects and hash bindings. It does not establish uncompromised runtime state, signer identity, secure time, key custody, trusted execution, or transparency-log inclusion.
 
 Sixth, it does not implement ZKP (Zero-Knowledge Proof, 零知识证明). Selective disclosure and privacy-preserving audit are future work. They should be layered only after the base evidence object and validator path are stable.
 
@@ -157,13 +166,13 @@ For FDO (FAIR Digital Object, 公平数字对象) and data-space communities, th
 
 EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件) packages one AI (Artificial Intelligence, 人工智能) agent operation as a structured evidence object. It binds actor, action, subject, policy, output, provenance, evidence references, and integrity values into an object that a reviewer can inspect offline. The validator path checks structure, reference closure, policy/evidence linkage, and integrity binding.
 
-The scoped paper artifact demonstrates the key boundary. Running `make paper-demo` reports a valid evidence bundle as passing and a tampered-output case as failing with `references_digest_mismatch`. This result is not a broad proof of correctness, compliance, security, or standards adoption. It is a small reproducible demonstration that operation evidence can be represented as a minimal profile and rejected when a bound output reference is altered.
+The scoped paper artifact demonstrates the key boundary. Running `make paper-demo` reports a valid evidence bundle as passing and a tampered-output case as failing with `references_digest_mismatch`. This result is not a broad demonstration of correctness, compliance, security, or standards adoption. It is a small reproducible demonstration that operation evidence can be represented as a minimal profile and rejected when a bound output reference is altered.
 
 Future work should remain incremental: clearer reviewer packages, stronger signing and timestamping options, additional runtime adapters, broader data-space discussion, and possible ZKP (Zero-Knowledge Proof, 零知识证明)-based selective disclosure. These extensions should preserve the base boundary: first make the operation evidence object inspectable, then add stronger trust layers where the use case requires them.
 
 ## 13. Artifact Availability
 
-The current artifact is a scoped reproducible artifact candidate for EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件). It is local-only unless it is published later through an explicit repository release, archive, or DOI (Digital Object Identifier, 数字对象标识符) process. This draft does not claim that a public GitHub Release, Zenodo archive, DOI, or external endorsement already exists for the EEOAP paper artifact.
+The current artifact is a scoped reproducible artifact candidate for EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件). The sealed local tag `eeoap-v0.1-paper` exists locally as the artifact anchor, but this text does not claim that the tag has been pushed publicly. The artifact remains local-only unless it is published later through an explicit repository release, archive, or DOI (Digital Object Identifier, 数字对象标识符) process. This draft does not claim that a public GitHub Release, Zenodo archive, DOI, or external endorsement already exists for the EEOAP paper artifact. If the artifact is later published, the public release note should preserve the scoped-release boundary: paper artifact, local validator path, bounded `paper_case` example, no production readiness, no official FDO (FAIR Digital Object, 公平数字对象) standard status, and no Zenodo DOI claim unless a DOI has actually been issued.
 
 The replay command is:
 
@@ -178,4 +187,4 @@ PASS valid evidence bundle
 FAIL tampered output hash mismatch
 ```
 
-The expected tampered failure code is `references_digest_mismatch`. The targeted EEOAP tests previously reported as passing are `tests/test_paper_case.py` and `tests/test_operation_accountability_profile.py`. Full repository pytest success, production readiness, official FDO (FAIR Digital Object, 公平数字对象) standard adoption, legal compliance, and ZKP (Zero-Knowledge Proof, 零知识证明) implementation are not claimed.
+The expected tampered failure code is `references_digest_mismatch`. The targeted EEOAP tests previously reported `19 passed, 1 warning` for `tests/test_paper_case.py` and `tests/test_operation_accountability_profile.py`. Full repository pytest success, public GitHub Release publication, Zenodo DOI (Digital Object Identifier, 数字对象标识符), production readiness, official FDO (FAIR Digital Object, 公平数字对象) standard adoption, legal compliance, and ZKP (Zero-Knowledge Proof, 零知识证明) implementation are not claimed.
