@@ -2,13 +2,13 @@
 
 ## 1. Scope
 
-This checklist is for a paper reproducible artifact release of EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件). It is a pre-release review checklist for a minimal research artifact, not a production governance system, production policy engine, runtime security platform, or legal-compliance product.
+This checklist is for a scoped paper reproducible artifact release of EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件). It is not a full repository release, and it is not a production governance release, production policy engine, runtime security platform, or legal-compliance product.
 
 The intended release boundary is a small, reviewable package that shows a validator-backed execution evidence profile, a reproducible `paper_case`, and a tampered-output failure case. Tagging, GitHub release creation, DOI registration, and external announcement remain manual future steps.
 
 ## 2. Required Artifact Files
 
-Before a `v0.1-paper` release is considered, confirm that these files and directories are present and reviewable:
+Before an `eeoap-v0.1-paper` release is considered, confirm that these files and directories are present and reviewable:
 
 - `examples/paper_case/`
 - `scripts/reproduce_paper_demo.sh`
@@ -26,27 +26,35 @@ Before a `v0.1-paper` release is considered, confirm that these files and direct
 
 ## 3. Required Commands
 
-Run these checks before release:
+### A. Required Scoped EEOAP Release Checks
+
+Run these checks before a scoped EEOAP paper artifact release:
 
 ```bash
-make paper-demo
+git status --short
 ```
-
-```bash
-python -m pytest
-```
-
-Run `python -m pytest` if the local environment has the repository's existing test dependencies. Do not install new dependencies only for this release checklist.
 
 ```bash
 git diff --check
 ```
 
 ```bash
-git status --short
+make paper-demo
 ```
 
-Use `git status --short` to confirm that no unintended files are staged or committed. Local unrelated dirty files may exist, but they must not be part of the release commit or artifact.
+```bash
+python -m pytest tests/test_paper_case.py tests/test_operation_accountability_profile.py
+```
+
+Use `git status --short` to confirm that no unintended files are staged or committed. Local unrelated dirty files may exist in another worktree, but they must not be part of the scoped EEOAP release commit or artifact.
+
+### B. Optional Full Repository Health Check
+
+```bash
+python -m pytest
+```
+
+This optional full repository health check is useful, but it is not the release gate for the scoped EEOAP paper artifact. If the optional full repository health check fails only because of unrelated artifacts outside the EEOAP `paper_case` scope, the release may still proceed as a scoped EEOAP paper artifact. In that case, release notes must not claim full repository pytest success.
 
 ## 4. Expected Paper Demo Output
 
@@ -74,6 +82,8 @@ The release may claim:
 - Tamper detection for output/reference digest mismatch.
 - Offline review path.
 - FDO-style mapping for discussion.
+- Scoped EEOAP verification passed.
+- Targeted EEOAP tests passed.
 
 ## 6. Claims Not Allowed
 
@@ -85,16 +95,18 @@ The release must not claim:
 - Legal compliance by itself.
 - Implemented ZKP (Zero-Knowledge Proof, 零知识证明).
 - Production readiness.
+- Full repository pytest success, unless it actually passes in a clean worktree.
+- Repository-wide production readiness.
 
 ## 7. Versioning Suggestion
 
-Possible future tag name:
+Preferred future scoped tag name:
 
 ```text
-v0.1-paper
+eeoap-v0.1-paper
 ```
 
-This is only a suggestion. Tagging and release creation are manual future steps and must not be treated as completed by this checklist.
+This scoped tag name is clearer than a generic `v0.1-paper` tag because it indicates that the release covers the EEOAP paper reproducible artifact, not the full repository. Tagging and release creation are manual future steps and must not be treated as completed by this checklist.
 
 ## 8. Pre-release Manual Review
 
@@ -106,6 +118,8 @@ Before any tag or release is created, manually confirm:
 - [ ] `paper/draft.md` matches actual `make paper-demo` behavior.
 - [ ] FDO wording remains "FDO-style mapping" and discussion-oriented.
 - [ ] ZKP remains future work only.
+- [ ] Unrelated dirty or untracked files from other research lines are not included.
+- [ ] Any unrelated full pytest failures are documented separately and are not represented as EEOAP failures.
 
 ## 9. Artifact Statement
 
