@@ -81,3 +81,11 @@ The paper is not primarily a theory paper, systems-performance paper, or governa
 - Does every ZKP (Zero-Knowledge Proof, 零知识证明) mention keep it as future work only?
 - Are production readiness, legal compliance, semantic correctness, and broad cross-framework validation explicitly out of scope?
 - Are the expected demo lines and `references_digest_mismatch` code preserved exactly?
+
+## 9. Final review outcome for the text-only preparation pass
+
+- Workshop-submission ready.
+- Formal-submission candidate only after bibliography completion, citation cleanup, and venue formatting.
+- No further code or artifact work is needed before workshop submission under the current scoped artifact boundary.
+- Formal submission still needs real references, verified citation metadata, and selected-venue formatting.
+- The current pass does not claim public GitHub Release, Zenodo DOI (Digital Object Identifier, 数字对象标识符), formal submission readiness, production readiness, official FDO (FAIR Digital Object, 公平数字对象) standard status, or ZKP (Zero-Knowledge Proof, 零知识证明) implementation.

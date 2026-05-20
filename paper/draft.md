@@ -174,6 +174,8 @@ Future work should remain incremental: clearer reviewer packages, stronger signi
 
 The current artifact is a scoped reproducible artifact candidate for EEOAP (Execution Evidence and Operation Accountability Profile, 执行证据与操作问责配置文件). The sealed local tag `eeoap-v0.1-paper` exists locally as the artifact anchor, but this text does not claim that the tag has been pushed publicly. The artifact remains local-only unless it is published later through an explicit repository release, archive, or DOI (Digital Object Identifier, 数字对象标识符) process. This draft does not claim that a public GitHub Release, Zenodo archive, DOI, or external endorsement already exists for the EEOAP paper artifact. If the artifact is later published, the public release note should preserve the scoped-release boundary: paper artifact, local validator path, bounded `paper_case` example, no production readiness, no official FDO (FAIR Digital Object, 公平数字对象) standard status, and no Zenodo DOI claim unless a DOI has actually been issued.
 
+For the next text-only preparation stage, `paper/references.md` and `paper/citation-audit.md` record candidate citation work only. They are not a finalized venue bibliography. Formal submission still requires verified bibliography metadata, citation integration, and venue-specific formatting.
+
 The replay command is:
 
 ```bash
