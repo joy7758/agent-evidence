@@ -1,0 +1,19 @@
+{
+  "content_hash": "sha256:a81e6d2b6a3e5b93787c0445176556694dfb68827222176f0bd8b1753703b3f7",
+  "id": "fdo:dataset:paper-case-001",
+  "metadata": {
+    "domain": "research-demo",
+    "fields": [
+      "operation_type",
+      "latency_ms",
+      "policy_class"
+    ],
+    "privacy_class": "aggregate-review-only",
+    "record_count": 24
+  },
+  "name": "EEOAP paper_case aggregate operation dataset",
+  "owner": "agent-evidence paper demo",
+  "policy_ref": "policy:paper-case-aggregate-only-v1",
+  "standard_boundary_note": "This is a FDO-style mapping for discussion and reproducibility; it is not an official FDO standard claim.",
+  "type": "FDO-style dataset descriptor"
+}

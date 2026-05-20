@@ -66,6 +66,16 @@ Expected result:
 - the invalid example returns JSON with `"ok": false` and one primary error code
 - the demo writes artifacts under `demo/artifacts/` and ends with one `PASS` summary line
 
+## Paper reproducible demo
+
+For the minimal EEOAP paper reproducibility artifact, run:
+
+```bash
+make paper-demo
+```
+
+Expected output includes `PASS valid evidence bundle` and `FAIL tampered output hash mismatch`. The `examples/paper_case/` files are a small paper_case demo for EEOAP execution evidence, operation accountability, validator review, and FDO-style mapping discussion.
+
 ## AEP-Media: time-aware media evidence validation
 
 AEP-Media is a small research-software path inside `agent-evidence` for local validation of

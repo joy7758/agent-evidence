@@ -1,0 +1,21 @@
+{
+  "allowed_actions": [
+    "read dataset descriptor metadata",
+    "compute aggregate counts",
+    "compute aggregate latency summary",
+    "emit aggregate summary evidence"
+  ],
+  "denied_outputs": [
+    "row-level records",
+    "personal data",
+    "raw prompts or completions",
+    "unredacted runtime logs"
+  ],
+  "policy_id": "policy:paper-case-aggregate-only-v1",
+  "purpose": "Allow a local AI agent to compute aggregate operational metrics for a paper reproducibility demo without returning row-level records.",
+  "validation_notes": [
+    "The policy is intentionally simple for the EEOAP paper_case demo.",
+    "It supports offline validation of policy binding and output hash consistency.",
+    "It is not a legal sufficiency claim."
+  ]
+}

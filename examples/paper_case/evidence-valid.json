@@ -1,0 +1,111 @@
+{
+  "actor": {
+    "id": "actor:aggregate-review-agent",
+    "name": "aggregate-review-agent",
+    "runtime": "local-paper-demo",
+    "type": "agent"
+  },
+  "constraints": [
+    {
+      "description": "The agent may emit aggregate metrics only.",
+      "id": "constraint:aggregate-only"
+    },
+    {
+      "description": "The agent must not emit row-level records, raw prompts, personal data, or unredacted logs.",
+      "id": "constraint:no-row-level-output"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:agent-operation-descriptor",
+        "digest": "sha256:2b577e425404e920ee24c13ae3d9d85532ffccfa696116c680ff8258e1a0f24f",
+        "locator": "examples/paper_case/agent-operation.json",
+        "type": "operation-descriptor"
+      }
+    ],
+    "id": "evidence:paper-case-aggregate-001",
+    "integrity": {
+      "artifacts_digest": "sha256:8c0ce09685b2c5964d6b3e8b1481e6af76630f613d4820ffdb8d7e720e4c3430",
+      "references_digest": "sha256:69443a7218262ecfdc781127e4ace30cc9ac002e5b121bedf99634d1c4c82e36",
+      "statement_digest": "sha256:4fdee4666f1b544a701a0da96509000ec0cb94d90525ab7096df49216201b920"
+    },
+    "operation_ref": "op:paper-case-aggregate-001",
+    "policy_ref": "policy:paper-case-aggregate-only-v1",
+    "references": [
+      {
+        "digest": "sha256:a81e6d2b6a3e5b93787c0445176556694dfb68827222176f0bd8b1753703b3f7",
+        "locator": "examples/paper_case/fdo-dataset.json",
+        "object_id": "fdo:dataset:paper-case-001",
+        "ref_id": "ref:fdo-dataset",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:06c1d7fa8c69657439416f87270c57251a189c988b993780e9988e766025b560",
+        "locator": "examples/paper_case/agent-operation.json#/output_object",
+        "object_id": "obj:aggregate-summary-001",
+        "ref_id": "ref:aggregate-summary",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "fdo:dataset:paper-case-001"
+  },
+  "operation": {
+    "description": "Compute aggregate-only metrics from an FDO-style dataset descriptor for the EEOAP paper_case demo.",
+    "id": "op:paper-case-aggregate-001",
+    "input_refs": [
+      "ref:fdo-dataset"
+    ],
+    "output_refs": [
+      "ref:aggregate-summary"
+    ],
+    "policy_ref": "policy:paper-case-aggregate-only-v1",
+    "result": {
+      "status": "succeeded",
+      "summary": "aggregate summary object emitted"
+    },
+    "subject_ref": "fdo:dataset:paper-case-001",
+    "type": "analysis.aggregate"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:aggregate-only",
+      "constraint:no-row-level-output"
+    ],
+    "id": "policy:paper-case-aggregate-only-v1",
+    "name": "paper-case-aggregate-only-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:aggregate-review-agent",
+    "id": "prov:paper-case-aggregate-001",
+    "input_refs": [
+      "ref:fdo-dataset"
+    ],
+    "operation_ref": "op:paper-case-aggregate-001",
+    "output_refs": [
+      "ref:aggregate-summary"
+    ],
+    "subject_ref": "fdo:dataset:paper-case-001"
+  },
+  "statement_id": "eeoap:paper-case-aggregate-001",
+  "subject": {
+    "digest": "sha256:a81e6d2b6a3e5b93787c0445176556694dfb68827222176f0bd8b1753703b3f7",
+    "id": "fdo:dataset:paper-case-001",
+    "locator": "examples/paper_case/fdo-dataset.json",
+    "type": "fdo-style-dataset"
+  },
+  "timestamp": "2026-05-20T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:paper-case-aggregate-001",
+    "id": "validation:paper-case-aggregate-001",
+    "method": "schema+reference+consistency+integrity+output-hash-binding",
+    "policy_ref": "policy:paper-case-aggregate-only-v1",
+    "provenance_ref": "prov:paper-case-aggregate-001",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile plus scripts/reproduce_paper_demo.sh output-hash check"
+  }
+}

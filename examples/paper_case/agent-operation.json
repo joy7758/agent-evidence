@@ -1,0 +1,36 @@
+{
+  "action": "aggregate_only_analysis",
+  "actor": {
+    "id": "actor:aggregate-review-agent",
+    "name": "aggregate-review-agent",
+    "runtime": "local-paper-demo",
+    "type": "agent"
+  },
+  "operation_id": "op:paper-case-aggregate-001",
+  "output_object": {
+    "content_hash": "sha256:06c1d7fa8c69657439416f87270c57251a189c988b993780e9988e766025b560",
+    "content_summary": {
+      "metrics": {
+        "max_latency_ms": 391.2,
+        "mean_latency_ms": 182.4,
+        "record_count": 24
+      },
+      "privacy_boundary": "aggregate-only; no row-level records returned",
+      "rows_analyzed": 24
+    },
+    "object_id": "obj:aggregate-summary-001"
+  },
+  "policy_ref": "policy:paper-case-aggregate-only-v1",
+  "provenance_notes": [
+    "The operation is a paper_case demonstration of EEOAP execution evidence.",
+    "The output is an aggregate summary, not row-level disclosure.",
+    "The content_hash binds the reviewer-visible output summary to the evidence object."
+  ],
+  "subject": {
+    "content_hash": "sha256:a81e6d2b6a3e5b93787c0445176556694dfb68827222176f0bd8b1753703b3f7",
+    "locator": "examples/paper_case/fdo-dataset.json",
+    "object_id": "fdo:dataset:paper-case-001"
+  },
+  "target_object": "fdo:dataset:paper-case-001",
+  "timestamp": "2026-05-20T00:00:00Z"
+}

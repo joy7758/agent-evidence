@@ -1,0 +1,12 @@
+{
+  "artifact": "examples/paper_case/evidence-invalid-tampered-output.json",
+  "expected_demo_line": "FAIL tampered output hash mismatch",
+  "expected_ok": false,
+  "expected_primary_error_code": "references_digest_mismatch",
+  "notes": [
+    "The output reference digest is intentionally changed to a non-matching hash.",
+    "The stale integrity binding and operation output content_hash comparison make the tamper detectable offline."
+  ],
+  "scenario": "tampered output hash mismatch",
+  "validator": "agent-evidence validate-profile plus scripts/reproduce_paper_demo.sh output-hash check"
+}

@@ -1,0 +1,11 @@
+{
+  "artifact": "examples/paper_case/evidence-valid.json",
+  "expected_demo_line": "PASS valid evidence bundle",
+  "expected_ok": true,
+  "expected_primary_error_code": null,
+  "notes": [
+    "EEOAP profile structure, references, consistency, integrity, and output hash binding should pass."
+  ],
+  "scenario": "valid evidence bundle",
+  "validator": "agent-evidence validate-profile"
+}
