@@ -1,0 +1,7 @@
+execution evidence
+operation accountability
+validator
+FDO
+data spaces
+provenance
+artifact reproducibility

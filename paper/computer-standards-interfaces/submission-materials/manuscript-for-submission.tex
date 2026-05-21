@@ -1,0 +1,309 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{url}
+\usepackage{hyperref}
+
+\title{A Minimal Execution Evidence Profile for Verifiable AI Agent Operations in FDO-style Data Spaces}
+\author{Bin Zhang\\
+Independent Researcher, China\\
+Email: \href{mailto:joy7759@gmail.com}{joy7759@gmail.com}\\
+ORCID: 0009-0002-8861-1481}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+EEOAP (Execution Evidence and Operation Accountability Profile) defines a
+minimal operation-level evidence profile for one AI (Artificial Intelligence)
+agent operation in FDO (FAIR Digital Object)-style data spaces. It packages
+actor, action, subject, policy, output, provenance, evidence references,
+integrity binding, and validation metadata into a structured object that can
+be reviewed outside the original runtime. The accompanying repository
+artifact provides a local validator path and a reproducible paper case.
+Running \texttt{make paper-demo} reports \texttt{PASS valid evidence bundle}
+for the valid case and \texttt{FAIL tampered output hash mismatch} for an
+altered output reference. The tampered case exposes
+\texttt{references\_digest\_mismatch}. Targeted EEOAP tests previously
+reported 19 passed and 1 warning. The contribution is intentionally bounded:
+it does not claim full repository pytest success, public release, DOI,
+production readiness, official FDO adoption, legal compliance, semantic
+correctness of AI output, or ZKP (Zero-Knowledge Proof) implementation.
+\end{abstract}
+
+\section{Introduction}
+
+AI agent systems increasingly perform operations whose evidence matters after
+the original interaction is over. An agent may read a data descriptor, call a
+tool, apply a policy, produce a summary, export a review package, or hand a
+result to another reviewer. A later reviewer may need to know which actor
+performed the operation, what subject was acted on, which policy was
+referenced, what output object was produced, which evidence references were
+included, and whether the record still matches the referenced artifacts.
+
+This paper introduces EEOAP (Execution Evidence and Operation Accountability
+Profile), a minimal operation-level evidence profile and validator path for
+independently reviewable AI agent operations in FDO (FAIR Digital
+Object)-style data spaces. The profile records actor, action, subject, policy
+reference, output, provenance, evidence references, artifacts, integrity
+bindings, and validation metadata for one operation.
+
+Runtime logs, traces, transcripts, provenance, schema validation,
+attestation, and telemetry all provide useful background \cite{provdm,
+provconstraints,jsonschema,slsa,slsaprov,intoto,otel,otelgenai}. The EEOAP
+claim is narrower: a minimal evidence object can make selected
+operation-level claims inspectable and falsifiable offline.
+
+The current artifact fixes this claim to a reproducible paper case. Running
+\texttt{make paper-demo} reports \texttt{PASS valid evidence bundle} for the
+valid case and \texttt{FAIL tampered output hash mismatch} for the negative
+case. The expected tampered failure code is
+\texttt{references\_digest\_mismatch}. Targeted EEOAP tests previously passed
+with 19 passed and 1 warning; full repository pytest success is not claimed.
+
+\section{Problem and Scope}
+
+The motivating problem is independent review of one AI agent operation after
+execution. The reviewer may not have access to the original runtime
+environment, live service credentials, private logs, raw prompts, or model
+internals. A bounded record is needed to answer who or what acted, what action
+was recorded, which subject was involved, which policy was referenced, what
+output was produced, which evidence references belong to the record, and
+whether the integrity binding still matches.
+
+This paper treats that need as a profile and validation problem. A profile
+narrows a broad space of execution data into a specified structure. A
+validator checks whether a concrete object satisfies that structure, whether
+references close, whether policy and evidence linkages are coherent, and
+whether integrity values still match. The result is not a proof of truth,
+legality, security, or semantic correctness.
+
+EEOAP does not define organizational approval workflows, runtime enforcement,
+human consent management, legal interpretation, agent reputation, policy
+authoring, or production incident response. It does not claim official FDO
+adoption, certification, conformance, endorsement, or implementation of an
+official FDO standard.
+
+\section{EEOAP Profile Design}
+
+EEOAP organizes execution evidence around one accountable operation. It is
+designed to be small enough for review, strict enough for validation, and
+explicit enough to separate claims from non-claims. The profile includes
+actor, action, subject, policy reference, output reference, provenance,
+evidence references, integrity binding, and validation metadata.
+
+This profile is an interface boundary, not a complete representation of every
+runtime event. An implementation may have richer logs, traces, prompts, tool
+messages, approvals, and model telemetry. EEOAP selects a reviewable subset
+and packages it as one evidence object.
+
+The output reference is central to the tamper-detection example. The valid
+evidence object includes an output digest that matches the operation output
+content hash. The tampered evidence object changes the output digest while
+leaving the integrity binding stale. The validator-backed path rejects the
+object with \texttt{references\_digest\_mismatch}.
+
+\section{Validator and Evidence Bundle}
+
+The validator turns EEOAP from a descriptive document shape into a checkable
+artifact. The current validator path checks required structure, internal
+references, policy/evidence linkage, provenance consistency, and integrity
+binding for the paper case boundary.
+
+The paper case is under \texttt{examples/paper\_case/}. It contains an
+FDO-style subject descriptor, an aggregate-only policy descriptor, an agent
+operation descriptor, a valid EEOAP evidence object, a tampered object with a
+changed output digest and stale binding, and expected validator pass/fail
+results.
+
+The reproducible path is \texttt{make paper-demo}. The expected visible output
+includes \texttt{PASS valid evidence bundle} and \texttt{FAIL tampered output
+hash mismatch}. The expected primary error code is
+\texttt{references\_digest\_mismatch}.
+
+\section{FDO-style Data-space Mapping}
+
+EEOAP is relevant to FDO-style data-space discussions because those
+discussions often involve persistent object identity, typed metadata, policy
+references, provenance, integrity, and exchange interfaces. Digital object and
+object-interface work provides useful background \cite{doip,kahnwilensky}.
+
+The paper case uses \texttt{fdo-dataset.json} as the subject descriptor. It is
+FDO-style rather than an official FDO implementation. The descriptor gives the
+operation a subject identity, type, owner, content hash, policy reference, and
+metadata. EEOAP then records an agent operation against that subject and binds
+the result to evidence references and integrity values.
+
+This mapping does not claim official FDO standard adoption, certification,
+conformance, or endorsement. It also does not implement DONA DOIP.
+
+\section{Reproducible Paper Case and Evaluation}
+
+The evaluation is intentionally scoped to the current paper artifact. It asks
+whether the repository contains a reproducible positive case and a
+reproducible negative case for the core EEOAP claim. The evaluation is not a
+model benchmark, user study, deployment study, or formal conformance test
+against an external standard.
+
+The verified evaluation facts are: \texttt{make paper-demo} passes; the valid
+evidence bundle reports \texttt{PASS valid evidence bundle}; the tampered
+output reports \texttt{FAIL tampered output hash mismatch}; the expected
+tampered primary error code is \texttt{references\_digest\_mismatch}; and the
+targeted EEOAP tests previously reported 19 passed and 1 warning. Full
+repository pytest success is not claimed.
+
+\section{Claim-to-Evidence Boundary}
+
+EEOAP defines a minimal operation-level profile. The evidence is the
+submission manuscript, the valid paper case evidence object, and associated
+paper case files. The boundary is that EEOAP is not a full governance platform
+or universal agent registry.
+
+The validator checks structure and linkage through the local
+\texttt{make paper-demo} path. The boundary is that it does not prove legal
+compliance, runtime security, semantic correctness, production readiness, or
+official standards adoption.
+
+The artifact has a local sealed anchor: tag \texttt{eeoap-v0.1-paper} at
+commit \texttt{96f444b7ed39b39fe9f47e428af835952e843cb0}. The tag is not
+claimed as publicly pushed, and no public GitHub Release or Zenodo DOI is
+claimed.
+
+\section{Related Work}
+
+W3C PROV-DM and PROV-Constraints provide provenance and consistency-checking
+background \cite{provdm,provconstraints}. JSON Schema Draft 2020-12 provides
+JSON-style schema and validation background \cite{jsonschema}. ACM Artifact
+Review and Badging provides artifact-reviewability and reproducibility
+framing \cite{acmbadging}. DONA DOIP and Kahn and Wilensky provide digital
+object and object-interface background \cite{doip,kahnwilensky}.
+
+SLSA Version 1.2, SLSA Build Provenance, and in-toto Stable provide
+supply-chain provenance and attestation background
+\cite{slsa,slsaprov,intoto}. OpenTelemetry Semantic Conventions and the
+OpenTelemetry generative AI conventions provide observability and telemetry
+background \cite{otel,otelgenai}. EEOAP uses these works as related
+background. It does not claim conformance to them.
+
+\section{Limitations and Threats to Validity}
+
+The main limitation is scale. The current artifact contains one paper case,
+not a large corpus of agent operations. It does not show generality across
+agent frameworks, data domains, deployment models, or data-space
+implementations.
+
+The validator cannot prove that AI output is true, complete, unbiased,
+policy-sufficient, or useful. It cannot prove that the runtime was secure,
+that agent identity was uncompromised, that clocks were correct, that signing
+keys were protected, or that evidence entered an external transparency
+system.
+
+ZKP is mentioned only as a non-claim and future direction. No ZKP
+implementation is present. The FDO-style mapping is not official FDO adoption,
+certification, conformance, or endorsement. Full repository pytest success is
+not claimed.
+
+\section{Standards and Interface Implications}
+
+The standards-facing implication of EEOAP is that AI agent operations may need
+a portable evidence object between raw runtime traces and broad governance
+claims. For interface designers, the profile suggests that a completed
+operation should expose at least actor, action, subject, policy reference,
+output reference, provenance, evidence references, integrity binding, and
+validation metadata.
+
+For conformance and validation discussions, EEOAP suggests a staged approach:
+define the smallest object that can be validated, provide a local checker that
+accepts valid evidence and rejects a known tampered case, and add stronger
+assurance layers only when the base object is stable.
+
+\section{Conclusion}
+
+EEOAP defines a minimal operation-level evidence profile for one AI agent
+operation. It packages actor, action, subject, policy, output, provenance,
+evidence references, integrity bindings, and validation metadata into an
+object that can be reviewed outside the original runtime.
+
+The reproducible paper case demonstrates the core boundary. Running
+\texttt{make paper-demo} reports \texttt{PASS valid evidence bundle} for the
+valid object and \texttt{FAIL tampered output hash mismatch} for the tampered
+object. The expected primary error code is
+\texttt{references\_digest\_mismatch}. Targeted EEOAP tests previously passed
+with 19 passed and 1 warning; full repository pytest success is not claimed.
+
+\section{Artifact Availability}
+
+The current artifact has a local sealed tag, \texttt{eeoap-v0.1-paper}, as an
+artifact anchor. The sealed artifact commit is
+\texttt{96f444b7ed39b39fe9f47e428af835952e843cb0}. This manuscript does not
+claim that the tag has been pushed publicly.
+
+Public GitHub Release publication is not claimed. Zenodo DOI issuance is not
+claimed. Production readiness, official FDO standard adoption, legal
+compliance, ZKP implementation, and semantic correctness of AI output are not
+claimed. The artifact remains scoped to \texttt{paper\_case}, the local
+validator path, valid PASS, tampered FAIL, and targeted EEOAP tests.
+
+\begin{thebibliography}{11}
+
+\bibitem{provdm}
+W3C (World Wide Web Consortium). PROV-DM: The PROV Data Model. W3C
+Recommendation, 30 April 2013. Editors: Luc Moreau and Paolo Missier.
+Available at: \url{https://www.w3.org/TR/prov-dm/}. Accessed 21 May 2026.
+
+\bibitem{provconstraints}
+W3C (World Wide Web Consortium). Constraints of the PROV Data Model. W3C
+Recommendation, 30 April 2013. Editors: James Cheney, Paolo Missier, and Luc
+Moreau; author: Tom De Nies. Available at:
+\url{https://www.w3.org/TR/prov-constraints/}. Accessed 21 May 2026.
+
+\bibitem{jsonschema}
+Austin Wright, Henry Andrews, Ben Hutton, and Greg Dennis. JSON Schema Draft
+2020-12. JSON Schema project, published 16 June 2022. Available at:
+\url{https://json-schema.org/draft/2020-12}. Accessed 21 May 2026.
+
+\bibitem{acmbadging}
+ACM (Association for Computing Machinery). Artifact Review and Badging -
+Current. Artifact Review and Badging Version 1.1, 24 August 2020. Available
+at: \url{https://www.acm.org/publications/policies/artifact-review-and-badging-current}.
+Accessed 21 May 2026.
+
+\bibitem{doip}
+DONA Foundation. Digital Object Interface Protocol Specification. Version 2.0,
+12 November 2018. Available at:
+\url{https://www.dona.net/sites/default/files/2018-11/DOIPv2Spec_1.pdf}.
+Accessed 21 May 2026.
+
+\bibitem{kahnwilensky}
+Robert Kahn and Robert Wilensky. A framework for distributed digital object
+services. International Journal on Digital Libraries, 6, 115--123, 2006.
+\url{https://doi.org/10.1007/s00799-005-0128-x}.
+
+\bibitem{slsa}
+SLSA (Supply-chain Levels for Software Artifacts). SLSA specification. Version
+1.2, status: Approved. Available at: \url{https://slsa.dev/spec/v1.2/}.
+Accessed 21 May 2026.
+
+\bibitem{slsaprov}
+SLSA (Supply-chain Levels for Software Artifacts). Build: Provenance. Status:
+Approved. Predicate type: \url{https://slsa.dev/provenance/v1}. Available at:
+\url{https://slsa.dev/spec/v1.2/build-provenance}. Accessed 21 May 2026.
+
+\bibitem{intoto}
+in-toto. Specifications: in-toto Stable (v1.0). Status from source:
+thoroughly reviewed specification. Available at:
+\url{https://in-toto.io/docs/specs/}. Accessed 21 May 2026.
+
+\bibitem{otel}
+OpenTelemetry. OpenTelemetry semantic conventions 1.41.0. Available at:
+\url{https://opentelemetry.io/docs/specs/semconv/}. Accessed 21 May 2026.
+
+\bibitem{otelgenai}
+OpenTelemetry. Semantic conventions for generative AI systems. OpenTelemetry
+semantic conventions 1.41.0, status: Development. Available at:
+\url{https://opentelemetry.io/docs/specs/semconv/gen-ai/}. Accessed 21 May
+2026.
+
+\end{thebibliography}
+
+\end{document}
