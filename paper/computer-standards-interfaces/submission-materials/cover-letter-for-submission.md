@@ -3,31 +3,35 @@
 Dear Editor of Computer Standards & Interfaces,
 
 Please consider the manuscript titled "A Minimal Execution Evidence Profile
-for Verifiable AI Agent Operations in FDO-style Data Spaces" for Computer
-Standards & Interfaces. The manuscript fits the journal because it addresses a
-standards-facing interface problem: how to package one AI agent operation as a
-minimal execution evidence object that can be reviewed outside the original
-runtime. The work is positioned around profile design, validator-backed
-checking, software quality, conformance-style validation, integrity binding,
-and FDO-style data-space object systems rather than model-performance claims.
+for Validator-Checkable AI Agent Operation Records in FAIR Digital
+Object-Inspired Data-Space Settings" for Computer Standards & Interfaces.
+
+This manuscript is submitted as a standards- and interfaces-oriented research
+article. It proposes a bounded interoperability profile and validator boundary
+for post hoc review of a single AI-agent operation, positioning the
+contribution in software quality, interface specification, and
+standards-facing validation methods rather than model-performance
+benchmarking.
 
 The contribution is a bounded EEOAP (Execution Evidence and Operation
 Accountability Profile) artifact. It defines a minimal operation-level
-profile, provides a local validator path for structure, references,
-policy/evidence linkage, and integrity binding, and includes a reproducible
-paper_case showing a valid evidence PASS and a tampered-output FAIL with
-references_digest_mismatch.
+profile, provides a local validator path for required structure, reference
+closure, and integrity-linked consistency conditions, and includes a
+reproducible paper_case showing a valid evidence PASS and a tampered-output
+FAIL with references_digest_mismatch.
 
-The artifact can be reproduced with make paper-demo. At initial submission the
-artifact availability decision is local-only. No public GitHub Release or
-Zenodo DOI is claimed. If required by editors or reviewers, a private review
-package may be supplied through the journal workflow.
+The artifact can be reproduced with make paper-demo. At initial submission
+the artifact remains local-only and no public GitHub Release or Zenodo DOI is
+claimed. To support peer review, a private review package containing the
+bounded paper_case artifact can be supplied through the journal workflow on
+request.
 
 The manuscript does not claim production readiness, legal compliance,
-semantic correctness of AI output, official FDO standard adoption,
-certification, conformance, endorsement, or ZKP implementation. Subject to
-final author confirmation before upload, the manuscript is not under
-simultaneous consideration elsewhere.
+semantic correctness of AI output, FAIR Digital Object Framework conformance,
+certification, endorsement, deployment, or ZKP implementation.
+
+This manuscript is original, has not been published previously, is not under
+consideration elsewhere, and is approved for submission by the author.
 
 Sincerely,
 

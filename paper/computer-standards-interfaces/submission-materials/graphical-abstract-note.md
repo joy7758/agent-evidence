@@ -9,4 +9,5 @@ is created in this repository package.
 If a graphical abstract is later created, it must follow the journal's
 instructions and the relevant Generative AI policy. It should not overstate
 the artifact boundary, public release state, DOI status, production readiness,
-official FDO adoption, legal compliance, or ZKP implementation.
+FAIR Digital Object Framework conformance, legal compliance, or ZKP
+implementation.

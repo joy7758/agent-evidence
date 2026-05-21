@@ -3,7 +3,7 @@
 \usepackage{url}
 \usepackage{hyperref}
 
-\title{A Minimal Execution Evidence Profile for Verifiable AI Agent Operations in FDO-style Data Spaces}
+\title{A Minimal Execution Evidence Profile for Validator-Checkable AI Agent Operation Records in FAIR Digital Object-Inspired Data-Space Settings}
 \author{Bin Zhang\\
 Independent Researcher, China\\
 Email: \href{mailto:joy7759@gmail.com}{joy7759@gmail.com}\\
@@ -14,21 +14,27 @@ ORCID: 0009-0002-8861-1481}
 \maketitle
 
 \begin{abstract}
-EEOAP (Execution Evidence and Operation Accountability Profile) defines a
-minimal operation-level evidence profile for one AI (Artificial Intelligence)
-agent operation in FDO (FAIR Digital Object)-style data spaces. It packages
-actor, action, subject, policy, output, provenance, evidence references,
-integrity binding, and validation metadata into a structured object that can
-be reviewed outside the original runtime. The accompanying repository
-artifact provides a local validator path and a reproducible paper case.
-Running \texttt{make paper-demo} reports \texttt{PASS valid evidence bundle}
-for the valid case and \texttt{FAIL tampered output hash mismatch} for an
-altered output reference. The tampered case exposes
-\texttt{references\_digest\_mismatch}. Targeted EEOAP tests previously
-reported 19 passed and 1 warning. The contribution is intentionally bounded:
-it does not claim full repository pytest success, public release, DOI,
-production readiness, official FDO adoption, legal compliance, semantic
-correctness of AI output, or ZKP (Zero-Knowledge Proof) implementation.
+The Execution Evidence and Operation Accountability Profile (EEOAP) is a
+minimal evidence profile for validator-checkable records of individual
+artificial intelligence (AI) agent operations in FAIR Digital Object-inspired
+data-space settings. AI-agent outputs are often reviewed after the originating
+runtime, logs, credentials, or prompts are unavailable. EEOAP packages actor,
+action, subject, policy reference, output reference, provenance, evidence
+references, integrity binding, and validation metadata into one offline review
+object. The paper contributes the profile boundary, a local validator path,
+and a repository-contained \texttt{paper\_case} artifact. The validator
+enforces required structure, reference closure, and integrity-linked
+consistency conditions over fields used by the review object. Running
+\texttt{make paper-demo} demonstrates the intended boundary: the valid
+evidence bundle reports \texttt{PASS valid evidence bundle}, while a
+controlled tampered-output case reports \texttt{FAIL tampered output hash
+mismatch} with \texttt{references\_digest\_mismatch} as the primary error
+code. Targeted tests support the operation-accountability and paper-case
+behavior, but exhaustive validator assurance, semantic correctness of AI
+output, legal compliance, production readiness, public release, and archival
+DOI claims are outside scope. The result is a standards- and
+interfaces-oriented artifact for making selected post hoc operation evidence
+claims inspectable and falsifiable offline.
 \end{abstract}
 
 \section{Introduction}
@@ -43,8 +49,8 @@ included, and whether the record still matches the referenced artifacts.
 
 This paper introduces EEOAP (Execution Evidence and Operation Accountability
 Profile), a minimal operation-level evidence profile and validator path for
-independently reviewable AI agent operations in FDO (FAIR Digital
-Object)-style data spaces. The profile records actor, action, subject, policy
+independently reviewable AI agent operations in FAIR Digital Object-inspired
+data-space settings. The profile records actor, action, subject, policy
 reference, output, provenance, evidence references, artifacts, integrity
 bindings, and validation metadata for one operation.
 
@@ -80,9 +86,16 @@ legality, security, or semantic correctness.
 
 EEOAP does not define organizational approval workflows, runtime enforcement,
 human consent management, legal interpretation, agent reputation, policy
-authoring, or production incident response. It does not claim official FDO
-adoption, certification, conformance, endorsement, or implementation of an
-official FDO standard.
+authoring, or production incident response. It does not claim conformance to,
+certification by, endorsement from, or implementation of a specific FAIR
+Digital Object Framework.
+
+In this paper, ``validator-checkable'' refers only to offline checking of
+structural completeness, reference closure, and selected linkage and integrity
+constraints within the bounded EEOAP evidence object. It does not denote
+formal verification of the underlying runtime, semantic correctness of the
+generated output, legal compliance, or exhaustive assurance of the surrounding
+system.
 
 \section{EEOAP Profile Design}
 
@@ -91,6 +104,15 @@ designed to be small enough for review, strict enough for validation, and
 explicit enough to separate claims from non-claims. The profile includes
 actor, action, subject, policy reference, output reference, provenance,
 evidence references, integrity binding, and validation metadata.
+
+The term ``minimal'' is used in a pragmatic rather than formal proof-theoretic
+sense. Each required element is included because it is needed either to
+identify the acted-on object, reconstruct the claimed operation context,
+connect the operation to a policy and evidence boundary, or recompute the
+integrity boundary used in validation. In the paper case, removing actor,
+subject, policy reference, output reference, evidence references, integrity
+binding, or validation metadata would leave at least one review question
+unanswered or would disable at least one validator check.
 
 This profile is an interface boundary, not a complete representation of every
 runtime event. An implementation may have richer logs, traces, prompts, tool
@@ -106,36 +128,49 @@ object with \texttt{references\_digest\_mismatch}.
 \section{Validator and Evidence Bundle}
 
 The validator turns EEOAP from a descriptive document shape into a checkable
-artifact. The current validator path checks required structure, internal
-references, policy/evidence linkage, provenance consistency, and integrity
-binding for the paper case boundary.
+artifact. Within the paper-case boundary, the current validator path enforces
+required structure, reference closure, and integrity-linked consistency
+conditions over the fields used by the review object. The manuscript directly
+demonstrates this boundary through a valid case and a controlled
+integrity-failure case. Broader validator behavior is supported by targeted
+tests but is not claimed exhaustively here.
 
 The paper case is under \texttt{examples/paper\_case/}. It contains an
-FDO-style subject descriptor, an aggregate-only policy descriptor, an agent
-operation descriptor, a valid EEOAP evidence object, a tampered object with a
-changed output digest and stale binding, and expected validator pass/fail
-results.
+FAIR Digital Object-inspired subject descriptor, an aggregate-only policy
+descriptor, an agent operation descriptor, a valid EEOAP evidence object, a
+tampered object with a changed output digest and stale binding, and expected
+validator pass/fail results.
 
 The reproducible path is \texttt{make paper-demo}. The expected visible output
 includes \texttt{PASS valid evidence bundle} and \texttt{FAIL tampered output
 hash mismatch}. The expected primary error code is
 \texttt{references\_digest\_mismatch}.
 
-\section{FDO-style Data-space Mapping}
+\section{FAIR Digital Object-inspired Data-space Mapping}
 
-EEOAP is relevant to FDO-style data-space discussions because those
-discussions often involve persistent object identity, typed metadata, policy
-references, provenance, integrity, and exchange interfaces. Digital object and
-object-interface work provides useful background \cite{doip,kahnwilensky}.
+EEOAP is relevant to FAIR Digital Object-inspired data-space discussions
+because those discussions often involve persistent object identity, typed
+metadata, policy references, provenance, integrity, and exchange interfaces.
+Digital object and object-interface work provides useful background
+\cite{doip,kahnwilensky}.
+
+In this manuscript, ``FAIR Digital Object-inspired'' denotes an object-centric
+packaging pattern motivated by FAIR Digital Object discussions, including
+persistent identity, machine-readable metadata, typed description, policy
+references, and resolvable links. It does not claim conformance to a specific
+FAIR Digital Object Framework implementation or to a DOIP (Digital Object
+Interface Protocol, 数字对象接口协议) service.
 
 The paper case uses \texttt{fdo-dataset.json} as the subject descriptor. It is
-FDO-style rather than an official FDO implementation. The descriptor gives the
-operation a subject identity, type, owner, content hash, policy reference, and
-metadata. EEOAP then records an agent operation against that subject and binds
-the result to evidence references and integrity values.
+FAIR Digital Object-inspired rather than an implementation of a specific FAIR
+Digital Object Framework. The descriptor gives the operation a subject
+identity, type, owner, content hash, policy reference, and metadata. EEOAP
+then records an agent operation against that subject and binds the result to
+evidence references and integrity values.
 
-This mapping does not claim official FDO standard adoption, certification,
-conformance, or endorsement. It also does not implement DONA DOIP.
+This mapping does not claim FAIR Digital Object Framework conformance,
+certification, endorsement, or deployment. It also does not implement DONA
+DOIP.
 
 \section{Reproducible Paper Case and Evaluation}
 
@@ -159,10 +194,11 @@ submission manuscript, the valid paper case evidence object, and associated
 paper case files. The boundary is that EEOAP is not a full governance platform
 or universal agent registry.
 
-The validator checks structure and linkage through the local
+The validator enforces required structure, reference closure, and
+integrity-linked consistency conditions for the paper case through the local
 \texttt{make paper-demo} path. The boundary is that it does not prove legal
 compliance, runtime security, semantic correctness, production readiness, or
-official standards adoption.
+exhaustive validator assurance.
 
 The artifact has a local sealed anchor: tag \texttt{eeoap-v0.1-paper} at
 commit \texttt{96f444b7ed39b39fe9f47e428af835952e843cb0}. The tag is not
@@ -185,6 +221,15 @@ OpenTelemetry generative AI conventions provide observability and telemetry
 background \cite{otel,otelgenai}. EEOAP uses these works as related
 background. It does not claim conformance to them.
 
+EEOAP is adjacent to several existing approaches but narrower than all of
+them. Unlike PROV, it does not attempt to represent arbitrary provenance
+graphs or claim PROV validity; it packages one reviewable operation record.
+Unlike JSON Schema, it does not rely on schema assertions alone, because
+cross-reference and digest checks are part of the validator path. Unlike SLSA
+and in-toto, it does not attest a software supply chain; it records post hoc
+evidence for one AI-agent operation. Unlike OpenTelemetry, it is not a live
+observability convention; it is an offline review object.
+
 \section{Limitations and Threats to Validity}
 
 The main limitation is scale. The current artifact contains one paper case,
@@ -199,9 +244,14 @@ keys were protected, or that evidence entered an external transparency
 system.
 
 ZKP is mentioned only as a non-claim and future direction. No ZKP
-implementation is present. The FDO-style mapping is not official FDO adoption,
-certification, conformance, or endorsement. Full repository pytest success is
-not claimed.
+implementation is present. In broader deployments, operation evidence may
+contain prompts, tool definitions, outputs, identifiers, or policy references
+that carry sensitive or proprietary information. The present paper does not
+solve selective disclosure, retention control, or privacy-preserving release
+of such content and therefore treats privacy-preserving deployment as out of
+scope. The FAIR Digital Object-inspired mapping is not FAIR Digital Object
+Framework conformance, certification, endorsement, or deployment. Full
+repository pytest success is not claimed.
 
 \section{Standards and Interface Implications}
 
@@ -233,16 +283,28 @@ with 19 passed and 1 warning; full repository pytest success is not claimed.
 
 \section{Artifact Availability}
 
-The current artifact has a local sealed tag, \texttt{eeoap-v0.1-paper}, as an
-artifact anchor. The sealed artifact commit is
-\texttt{96f444b7ed39b39fe9f47e428af835952e843cb0}. This manuscript does not
-claim that the tag has been pushed publicly.
+The artifact supporting the bounded claims of this paper consists of the
+\texttt{paper\_case} files, the local validator path, and the
+\texttt{make paper-demo} reproduction command. At initial submission, the
+supporting software artifact is not deposited in a public repository because
+the author is maintaining a sealed review-state package and does not yet
+claim a public release or archival identifier. A private review package can be
+supplied to editors and reviewers through the journal workflow on request.
 
-Public GitHub Release publication is not claimed. Zenodo DOI issuance is not
-claimed. Production readiness, official FDO standard adoption, legal
-compliance, ZKP implementation, and semantic correctness of AI output are not
-claimed. The artifact remains scoped to \texttt{paper\_case}, the local
-validator path, valid PASS, tampered FAIL, and targeted EEOAP tests.
+This submission does not claim a public GitHub Release or a Zenodo DOI. The
+claims supported by the artifact are limited to acceptance of the valid paper
+case, rejection of a controlled tampered case with the expected error
+boundary, and the bounded targeted-test evidence described in the manuscript.
+If the artifact is later publicly released, this statement will be updated to
+include the persistent access point.
+
+\section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}
+
+During the preparation of this work, the author used OpenAI ChatGPT and Codex
+to support language editing, structural reorganization, command generation,
+and drafting of submission-packaging text. After using these tools, the
+author reviewed and edited the content as needed and takes full responsibility
+for the content of the article.
 
 \begin{thebibliography}{11}
 

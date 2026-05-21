@@ -1,13 +1,13 @@
 # Claim-to-Evidence Table for Submission
 
-| Claim | Evidence in submission package | Artifact evidence | Boundary / non-claim |
-| --- | --- | --- | --- |
-| Minimal profile | Manuscript Sections 1-3. | `evidence-valid.json` and paper_case descriptors. | Minimal operation-level profile only; not a full governance platform. |
-| Validator path | Manuscript Section 4 and reproducibility summary. | `make paper-demo` and local validator path. | No hosted API, OpenAPI, MCP, browser UI, or external verifier is claimed. |
-| Valid evidence PASS | Manuscript Sections 4 and 6. | `PASS valid evidence bundle`. | Applies to scoped paper_case, not every possible evidence object. |
-| Tampered output FAIL | Manuscript Sections 4 and 6. | `FAIL tampered output hash mismatch`. | Demonstrates one altered-output-reference case, not all attacks. |
-| references_digest_mismatch | Manuscript Sections 4, 6, and 7. | `tampered_primary_error_code=references_digest_mismatch`. | Claimed for this tampered paper case only. |
-| Targeted tests | Manuscript Sections 6, 7, and reviewer summary. | `tests/test_paper_case.py`; `tests/test_operation_accountability_profile.py`; `19 passed, 1 warning`. | Full repository pytest success is not claimed. |
-| FDO-style mapping | Manuscript Section 5. | `fdo-dataset.json` and mapping discussion. | Discussion mapping only; no official FDO adoption, conformance, certification, or endorsement. |
-| Local-only artifact | Artifact availability statement and README. | Local tag `eeoap-v0.1-paper`; commit `96f444b7ed39b39fe9f47e428af835952e843cb0`. | Tag is not claimed as publicly pushed; no public GitHub Release or Zenodo DOI. |
-| Non-claims | Non-claims checklist, declarations, and limitations. | Local artifact boundary only. | No production readiness, legal compliance, semantic correctness, ZKP implementation, artifact badge, or external endorsement. |
+| Claim area | Support level | Evidence in submission package | Artifact evidence | Boundary / non-claim |
+| --- | --- | --- | --- | --- |
+| Minimal profile | Supported by manuscript design argument and paper-case object shape. | Manuscript Sections 1-3. | `evidence-valid.json` and paper_case descriptors. | Pragmatic minimality only; not a formal proof of minimality and not a full governance platform. |
+| Valid evidence PASS | Directly demonstrated by paper case. | Manuscript Sections 4 and 6; reviewer reproducibility summary. | `PASS valid evidence bundle`. | Applies to the scoped paper_case valid object, not every possible evidence object. |
+| Controlled tampered output FAIL | Directly demonstrated by paper case. | Manuscript Sections 4 and 6; reviewer reproducibility summary. | `FAIL tampered output hash mismatch`. | Demonstrates one altered-output-reference integrity case, not all attacks. |
+| references_digest_mismatch | Directly demonstrated by paper case. | Manuscript Sections 4, 6, and 7. | `tampered_primary_error_code=references_digest_mismatch`. | Claimed for this controlled tampered paper case only. |
+| Validator path | Directly demonstrated for the paper case; broader behavior supported by targeted tests. | Manuscript Section 4 and reproducibility summary. | `make paper-demo` and local validator path. | The manuscript does not imply that every validator sub-check has its own independent negative specimen. |
+| Targeted EEOAP tests | Supported by targeted tests. | Manuscript Sections 6 and 7; reviewer summary. | `tests/test_paper_case.py`; `tests/test_operation_accountability_profile.py`; `19 passed, 1 warning`. | Full repository pytest success and exhaustive validator assurance are not claimed. |
+| FAIR Digital Object-inspired mapping | Supported by mapping discussion and subject descriptor. | Manuscript Section 5. | `fdo-dataset.json` and mapping discussion. | Discussion mapping only; no FAIR Digital Object Framework conformance, certification, endorsement, or deployment. |
+| Local-only artifact | Supported by package metadata and availability statements. | Artifact availability statement and README. | Local sealed artifact state; private review package available on editorial request. | No public GitHub Release or Zenodo DOI is claimed. |
+| Non-claims | Not exhaustively claimed beyond the bounded package. | Non-claims checklist, declarations, limitations, and artifact availability. | Local artifact boundary only. | No production readiness, legal compliance, semantic correctness, ZKP implementation, artifact badge, public release, DOI, or external endorsement. |

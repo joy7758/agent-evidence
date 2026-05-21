@@ -1,8 +1,5 @@
 # References for Submission
 
-Status: final author-review reference list for the submission-materials
-package. Author must do the last journal-style reference check before upload.
-
 [1] W3C (World Wide Web Consortium). PROV-DM: The PROV Data Model. W3C
 Recommendation, 30 April 2013. Editors: Luc Moreau and Paolo Missier.
 Available at: https://www.w3.org/TR/prov-dm/. Accessed 21 May 2026.

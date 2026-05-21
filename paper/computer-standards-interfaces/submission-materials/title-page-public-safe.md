@@ -2,8 +2,8 @@
 
 ## Article Title
 
-A Minimal Execution Evidence Profile for Verifiable AI Agent Operations in
-FDO-style Data Spaces
+A Minimal Execution Evidence Profile for Validator-Checkable AI Agent
+Operation Records in FAIR Digital Object-Inspired Data-Space Settings
 
 ## Author
 

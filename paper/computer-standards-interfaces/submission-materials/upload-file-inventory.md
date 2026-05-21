@@ -4,6 +4,7 @@ Use this as an author-side inventory before journal upload.
 
 | Upload item | File or action |
 | --- | --- |
+| Title | A Minimal Execution Evidence Profile for Validator-Checkable AI Agent Operation Records in FAIR Digital Object-Inspired Data-Space Settings |
 | Main manuscript source | `manuscript-for-submission.tex` |
 | Optional manuscript markdown | `manuscript-for-submission.md` |
 | Highlights | `highlights-for-submission.txt` |

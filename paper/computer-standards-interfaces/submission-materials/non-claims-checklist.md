@@ -5,8 +5,8 @@ The submission materials preserve these non-claims:
 - No public GitHub Release.
 - No Zenodo DOI.
 - No production readiness.
-- No official FDO adoption.
-- No official FDO certification, conformance, or endorsement.
+- No FAIR Digital Object Framework conformance.
+- No FAIR Digital Object Framework certification, endorsement, or deployment.
 - No legal compliance.
 - No semantic correctness of AI output.
 - No ZKP implementation.

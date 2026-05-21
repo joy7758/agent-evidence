@@ -27,9 +27,10 @@ published. No external private dataset is used.
 
 ## Generative AI and AI-assisted Technologies Disclosure
 
-OpenAI ChatGPT/Codex was used for drafting support, command generation, text
-organization, and review assistance. The author reviewed and takes
-responsibility for all claims, code, artifacts, citations, validation results,
-and conclusions.
+During the preparation of this work, the author used OpenAI ChatGPT and Codex
+to support language editing, structural reorganization, command generation,
+and drafting of submission-packaging text. After using these tools, the
+author reviewed and edited the content as needed and takes full
+responsibility for the content of the article.
 
 AI tools are not listed as authors.

@@ -1,7 +1,7 @@
 # Reference Order Check
 
-Status: author-side check against `manuscript-for-submission.md`. Final
-journal upload still requires manual confirmation.
+Author-side check against `manuscript-for-submission.md`. Final journal
+upload still requires manual confirmation.
 
 | Ref | Source | Use in manuscript-for-submission.md |
 | --- | --- | --- |

@@ -2,15 +2,19 @@
 
 Target journal: Computer Standards & Interfaces.
 
+Title: A Minimal Execution Evidence Profile for Validator-Checkable AI Agent
+Operation Records in FAIR Digital Object-Inspired Data-Space Settings
+
 Status: public-safe submission materials prepared for author upload review, not
 submitted.
 
 These files prepare the EEOAP paper package for author review before any
 journal upload. The package preserves the current local-only artifact
 availability decision. It does not claim a public GitHub Release, a Zenodo
-DOI, production readiness, official FDO standard adoption, legal compliance,
-ZKP implementation, semantic correctness of AI output, full repository pytest
-success, publication, acceptance, or external endorsement.
+DOI, production readiness, FAIR Digital Object Framework conformance,
+certification, endorsement, deployment, legal compliance, ZKP implementation,
+semantic correctness of AI output, full repository pytest success,
+publication, acceptance, or external endorsement.
 
 No private phone number or full postal address is included in Git-tracked
 files. Those fields must be entered privately in the journal submission system
@@ -41,6 +45,7 @@ or in a non-committed private title page if required.
 - `reproducibility-summary-for-reviewers.md`
 - `claim-to-evidence-for-submission.md`
 - `upload-readiness-status.md`
+- `editor-riskfix-report.md`
 
 ## Remaining Author-side Actions
 

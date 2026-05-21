@@ -1,7 +1,7 @@
 execution evidence
 operation accountability
-validator
-FDO
-data spaces
+validator-checkable records
+FAIR Digital Object
+data-space interfaces
 provenance
 artifact reproducibility

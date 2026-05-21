@@ -37,3 +37,7 @@ Full repository pytest success is not claimed.
 The paper_case artifact does not perform dependency installation. It is scoped
 to local review of the EEOAP paper case, validator path, valid PASS, tampered
 FAIL, references_digest_mismatch, and targeted EEOAP tests.
+
+No public GitHub Release or Zenodo DOI is claimed for the current
+submission-materials package. A private review package can be supplied to
+editors and reviewers through the journal workflow on request.

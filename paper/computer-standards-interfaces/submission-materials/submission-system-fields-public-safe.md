@@ -6,24 +6,24 @@ Research Article.
 
 ## Title
 
-A Minimal Execution Evidence Profile for Verifiable AI Agent Operations in
-FDO-style Data Spaces
+A Minimal Execution Evidence Profile for Validator-Checkable AI Agent
+Operation Records in FAIR Digital Object-Inspired Data-Space Settings
 
 ## Abstract
 
-EEOAP (Execution Evidence and Operation Accountability Profile) defines a minimal operation-level evidence profile for one AI (Artificial Intelligence) agent operation in FDO (FAIR Digital Object)-style data spaces. The profile packages actor, action, subject, policy, output, provenance, evidence references, integrity binding, and validation metadata into a structured object that can be reviewed outside the original runtime. The accompanying artifact provides a local validator path and a reproducible paper_case example. Running make paper-demo reports PASS valid evidence bundle for the valid case and FAIL tampered output hash mismatch for an altered output reference. The tampered case exposes references_digest_mismatch, showing that a stale integrity binding is not silently accepted. Targeted EEOAP tests for the paper case and operation-accountability profile previously reported 19 passed / 1 warning. The contribution is intentionally bounded: it does not claim full repository pytest success, public GitHub Release publication, Zenodo DOI issuance, production readiness, official FDO standard adoption, legal compliance, semantic correctness of AI output, or ZKP (Zero-Knowledge Proof) implementation. The result is a standards-facing research artifact that makes selected operation evidence claims inspectable, replayable, and falsifiable offline, while preserving clear boundaries between validator evidence, artifact availability, and future assurance layers.
+The Execution Evidence and Operation Accountability Profile (EEOAP) is a minimal evidence profile for validator-checkable records of individual artificial intelligence (AI) agent operations in FAIR Digital Object-inspired data-space settings. AI-agent outputs are often reviewed after the originating runtime, logs, credentials, or prompts are unavailable. EEOAP packages actor, action, subject, policy reference, output reference, provenance, evidence references, integrity binding, and validation metadata into one offline review object. The paper contributes the profile boundary, a local validator path, and a repository-contained paper_case artifact. The validator enforces required structure, reference closure, and integrity-linked consistency conditions over fields used by the review object. Running make paper-demo demonstrates the intended boundary: the valid evidence bundle reports PASS valid evidence bundle, while a controlled tampered-output case reports FAIL tampered output hash mismatch with references_digest_mismatch as the primary error code. Targeted tests support the operation-accountability and paper-case behavior, but exhaustive validator assurance, semantic correctness of AI output, legal compliance, production readiness, public release, and archival DOI claims are outside scope. The result is a standards- and interfaces-oriented artifact for making selected post hoc operation evidence claims inspectable and falsifiable offline.
 
 ## Keywords
 
-execution evidence; operation accountability; validator; FDO; data spaces;
-provenance; artifact reproducibility
+execution evidence; operation accountability; validator-checkable records;
+FAIR Digital Object; data-space interfaces; provenance; artifact reproducibility
 
 ## Highlights
 
 - Defines a minimal profile for AI agent operation evidence.
-- Validator checks structure, references, policy linkage, and integrity.
+- Validator checks structure, reference closure, and integrity linkage.
 - Tampered output fails with references_digest_mismatch.
-- Maps operation evidence to FDO-style data-space concerns.
+- Maps operation evidence to FAIR Digital Object-inspired settings.
 - Local paper_case reproduces PASS and expected FAIL results.
 
 ## Author
@@ -62,28 +62,35 @@ intervention.
 
 ## Generative AI Disclosure
 
-OpenAI ChatGPT/Codex was used for drafting support, command generation, text
-organization, and review assistance. The author reviewed and takes
-responsibility for all claims, code, artifacts, citations, validation results,
-and conclusions. AI tools are not listed as authors.
+During the preparation of this work, the author used OpenAI ChatGPT and Codex
+to support language editing, structural reorganization, command generation,
+and drafting of submission-packaging text. After using these tools, the
+author reviewed and edited the content as needed and takes full
+responsibility for the content of the article. AI tools are not listed as
+authors.
 
 ## Data Availability
 
-This paper uses repository-contained paper_case artifacts. It does not use
-human participants, patient data, or an external private dataset. The artifact
-remains local-only at initial submission unless later published. No public
-GitHub Release or Zenodo DOI is claimed. If required by editors or reviewers,
-a private review package may be supplied through the journal workflow.
-Reproduction command: make paper-demo.
+This submission uses repository-contained paper_case artifacts and does not
+use human-participant data, patient data, clinical-intervention data, or
+external private datasets. At initial submission, the supporting software
+artifact is not deposited in a public repository because the author is
+maintaining a sealed review-state package and does not yet claim a public
+release or archival identifier. A private review package can be supplied to
+editors and reviewers through the journal workflow on request. If the artifact
+is later publicly released, this statement will be updated to include the
+persistent access point.
 
 ## Artifact Availability
 
-The local sealed tag eeoap-v0.1-paper exists as a local artifact anchor at
-commit 96f444b7ed39b39fe9f47e428af835952e843cb0. The tag is not claimed as
-publicly pushed. No public GitHub Release or Zenodo DOI is claimed. The
-artifact is scoped to paper_case, the validator path, valid PASS, tampered
-FAIL, references_digest_mismatch, and targeted EEOAP tests. It may be supplied
-privately through the journal workflow if required.
+The artifact supporting the bounded claims of this paper consists of the
+paper_case files, the local validator path, and the make paper-demo
+reproduction command. This submission does not claim a public GitHub Release
+or a Zenodo DOI. The artifact is available as a private review package upon
+editorial request. The claims supported by this artifact are limited to
+acceptance of the valid paper case, rejection of a controlled tampered case
+with the expected error boundary, and the bounded targeted-test evidence
+described in the manuscript.
 
 ## Private Contact Note
 

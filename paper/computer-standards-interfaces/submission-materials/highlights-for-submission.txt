@@ -1,5 +1,5 @@
 - Defines a minimal profile for AI agent operation evidence.
-- Validator checks structure, references, policy linkage, and integrity.
+- Validator checks structure, reference closure, and integrity linkage.
 - Tampered output fails with references_digest_mismatch.
-- Maps operation evidence to FDO-style data-space concerns.
+- Maps operation evidence to FAIR Digital Object-inspired settings.
 - Local paper_case reproduces PASS and expected FAIL results.
