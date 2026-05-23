@@ -14,4 +14,6 @@ This manifest lists every file in `frozen_v0_5/` and its role.
 | `reviewer_positioning.md` | Reviewer-facing positioning and objection handling. |
 | `FREEZE_STATUS.md` | Internal freeze status and external-submission readiness boundaries. |
 | `NEXT_ACTIONS.md` | Prioritized next actions split into internal archive, external submission, and deferred engineering paths. |
+| `CLEAN_CLONE_VERIFICATION.md` | Clean checkout verification commands, scoped test result, checksum result, and status boundary. |
+| `EXTERNAL_REVIEW_BRIEF.md` | Concise external reviewer orientation for the frozen package, claim boundary, and review questions. |
 | `CHECKSUMS.sha256` | SHA-256 checksums for all files in this directory except `CHECKSUMS.sha256` itself. |
