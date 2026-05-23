@@ -88,6 +88,59 @@ def test_generated_statement_passes_existing_eeoap_validator(tmp_path: Path) -> 
     assert validation_report["issue_count"] == 0
 
 
+def test_valid_workflow_trace_produces_eeoap_statement_and_report(tmp_path: Path) -> None:
+    result = run_adapter("valid-agent-workflow-trace.json", tmp_path)
+
+    assert result.returncode == 0, result.stderr
+
+    statement_path = tmp_path / "generated" / "valid-agent-workflow-trace-eeoap-statement.json"
+    report_path = tmp_path / "generated" / "valid-agent-workflow-trace-adapter-report.json"
+    assert statement_path.exists()
+    assert report_path.exists()
+
+    statement = json.loads(statement_path.read_text(encoding="utf-8"))
+    assert statement["profile"] == {
+        "name": "execution-evidence-operation-accountability-profile",
+        "version": "0.1",
+    }
+    assert statement["actor"]["id"] == "agent:workflow-coordinator-002"
+    assert statement["operation"]["type"] == "workflow.execute"
+    assert statement["subject"]["id"] == "otel-trace:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+
+    artifact_ids = {artifact["artifact_id"] for artifact in statement["evidence"]["artifacts"]}
+    assert "artifact:otel-agent-span:4444444444444444" in artifact_ids
+    assert "artifact:otel-tool-span:6666666666666666" in artifact_ids
+    assert "artifact:otel-tool-span:7777777777777777" in artifact_ids
+
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    assert report["ok"] is True
+    assert report["diagnostics"] == []
+    extracted = report["extracted"]
+    assert extracted["trace_id"] == "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    assert extracted["span_id"] == "4444444444444444"
+    assert extracted["parent_span_id"] == ""
+    assert extracted["agent"] == {
+        "id": "agent:workflow-coordinator-002",
+        "name": "workflow-coordinator",
+        "version": "0.2.0",
+    }
+    assert extracted["operation_name"] == "workflow.execute"
+    assert len(extracted["tool_spans"]) == 2
+    assert {span["parent_span_id"] for span in extracted["tool_spans"]} == {"5555555555555555"}
+
+
+def test_generated_workflow_statement_passes_existing_eeoap_validator(tmp_path: Path) -> None:
+    result = run_adapter("valid-agent-workflow-trace.json", tmp_path)
+
+    assert result.returncode == 0, result.stderr
+
+    statement_path = tmp_path / "generated" / "valid-agent-workflow-trace-eeoap-statement.json"
+    validation_report = validate_profile_file(statement_path)
+
+    assert validation_report["ok"] is True
+    assert validation_report["issue_count"] == 0
+
+
 @pytest.mark.parametrize(
     ("fixture_name", "expected_code"),
     [
