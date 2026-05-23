@@ -1,0 +1,52 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "OpenTelemetry-to-EEOAP Adapter",
+  "description": "Package-local draft metadata for a research software adapter that transforms controlled OpenTelemetry-style agent trace fixtures into EEOAP-compatible operation evidence statements, with committed fixtures, generated statements, adapter reports, scoped tests, and validation documentation. This file is a local draft and is not final public release metadata.",
+  "codeRepository": "TODO: set final public repository or release URL",
+  "issueTracker": "TODO: set final GitHub Issues URL",
+  "license": "Apache-2.0",
+  "version": "TODO: assign final release version",
+  "releaseNotes": "TODO: set final release notes URL or text",
+  "programmingLanguage": "Python",
+  "runtimePlatform": "Python",
+  "operatingSystem": "OS Independent",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Bin",
+      "familyName": "Zhang",
+      "identifier": "https://orcid.org/0009-0002-8861-1481",
+      "affiliation": "Independent Researcher, China"
+    }
+  ],
+  "keywords": [
+    "OpenTelemetry",
+    "EEOAP",
+    "agent telemetry",
+    "operation accountability",
+    "execution evidence",
+    "validation",
+    "reproducibility"
+  ],
+  "applicationCategory": "Software engineering; observability; provenance; evidence validation",
+  "softwareRequirements": [
+    "Python 3.11+",
+    "click>=8.1",
+    "jsonschema>=4.23",
+    "pydantic>=2.7",
+    "pytest>=8.0 for scoped tests"
+  ],
+  "isPartOf": "agent-evidence repository",
+  "relatedLink": [
+    "local:tools/opentelemetry_to_eeoap_adapter.py",
+    "local:examples/opentelemetry/",
+    "local:generated/",
+    "local:tests/test_opentelemetry_to_eeoap_adapter.py",
+    "local:papers/opentelemetry-to-eeoap/softwarex_release_candidate_package_v1_15/",
+    "local-tag:eeoap-v0.1-artifact local only, not pushed",
+    "local-tag:aep-v0.1-artifact local only, not pushed",
+    "TODO: final public GitHub Release URL",
+    "TODO: final Zenodo DOI URL if created"
+  ]
+}

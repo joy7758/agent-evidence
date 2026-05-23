@@ -1,0 +1,128 @@
+{
+  "actor": {
+    "id": "agent:workflow-coordinator-002",
+    "name": "workflow-coordinator",
+    "runtime": "opentelemetry-gen-ai/0.2.0",
+    "type": "agent"
+  },
+  "constraints": [
+    {
+      "description": "The input trace must contain exactly one GenAI agent span.",
+      "id": "constraint:single-agent-span"
+    },
+    {
+      "description": "The agent span must declare gen_ai.operation.name.",
+      "id": "constraint:operation-name-required"
+    },
+    {
+      "description": "execute_tool spans must be reachable from the selected agent span through parent_span_id links.",
+      "id": "constraint:tool-spans-parented-to-agent"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:otel-agent-span:4444444444444444",
+        "digest": "sha256:38e64982cfa2f75972cb359c4bf861af802af4605a736eae52b4bcce6eb83fe0",
+        "locator": "otel://trace/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/span/4444444444444444",
+        "type": "opentelemetry-agent-span"
+      },
+      {
+        "artifact_id": "artifact:otel-tool-span:6666666666666666",
+        "digest": "sha256:6b6cedc42a0b90839cd89957ea0622857a4cfbbbe45be1c28e16e7cddfe87305",
+        "locator": "otel://trace/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/span/6666666666666666",
+        "type": "opentelemetry-tool-span:load_workflow_state"
+      },
+      {
+        "artifact_id": "artifact:otel-tool-span:7777777777777777",
+        "digest": "sha256:c87d240696eb8180b40689442563379e431af1b133303c38f5d68f2d7fd241ef",
+        "locator": "otel://trace/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/span/7777777777777777",
+        "type": "opentelemetry-tool-span:write_workflow_summary"
+      }
+    ],
+    "id": "evidence:otel:4444444444444444",
+    "integrity": {
+      "artifacts_digest": "sha256:10fedb8b07e3b1c731c4de3207d49ff447f811c003c5c054211a6f74c53755e9",
+      "references_digest": "sha256:89cd67d1326f7e7fe766cd52c15d3c7f27b0c5339e85bdd40859f5860037569d",
+      "statement_digest": "sha256:af5e873ec234482c76f26dfd9736e273af5b0f0b958ca827fb79cd30c0d0c42e"
+    },
+    "operation_ref": "op:otel:4444444444444444",
+    "policy_ref": "policy:otel-to-eeoap-adapter-v1",
+    "references": [
+      {
+        "digest": "sha256:45a591d6be99de6b97c30108f780fddd8f466e1135331023aa7b565096466f25",
+        "locator": "examples/opentelemetry/valid-agent-workflow-trace.json",
+        "object_id": "otel-trace:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "ref_id": "ref:otel-trace",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:8a9af3936bbb72d90352c0ca63f03267fdc8a2d6c9d8478e8b448dc1b4c3da29",
+        "locator": "otel://trace/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/span/4444444444444444#operation-result",
+        "object_id": "otel-operation-result:4444444444444444",
+        "ref_id": "ref:otel-agent-operation-result",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "otel-trace:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "operation": {
+    "description": "Mapped from one OpenTelemetry GenAI agent span into an EEOAP operation accountability statement.",
+    "id": "op:otel:4444444444444444",
+    "input_refs": [
+      "ref:otel-trace"
+    ],
+    "output_refs": [
+      "ref:otel-agent-operation-result"
+    ],
+    "policy_ref": "policy:otel-to-eeoap-adapter-v1",
+    "result": {
+      "status": "succeeded",
+      "summary": "OpenTelemetry agent span 4444444444444444 mapped with 2 execute_tool span(s)."
+    },
+    "subject_ref": "otel-trace:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "type": "workflow.execute"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:single-agent-span",
+      "constraint:operation-name-required",
+      "constraint:tool-spans-parented-to-agent"
+    ],
+    "id": "policy:otel-to-eeoap-adapter-v1",
+    "name": "bounded-opentelemetry-to-eeoap-adapter-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "agent:workflow-coordinator-002",
+    "id": "prov:otel:4444444444444444",
+    "input_refs": [
+      "ref:otel-trace"
+    ],
+    "operation_ref": "op:otel:4444444444444444",
+    "output_refs": [
+      "ref:otel-agent-operation-result"
+    ],
+    "subject_ref": "otel-trace:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "statement_id": "eeoap:otel:valid-agent-workflow-trace:4444444444444444",
+  "subject": {
+    "digest": "sha256:45a591d6be99de6b97c30108f780fddd8f466e1135331023aa7b565096466f25",
+    "id": "otel-trace:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "locator": "examples/opentelemetry/valid-agent-workflow-trace.json",
+    "type": "opentelemetry-trace"
+  },
+  "timestamp": "2026-05-23T01:00:00.000000Z",
+  "validation": {
+    "evidence_ref": "evidence:otel:4444444444444444",
+    "id": "validation:otel:4444444444444444",
+    "method": "schema+reference+consistency",
+    "policy_ref": "policy:otel-to-eeoap-adapter-v1",
+    "provenance_ref": "prov:otel:4444444444444444",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}
