@@ -1,0 +1,91 @@
+{
+  "case_name": "valid-agent-trace",
+  "diagnostics": [],
+  "eeoap_validation": {
+    "fail_fast": true,
+    "issue_count": 0,
+    "issue_summary": {
+      "by_code": {},
+      "by_stage": {}
+    },
+    "issues": [],
+    "ok": true,
+    "primary_error_code": null,
+    "profile": "execution-evidence-operation-accountability-profile@0.1",
+    "source": "generated/valid-agent-trace-eeoap-statement.json",
+    "stages": [
+      {
+        "issues": [],
+        "name": "schema",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "references",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "consistency",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "integrity",
+        "ok": true,
+        "skipped": false
+      }
+    ],
+    "summary": [
+      "PASS execution-evidence-operation-accountability-profile@0.1 generated/valid-agent-trace-eeoap-statement.json"
+    ]
+  },
+  "extracted": {
+    "agent": {
+      "id": "agent:research-assistant-001",
+      "name": "research-assistant",
+      "version": "0.1.0"
+    },
+    "error_type": null,
+    "operation_name": "research.answer",
+    "parent_span_id": "",
+    "span_id": "1111111111111111",
+    "timestamps": {
+      "end_time": "2026-05-23T00:00:03.000000Z",
+      "start_time": "2026-05-23T00:00:00.000000Z"
+    },
+    "tool_spans": [
+      {
+        "end_time": "2026-05-23T00:00:01.500000Z",
+        "error_type": null,
+        "name": "execute_tool.search_local_notes",
+        "operation_name": "execute_tool",
+        "parent_span_id": "1111111111111111",
+        "span_id": "2222222222222222",
+        "start_time": "2026-05-23T00:00:00.500000Z",
+        "tool_call_id": "tool-call-001",
+        "tool_name": "search_local_notes",
+        "trace_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "end_time": "2026-05-23T00:00:02.900000Z",
+        "error_type": null,
+        "name": "execute_tool.summarize_result",
+        "operation_name": "execute_tool",
+        "parent_span_id": "1111111111111111",
+        "span_id": "3333333333333333",
+        "start_time": "2026-05-23T00:00:01.700000Z",
+        "tool_call_id": "tool-call-002",
+        "tool_name": "summarize_result",
+        "trace_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    ],
+    "trace_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "ok": true,
+  "source": "examples/opentelemetry/valid-agent-trace.json",
+  "statement_path": "generated/valid-agent-trace-eeoap-statement.json"
+}
