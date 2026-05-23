@@ -1,0 +1,31 @@
+# Formal Submission Blocker Matrix
+
+| Blocker | Current status | Category | Severity | Required before formal submission? | Requires code change? | Requires root metadata change? | Requires public release action? | Owner | Recommended resolution |
+|---|---|---|---|---|---|---|---|---|---|
+| DOI not created | No DOI exists for OpenTelemetry-to-EEOAP package | release | blocker | yes, if DOI route is selected | no | no | yes | manual decision / external platform | Decide archive route after release metadata is fixed; create DOI only after final package verification |
+| GitHub Release not created | No GitHub Release exists for this package | release | blocker | yes, if GitHub Release route is selected | no | possibly | yes | manual decision / external platform | Create only after release candidate package, metadata, tag, checksum, and clean-clone checks are final |
+| Tags not pushed | Local artifact tags exist but are not public | release | blocker | yes | no | no | yes | manual decision / external platform | Push only after tag scope, release metadata, and final verification pass |
+| Release-candidate support package not public | v1.15 package is local to release-candidate branch | release | blocker | yes | no | no | yes | manual decision / external platform | Publish as part of chosen GitHub Release / archive route after metadata is finalized |
+| Final release metadata missing | v1.8 local metadata drafts exist only | metadata | blocker | yes | no | possibly | yes | Codex / author / manual decision | Finalize version, release date, repository URL, DOI/archive, citation, and CodeMeta fields |
+| Root `CITATION.cff` mismatch | Root file describes AEP-Media | metadata | blocker | yes | no | possibly | no | manual decision | Do not overwrite blindly; choose focused release metadata strategy first |
+| Root `codemeta.json` mismatch | Root file describes AEP-Media | metadata | blocker | yes | no | possibly | no | manual decision | Do not overwrite blindly; decide whether final release uses root or package-local metadata |
+| Local metadata drafts not final | Drafts include TODO fields and no public release identifiers | metadata | blocker | yes | no | no | no | Codex / author | Convert drafts to final metadata after release strategy and author metadata are confirmed |
+| Support email TODO | No final support/contact email confirmed | author info | blocker | yes | no | no | no | author | Provide public support email or approved contact route |
+| Author affiliation TODO | Public affiliation not confirmed for OpenTelemetry-to-EEOAP submission | author info | blocker | yes | no | no | no | author | Confirm affiliation text before template finalization |
+| Final references missing public release URLs/DOI/archive references | EEOAP/AEP artifact references remain TODO | references | blocker | yes | no | no | yes | Codex / manual decision | Replace local placeholders after public release/archive identifiers exist |
+| Official DOCX or LaTeX final submission file not finalized | v1.17 created Markdown and LaTeX drafts; no final build | article | blocker | yes | no | no | no | Codex | Finalize after release metadata, references, author info, and declarations are resolved |
+| LaTeX compilation not attempted | v1.17 did not compile LaTeX | article | important | yes, if LaTeX route chosen | no | no | no | Codex | Compile/check after final LaTeX route is chosen and dependencies are available |
+| DOCX build not attempted | v1.17 did not produce binary DOCX manuscript | article | important | yes, if DOCX route chosen | no | no | no | Codex | Build/check only if DOCX route is selected and tooling is reliable |
+| CFF YAML validation skipped due missing PyYAML | v1.16 skipped with `No module named 'yaml'` | validation | important | yes | no | no | no | Codex | Install/use an approved YAML parser or run validator in an environment where PyYAML exists before final submission |
+| Final clean-clone verification after release metadata changes | v1.16 verifies v1.15 package only | validation | blocker | yes | no | no | no | Codex | Re-run after any final metadata/package changes |
+| Final checksum verification after release metadata changes | v1.15 checksum verified before later changes | validation | blocker | yes | no | no | no | Codex | Regenerate and verify support package checksums after final changes |
+| Final SoftwareX declarations | Draft declarations exist | declarations | blocker | yes | no | no | no | author / Codex | Confirm venue wording for AI-assisted writing, competing interests, funding, data, and artifacts |
+| Repository hygiene note | Release route must avoid dirty original worktree contamination | repository hygiene | important | yes | no | no | no | Codex | Keep release work in clean worktree and rerun final status checks |
+| No `repo/src` layout | Adapter is under `tools/`; broader package under `agent_evidence/` | repository hygiene | important | possibly | no | no | no | manual decision | Keep honest source layout disclosure unless SoftwareX requires layout rewrite |
+| Source layout disclosure | Disclosed in v1.13/v1.14/v1.17 drafts | article | important | yes | no | no | no | Codex | Preserve in final manuscript and metadata table |
+| Version 1.17 `--no-verify` special-case commit | Used to preserve official LaTeX template source | repository hygiene | important | yes | no | no | no | Codex | Document as exceptional; do not normalize for future commits |
+| AI-assisted writing disclosure | Draft exists but venue-final wording pending | declarations | blocker | yes | no | no | no | author / Codex | Adapt to SoftwareX/Elsevier policy before submission |
+| Conflict of interest statement | Draft generic statement exists | declarations | blocker | yes | no | no | no | author | Author must confirm final statement |
+| Funding statement | Draft no-funding statement exists | declarations | blocker | yes | no | no | no | author | Author must confirm final statement |
+| Data availability statement | Draft exists | declarations | blocker | yes | no | no | yes | Codex / author | Update after public release/archive decision |
+| Artifact availability statement | Draft exists but no public artifact identifiers | declarations | blocker | yes | no | no | yes | Codex / manual decision | Replace with final public artifact availability after release/archive |
