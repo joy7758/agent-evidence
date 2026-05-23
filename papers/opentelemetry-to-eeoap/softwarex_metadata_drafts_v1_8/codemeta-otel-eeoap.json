@@ -1,0 +1,63 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "OpenTelemetry-to-EEOAP Adapter",
+  "description": "A minimal local adapter package that transforms OpenTelemetry-style agent traces into EEOAP-compatible operation accountability statements. The package includes synthetic valid and invalid trace fixtures, generated EEOAP statements, adapter reports, scoped tests, and reproducibility documentation. This CodeMeta file is a local draft and is not final release metadata.",
+  "codeRepository": "TODO: set public repository release URL before external submission",
+  "issueTracker": "TODO: set issue tracker URL before external submission if applicable",
+  "license": "https://spdx.org/licenses/Apache-2.0.html",
+  "version": "TODO: assign release version before external submission",
+  "dateCreated": "TODO: set release creation date before external submission",
+  "dateModified": "TODO: set release modification date before external submission",
+  "programmingLanguage": "Python",
+  "runtimePlatform": "Python 3.11+",
+  "operatingSystem": "TODO: confirm supported operating systems before external submission",
+  "applicationCategory": [
+    "Software engineering",
+    "Provenance",
+    "Observability",
+    "Evidence validation"
+  ],
+  "developmentStatus": "active",
+  "isAccessibleForFree": true,
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Bin Zhang",
+      "givenName": "Bin",
+      "familyName": "Zhang",
+      "identifier": "https://orcid.org/0009-0002-8861-1481",
+      "affiliation": "TODO: confirm public affiliation before external submission"
+    }
+  ],
+  "keywords": [
+    "OpenTelemetry",
+    "EEOAP",
+    "execution evidence",
+    "operation accountability",
+    "agent telemetry",
+    "validation",
+    "reproducibility"
+  ],
+  "softwareRequirements": [
+    "Python 3.11+",
+    "click>=8.1",
+    "jsonschema>=4.23",
+    "pydantic>=2.7",
+    "pytest>=8.0 for scoped tests"
+  ],
+  "relatedLink": [
+    "local:tools/opentelemetry_to_eeoap_adapter.py",
+    "local:examples/opentelemetry/",
+    "local:generated/",
+    "local:tests/test_opentelemetry_to_eeoap_adapter.py",
+    "local:papers/opentelemetry-to-eeoap/frozen_v0_5/",
+    "local-tag:eeoap-v0.1-artifact target 96f444b7ed39b39fe9f47e428af835952e843cb0 not pushed",
+    "local-tag:aep-v0.1-artifact target af2b90c14587718a8ed6982131ba9c98e3274054 not pushed"
+  ],
+  "isPartOf": {
+    "@type": "SoftwareSourceCode",
+    "name": "agent-evidence",
+    "codeRepository": "TODO: set public repository URL before external submission"
+  }
+}
