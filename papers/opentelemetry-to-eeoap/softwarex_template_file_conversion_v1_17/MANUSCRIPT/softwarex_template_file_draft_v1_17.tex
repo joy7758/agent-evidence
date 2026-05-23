@@ -1,0 +1,178 @@
+\documentclass[preprint,12pt,a4paper]{elsarticle}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\setlength{\parindent}{0pt}
+
+\journal{SoftwareX}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{OpenTelemetry-to-EEOAP Adapter: Transforming Agent Telemetry into Portable Operation Evidence}
+
+\author{Bin Zhang}
+\address{TODO: confirm public affiliation before external submission}
+\ead{TODO: confirm support/contact email before external submission}
+
+\begin{abstract}
+Runtime telemetry helps developers observe agent execution, but trace records do
+not automatically become portable operation evidence. The OpenTelemetry-to-EEOAP
+Adapter is a small research-software package that converts controlled
+OpenTelemetry-style agent trace fixtures into Execution Evidence and Operation
+Accountability Profile compatible operation accountability statements. The
+adapter selects the accountable agent span, extracts operation metadata,
+resolves tool spans, checks parent-child relations, preserves provenance, emits
+an EEOAP-compatible statement, and routes the output to the existing validator.
+The evaluation includes two valid trace contexts and four invalid diagnostic
+contexts. Both valid generated statements pass the existing validator with
+ok=true and issue_count=0. Public release identifiers, DOI, GitHub Release, and
+pushed tags remain TODO before formal submission.
+\end{abstract}
+
+\begin{keyword}
+OpenTelemetry \sep EEOAP \sep agent telemetry \sep operation accountability \sep execution evidence \sep validation \sep reproducibility
+\end{keyword}
+
+\end{frontmatter}
+
+\section*{Required Metadata}
+
+\section*{Current code version}
+
+\begin{table}[!h]
+\begin{tabular}{|l|p{6.5cm}|p{6.5cm}|}
+\hline
+\textbf{Nr.} & \textbf{Code metadata description} & \textbf{Please fill in this column} \\
+\hline
+C1 & Current code version & TODO: assign release version before external submission. Draft label: otel-eeoap-adapter-v0.1.0-rc. \\
+\hline
+C2 & Permanent GitHub link to code/repository used for this code version & TODO: create public GitHub release URL, archive, DOI, or immutable public commit reference before formal submission. \\
+\hline
+C3 & Legal Code License & Apache-2.0 via root LICENSE. TODO: confirm final SoftwareX package license file expectations. \\
+\hline
+C4 & Code versioning system used & git \\
+\hline
+C5 & Software code languages, tools, and services used & Python; JSON fixtures; local agent-evidence CLI validator path; pytest. \\
+\hline
+C6 & Compilation requirements, operating environments \& dependencies & Python 3.11+; click; jsonschema; pydantic; pytest for scoped tests. TODO: confirm final operating-system statement. \\
+\hline
+C7 & If available Link to developer documentation/manual & Local docs under papers/opentelemetry-to-eeoap/. TODO: add public link after release. \\
+\hline
+C8 & Support email for questions & TODO: confirm public support contact before submission. \\
+\hline
+\end{tabular}
+\caption{Code metadata (mandatory)}
+\end{table}
+
+\section{Motivation and significance}
+
+Agent applications often produce traces, callback logs, span trees, or
+tool-call records. These records are useful to developers, but they are not
+automatically portable evidence objects. This package provides a small
+executable bridge between OpenTelemetry-style telemetry and EEOAP-compatible
+operation evidence. It does not define a new profile or move the validator
+target. A reviewer can inspect a fixture, run the adapter, inspect the generated
+statement and adapter report, and rerun the scoped tests.
+
+\section{Software description}
+
+The main adapter is tools/opentelemetry\_to\_eeoap\_adapter.py. Broader package
+code and validator support live under agent\_evidence/. Inputs are stored under
+examples/opentelemetry/. Generated EEOAP-compatible statements and adapter
+reports are stored under generated/. Tests are in
+tests/test\_opentelemetry\_to\_eeoap\_adapter.py.
+
+The adapter parses trace spans, selects one accountable agent span, extracts
+agent identity and operation metadata, checks parent-child span consistency,
+resolves reachable tool execution spans, preserves source provenance, emits an
+EEOAP-compatible statement, and uses the existing EEOAP validator path. Failure
+diagnostics cover missing agent span, unresolved tool span, broken parent span
+relation, and missing operation name. The adapter does not change the EEOAP
+schema.
+
+\section{Illustrative examples}
+
+The valid-agent-trace fixture represents a research.answer operation with one
+root agent span and two direct child tool spans. The valid-agent-workflow-trace
+fixture represents workflow.execute with a deeper parent-child pattern. Both
+generated statements pass the validator with ok=true and issue_count=0. The
+version 1.16 clean-clone verification confirms the version 1.15 support package
+checksum, scoped pytest, and validator results.
+
+\section{Impact}
+
+The adapter shows how trace-like telemetry can become a validator-ready
+evidence object through a small, inspectable transformation package. It is
+useful for artifact evaluation because reviewers can inspect source traces,
+generated statements, reports, and tests without depending on a live telemetry
+service. It also provides a baseline for later runtime integrations whose
+claims must be tied to committed inputs, outputs, tests, and validation results.
+
+\section{Conclusions}
+
+The OpenTelemetry-to-EEOAP Adapter is a bounded research-software package for
+mapping controlled OpenTelemetry-style agent trace fixtures into
+EEOAP-compatible operation accountability statements. It is not a legal
+accountability system, production integration, broad OpenTelemetry compatibility
+claim, or new EEOAP profile. DOI, GitHub Release, pushed tags, final public
+metadata, final references, and final SoftwareX submission remain TODO.
+
+\section*{Limitations}
+
+The fixtures are synthetic and only two valid trace contexts are included. The
+package does not include real LangChain runtime integration, OpenTelemetry
+Collector integration, broad OpenTelemetry implementation compatibility, legal
+accountability proof, production readiness, or agent-output correctness.
+
+\section*{Reproducibility and artifact availability}
+
+The release-candidate branch is softwarex-otel-eeoap-release-candidate. The
+version 1.15 support package supersedes the historical version 0.5 frozen
+package as the forward SoftwareX support package. Version 1.16 verified this
+package from a clean checkout. Local tags and metadata drafts exist, but they
+are not public release metadata. DOI creation, GitHub Release creation, public
+tag push, final release URL, and final artifact availability wording remain
+TODO before formal submission.
+
+\section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}
+
+OpenAI ChatGPT/Codex was used for planning, drafting, code scaffolding,
+documentation structuring, local command execution support, and review support.
+The human author remains responsible for the content, code, claims, artifacts,
+citations, limitations, and conclusions. The AI system is not an author. TODO:
+adapt this wording to the target venue policy before submission.
+
+\section*{Declaration of competing interest}
+
+TODO: confirm final wording before submission. Draft statement: the author
+declares no known competing financial interests or personal relationships that
+could have appeared to influence the work reported in this paper.
+
+\section*{Funding}
+
+TODO: confirm final wording before submission. Draft statement: this research
+received no specific grant from any funding agency in the public, commercial, or
+not-for-profit sectors.
+
+\section*{Data availability}
+
+No human subject data, patient data, private production telemetry, or private
+operational logs are used. Fixtures are synthetic OpenTelemetry-style trace JSON
+files under examples/opentelemetry/. Generated statements and adapter reports
+are under generated/. TODO: update after public release or archive.
+
+\section*{References}
+
+\begin{thebibliography}{00}
+\bibitem{otel-genai} OpenTelemetry. Semantic conventions for generative AI systems. TODO: verify URL and status immediately before submission.
+\bibitem{json-schema} JSON Schema Draft 2020-12. TODO: adapt format to SoftwareX final references.
+\bibitem{prov-o} W3C PROV-O: The PROV Ontology. TODO: decide final provenance references.
+\bibitem{eeoap-artifact} agent-evidence repository. TODO: replace with immutable release, archive, tag, or DOI before external submission.
+\end{thebibliography}
+
+\section*{Current executable software version}
+
+TODO: complete after release metadata, tag, and public repository strategy are resolved.
+
+\end{document}
