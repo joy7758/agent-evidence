@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file."
+type: software
+title: "OpenTelemetry-to-EEOAP Adapter: Transforming Agent Telemetry into Portable Operation Evidence"
+abstract: "A package-local draft metadata record for a research software adapter that transforms controlled OpenTelemetry-style agent trace fixtures into EEOAP-compatible operation evidence statements, with committed fixtures, generated statements, adapter reports, scoped tests, and validation documentation. This file is a local draft and is not final public release metadata."
+authors:
+  - family-names: "Zhang"
+    given-names: "Bin"
+    orcid: "https://orcid.org/0009-0002-8861-1481"
+    affiliation: "Independent Researcher, China"
+version: "TODO: assign final release version before public release"
+date-released: "TODO: set final release date before public release"
+repository-code: "TODO: set final GitHub Release or repository URL before public release"
+url: "TODO: set final project/release URL before public release"
+license: "Apache-2.0"
+keywords:
+  - "OpenTelemetry"
+  - "EEOAP"
+  - "agent telemetry"
+  - "operation accountability"
+  - "execution evidence"
+  - "validation"
+  - "reproducibility"
