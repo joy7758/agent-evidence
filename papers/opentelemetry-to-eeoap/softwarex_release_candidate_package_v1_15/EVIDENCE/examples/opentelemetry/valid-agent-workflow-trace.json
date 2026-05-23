@@ -1,0 +1,154 @@
+{
+  "resourceSpans": [
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "service.name",
+            "value": {
+              "stringValue": "local-workflow-agent-runtime"
+            }
+          }
+        ]
+      },
+      "scopeSpans": [
+        {
+          "scope": {
+            "name": "example.genai.workflow-agent",
+            "version": "0.2.0"
+          },
+          "spans": [
+            {
+              "attributes": [
+                {
+                  "key": "gen_ai.agent.id",
+                  "value": {
+                    "stringValue": "agent:workflow-coordinator-002"
+                  }
+                },
+                {
+                  "key": "gen_ai.agent.name",
+                  "value": {
+                    "stringValue": "workflow-coordinator"
+                  }
+                },
+                {
+                  "key": "gen_ai.agent.version",
+                  "value": {
+                    "stringValue": "0.2.0"
+                  }
+                },
+                {
+                  "key": "gen_ai.operation.name",
+                  "value": {
+                    "stringValue": "workflow.execute"
+                  }
+                }
+              ],
+              "endTimeUnixNano": "1779498005000000000",
+              "kind": "SPAN_KIND_INTERNAL",
+              "name": "agent.workflow-execute",
+              "parentSpanId": "",
+              "spanId": "4444444444444444",
+              "startTimeUnixNano": "1779498000000000000",
+              "status": {
+                "code": "STATUS_CODE_OK"
+              },
+              "traceId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            {
+              "attributes": [
+                {
+                  "key": "gen_ai.operation.name",
+                  "value": {
+                    "stringValue": "workflow.invoke"
+                  }
+                },
+                {
+                  "key": "workflow.id",
+                  "value": {
+                    "stringValue": "workflow:two-step-local-review"
+                  }
+                }
+              ],
+              "endTimeUnixNano": "1779498004800000000",
+              "kind": "SPAN_KIND_INTERNAL",
+              "name": "workflow.invoke.local-review",
+              "parentSpanId": "4444444444444444",
+              "spanId": "5555555555555555",
+              "startTimeUnixNano": "1779498000300000000",
+              "status": {
+                "code": "STATUS_CODE_OK"
+              },
+              "traceId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            {
+              "attributes": [
+                {
+                  "key": "gen_ai.operation.name",
+                  "value": {
+                    "stringValue": "execute_tool"
+                  }
+                },
+                {
+                  "key": "gen_ai.tool.name",
+                  "value": {
+                    "stringValue": "load_workflow_state"
+                  }
+                },
+                {
+                  "key": "gen_ai.tool.call.id",
+                  "value": {
+                    "stringValue": "workflow-tool-call-001"
+                  }
+                }
+              ],
+              "endTimeUnixNano": "1779498001700000000",
+              "kind": "SPAN_KIND_INTERNAL",
+              "name": "execute_tool.load_workflow_state",
+              "parentSpanId": "5555555555555555",
+              "spanId": "6666666666666666",
+              "startTimeUnixNano": "1779498000600000000",
+              "status": {
+                "code": "STATUS_CODE_OK"
+              },
+              "traceId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            {
+              "attributes": [
+                {
+                  "key": "gen_ai.operation.name",
+                  "value": {
+                    "stringValue": "execute_tool"
+                  }
+                },
+                {
+                  "key": "gen_ai.tool.name",
+                  "value": {
+                    "stringValue": "write_workflow_summary"
+                  }
+                },
+                {
+                  "key": "gen_ai.tool.call.id",
+                  "value": {
+                    "stringValue": "workflow-tool-call-002"
+                  }
+                }
+              ],
+              "endTimeUnixNano": "1779498004300000000",
+              "kind": "SPAN_KIND_INTERNAL",
+              "name": "execute_tool.write_workflow_summary",
+              "parentSpanId": "5555555555555555",
+              "spanId": "7777777777777777",
+              "startTimeUnixNano": "1779498002100000000",
+              "status": {
+                "code": "STATUS_CODE_OK"
+              },
+              "traceId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "case_name": "valid-agent-workflow-trace",
+  "diagnostics": [],
+  "eeoap_validation": {
+    "fail_fast": true,
+    "issue_count": 0,
+    "issue_summary": {
+      "by_code": {},
+      "by_stage": {}
+    },
+    "issues": [],
+    "ok": true,
+    "primary_error_code": null,
+    "profile": "execution-evidence-operation-accountability-profile@0.1",
+    "source": "generated/valid-agent-workflow-trace-eeoap-statement.json",
+    "stages": [
+      {
+        "issues": [],
+        "name": "schema",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "references",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "consistency",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "integrity",
+        "ok": true,
+        "skipped": false
+      }
+    ],
+    "summary": [
+      "PASS execution-evidence-operation-accountability-profile@0.1 generated/valid-agent-workflow-trace-eeoap-statement.json"
+    ]
+  },
+  "extracted": {
+    "agent": {
+      "id": "agent:workflow-coordinator-002",
+      "name": "workflow-coordinator",
+      "version": "0.2.0"
+    },
+    "error_type": null,
+    "operation_name": "workflow.execute",
+    "parent_span_id": "",
+    "span_id": "4444444444444444",
+    "timestamps": {
+      "end_time": "2026-05-23T01:00:05.000000Z",
+      "start_time": "2026-05-23T01:00:00.000000Z"
+    },
+    "tool_spans": [
+      {
+        "end_time": "2026-05-23T01:00:01.700000Z",
+        "error_type": null,
+        "name": "execute_tool.load_workflow_state",
+        "operation_name": "execute_tool",
+        "parent_span_id": "5555555555555555",
+        "span_id": "6666666666666666",
+        "start_time": "2026-05-23T01:00:00.600000Z",
+        "tool_call_id": "workflow-tool-call-001",
+        "tool_name": "load_workflow_state",
+        "trace_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      {
+        "end_time": "2026-05-23T01:00:04.300000Z",
+        "error_type": null,
+        "name": "execute_tool.write_workflow_summary",
+        "operation_name": "execute_tool",
+        "parent_span_id": "5555555555555555",
+        "span_id": "7777777777777777",
+        "start_time": "2026-05-23T01:00:02.100000Z",
+        "tool_call_id": "workflow-tool-call-002",
+        "tool_name": "write_workflow_summary",
+        "trace_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    ],
+    "trace_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "ok": true,
+  "source": "examples/opentelemetry/valid-agent-workflow-trace.json",
+  "statement_path": "generated/valid-agent-workflow-trace-eeoap-statement.json"
+}

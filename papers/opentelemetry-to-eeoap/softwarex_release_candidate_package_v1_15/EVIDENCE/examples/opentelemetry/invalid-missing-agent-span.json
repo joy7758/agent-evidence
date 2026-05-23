@@ -1,0 +1,34 @@
+{
+  "resourceSpans": [
+    {
+      "scopeSpans": [
+        {
+          "spans": [
+            {
+              "attributes": [
+                {
+                  "key": "gen_ai.operation.name",
+                  "value": {
+                    "stringValue": "execute_tool"
+                  }
+                },
+                {
+                  "key": "gen_ai.tool.name",
+                  "value": {
+                    "stringValue": "search_local_notes"
+                  }
+                }
+              ],
+              "endTimeUnixNano": "1779494401500000000",
+              "name": "execute_tool.search_local_notes",
+              "parentSpanId": "",
+              "spanId": "2222222222222222",
+              "startTimeUnixNano": "1779494400500000000",
+              "traceId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
