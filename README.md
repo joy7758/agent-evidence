@@ -10,6 +10,18 @@ DOI: [10.5281/zenodo.19334061](https://doi.org/10.5281/zenodo.19334061)
 ![Semantic Events](https://img.shields.io/badge/semantic%20events-v2.0.0-1f6feb)
 ![Status](https://img.shields.io/badge/status-experimental-orange)
 
+## Maintainer automation fit
+
+`agent-evidence` is maintained as a narrow open-source package for verifiable
+AI agent operation evidence. Codex can help reduce maintainer load by reviewing
+pull requests, expanding regression tests, checking validator and signed-export
+boundaries, preparing release notes, and keeping agent-facing documentation
+consistent.
+
+Human maintainer review remains required. The project does not claim legal
+non-repudiation, compliance certification, AI Act approval, or official FDO
+standard status.
+
 ## Why this matters
 
 普通 AI workflow 通常只留下聊天记录、trace 页面或零散日志。它们能帮助开发者排查问题，但很难直接交给审查者、客户、治理团队或后续系统复核。
