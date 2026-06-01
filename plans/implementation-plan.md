@@ -14,6 +14,9 @@
     was not set to `1`;
   - recruitment discussion not published because
     `AEP_MEDIA_OPEN_RECRUITMENT_DISCUSSION` was not set to `1`.
+- Commit / push:
+  - Recruitment commit: `33d625a Prepare public external reviewer recruitment for AEP-Media`.
+  - Pushed to `origin/opentelemetry-to-eeoap-adapter`.
 - Boundaries:
   - no implementation code changes;
   - no validator/schema/adapter/evaluation semantic changes;

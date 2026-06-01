@@ -19,6 +19,9 @@
   - `docs/paper/joss/maintenance/recruitment/reviewer_screening_checklist.md`
   - `docs/paper/joss/maintenance/recruitment/reviewer_reply_template.md`
   - `docs/reports/aep_media_mission036d_public_recruitment_report.md`
+- Commit / push：
+  - Recruitment commit：`33d625a Prepare public external reviewer recruitment for AEP-Media`。
+  - 已推送到 `origin/opentelemetry-to-eeoap-adapter`。
 - 当前 readiness：
   - JOSS technical readiness：READY。
   - JOSS submission readiness：WAITING FOR PUBLIC HISTORY。

@@ -50,7 +50,8 @@ None.
 
 ## 7. Commit Hash
 
-Pending until scoped commit completes.
+- Recruitment commit: `33d625a Prepare public external reviewer recruitment for AEP-Media`
+- Push status: pushed to `origin/opentelemetry-to-eeoap-adapter`
 
 ## 8. Red-Line Scan Result
 
