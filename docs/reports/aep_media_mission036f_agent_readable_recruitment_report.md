@@ -57,7 +57,8 @@ Restricted claim-boundary terms appear only in explicit non-claim contexts.
 
 ## Commit Hash
 
-Pending scoped commit.
+- Recruitment rewrite commit: `5fd7525 Make AEP-Media recruitment materials agent-readable`
+- Push status: pushed to `origin/opentelemetry-to-eeoap-adapter`
 
 ## Current Readiness
 

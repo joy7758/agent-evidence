@@ -24,6 +24,9 @@
   - `docs/paper/joss/maintenance/issues/task_A_github_issue_body.md`
   - `docs/paper/joss/maintenance/issues/open_development_maintenance_queue.md`
   - `docs/paper/joss/checklists/joss_final_readiness_checklist.md`
+- Commit / push：
+  - Recruitment rewrite commit：`5fd7525 Make AEP-Media recruitment materials agent-readable`。
+  - 已推送到 `origin/opentelemetry-to-eeoap-adapter`。
 - 当前 readiness：
   - JOSS technical readiness：READY。
   - JOSS submission readiness：WAITING FOR PUBLIC HISTORY。

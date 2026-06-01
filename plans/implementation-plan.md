@@ -18,6 +18,9 @@
   - no public issue or discussion opened;
   - README not changed in Mission 036F to avoid staging pre-existing unrelated
     README differences.
+- Commit / push:
+  - Recruitment rewrite commit: `5fd7525 Make AEP-Media recruitment materials agent-readable`.
+  - Pushed to `origin/opentelemetry-to-eeoap-adapter`.
 - Readiness:
   - JOSS technical readiness: READY.
   - JOSS submission readiness: WAITING FOR PUBLIC HISTORY.
