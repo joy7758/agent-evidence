@@ -59,6 +59,18 @@ busywork.
   authorship, or publication outcomes.
 - Recommended first paid task: Task A reproducibility review from a fresh clone.
 
+## H. Public Recruitment
+
+- Completed locally in Mission 036D: prepare public recruitment templates for
+  external AEP-Media reproducibility reviewers.
+- Recruitment issue published: no; `AEP_MEDIA_OPEN_RECRUITMENT_ISSUE` was not
+  set to `1`.
+- Recruitment discussion published: no; `AEP_MEDIA_OPEN_RECRUITMENT_DISCUSSION`
+  was not set to `1`.
+- Use public recruitment only to find real reviewers who will post actionable
+  reproduction notes or PRs.
+- Do not create many low-quality recruitment issues or discussions.
+
 ## Mission 036 Local Completion
 
 Issue drafts 001, 002, and 003 were implemented locally without opening GitHub
@@ -68,6 +80,8 @@ Next useful maintenance candidates:
 
 - identify one external reviewer and open a real Task A reproduction issue only
   after the reviewer agrees to perform the work;
+- if public recruitment is needed, publish the Mission 036D recruitment issue
+  template after confirming it will not create misleading activity;
 - add an examples index for `examples/media/`;
 - add CLI smoke tests for adapter ingestion commands;
 - add one tiny adapter fixture variant per adapter family;

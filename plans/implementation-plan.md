@@ -1,5 +1,34 @@
 # implementation plan
 
+## M44 AEP-Media Public Recruitment for External Reproducibility Reviewers
+- Current state: Mission 036D completed locally.
+- Scope:
+  - public recruitment call;
+  - GitHub recruitment issue body;
+  - GitHub discussion body;
+  - reviewer screening checklist;
+  - reviewer reply template;
+  - Mission 036D report.
+- Publication status:
+  - recruitment issue not published because `AEP_MEDIA_OPEN_RECRUITMENT_ISSUE`
+    was not set to `1`;
+  - recruitment discussion not published because
+    `AEP_MEDIA_OPEN_RECRUITMENT_DISCUSSION` was not set to `1`.
+- Boundaries:
+  - no implementation code changes;
+  - no validator/schema/adapter/evaluation semantic changes;
+  - no JOSS submission;
+  - no artificial public activity;
+  - no positive-review, star, authorship, citation, or publication promise.
+- Readiness:
+  - JOSS technical readiness: READY.
+  - JOSS submission readiness: WAITING FOR PUBLIC HISTORY.
+- Next mission:
+  - Mission 036E: publish one recruitment issue only after reviewer availability
+    or explicit authorization is confirmed.
+  - Alternative: Mission 037 clean branch and PR for coherent JOSS readiness
+    files.
+
 ## M43 AEP-Media Paid Review Protocol Commit and Task A Issue Prep
 - Current state: Mission 036B completed locally.
 - Scope:

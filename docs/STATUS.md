@@ -1,5 +1,31 @@
 # 当前状态
 
+## M44 AEP-Media Public Recruitment for External Reproducibility Reviewers
+- 状态：完成（Mission 036D）。
+- 目的：
+  - 准备公开招募外部复现者的材料。
+  - 招募目标是真实 fresh-clone 复现、真实问题报告、真实文档/测试反馈。
+  - 不招募好评者，不制造 public history。
+- 本轮边界：
+  - 未改 implementation code。
+  - 未改 validator/schema/adapter/evaluation semantics。
+  - 未提交 JOSS。
+  - 未发布 GitHub recruitment issue，因为 `AEP_MEDIA_OPEN_RECRUITMENT_ISSUE` 未设置为 `1`。
+  - 未发布 GitHub discussion，因为 `AEP_MEDIA_OPEN_RECRUITMENT_DISCUSSION` 未设置为 `1`。
+- 新增：
+  - `docs/paper/joss/maintenance/recruitment/public_recruitment_call.md`
+  - `docs/paper/joss/maintenance/recruitment/github_recruitment_issue_body.md`
+  - `docs/paper/joss/maintenance/recruitment/github_discussion_body.md`
+  - `docs/paper/joss/maintenance/recruitment/reviewer_screening_checklist.md`
+  - `docs/paper/joss/maintenance/recruitment/reviewer_reply_template.md`
+  - `docs/reports/aep_media_mission036d_public_recruitment_report.md`
+- 当前 readiness：
+  - JOSS technical readiness：READY。
+  - JOSS submission readiness：WAITING FOR PUBLIC HISTORY。
+  - Earliest honest JOSS submission date：2026-09-16 or later。
+- 下一步推荐：
+  - 找到真实 reviewer 后，再发布 recruitment issue 或 Task A issue。
+
 ## M43 AEP-Media Paid Review Protocol Scoped Commit and Task A Issue Prep
 - 状态：完成（Mission 036B）。
 - 目的：
