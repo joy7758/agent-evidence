@@ -1,7 +1,329 @@
 # 当前状态
 
+## M43 AEP-Media Paid Review Protocol Scoped Commit and Task A Issue Prep
+- 状态：完成（Mission 036B）。
+- 目的：
+  - 限定范围提交 Mission 036A paid external review protocol。
+  - 准备 Task A external reproducibility review GitHub issue 文本。
+  - 只有明确设置 `AEP_MEDIA_OPEN_TASK_A_ISSUE=1` 时才公开创建 GitHub issue。
+- 本轮边界：
+  - 未改 implementation code。
+  - 未改 validator/schema/adapter/evaluation semantics。
+  - 未提交 JOSS。
+  - 未触碰 excluded workspace。
+  - 未 stage 旧 FSI / SoftwareX / TSE 上传包。
+- GitHub issue：
+  - 未创建。
+  - 原因：`AEP_MEDIA_OPEN_TASK_A_ISSUE` 未设置为 `1`。
+  - Issue body 已准备：`docs/paper/joss/maintenance/issues/task_A_github_issue_body.md`。
+- 当前 readiness：
+  - JOSS technical readiness：READY。
+  - JOSS submission readiness：WAITING FOR PUBLIC HISTORY。
+  - Earliest honest JOSS submission date：2026-09-16 or later。
+- 下一步推荐：
+  - 找到真实外部 reviewer 后，设置 `AEP_MEDIA_OPEN_TASK_A_ISSUE=1` 并创建 Task A issue；或手动把 issue body 发布到 GitHub。
+
+## M42 AEP-Media Paid External Review Protocol
+- 状态：完成（Mission 036A）。
+- 目的：
+  - 为 JOSS waiting period 准备安全的 paid external review protocol。
+  - 只鼓励真实复现、真实挑刺、真实 issue / PR。
+  - 明确禁止买 stars、假 issue、假 PR、好评、引用、作者资格或期刊结果。
+- 本轮边界：
+  - 未改 implementation code。
+  - 未改 validator/schema/adapter/evaluation semantics。
+  - 未提交 JOSS。
+  - 未打开真实 GitHub issue / PR。
+- 新增：
+  - `docs/paper/joss/maintenance/paid-review/README.md`
+  - `docs/paper/joss/maintenance/paid-review/task_A_reproducibility_review.md`
+  - `docs/paper/joss/maintenance/paid-review/task_B_adapter_boundary_doc_review.md`
+  - `docs/paper/joss/maintenance/paid-review/task_C_mobile_fixture_regression_pr.md`
+  - `docs/paper/joss/maintenance/paid-review/contributor_credit_policy.md`
+  - `docs/paper/joss/maintenance/paid-review/payment_and_disclosure_policy.md`
+  - `docs/paper/joss/maintenance/paid-review/reviewer_onboarding_message.md`
+  - `docs/paper/joss/maintenance/paid-review/acceptance_checklist.md`
+  - `docs/reports/aep_media_mission036a_paid_external_review_protocol_report.md`
+- 更新：
+  - `docs/paper/joss/maintenance/issues/open_development_maintenance_queue.md`
+- 当前 readiness：
+  - JOSS technical readiness：READY。
+  - JOSS submission readiness：WAITING FOR PUBLIC HISTORY。
+  - Earliest honest JOSS submission date：2026-09-16 or later。
+- 下一步推荐：
+  - 小规模试点 Task A：找 1 个外部技术用户从 fresh clone 复现 README 和 mobile-video walkthrough，并公开提交具体 issue。
+  - 或 Mission 037：clean JOSS maintenance branch，仅提交 M34-M36A coherent readiness files。
+
+## M41 AEP-Media Open Maintenance 001-003
+- 状态：完成（Mission 036）。
+- 目的：
+  - 真实公开维护，不制造历史。
+  - 执行 JOSS waiting-period maintenance queue 的 001 / 002 / 003。
+- 本轮边界：
+  - 未改 validator/schema/adapter/evaluation semantics。
+  - 未提交 JOSS。
+  - 未重开 FSI:DI / SoftwareX / TSE。
+  - 未实际创建 GitHub issues，因为 `AEP_MEDIA_OPEN_MAINTENANCE_ISSUES` 未设置为 `1`。
+- 新增：
+  - `docs/aep-media/README.md`
+  - `docs/aep-media/mobile-video-walkthrough.md`
+  - `docs/aep-media/adapter-boundaries.md`
+  - `examples/media/adapters/README.md`
+  - `tests/test_media_mobile_video_fixture.py`
+  - `docs/paper/joss/maintenance/reports/mission036_redline_scan.md`
+  - `docs/reports/aep_media_mission036_open_maintenance_001_003_report.md`
+- 更新：
+  - `README.md`
+  - `CHANGELOG.md`
+  - `paper/paper.md`
+  - `examples/media/use_cases/mobile_video_network_timing/README.md`
+  - `docs/paper/joss/checklists/joss_final_readiness_checklist.md`
+  - `docs/paper/joss/maintenance/issues/open_development_maintenance_queue.md`
+  - `docs/paper/joss/maintenance/timeline/public_history_wait_plan.md`
+- 验证：
+  - New mobile fixture regression tests：`6 passed`。
+  - Targeted Mission 036 tests：`14 passed, 1 warning`。
+  - Full pytest：`172 passed, 1 skipped, 15 warnings`。
+  - Ruff：PASS。
+  - CLI smoke：validate / build / verify / strict-time verify 全部 PASS。
+  - `git diff --check`：PASS。
+  - Red-line scan：PASS。
+  - JOSS paper word count：807 words by regex count。
+- Commit：
+  - 未提交。
+  - 原因：当前分支为 `opentelemetry-to-eeoap-adapter`，工作区已有大量前序未提交/未跟踪投稿材料；为避免混入 unrelated old submission packages，本轮仅完成本地维护与验证。
+- 当前 readiness：
+  - JOSS technical readiness：READY。
+  - JOSS submission readiness：WAITING FOR PUBLIC HISTORY。
+  - Earliest honest JOSS submission date：2026-09-16 or later。
+- 下一步推荐：
+  - Mission 037：Clean JOSS maintenance branch and commit/push only M34-M36 JOSS readiness files。
+  - 或继续 Mission 036B：adapter CLI smoke tests and examples index。
+
+## M40 AEP-Media JOSS Wait Plan and Maintenance Queue
+- 状态：完成（Mission 035）。
+- 当前路线：
+  - JOSS technical readiness：READY。
+  - JOSS submission readiness：WAITING FOR PUBLIC HISTORY。
+  - 当前不提交 JOSS。
+- 关键日期：
+  - Repository public creation date：2026-03-15。
+  - Mission 035 audit date：2026-06-01。
+  - Six-month threshold date：2026-09-15。
+  - Earliest honest JOSS submission date：2026-09-16 or later。
+- 本轮边界：
+  - 未改 implementation code。
+  - 未改 validator/schema/adapter/evaluation semantics。
+  - 未创建 GitHub issues，因为 `AEP_MEDIA_OPEN_MAINTENANCE_ISSUES` 未设置为 `1`。
+  - 未提交 JOSS。
+  - 未重开 FSI:DI / SoftwareX / TSE 投稿线。
+- 新增维护材料：
+  - JOSS compile check：`docs/paper/joss/maintenance/reports/joss_paper_compile_check.md`
+  - Public history wait plan：`docs/paper/joss/maintenance/timeline/public_history_wait_plan.md`
+  - Maintenance queue：`docs/paper/joss/maintenance/issues/open_development_maintenance_queue.md`
+  - Issue draft 001：`docs/paper/joss/maintenance/issues/issue_001_mobile_video_walkthrough.md`
+  - Issue draft 002：`docs/paper/joss/maintenance/issues/issue_002_adapter_boundary_docs.md`
+  - Issue draft 003：`docs/paper/joss/maintenance/issues/issue_003_mobile_fixture_regression_test.md`
+  - Issue draft 004：`docs/paper/joss/maintenance/issues/issue_004_ci_badge_and_workflow_check.md`
+  - Issue draft 005：`docs/paper/joss/maintenance/issues/issue_005_v0.1.1_release_hygiene.md`
+  - v0.1.1 plan：`docs/paper/joss/maintenance/release-plan/aep_media_v0.1.1_maintenance_release_plan.md`
+  - Red-line scan：`docs/paper/joss/maintenance/reports/mission035_redline_scan.md`
+  - Mission 035 report：`docs/reports/aep_media_mission035_joss_wait_and_maintenance_report.md`
+- JOSS paper compile：
+  - `paper/paper.md` word count：793 words by regex count；`wc -w` reports 820 including YAML/Markdown syntax。
+  - Pandoc PDF/HTML：PASS。
+  - Citation closure：PASS。
+  - AI usage disclosure：present。
+  - Note：generic Pandoc does not render JOSS-specific `authors:` YAML as a visible author line without template handling; final JOSS tooling/portal preview remains required before submission。
+- 验证：
+  - `git diff --check`：PASS。
+  - Targeted tests：`8 passed, 1 warning`。
+  - Full pytest：`166 passed, 1 skipped, 15 warnings`。
+  - Ruff：PASS。
+  - Red-line scan：PASS。
+- 下一步推荐：
+  - Mission 036：Execute Meaningful Open Maintenance Issue 001 / 002 / 003 and keep public development active without artificial history。
+
+## M39 AEP-Media JOSS Readiness Packaging
+- 状态：完成（Mission 034）。
+- 当前路线：
+  - 主线：JOSS software package route。
+  - 副线：DFRWS / digital-forensics workshop-style method paper development path。
+  - FSI:DI、SoftwareX、TSE 旧包全部保持 archive-only，不再原样重投。
+- 本轮边界：
+  - 未改 implementation code。
+  - 未改 validator/schema/adapter/evaluation semantics。
+  - 未提交 JOSS。
+  - 未触碰 excluded workspace。
+- Repository readiness fixes：
+  - 新增 `CONTRIBUTING.md`。
+  - 新增 `CHANGELOG.md`。
+  - 新增 `SUPPORT.md`。
+  - 新增 GitHub issue templates：bug / feature / documentation。
+  - 更新 PR template，加入 AEP-Media claim-boundary 与 AI-assisted contribution disclosure。
+  - README AEP-Media section 新增 JOSS paper、citation、contribution、support links。
+- JOSS canonical paper：
+  - `paper/paper.md`
+  - `paper/paper.bib`
+  - word count：`793` words。
+  - citation closure：PASS。
+  - Pandoc check：PASS，已生成 `/tmp/aep-media-joss-paper.pdf` 作为本地验证产物。
+- 主要报告：
+  - JOSS blocker status：`docs/paper/joss/reports/joss_blocker_status.md`
+  - JOSS metadata：`docs/paper/joss/submission/metadata/joss_submission_metadata.md`
+  - JOSS final checklist：`docs/paper/joss/checklists/joss_final_readiness_checklist.md`
+  - Public history audit：`docs/paper/joss/reports/public_development_history_audit.md`
+  - Red-line scan：`docs/paper/joss/reports/mission034_redline_scan.md`
+  - Mission 034 report：`docs/reports/aep_media_mission034_joss_readiness_packaging_report.md`
+- 验证：
+  - `git diff --check`：PASS。
+  - Targeted JOSS/AEP-Media tests：`8 passed, 1 warning`。
+  - Full pytest：`166 passed, 1 skipped, 15 warnings`。
+  - Ruff：PASS via `.venv/bin/ruff check agent_evidence tests`。
+  - Mobile fixture smoke：validate / build / verify / strict-time verify 全部 PASS。
+  - Red-line scan：PASS。
+- 当前 readiness：
+  - `JOSS technical readiness`: READY。
+  - `JOSS submission readiness`: WAITING FOR PUBLIC HISTORY。
+  - 当前不应立即提交 JOSS，因为 public repository history 截至 2026-06-01 不满 JOSS 当前 6 个月 public-history screen。
+- 下一步推荐：
+  - Mission 035：JOSS Paper Compile Check, Public-History Wait Plan, and Open Development Maintenance Queue。
+
+## M38 AEP-Media Post-FSI Retarget Triage
+- 状态：完成（Mission 033）。
+- 触发原因：
+  - FSI:DI 投稿已正式拒稿并关闭。
+  - 决定信只说明不适合该期刊发表；`Comments to Authors` 后没有详细评语。
+  - 当前证据不支持软件失败、文件缺失、模板技术退回、接收、录用或发表结论。
+- 当前策略：
+  - 不申诉。
+  - 不原路重投 FSI:DI。
+  - 不继续做 FSI:DI-only 小修。
+  - 将 AEP-Media 拆成两条后续路线：
+    - 主线：JOSS-style concise software package submission path。
+    - 副线：DFRWS / digital-forensics workshop-style method paper development path。
+- Mission 033 主要输出：
+  - FSI:DI rejection summary：`docs/paper/post_fsidi/reports/fsidi_rejection_summary.md`
+  - Reusable assets audit：`docs/paper/post_fsidi/reports/reusable_assets_audit.md`
+  - Target decision：`docs/paper/post_fsidi/target_selection/post_fsidi_target_decision.md`
+  - JOSS readiness audit：`docs/paper/post_fsidi/joss/reports/joss_readiness_audit.md`
+  - JOSS paper draft：`docs/paper/post_fsidi/joss/drafts/paper.md`
+  - JOSS bibliography draft：`docs/paper/post_fsidi/joss/drafts/paper.bib`
+  - JOSS repo fix plan：`docs/paper/post_fsidi/joss/checklists/joss_repo_fix_plan.md`
+  - DFRWS outline：`docs/paper/post_fsidi/dfrws/drafts/aep_media_dfrws_position_paper_outline.md`
+  - DFRWS checklist：`docs/paper/post_fsidi/dfrws/checklists/dfrws_readiness_checklist.md`
+  - Old target archive note：`docs/paper/post_fsidi/reports/old_target_package_archive_note.md`
+  - Mission report：`docs/reports/aep_media_mission033_post_fsidi_retarget_report.md`
+- JOSS readiness：
+  - 当前结果：`PARTIAL / NEAR READY`。
+  - 强项：public GitHub repo、Apache-2.0、issue tracker enabled、tests、examples、CLI、docs、Zenodo DOI。
+  - blocker / risk：缺 `CONTRIBUTING.md`、缺 top-level `CHANGELOG.md`、公开开发历史截至 2026-06-01 不满 6 个月、JOSS paper final location / compile check 未完成。
+- DFRWS readiness：
+  - 当前结果：development path，不是 submission-ready。
+  - 需要补 venue deadline/template、真实或半真实场景、demo/figures、更强 digital-forensics corpus。
+- 下一步推荐：
+  - Mission 034：JOSS Repository Readiness Fixes and `paper.md` Packaging。
+  - 备选 Mission 034：DFRWS Artifact Demo Preparation。
+
+## M37 AEP-Media FSI:DI Submission Decision
+- 状态：FSI:DI 投稿已拒稿并关闭。
+- 投稿题名：`AEP-Media: Local Validation of Mobile-Style Media Evidence Bundles with Timing and Provenance Context`。
+- 期刊：Forensic Science International: Digital Investigation。
+- 门户状态记录：Mission 031 页面曾显示 `Your manuscript has now been submitted`，可见时间为 `19:46, May 31, 2026`。
+- 决定信记录：2026-06-01 用户粘贴的编辑部决定信显示，Editor-in-Chief Bruce Nikkel 判定稿件不适合在该刊发表并拒稿。
+- 粘贴内容中 `Comments to Authors` 后未包含详细评语。
+- 当前解释：
+  - 这是期刊范围 / 编辑判断层面的正式拒稿记录。
+  - 当前证据不支持软件构建失败、文件缺失、模板技术退回、接收、录用或发表结论。
+  - 不建议申诉。
+- 下一步：
+  - 暂停继续 portal submission。
+  - 先做 post-FSI:DI target triage，把 SoftwareX 与 FSI:DI 两次结果合并复盘，再决定是否走 JOSS、forensic software workshop、DFRWS-style short paper 或更窄的软件 artifact route。
+- 记录文件：
+  - `docs/reports/aep_media_fsidi_rejection_2026_06_01.md`
+  - `docs/reports/aep_media_mission031_fsidi_portal_upload_report.md`
+
+## M32 AEP-Media R1 Editorial Hardening and Target Selection
+- 状态：完成（Mission 026）。
+- 当前目标选择：
+  - FSI Digital Investigation route：`STRONG`
+  - SoftwareX new submission route：`POSSIBLE`
+  - JOSS route：`POSSIBLE`
+- 本轮边界：
+  - 未改 implementation code、validator、schema、adapter、tests、demo 或 evaluation semantics。
+  - 未申诉 SoftwareX。
+  - 未提交任何新期刊。
+  - 未触碰 unrelated paper evidence workspace。
+- 主要输出：
+  - Editorial attack review：`docs/paper/softwarex/r1/editorial_hardening/reports/r1_editorial_attack_review.md`
+  - Target decision：`docs/paper/softwarex/r1/editorial_hardening/target_selection/r1_target_selection_decision.md`
+  - Hardened target-neutral draft：`docs/paper/softwarex/r1/editorial_hardening/manuscripts/aep_media_r1_hardened_target_neutral.md`
+  - SoftwareX derivative plan：`docs/paper/softwarex/r1/editorial_hardening/target_selection/softwarex_r1_derivative_plan.md`
+  - FSI:DI derivative plan：`docs/paper/softwarex/r1/editorial_hardening/target_selection/fsidi_derivative_plan.md`
+  - JOSS derivative plan：`docs/paper/softwarex/r1/editorial_hardening/target_selection/joss_derivative_plan.md`
+  - R1 editorial checklist：`docs/paper/softwarex/r1/editorial_hardening/checklists/r1_editorial_checklist.md`
+  - Mission 026 report：`docs/reports/aep_media_mission026_r1_editorial_hardening_target_selection_report.md`
+- 验证：
+  - Target-neutral draft：`2096` words，`13` references，citation closure PASS。
+  - Lightweight pytest：`8 passed, 1 warning`。
+  - Mobile-video fixture smoke：validate/build/verify/strict-time 全部 PASS。
+  - R1 supplement draft zip integrity：PASS。
+  - Red-line scan：PASS。
+- 当前推荐：
+  - 下一步 Mission 027 走 FSI:DI-oriented submission draft and package。
+  - SoftwareX 保留为 possible new submission，不建议直接 transfer。
+  - JOSS 仅作为简化软件包路线。
+
+## M31 AEP-Media R1 Execution Package
+- 状态：完成（Mission 025）。R1 已从“修订计划”进入“可审稿草案材料”。
+- 本轮边界：
+  - 未改 `agent_evidence` validator/schema/adapter/evaluation 语义。
+  - 新增了一个 benchmark 脚本和 fixture/reports/manuscript draft。
+  - 未触碰 unrelated paper evidence workspace。
+- 主要新增：
+  - 具体 use case：`examples/media/use_cases/mobile_video_network_timing/`
+  - use case 验证报告：`docs/paper/softwarex/r1/evidence/mobile_video_use_case_validation_report.md`
+  - 负例报告：`docs/paper/softwarex/r1/evidence/mobile_video_negative_cases_report.md`
+  - warnings 分析：`docs/paper/softwarex/r1/reports/test_warning_analysis.md`
+  - benchmark 脚本：`scripts/benchmark_aep_media_large_bundle.py`
+  - benchmark 结果：`docs/paper/softwarex/r1/benchmarks/large_bundle_performance_results.md`
+  - adapter 变体说明：`docs/paper/softwarex/r1/evidence/adapter_output_variability_notes.md`
+  - AFF4/E01 对比：`docs/paper/softwarex/r1/comparisons/forensic_container_comparison.md`
+  - R1 主文草稿：`docs/paper/softwarex/r1/drafts/aep_media_softwarex_r1_manuscript_draft.md`
+  - R1 supplement draft：`docs/paper/softwarex/r1/drafts/AEP-Media_R1_Supplementary_Draft.zip`
+  - Mission 025 总报告：`docs/reports/aep_media_mission025_r1_execution_report.md`
+- 验证：
+  - Mobile-video fixture：profile / build / verify / strict-time 全部 PASS。
+  - Targeted media pytest：`48 passed, 1 warning`。
+  - Full pytest：`166 passed, 1 skipped, 15 warnings`。
+  - Benchmark：1MB / 10MB / 100MB 均 build/verify PASS。
+  - Red-line scan：PASS。
+- 当前 R1 readiness：
+  - R1 manuscript readiness：`DRAFT READY`。
+  - 不是 portal-ready；下一步需要 Mission 026 做 target selection + editorial hardening。
+- 推荐路线：
+  - 不申诉。
+  - 不盲目 Elsevier Transfer。
+  - 先用 R1 草稿决定 SoftwareX new submission / FSI Digital Investigation / forensic software venue / JOSS。
+
+## M30 AEP-Media SoftwareX Rejection Analysis and R1 Revision Planning
+- 状态：完成（Mission 024）。SoftwareX 结论已定为 `SOFTX-D-26-00495`，正式审稿拒稿。
+- 结论性质：审稿意见聚焦可发表性与叙事清晰度，不是实现失败，也非模板问题。
+- 重大处理：
+  - 完成拒稿决议摘要、reviewer 响应矩阵、media evidence bundle 重定义、R1 用例计划、告警分析计划与重写提纲。
+  - 完成对 AFF4 / E01 / EWF / C2PA / PROV / FFmpeg / LinuxPTP 的对比计划化框架。
+  - 明确不申诉；不改实现；不新增功能；保留 claim boundary。
+- 当前状态转移：
+  - 从 `READY FOR SOFTWAREX PORTAL UPLOAD` 进入 `R1 revision planning`。
+  - 下一步任务：Mission 025（执行 mobile-video fixture、告警分类、规模基准与R1正文重写）。
+- 当前固定元数据：
+  - Manuscript ID：`SOFTX-D-26-00495`
+  - GitHub release：<https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
+  - DOI：`10.5281/zenodo.20107097`
+  - 版本：`aep-media-v0.1.0`
+
 ## Latest AEP-Media SoftwareX Status
-- 状态：READY，等待人工进入 SoftwareX portal 上传。
+- 状态：R1 revision planning（已形成 Mission 024 复盘与修订清单，等待 Mission 025 落地执行后再评估是否进入正式再提交）。
 - GitHub Release：<https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
 - AEP-Media DOI：`10.5281/zenodo.20107097`
 - SoftwareX final pack：`docs/paper/softwarex/final/submission-pack/`
@@ -909,3 +1231,120 @@
   - 未修改 validator/schema/adapter/evaluation 语义
   - 未触碰 unrelated paper workspace
   - 未声称法律证据、非抵赖、可信时间戳、真实 PTP、完整 MP4 PRFT 解析、真实 C2PA 签名验证、生产部署或 chain of custody。
+
+## Mission 027 AEP-Media FSI:DI submission draft package
+- 状态：FSI:DI-oriented draft package 已生成
+- 当前推荐路线：
+  - Primary：FSI:DI / digital investigation framing
+  - Secondary：SoftwareX R1-style reuse after stronger scenario framing
+  - Backup：JOSS only if simplified into a concise software-package paper
+- 本轮产出：
+  - `docs/paper/fsidi/drafts/aep_media_fsidi_manuscript_draft.md`
+  - `docs/paper/fsidi/submission-pack/main/AEP-Media_FSIDI_Manuscript.docx`
+  - `docs/paper/fsidi/submission-pack/main/AEP-Media_FSIDI_Manuscript.pdf`
+  - `docs/paper/fsidi/submission-pack/supplementary/AEP-Media_FSIDI_Supplementary.zip`
+  - `docs/paper/fsidi/submission-pack/cover-letter/AEP-Media_FSIDI_Cover_Letter.md`
+  - `docs/paper/fsidi/submission-pack/metadata/fsidi_submission_metadata.md`
+  - `docs/paper/fsidi/reports/fsidi_scope_fit_report.md`
+  - `docs/reports/aep_media_mission027_fsidi_submission_draft_package_report.md`
+- 稿件状态：
+  - word count：`2526`
+  - references：`19`
+  - citation closure：PASS
+  - supplement ZIP integrity：PASS
+  - DOCX/PDF generated：PASS
+- 核验结果：
+  - lightweight pytest：`8 passed, 1 warning`
+  - mobile-video-style CLI smoke：PASS
+  - `git diff --check`：PASS
+  - FSI:DI package red-line scan：PASS
+- 当前 readiness：
+  - NEAR READY
+  - 剩余 blocker：确认 FSI:DI article type / author-guide formatting、人工视觉检查 DOCX/PDF、决定是否需要 R1/FSI:DI-specific archive。
+- 边界：
+  - 未修改 validator/schema/adapter/evaluation 语义
+  - 未新增功能
+  - 未提交任何期刊门户
+  - 限制性术语仅作为 non-claims / limitations 出现。
+
+## Mission 028 AEP-Media FSI:DI author-guide formatting freeze
+- 状态：FSI:DI final upload package 已冻结到本地上传目录
+- 本轮产出：
+  - `docs/paper/fsidi/final/main/AEP-Media_FSIDI_Manuscript.docx`
+  - `docs/paper/fsidi/final/main/AEP-Media_FSIDI_Manuscript.pdf`
+  - `docs/paper/fsidi/final/main/AEP-Media_FSIDI_Highlights.docx`
+  - `docs/paper/fsidi/final/supplementary/AEP-Media_FSIDI_Supplementary.zip`
+  - `docs/paper/fsidi/final/cover-letter/AEP-Media_FSIDI_Cover_Letter.docx`
+  - `docs/paper/fsidi/final/metadata/fsidi_portal_metadata.md`
+  - `docs/paper/fsidi/final/UPLOAD_MANIFEST.md`
+  - `docs/reports/aep_media_mission028_fsidi_author_guide_formatting_freeze_report.md`
+- 作者指南处理：
+  - Article type recommendation：`Research and development`
+  - fallback：`Effective practices`
+  - DOCX 为 source file，PDF 为 preview
+  - abstract：`181` words
+  - keywords：`7`
+  - highlights：`5` 条，均不超过 85 characters
+  - tables：已编号、captioned、正文引用
+- 核验结果：
+  - lightweight pytest：`8 passed, 1 warning`
+  - mobile-video-style smoke：PASS
+  - DOCX / supplement ZIP integrity：PASS
+  - PDF preview generated：PASS
+  - `git diff --check`：PASS
+  - red-line scan：PASS
+- 当前 readiness：
+  - NEAR READY
+  - 剩余手动项：Elsevier declaration-of-interest official Word output；人工视觉检查 DOCX/PDF；live portal article type label confirmation。
+- 边界：
+  - 未修改 validator/schema/adapter/evaluation 语义
+  - 未新增实验
+  - 未提交任何期刊门户
+  - 限制性术语仅作为 non-claims / limitations 出现。
+
+## Mission 029 AEP-Media FSI:DI final upload readiness check
+- 状态：最终上传目录已复核；官方利益冲突声明文件已集成
+- 本轮动作：
+  - 检查 `~/Downloads/AEP-Media-FSIDI-Upload-Final/`
+  - 检查 Declaration of Interest official Word output 是否存在
+  - 移除本地上传目录中的 placeholder declaration DOCX，避免误上传
+  - 更新 `docs/paper/fsidi/final/UPLOAD_MANIFEST.md`
+  - 新增 `docs/paper/fsidi/final/checklists/manual_visual_qa_checklist.md`
+  - 新增 `docs/paper/fsidi/final/reports/mission029_final_redline_scan.md`
+  - 新增 `docs/reports/aep_media_mission029_fsidi_final_upload_readiness_report.md`
+- 核验结果：
+  - DOCX/PDF extracted-text check：PASS
+  - metadata consistency：PASS
+  - red-line scan：PASS
+  - lightweight pytest：`8 passed, 1 warning`
+- 当前 readiness：
+  - READY FOR FSI:DI PORTAL UPLOAD
+  - `Declaration_of_Interest_Bin_Zhang.docx` 已放入最终上传目录并复制到仓库 final metadata
+- 下一步：
+  - 进入 FSI:DI portal upload guide
+  - 上传前人工确认 DOCX/PDF 页面视觉效果
+
+## Mission 030A AEP-Media FSI:DI hostile-review hardening
+- 状态：敌对审稿式上传前硬化已完成；最终上传目录已重新刷新
+- 本轮动作：
+  - 强化主文摘要、贡献段、use-case 解释、failure-class 表述、adapter 行为边界和性能解释
+  - 将详细对比收敛到 Supplementary Table S1，主文保留紧凑边界表
+  - 加入正式 Zenodo software citation，并在 data/software availability 中引用
+  - 重新生成主文 DOCX/PDF、highlights DOCX、cover letter DOCX 和 supplementary ZIP
+  - 移除 final metadata 中的 placeholder/action-required declaration artifacts
+  - 同步 `~/Downloads/AEP-Media-FSIDI-Upload-Final/`
+- 核验结果：
+  - manuscript word count：`2876`
+  - abstract word count：`191`
+  - references：`20`
+  - highlights：`5` 条，均不超过 `85` characters
+  - PDF preview：`11` pages，视觉抽查 PASS
+  - supplementary ZIP integrity：PASS
+  - red-line scan：PASS
+  - lightweight pytest：`8 passed, 1 warning`
+  - mobile-video-style CLI smoke：PASS
+  - `git diff --check`：PASS
+- 当前 readiness：
+  - READY FOR FSI:DI PORTAL UPLOAD
+- 下一步：
+  - 按最终上传清单进入 FSI:DI portal upload，不上传本地总包 ZIP

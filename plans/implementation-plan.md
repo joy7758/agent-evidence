@@ -1,16 +1,319 @@
 # implementation plan
 
+## M43 AEP-Media Paid Review Protocol Commit and Task A Issue Prep
+- Current state: Mission 036B completed locally.
+- Scope:
+  - scoped commit of Mission 036A paid-review protocol files;
+  - Task A external reproducibility review issue body;
+  - no public issue creation unless `AEP_MEDIA_OPEN_TASK_A_ISSUE=1`.
+- Boundaries:
+  - no implementation code changes;
+  - no validator/schema/adapter/evaluation semantic changes;
+  - no JOSS submission;
+  - no old FSI/SoftwareX/TSE upload artifact staging;
+  - no excluded workspace staging.
+- Issue behavior:
+  - Task A issue body is prepared at `docs/paper/joss/maintenance/issues/task_A_github_issue_body.md`.
+  - GitHub issue is not opened unless explicitly authorized through
+    `AEP_MEDIA_OPEN_TASK_A_ISSUE=1`.
+- Readiness:
+  - JOSS technical readiness: READY.
+  - JOSS submission readiness: WAITING FOR PUBLIC HISTORY.
+- Next mission:
+  - Mission 036C: create Task A issue and route a real external reviewer through it after reviewer availability is confirmed.
+  - Alternative: Mission 037 clean branch and commit/push only coherent JOSS readiness files that remain uncommitted.
+
+## M42 AEP-Media Paid External Review Protocol
+- Current state: Mission 036A completed locally.
+- Scope:
+  - paid external review protocol;
+  - reproducibility review task;
+  - adapter-boundary documentation review task;
+  - mobile-fixture regression PR task;
+  - contributor credit policy;
+  - payment and disclosure policy;
+  - reviewer onboarding message;
+  - acceptance checklist.
+- Boundaries:
+  - no implementation code changes;
+  - no validator/schema/adapter/evaluation semantic changes;
+  - no JOSS submission;
+  - no real paid task started;
+  - no GitHub issue or PR opened by this mission.
+- Integrity policy:
+  - pay only for real reproduction, real criticism, or useful public
+    contribution work;
+  - do not pay for stars, fake issues, fake PRs, praise, citation, authorship,
+    or publication outcomes.
+- Readiness:
+  - JOSS technical readiness: READY.
+  - JOSS submission readiness: WAITING FOR PUBLIC HISTORY.
+- Next mission:
+  - Mission 036A-1: run a small Task A pilot with one real external reviewer
+    and require one public issue with commands and environment details.
+  - Alternative: Mission 037 clean branch and commit/push only M34-M36A JOSS
+    readiness files.
+
+## M41 AEP-Media Open Maintenance Issues 001-003
+- Current state: Mission 036 completed locally.
+- Scope:
+  - mobile-video fixture walkthrough;
+  - adapter boundary documentation;
+  - mobile-video fixture regression tests.
+- No semantic implementation changes:
+  - no validator changes;
+  - no schema changes;
+  - no adapter parsing changes;
+  - no evaluation semantic changes.
+- GitHub issues:
+  - not opened because `AEP_MEDIA_OPEN_MAINTENANCE_ISSUES` was not set to `1`.
+- Files added:
+  - `docs/aep-media/README.md`
+  - `docs/aep-media/mobile-video-walkthrough.md`
+  - `docs/aep-media/adapter-boundaries.md`
+  - `examples/media/adapters/README.md`
+  - `tests/test_media_mobile_video_fixture.py`
+  - `docs/paper/joss/maintenance/reports/mission036_redline_scan.md`
+  - `docs/reports/aep_media_mission036_open_maintenance_001_003_report.md`
+- Validation:
+  - mobile fixture regression tests: `6 passed`;
+  - targeted Mission 036 tests: `14 passed, 1 warning`;
+  - full pytest: `172 passed, 1 skipped, 15 warnings`;
+  - Ruff: PASS;
+  - CLI smoke: PASS for validate/build/verify/strict-time verify;
+  - `git diff --check`: PASS;
+  - red-line scan: PASS.
+- Commit status:
+  - not committed because current branch is `opentelemetry-to-eeoap-adapter` and the working tree contains many pre-existing dirty/untracked old submission materials.
+  - avoid mixing unrelated old target packages into a maintenance commit.
+- Readiness:
+  - JOSS technical readiness: READY.
+  - JOSS submission readiness: WAITING FOR PUBLIC HISTORY.
+- Next mission:
+  - Mission 037: create/switch to a clean JOSS maintenance branch and commit/push only coherent M34-M36 JOSS readiness files.
+  - Alternative: Mission 036B adapter CLI smoke tests and examples index.
+
+## M40 AEP-Media JOSS Waiting-Period Maintenance Plan
+- Current state: Mission 035 completed.
+- Readiness:
+  - JOSS technical readiness: READY.
+  - JOSS submission readiness: WAITING FOR PUBLIC HISTORY.
+- Public-history gate:
+  - repository public creation date: 2026-03-15;
+  - audit date: 2026-06-01;
+  - six-month threshold date: 2026-09-15;
+  - earliest honest JOSS submission date: 2026-09-16 or later.
+- Outputs:
+  - `docs/paper/joss/maintenance/reports/joss_paper_compile_check.md`
+  - `docs/paper/joss/maintenance/timeline/public_history_wait_plan.md`
+  - `docs/paper/joss/maintenance/issues/open_development_maintenance_queue.md`
+  - `docs/paper/joss/maintenance/issues/issue_001_mobile_video_walkthrough.md`
+  - `docs/paper/joss/maintenance/issues/issue_002_adapter_boundary_docs.md`
+  - `docs/paper/joss/maintenance/issues/issue_003_mobile_fixture_regression_test.md`
+  - `docs/paper/joss/maintenance/issues/issue_004_ci_badge_and_workflow_check.md`
+  - `docs/paper/joss/maintenance/issues/issue_005_v0.1.1_release_hygiene.md`
+  - `docs/paper/joss/maintenance/release-plan/aep_media_v0.1.1_maintenance_release_plan.md`
+  - `docs/paper/joss/maintenance/reports/mission035_redline_scan.md`
+  - `docs/reports/aep_media_mission035_joss_wait_and_maintenance_report.md`
+- Issue behavior:
+  - GitHub issues were not opened because `AEP_MEDIA_OPEN_MAINTENANCE_ISSUES` was not set to `1`.
+  - Issue drafts are ready for meaningful public maintenance work.
+- Validation:
+  - Pandoc PDF/HTML compile: PASS;
+  - citation closure: PASS;
+  - targeted tests: `8 passed, 1 warning`;
+  - full pytest: `166 passed, 1 skipped, 15 warnings`;
+  - Ruff: PASS;
+  - `git diff --check`: PASS;
+  - red-line scan: PASS.
+- Next mission:
+  - Mission 036: execute meaningful open maintenance issue 001 / 002 / 003, preferably documentation walkthrough plus a small regression test, without artificial history.
+
+## M39 AEP-Media JOSS Repository Readiness Package
+- Current state: Mission 034 completed.
+- Scope:
+  - repository/readiness/paper packaging only;
+  - no implementation code changes;
+  - no validator/schema/adapter/evaluation semantic changes;
+  - no JOSS submission;
+  - no FSI:DI/SoftwareX/TSE line reopened.
+- Repository readiness fixes:
+  - added `CONTRIBUTING.md`;
+  - added `CHANGELOG.md`;
+  - added `SUPPORT.md`;
+  - added `.github/ISSUE_TEMPLATE/bug_report.yml`;
+  - added `.github/ISSUE_TEMPLATE/feature_request.yml`;
+  - added `.github/ISSUE_TEMPLATE/documentation.yml`;
+  - updated `.github/pull_request_template.md`;
+  - updated `README.md` with JOSS paper / citation / contribution / support links.
+- JOSS package:
+  - canonical paper: `paper/paper.md`;
+  - canonical bibliography: `paper/paper.bib`;
+  - metadata: `docs/paper/joss/submission/metadata/joss_submission_metadata.md`;
+  - checklist: `docs/paper/joss/checklists/joss_final_readiness_checklist.md`.
+- Validation:
+  - `git diff --check`: PASS;
+  - JOSS paper word count: `793`;
+  - citation closure: PASS;
+  - Pandoc check: PASS;
+  - targeted tests: `8 passed, 1 warning`;
+  - full pytest: `166 passed, 1 skipped, 15 warnings`;
+  - Ruff: PASS;
+  - mobile fixture smoke: PASS;
+  - red-line scan: PASS.
+- Readiness:
+  - JOSS technical readiness: READY.
+  - JOSS submission readiness: WAITING FOR PUBLIC HISTORY.
+- Blocker:
+  - Repository public history began in March 2026; Mission 034 audit date is 2026-06-01, so the current JOSS six-month public-history screen is not satisfied.
+- Next mission:
+  - Mission 035: JOSS Paper Compile Check, Public-History Wait Plan, and Open Development Maintenance Queue.
+
+## M38 AEP-Media Post-FSI Retarget Package
+- Current state: Mission 033 completed.
+- Trigger:
+  - FSI:DI rejected the submitted AEP-Media manuscript as not suitable for the journal.
+  - No detailed reviewer comments were supplied after the pasted `Comments to Authors` heading.
+  - The decision is treated as journal suitability rejection, not software failure or missing-file failure.
+- Decision:
+  - Do not appeal.
+  - Do not resubmit immediately to FSI:DI.
+  - Do not continue FSI:DI-only polishing.
+  - Archive SoftwareX / FSI:DI / TSE route packages as historical target packages.
+- Primary next route:
+  - JOSS readiness path for a concise software package paper.
+- Secondary development route:
+  - DFRWS / digital-forensics workshop-style method paper path.
+- Outputs:
+  - `docs/paper/post_fsidi/reports/fsidi_rejection_summary.md`
+  - `docs/paper/post_fsidi/reports/reusable_assets_audit.md`
+  - `docs/paper/post_fsidi/target_selection/post_fsidi_target_decision.md`
+  - `docs/paper/post_fsidi/joss/reports/joss_readiness_audit.md`
+  - `docs/paper/post_fsidi/joss/drafts/paper.md`
+  - `docs/paper/post_fsidi/joss/drafts/paper.bib`
+  - `docs/paper/post_fsidi/joss/checklists/joss_repo_fix_plan.md`
+  - `docs/paper/post_fsidi/dfrws/drafts/aep_media_dfrws_position_paper_outline.md`
+  - `docs/paper/post_fsidi/dfrws/checklists/dfrws_readiness_checklist.md`
+  - `docs/paper/post_fsidi/reports/old_target_package_archive_note.md`
+  - `docs/reports/aep_media_mission033_post_fsidi_retarget_report.md`
+- JOSS readiness:
+  - Current result: `PARTIAL / NEAR READY`.
+  - Must fix before submission: `CONTRIBUTING.md`, `CHANGELOG.md`, final JOSS paper location / compile check, public issue workflow visual confirmation, and public-history risk handling.
+- DFRWS readiness:
+  - Current result: development path, not submission-ready.
+  - Needs venue call/deadline/template check and stronger case-study/demo corpus.
+- Next mission:
+  - Mission 034: JOSS Repository Readiness Fixes and `paper.md` Packaging.
+  - Alternative: Mission 034 DFRWS Artifact Demo Preparation if JOSS public-history/open-development risks dominate.
+
+## M37 AEP-Media Post-FSI:DI Decision Gate
+- Current state: FSI:DI submission has been rejected and closed.
+- Evidence:
+  - Portal completion was observed during Mission 031 with visible submitted timestamp `19:46, May 31, 2026`.
+  - User-provided FSI:DI decision text was recorded on 2026-06-01.
+  - Decision text states that the manuscript was not suitable for publication in Forensic Science International: Digital Investigation.
+  - Editor-in-Chief: Bruce Nikkel.
+  - No detailed reviewer/editor comments were included after the pasted `Comments to Authors` heading.
+- Guardrails:
+  - Do not describe the decision as software failure, artifact failure, acceptance, publication, or technical-check success.
+  - Do not immediately resubmit or transfer.
+  - Do not make legal admissibility, chain-of-custody, production forensic readiness, trusted timestamping, real PTP proof, full PRFT parser, or real C2PA signature-verification claims.
+- Next mission:
+  - Mission 032: post-FSI:DI target triage and route selection.
+  - Compare: JOSS concise software paper, forensic software workshop / DFRWS-style venue, SoftwareX new submission only if substantially reframed, or local public artifact release without immediate journal submission.
+- Tracking files:
+  - `docs/reports/aep_media_fsidi_rejection_2026_06_01.md`
+  - `docs/reports/aep_media_mission031_fsidi_portal_upload_report.md`
+
+## M32 AEP-Media R1 Editorial Hardening and Target Selection
+- Current state: Mission 026 completed; target-neutral R1 draft is ready.
+- Target decision:
+  - FSI Digital Investigation route: `STRONG`.
+  - SoftwareX new submission route: `POSSIBLE`.
+  - JOSS route: `POSSIBLE`.
+- Outputs:
+  - `docs/paper/softwarex/r1/editorial_hardening/reports/r1_editorial_attack_review.md`
+  - `docs/paper/softwarex/r1/editorial_hardening/target_selection/r1_target_selection_decision.md`
+  - `docs/paper/softwarex/r1/editorial_hardening/manuscripts/aep_media_r1_hardened_target_neutral.md`
+  - `docs/paper/softwarex/r1/editorial_hardening/target_selection/softwarex_r1_derivative_plan.md`
+  - `docs/paper/softwarex/r1/editorial_hardening/target_selection/fsidi_derivative_plan.md`
+  - `docs/paper/softwarex/r1/editorial_hardening/target_selection/joss_derivative_plan.md`
+  - `docs/paper/softwarex/r1/editorial_hardening/checklists/r1_editorial_checklist.md`
+  - `docs/reports/aep_media_mission026_r1_editorial_hardening_target_selection_report.md`
+- Validation:
+  - target-neutral draft: `2096` words, `13` references, citation closure PASS.
+  - lightweight pytest: `8 passed, 1 warning`.
+  - mobile-video fixture smoke: PASS for validate/build/verify/strict-time.
+  - red-line scan: PASS.
+- Next mission:
+  - Mission 027: FSI:DI-oriented submission draft and package.
+
+## M31 AEP-Media R1 Execution Package
+- Current state: Mission 025 completed; R1 materials are draft-ready.
+- Scope:
+  - concrete mobile-video-style fixture;
+  - warning classification;
+  - large-bundle benchmark script and measured results;
+  - adapter variability notes;
+  - AFF4 / E01 / C2PA / PROV / FFmpeg / LinuxPTP comparison;
+  - R1 manuscript draft and R1 supplement draft.
+- Outputs:
+  - `examples/media/use_cases/mobile_video_network_timing/`
+  - `scripts/benchmark_aep_media_large_bundle.py`
+  - `docs/paper/softwarex/r1/evidence/mobile_video_use_case_validation_report.md`
+  - `docs/paper/softwarex/r1/evidence/mobile_video_negative_cases_report.md`
+  - `docs/paper/softwarex/r1/evidence/adapter_output_variability_notes.md`
+  - `docs/paper/softwarex/r1/benchmarks/large_bundle_performance_results.md`
+  - `docs/paper/softwarex/r1/comparisons/forensic_container_comparison.md`
+  - `docs/paper/softwarex/r1/drafts/aep_media_softwarex_r1_manuscript_draft.md`
+  - `docs/paper/softwarex/r1/drafts/AEP-Media_R1_Supplementary_Draft.zip`
+  - `docs/reports/aep_media_mission025_r1_execution_report.md`
+- Validation:
+  - Mobile fixture smoke: PASS for validate/build/verify/strict-time.
+  - Targeted media pytest: `48 passed, 1 warning`.
+  - Full pytest: `166 passed, 1 skipped, 15 warnings`.
+  - Benchmark: 1MB / 10MB / 100MB all build/verify PASS.
+  - Red-line scan: PASS.
+- Current readiness:
+  - R1 manuscript readiness: `DRAFT READY`.
+  - Not portal-ready.
+- Next action:
+  - Mission 026: R1 editorial hardening and target selection.
+
 ## Latest AEP-Media SoftwareX State
-- Current state: READY for manual SoftwareX portal submission after human visual check.
+- Current state: R1 draft package prepared after SoftwareX rejection (SOFTX-D-26-00495); editorial hardening and target selection pending.
 - Release: <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
 - DOI: `10.5281/zenodo.20107097`
 - Final pack: `docs/paper/softwarex/final/submission-pack/`
 - Local upload zip: `AEP-Media-SoftwareX-Upload-Final.zip`
-- Mission 022: authoritative upload freeze completed. The final DOCX/PDF pair,
-  Supplementary file S1, cover letter, upload manifest, and local final upload
-  folder are regenerated from the authoritative SoftwareX manuscript source.
-- Mission 021: SoftwareX manuscript editorial hardening completed. The final manuscript now has complete Software Availability, explicit supplementary citation, v0.1.0 validation narrative, strengthened impact, declarations, and 15 closed references.
-- Next action: upload the SoftwareX DOCX manuscript, PDF preview if requested, supplementary package, cover letter, and DOI-synchronized metadata through the portal. Do not upload generic TeX source.
+- Mission 022: authoritative upload freeze completed. The final DOCX/PDF pair, Supplementary file S1, cover letter, upload manifest, and local upload folder are regenerated from the authoritative SoftwareX manuscript source.
+- Mission 021: SoftwareX manuscript editorial hardening completed (Software Availability, supplementary citation, reproducibility, impact, declarations, 15 references).
+- Mission 024: rejection analysis and R1 revision planning completed (comparison plan, use-case plan, warning analysis plan, and manuscript redesign draft).
+- Next action: execute Mission 026 for R1 editorial hardening, target selection, and venue-specific submission pack planning.
+
+## M30 AEP-Media SoftwareX Rejection Analysis and R1 Planning
+- Input: reviewer feedback from SOFTX-D-26-00495 and existing final SoftwareX artifacts.
+- Output:
+  - `docs/reports/aep_media_mission024_softwarex_rejection_analysis_r1_plan.md`
+  - `docs/paper/softwarex/r1/reports/softwarex_rejection_decision_summary.md`
+  - `docs/paper/softwarex/r1/reports/reviewer_comment_response_matrix.md`
+  - `docs/paper/softwarex/r1/drafts/media_evidence_bundle_definition.md`
+  - `docs/paper/softwarex/r1/use_cases/mobile_video_network_timing_use_case.md`
+  - `docs/paper/softwarex/r1/plans/mobile_video_demo_pack_plan.md`
+  - `docs/paper/softwarex/r1/comparisons/forensic_container_comparison_plan.md`
+  - `docs/paper/softwarex/r1/benchmarks/large_bundle_performance_plan.md`
+  - `docs/paper/softwarex/r1/reports/test_warning_analysis_plan.md`
+  - `docs/paper/softwarex/r1/reports/test_warning_analysis.md`
+  - `docs/paper/softwarex/r1/plans/adapter_output_variability_plan.md`
+  - `docs/paper/softwarex/r1/plans/software_metadata_table_formatting_plan.md`
+  - `docs/paper/softwarex/r1/plans/r1_manuscript_restructure_plan.md`
+  - `docs/paper/softwarex/r1/drafts/response_to_reviewers_draft.md`
+  - `docs/paper/softwarex/r1/reports/post_softwarex_retargeting_options.md`
+- Decision posture:
+  - No appeal in this phase.
+  - Rejection handling is now frozen for R1 planning execution.
+  - Immediate transfer to another venue without R1 execution is not recommended.
+- Next mission: M25.
 
 ## M29 AEP-Media SoftwareX Final Upload Authority Freeze
 - 输入：
@@ -701,3 +1004,145 @@
   - 不伪造 DOI
   - 不改 AEP-Media validation semantics
   - 不声称法律证据、非抵赖、可信时间戳、真实 PTP、完整 MP4 PRFT 解析、真实 C2PA 签名验证、生产部署或 chain of custody
+
+## Mission 027 AEP-Media FSI:DI submission draft package
+- 输入：
+  - Mission 025 R1 concrete use case, benchmark, warning analysis, adapter variability notes, and forensic-container comparison
+  - Mission 026 target-selection/editorial-hardening result
+  - Published AEP-Media v0.1.0 release metadata and Zenodo DOI
+- 输出：
+  - FSI:DI scope-fit report
+  - FSI:DI-oriented manuscript draft
+  - FSI:DI DOCX/PDF draft exports
+  - FSI:DI supplementary source folder and ZIP
+  - FSI:DI cover letter draft
+  - FSI:DI submission metadata
+  - FSI:DI readiness checklist
+  - Mission 027 execution report and red-line scan
+- 验收条件：
+  - manuscript defines media evidence bundle in digital investigation terms
+  - mobile-video-style use case appears early and remains fixture-bounded
+  - AFF4/E01/C2PA/PROV/FFmpeg/LinuxPTP comparison is present
+  - warnings, adapter variability, negative cases, and benchmark results are incorporated
+  - repository DOI/release/license metadata are consistent with AEP-Media v0.1.0
+  - supplementary ZIP contains reproducibility, claim-boundary, use-case, benchmark, warning, comparison, adapter, and checksum materials
+  - no validator/schema/adapter/evaluation semantics are changed
+  - no positive legal, forensic admissibility, non-repudiation, timestamping, PTP, PRFT, C2PA-signature, chain-of-custody, or production-deployment claims are introduced
+- 当前结果：
+  - FSI:DI draft package generated
+  - manuscript word count: `2526`
+  - references: `19`
+  - lightweight pytest: `8 passed, 1 warning`
+  - mobile-video-style CLI smoke checks: PASS
+  - supplement ZIP integrity: PASS
+  - red-line scan: PASS
+  - readiness: NEAR READY
+- 下一步：
+  - Mission 028: FSI:DI author-guide formatting and portal-ready freeze
+  - Confirm article type, template/file requirements, and visual layout before any submission
+
+## Mission 028 AEP-Media FSI:DI author-guide formatting and upload freeze
+- 输入：
+  - Mission 027 FSI:DI manuscript draft and submission-pack draft
+  - FSI:DI official author-guide requirements
+  - AEP-Media v0.1.0 GitHub release and Zenodo DOI metadata
+- 输出：
+  - final FSI:DI DOCX source manuscript
+  - PDF preview
+  - highlights MD/DOCX
+  - final supplementary ZIP
+  - final cover letter MD/DOCX
+  - portal metadata
+  - upload manifest
+  - declaration-of-interest action file and placeholder DOCX
+  - local upload folder and local transfer ZIP
+  - author-guide audit, article-type decision, DOI decision, red-line scan, and Mission 028 report
+- 验收条件：
+  - DOCX is primary editable source file
+  - PDF is preview only
+  - abstract <= 250 words
+  - keyword count is 1-7
+  - highlights count is 3-5 and each item is <= 85 characters
+  - tables are cited, numbered, and captioned
+  - AI disclosure appears before references
+  - data/software availability is present
+  - no implementation semantics are changed
+  - no positive forensic/legal/security overclaim is introduced
+- 当前结果：
+  - manuscript word count: `2611`
+  - abstract word count: `181`
+  - keyword count: `7`
+  - reference count: `19`
+  - lightweight pytest: `8 passed, 1 warning`
+  - mobile-video-style smoke checks: PASS
+  - package integrity checks: PASS
+  - red-line scan: PASS
+  - readiness: NEAR READY
+- 下一步：
+  - Mission 029: manual visual check and portal upload walkthrough
+  - Author must generate official Elsevier declaration-of-interest Word output during submission
+
+## Mission 029 AEP-Media FSI:DI final manual artifact integration
+- 输入：
+  - Mission 028 final upload folder
+  - official Declaration of Interest Word file if present
+- 输出：
+  - updated upload manifest
+  - manual visual QA checklist
+  - final red-line scan report
+  - Mission 029 final upload readiness report
+- 验收条件：
+  - declaration file is integrated if present
+  - upload folder contains only intended upload/support files
+  - DOCX/PDF text checks pass
+  - red-line scan passes
+  - lightweight tests pass
+  - readiness becomes READY only if official declaration file exists
+- 当前结果：
+  - official declaration file integrated
+  - local placeholder declaration removed from upload folder
+  - metadata check: PASS
+  - DOCX/PDF text check: PASS
+  - red-line scan: PASS
+  - lightweight pytest: `8 passed, 1 warning`
+  - readiness: READY FOR FSI:DI PORTAL UPLOAD
+- 下一步：
+  - Mission 030: FSI:DI portal upload guide
+  - Upload only files listed in the final upload manifest
+
+## Mission 030A AEP-Media FSI:DI hostile-review hardening
+- 输入：
+  - Mission 029 final upload package
+  - official declaration-of-interest Word output
+  - hostile-review critique of upload package authority and editorial risk
+- 输出：
+  - hardened FSI:DI manuscript DOCX/PDF
+  - refreshed highlights DOCX
+  - refreshed cover letter MD/DOCX
+  - refreshed supplementary ZIP
+  - cleaned upload manifest and portal metadata
+  - Mission 030A red-line scan report
+  - Mission 030A execution report
+  - refreshed local upload folder and transfer archive
+- 验收条件：
+  - final package uses one authoritative manuscript source
+  - article type is stated as Research and development
+  - no fallback article-type wording remains in external upload files
+  - Supplementary file S1 is cited and packaged cleanly
+  - detailed comparison is moved to supplementary material
+  - benchmark numbers are rounded and bounded
+  - adapter behavior is summarized without parser overclaims
+  - no implementation semantics are changed
+  - no restricted forensic/legal/security claims are made positively
+- 当前结果：
+  - manuscript word count: `2876`
+  - abstract word count: `191`
+  - references: `20`
+  - PDF preview: `11` pages
+  - lightweight pytest: `8 passed, 1 warning`
+  - mobile-video-style smoke checks: PASS
+  - supplement ZIP integrity: PASS
+  - red-line scan: PASS
+  - readiness: READY FOR FSI:DI PORTAL UPLOAD
+- 下一步：
+  - Mission 030B: FSI:DI portal upload walkthrough, stopping before final submit unless explicitly authorized
