@@ -1,5 +1,36 @@
 # 当前状态
 
+## M45 AEP-Media Agent-Readable Public Recruitment Rewrite
+- 状态：完成（Mission 036F）。
+- 目的：
+  - 将公开招募材料改写为 human-readable / agent-readable / retrieval-friendly / command-oriented / citation-ready。
+  - 新增根目录 `llms.txt`。
+  - 新增 `docs/aep-media/agent-index.md`。
+- 本轮边界：
+  - 未改 implementation code。
+  - 未改 validator/schema/adapter/evaluation semantics。
+  - 未提交 JOSS。
+  - 未发布 GitHub recruitment issue 或 discussion。
+  - 未改 README，以避免 staging 前序未提交 README 变更。
+- 新增：
+  - `llms.txt`
+  - `docs/aep-media/agent-index.md`
+  - `docs/reports/aep_media_mission036f_agent_readable_recruitment_report.md`
+- 更新：
+  - `docs/paper/joss/maintenance/recruitment/github_recruitment_issue_body.md`
+  - `docs/paper/joss/maintenance/recruitment/public_recruitment_call.md`
+  - `docs/paper/joss/maintenance/recruitment/github_discussion_body.md`
+  - `docs/paper/joss/maintenance/recruitment/reviewer_reply_template.md`
+  - `docs/paper/joss/maintenance/issues/task_A_github_issue_body.md`
+  - `docs/paper/joss/maintenance/issues/open_development_maintenance_queue.md`
+  - `docs/paper/joss/checklists/joss_final_readiness_checklist.md`
+- 当前 readiness：
+  - JOSS technical readiness：READY。
+  - JOSS submission readiness：WAITING FOR PUBLIC HISTORY。
+  - Earliest honest JOSS submission date：2026-09-16 or later。
+- 下一步推荐：
+  - 找到真实 reviewer 后，用 agent-readable recruitment issue body 公开创建一个 issue。
+
 ## M44 AEP-Media Public Recruitment for External Reproducibility Reviewers
 - 状态：完成（Mission 036D）。
 - 目的：

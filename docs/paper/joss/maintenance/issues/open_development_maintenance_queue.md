@@ -70,6 +70,11 @@ busywork.
 - Use public recruitment only to find real reviewers who will post actionable
   reproduction notes or PRs.
 - Do not create many low-quality recruitment issues or discussions.
+- Completed locally in Mission 036F: rewrite recruitment materials to be
+  agent-readable, retrieval-friendly, command-oriented, citation-ready, and
+  boundary-safe.
+- Mission 036F also added `llms.txt` and `docs/aep-media/agent-index.md` for
+  agent-oriented project discovery.
 
 ## Mission 036 Local Completion
 
@@ -82,6 +87,8 @@ Next useful maintenance candidates:
   after the reviewer agrees to perform the work;
 - if public recruitment is needed, publish the Mission 036D recruitment issue
   template after confirming it will not create misleading activity;
+- use the Mission 036F agent-readable issue body for any future recruitment
+  issue;
 - add an examples index for `examples/media/`;
 - add CLI smoke tests for adapter ingestion commands;
 - add one tiny adapter fixture variant per adapter family;

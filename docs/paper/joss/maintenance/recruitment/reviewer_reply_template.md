@@ -4,31 +4,35 @@ Hello,
 
 Thank you for your interest in reviewing AEP-Media.
 
-The scope is a reproducibility review, not an endorsement. Please start from a
-fresh clone, run the README and mobile-video walkthrough commands, and report
-what works, what fails, and what is unclear.
+Scope: external reproducibility review of the mobile-video-style fixture from a
+fresh clone.
 
-Please use this task description:
+Task link:
 
 `docs/paper/joss/maintenance/paid-review/task_A_reproducibility_review.md`
 
-Before starting, please comment on the recruitment issue with:
+Expected time box: 1-2 hours.
+
+Expected deliverable:
 
 - operating system;
 - Python version;
-- whether you will use a virtual environment;
-- whether you can post your result publicly as a GitHub issue comment or PR.
+- shell;
+- install command;
+- exact commands run;
+- output summary;
+- first failure, if any;
+- unclear documentation;
+- actionable suggestion or PR.
 
-If payment is agreed, it compensates time spent testing and reporting. It does
-not require positive feedback and does not imply endorsement, authorship,
-citation, stars, or publication outcome.
+Please use only small synthetic fixtures from the repository. Do not upload
+private media, confidential logs, real evidence files, or large binaries.
 
-Please do not upload private media, confidential logs, real evidence files, or
-large binaries. Use only the repository's small synthetic fixtures.
+Payment, if agreed, compensates time spent testing and reporting. It does not
+require positive feedback and does not imply endorsement, authorship, citation,
+stars, or publication outcome.
 
-Negative feedback is welcome. The most useful output is a specific report with
-commands, environment information, outputs, failures, unclear documentation,
-and actionable suggestions.
+Negative feedback is welcome.
 
 Thank you,
 

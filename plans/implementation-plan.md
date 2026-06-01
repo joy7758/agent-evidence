@@ -1,5 +1,32 @@
 # implementation plan
 
+## M45 AEP-Media Agent-Readable Public Recruitment Rewrite
+- Current state: Mission 036F completed locally.
+- Scope:
+  - agent-readable GitHub recruitment issue body;
+  - shorter public recruitment call;
+  - structured GitHub discussion body;
+  - concise reviewer reply template;
+  - aligned Task A issue body;
+  - root `llms.txt`;
+  - `docs/aep-media/agent-index.md`;
+  - Mission 036F report.
+- Boundaries:
+  - no implementation code changes;
+  - no validator/schema/adapter/evaluation semantic changes;
+  - no JOSS submission;
+  - no public issue or discussion opened;
+  - README not changed in Mission 036F to avoid staging pre-existing unrelated
+    README differences.
+- Readiness:
+  - JOSS technical readiness: READY.
+  - JOSS submission readiness: WAITING FOR PUBLIC HISTORY.
+- Next mission:
+  - Mission 036G: create exactly one public recruitment issue after a real
+    reviewer is available or explicit authorization is set.
+  - Alternative: Mission 037 clean branch / PR hygiene for coherent JOSS
+    readiness files.
+
 ## M44 AEP-Media Public Recruitment for External Reproducibility Reviewers
 - Current state: Mission 036D completed locally.
 - Scope:
@@ -316,7 +343,8 @@
   - Mission 026: R1 editorial hardening and target selection.
 
 ## Latest AEP-Media SoftwareX State
-- Current state: R1 draft package prepared after SoftwareX rejection (SOFTX-D-26-00495); editorial hardening and target selection pending.
+- Current state: R1 draft package prepared after prior SoftwareX decision
+  SOFTX-D-26-00495; editorial hardening and target selection pending.
 - Release: <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
 - DOI: `10.5281/zenodo.20107097`
 - Final pack: `docs/paper/softwarex/final/submission-pack/`
@@ -449,7 +477,7 @@
 
 ## M26 AEP-Media Path A SoftwareX Preparation
 - 输入：
-  - M25 TSE rejection analysis and retargeting strategy。
+  - M25 TSE decision analysis and retargeting strategy。
   - Existing AEP-Media specs, schemas, reports, non-claims, reproducibility checklist, and Mission 004-007 evidence.
   - Repository metadata: package, license, README, DOI, CLI entry points.
 - 输出：

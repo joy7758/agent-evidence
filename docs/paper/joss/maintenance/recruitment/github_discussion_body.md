@@ -1,34 +1,33 @@
-# Call for External AEP-Media Reproducibility Reviewers
+# External reproducibility reviewers wanted for AEP-Media
 
-I am looking for one or two external reviewers to try AEP-Media from a fresh
-clone and report whether the README and mobile-video walkthrough are actually
-reproducible.
+AEP-Media is an open-source Python research software component for local
+validation of time-aware media evidence bundles.
 
-This is not a request for praise. Negative feedback is welcome. If installation
-fails, a command is unclear, an expected output is missing, or the walkthrough
-does not match observed behavior, that is exactly the kind of feedback needed.
+I need one or two external reviewers to try the mobile-video-style fixture from
+a fresh clone and report whether the README and walkthrough are reproducible.
 
-Suggested task:
+Planned recruitment issue:
 
-1. Clone the repository.
-2. Install the package.
-3. Run `agent-evidence --help`.
-4. Run the mobile-video fixture validation, bundle build, bundle verification,
-   strict-time verification, and targeted tests.
-5. Post the environment, commands, outputs, failures, ambiguities, and
-   suggestions in a GitHub issue or PR.
+`docs/paper/joss/maintenance/recruitment/github_recruitment_issue_body.md`
 
-If payment is agreed separately, it compensates time spent testing and
-reporting. It does not buy positive feedback, endorsement, stars, citations,
-authorship, or any publication outcome.
+Task description:
 
-Please use only the repository's small synthetic fixtures. Do not upload
-private media, confidential logs, real evidence files, or large binaries.
+`docs/paper/joss/maintenance/paid-review/task_A_reproducibility_review.md`
 
-Claim boundary: AEP-Media supports local validation and fixture-based adapter
-ingestion. It does not claim legal admissibility, chain of custody, real PTP
-proof, real C2PA verification, or production deployment.
+Negative feedback is welcome. Useful outcomes include failed commands,
+confusing instructions, missing expected output, unclear terminology, and small
+documentation PRs.
 
-If you are interested, please comment with your operating system, Python
-version, and whether you are willing to post the result publicly as an issue or
-PR.
+Use only the repository's small synthetic fixtures. Do not upload private
+media, confidential logs, real evidence files, or large binaries.
+
+Payment, if agreed separately, compensates time spent testing and reporting. It
+does not buy positive feedback, endorsement, stars, citations, authorship, or a
+publication outcome.
+
+If interested, please reply with:
+
+- operating system;
+- Python version;
+- shell;
+- whether you can post a public issue comment or PR.

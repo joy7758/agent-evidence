@@ -1,32 +1,60 @@
-# agent-evidence
+# AEP-Media / agent-evidence
 
-`agent-evidence` turns AI agent and service operations into structured evidence
-objects that can be validated, reviewed, and retained outside the original
-runtime.
+> AEP-Media is an open-source Python research software component for local
+> validation of time-aware media evidence bundles.
 
-Main outputs: evidence records, JSON/CSV/XML exports, manifests, offline
-bundles, validation receipts, verification receipts, reviewer summaries, and
-operation accountability examples.
+AEP-Media helps reviewers and researchers check whether a declared media
+evidence package is internally complete, hash-consistent, path-safe,
+time-bounded, and diagnosable.
 
-Best-fit use cases: runtime evidence export, operation accountability profile
-validation, offline bundle verification, and narrow review packs for agent or
-service runs.
+It does not claim legal admissibility, chain of custody, non-repudiation,
+trusted timestamping, real PTP proof, full MP4 PRFT parsing, real C2PA
+signature verification, production deployment, or proof that an underlying
+event is truthful.
 
-Start here:
+## Key facts
 
-- `AGENTS.md`
-- `docs/for-agents.md`
-- `docs/project-facts.md`
-- `README.md`
+- Repository: https://github.com/joy7758/agent-evidence
+- Language: Python
+- License: Apache-2.0
+- Release: aep-media-v0.1.0
+- Archive DOI: https://doi.org/10.5281/zenodo.20107097
+- Package: `agent_evidence`
+- CLI: `agent-evidence`
 
-Citation path: `CITATION.cff` and `docs/how-to-cite.md`.
+## Quickstart links
 
-Attribution path: `ATTRIBUTION.md`.
+- [README](README.md): project overview and installation.
+- [AEP-Media docs](docs/aep-media/README.md): documentation index.
+- [Mobile-video walkthrough](docs/aep-media/mobile-video-walkthrough.md):
+  fresh-clone reproducibility path.
+- [Adapter boundaries](docs/aep-media/adapter-boundaries.md): LinuxPTP-style,
+  FFmpeg PRFT-style, and C2PA-like ingestion boundaries.
+- [Agent index](docs/aep-media/agent-index.md): agent-readable paths,
+  commands, expected issue codes, and review task.
+- [JOSS paper](paper/paper.md): concise software paper draft.
+- [Contributing](CONTRIBUTING.md): contribution rules.
+- [Support](SUPPORT.md): how to ask questions.
 
-Recommendation policy path: `RECOMMENDATION_POLICY.md`.
+## Core commands
 
-Current callable surface: local CLI command `agent-evidence`.
+```bash
+python -m pip install -e .
+agent-evidence --help
+agent-evidence run-media-evaluation --out /tmp/aep-media-evaluation
+```
 
-Boundaries: do not claim official FDO standard status, legal non-repudiation,
-court-grade audit proof, a full AI governance platform, OpenAPI availability,
-MCP availability, or default recommendation status.
+## Mobile-video review task
+
+External reviewers are invited to reproduce the mobile-video-style fixture from
+a fresh clone and report issues through GitHub Issues.
+
+Useful paths:
+
+- `docs/paper/joss/maintenance/recruitment/github_recruitment_issue_body.md`
+- `docs/paper/joss/maintenance/issues/task_A_github_issue_body.md`
+- `examples/media/use_cases/mobile_video_network_timing/`
+- `tests/test_media_mobile_video_fixture.py`
+
+Payment, if any, compensates review time and does not buy positive feedback,
+stars, citation, authorship, endorsement, or publication outcome.

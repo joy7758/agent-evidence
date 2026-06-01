@@ -32,6 +32,8 @@ Date: 2026-06-01
 | No excluded workspace reference | PASS | Checked in Mission 034 red-line scan. |
 | Paid external review protocol | PASS | Prepared and committed in Missions 036A-036B. |
 | Public reviewer recruitment templates | PASS | Prepared in Mission 036D; not published without authorization. |
+| Agent-readable discovery file | PASS | `llms.txt` added in Mission 036F. |
+| Agent-readable AEP-Media index | PASS | `docs/aep-media/agent-index.md` added in Mission 036F. |
 
 ## Result
 
@@ -70,3 +72,14 @@ JOSS submission readiness: WAITING FOR PUBLIC HISTORY.
   was not set to `1`.
 - The intended public-review goal is real fresh-clone reproduction feedback, not
   positive review, stars, authorship, citation, or publication outcome.
+
+## Mission 036F Agent-Readable Recruitment Update
+
+- Recruitment issue body rewritten around summary, project facts, task,
+  commands, deliverables, acceptance criteria, boundaries, and labels.
+- Public recruitment call, discussion body, reviewer reply template, and Task A
+  issue body aligned to the same terminology.
+- Root `llms.txt` and `docs/aep-media/agent-index.md` added for agent-readable
+  project discovery.
+- JOSS technical readiness remains READY.
+- JOSS submission readiness remains WAITING FOR PUBLIC HISTORY.
