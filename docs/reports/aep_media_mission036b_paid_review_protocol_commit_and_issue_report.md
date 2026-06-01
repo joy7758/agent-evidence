@@ -27,7 +27,7 @@ candidate, or excluded workspace artifact was staged for this mission.
 
 ## 3. Files Committed
 
-Planned scoped files:
+Committed scoped files:
 
 - Mission 036A paid-review protocol files under
   `docs/paper/joss/maintenance/paid-review/`
@@ -40,7 +40,8 @@ Planned scoped files:
 
 ## 4. Commit Hash
 
-Pending until scoped commit completes.
+- Protocol commit: `cb0d502 Document paid external review protocol for AEP-Media`
+- Push status: pushed to `origin/opentelemetry-to-eeoap-adapter`
 
 ## 5. Issue Created
 

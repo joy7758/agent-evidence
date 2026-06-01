@@ -16,6 +16,9 @@
   - Task A issue body is prepared at `docs/paper/joss/maintenance/issues/task_A_github_issue_body.md`.
   - GitHub issue is not opened unless explicitly authorized through
     `AEP_MEDIA_OPEN_TASK_A_ISSUE=1`.
+- Commit / push:
+  - Protocol commit: `cb0d502 Document paid external review protocol for AEP-Media`.
+  - Pushed to `origin/opentelemetry-to-eeoap-adapter`.
 - Readiness:
   - JOSS technical readiness: READY.
   - JOSS submission readiness: WAITING FOR PUBLIC HISTORY.

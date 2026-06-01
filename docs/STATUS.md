@@ -16,6 +16,9 @@
   - 未创建。
   - 原因：`AEP_MEDIA_OPEN_TASK_A_ISSUE` 未设置为 `1`。
   - Issue body 已准备：`docs/paper/joss/maintenance/issues/task_A_github_issue_body.md`。
+- Commit / push：
+  - Protocol commit：`cb0d502 Document paid external review protocol for AEP-Media`。
+  - 已推送到 `origin/opentelemetry-to-eeoap-adapter`。
 - 当前 readiness：
   - JOSS technical readiness：READY。
   - JOSS submission readiness：WAITING FOR PUBLIC HISTORY。
