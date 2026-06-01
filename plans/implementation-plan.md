@@ -69,6 +69,9 @@
   - linked AEP-Media docs, mobile-video fixture, adapter README, JOSS paper
     draft, contribution/support docs, and mobile fixture regression test to
     avoid broken GitHub links.
+  - Mission 036G revalidation after Mission 036H added contribution/support
+    links to the compact README entry-point list and added root README / JOSS
+    paper links to `docs/aep-media/README.md`.
 - Boundaries:
   - no implementation code changes;
   - no validator/schema/adapter/evaluation semantic changes;

@@ -20,12 +20,16 @@ Add a short README section near the AEP-Media section:
 - `docs/aep-media/mobile-video-walkthrough.md`: fresh-clone reproduction path.
 - `docs/aep-media/adapter-boundaries.md`: adapter ingestion boundaries and non-claims.
 - `paper/paper.md`: JOSS software paper draft.
+- `CONTRIBUTING.md`: contribution workflow.
+- `SUPPORT.md`: support and issue-reporting guidance.
 ```
 
 Also add direct links under the existing AEP-Media entry-point list:
 
 - `docs/aep-media/agent-index.md`
 - `llms.txt`
+- `CONTRIBUTING.md`
+- `SUPPORT.md`
 
 ## docs/aep-media README Sync
 
@@ -33,8 +37,10 @@ Update `docs/aep-media/README.md` to link:
 
 - `agent-index.md`
 - root `llms.txt`
+- root `README.md`
 - mobile-video walkthrough
 - adapter boundaries
+- `paper/paper.md`
 - external reproducibility review task
 
 ## Scoping Rule

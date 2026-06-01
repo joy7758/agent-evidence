@@ -9,6 +9,8 @@ for local, reproducible validation of time-aware media evidence bundles.
 - [Mobile-video fixture walkthrough](./mobile-video-walkthrough.md)
 - [Adapter boundary documentation](./adapter-boundaries.md)
 - [Root LLM/coding-agent project map](../../llms.txt)
+- [Root README](../../README.md)
+- [JOSS software paper draft](../../paper/paper.md)
 
 ## Core Specs
 

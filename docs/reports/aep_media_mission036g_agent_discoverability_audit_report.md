@@ -42,6 +42,13 @@ Added a short `Agent-readable project entry points` section and direct links to:
 - `docs/aep-media/mobile-video-walkthrough.md`
 - `docs/aep-media/adapter-boundaries.md`
 - `paper/paper.md`
+- `CONTRIBUTING.md`
+- `SUPPORT.md`
+
+Mission 036G was revalidated after Mission 036H. The revalidation found the
+main GitHub landing path already present and added the two contribution/support
+items to the compact agent-readable list for parity with the detailed entry
+point list.
 
 ## 3A. Discoverability Dependencies Included
 
@@ -80,6 +87,20 @@ The path is:
 The walkthrough file is included in the scoped discoverability commit to avoid
 publishing a broken link.
 
+## 5A. Adapter Boundaries And JOSS Paper Reachable
+
+Yes.
+
+The paths are:
+
+- `README.md -> docs/aep-media/adapter-boundaries.md`
+- `README.md -> paper/paper.md`
+- `docs/aep-media/README.md -> paper/paper.md`
+
+`docs/aep-media/README.md` also links back to the root `README.md` and
+`llms.txt` so human readers and coding agents can move between the root landing
+page, the compact project map, and the command-oriented AEP-Media index.
+
 ## 6. Recruitment Issue Body Reachable
 
 Yes.
@@ -116,6 +137,8 @@ Restricted claim-boundary terms appear only in explicit non-claim contexts.
 ## 8. Commit Hash
 
 - Discoverability commit: `a794d57 Link agent-readable AEP-Media entry points`
+- Mission 036G revalidation patch: included in the current scoped patch; final
+  commit hash is reported in the Codex mission close-out.
 - Push status: pushed to `origin/opentelemetry-to-eeoap-adapter`
 
 ## 9. Readiness

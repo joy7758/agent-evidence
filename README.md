@@ -153,6 +153,8 @@ deployment.
 - `docs/aep-media/mobile-video-walkthrough.md`: fresh-clone reproduction path.
 - `docs/aep-media/adapter-boundaries.md`: adapter ingestion boundaries and non-claims.
 - `paper/paper.md`: JOSS software paper draft.
+- `CONTRIBUTING.md`: contribution workflow.
+- `SUPPORT.md`: support and issue-reporting guidance.
 
 Key AEP-Media entry points:
 
