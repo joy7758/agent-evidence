@@ -146,8 +146,22 @@ AEP-Media does not claim legal admissibility, non-repudiation, trusted timestamp
 proof, a full MP4 PRFT parser, real C2PA signature verification, chain of custody, or production
 deployment.
 
+## Agent-readable project entry points
+
+- `llms.txt`: compact project map for LLMs and coding agents.
+- `docs/aep-media/agent-index.md`: command-oriented index for reviewers and agents.
+- `docs/aep-media/mobile-video-walkthrough.md`: fresh-clone reproduction path.
+- `docs/aep-media/adapter-boundaries.md`: adapter ingestion boundaries and non-claims.
+- `paper/paper.md`: JOSS software paper draft.
+
 Key AEP-Media entry points:
 
+- AEP-Media docs index: [docs/aep-media/](./docs/aep-media/)
+- Agent index: [docs/aep-media/agent-index.md](./docs/aep-media/agent-index.md)
+- Agent project map: [llms.txt](./llms.txt)
+- Mobile-video walkthrough: [docs/aep-media/mobile-video-walkthrough.md](./docs/aep-media/mobile-video-walkthrough.md)
+- Adapter boundaries: [docs/aep-media/adapter-boundaries.md](./docs/aep-media/adapter-boundaries.md)
+- JOSS paper draft: [paper/paper.md](./paper/paper.md)
 - Profile spec: [spec/aep-media-profile-v0.1.md](./spec/aep-media-profile-v0.1.md)
 - Bundle spec: [spec/aep-media-bundle-v0.1.md](./spec/aep-media-bundle-v0.1.md)
 - Time-trace spec: [spec/aep-media-time-trace-v0.1.md](./spec/aep-media-time-trace-v0.1.md)
@@ -156,6 +170,9 @@ Key AEP-Media entry points:
 - Examples: [examples/media/](./examples/media/)
 - Demos: [demo/](./demo/)
 - Reports: [docs/reports/](./docs/reports/)
+- How to cite: [docs/how-to-cite.md](./docs/how-to-cite.md)
+- Contributing: [CONTRIBUTING.md](./CONTRIBUTING.md)
+- Support: [SUPPORT.md](./SUPPORT.md)
 
 ## Fastest LangChain proof
 

@@ -1,0 +1,50 @@
+{
+  "profile": {
+    "name": "aep-media-time-trace",
+    "version": "0.1"
+  },
+  "trace_id": "trace:mobile-video-ntp-like-001",
+  "trace_type": "declared_system_clock_trace",
+  "collection": {
+    "source": "declared_demo",
+    "collector": "fixture-mobile-network-log",
+    "start_utc": "2026-05-10T10:00:00Z",
+    "end_utc": "2026-05-10T10:00:03Z"
+  },
+  "sync": {
+    "declared_source": "system_clock",
+    "sync_status": "declared",
+    "ptp_domain": 0,
+    "grandmaster_id": "fixture-mobile-ntp"
+  },
+  "thresholds": {
+    "max_abs_offset_ns": 1000000,
+    "max_jitter_ns": 1000000
+  },
+  "samples": [
+    {
+      "sample_utc": "2026-05-10T10:00:00Z",
+      "offset_ns": 50,
+      "path_delay_ns": 100,
+      "state": "locked"
+    },
+    {
+      "sample_utc": "2026-05-10T10:00:01Z",
+      "offset_ns": 220,
+      "path_delay_ns": 130,
+      "state": "locked"
+    },
+    {
+      "sample_utc": "2026-05-10T10:00:02Z",
+      "offset_ns": 160,
+      "path_delay_ns": 120,
+      "state": "locked"
+    }
+  ],
+  "summary": {
+    "sample_count": 3,
+    "max_abs_offset_ns": 220,
+    "max_jitter_ns": 170,
+    "within_threshold": true
+  }
+}

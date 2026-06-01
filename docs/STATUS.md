@@ -34,6 +34,28 @@
 - 下一步推荐：
   - 找到真实 reviewer 后，用 agent-readable recruitment issue body 公开创建一个 issue。
 
+## M46 AEP-Media Agent Discoverability Link Sync
+- 状态：完成（Mission 036G）。
+- 目的：
+  - 让 GitHub landing path 可被人和智能体顺着发现：
+    `README.md -> llms.txt -> docs/aep-media/agent-index.md -> mobile-video walkthrough -> external review issue body`。
+  - 最小补 README 中的 agent-readable entry points。
+  - 补 `docs/aep-media/README.md` 的 agent-index、llms、external review task 链接。
+- 本轮边界：
+  - 未改 implementation code。
+  - 未改 validator/schema/adapter/evaluation semantics。
+  - 未提交 JOSS。
+  - 未创建 GitHub issue。
+  - 未触碰 excluded workspace。
+- 额外说明：
+  - 为避免 README / llms / agent-index 在 GitHub 上出现断链，本轮纳入被链接的 AEP-Media docs、mobile-video fixture、adapter README、JOSS paper draft、CONTRIBUTING、SUPPORT 和 mobile fixture regression test。
+- 当前 readiness：
+  - JOSS technical readiness：READY。
+  - JOSS submission readiness：WAITING FOR PUBLIC HISTORY。
+  - Earliest honest JOSS submission date：2026-09-16 or later。
+- 下一步推荐：
+  - 找到真实 reviewer 后，再公开创建一个 recruitment 或 Task A issue。
+
 ## M44 AEP-Media Public Recruitment for External Reproducibility Reviewers
 - 状态：完成（Mission 036D）。
 - 目的：

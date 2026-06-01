@@ -1,0 +1,180 @@
+{
+  "actor": {
+    "id": "actor:mobile-demo-app",
+    "label": "mobile evidence app (fixture)",
+    "type": "agent"
+  },
+  "constraints": [
+    {
+      "id": "constraint:media-hash-required",
+      "rule": "Media artifact sha256 and size must be recomputable.",
+      "type": "media_hash"
+    },
+    {
+      "id": "constraint:time-context-required",
+      "rule": "Primary media must resolve to time_context.id.",
+      "type": "time_context"
+    },
+    {
+      "id": "constraint:clock-trace-required",
+      "rule": "Strict time validation requires a local clock-trace artifact reference.",
+      "type": "clock_trace"
+    },
+    {
+      "id": "constraint:clock-trace-threshold",
+      "rule": "Clock trace summary must remain within declared thresholds.",
+      "type": "clock_trace_threshold"
+    },
+    {
+      "id": "constraint:manifest-reference-closed",
+      "rule": "If a C2PA manifest reference is declared, it must resolve to a media artifact.",
+      "type": "manifest_reference"
+    }
+  ],
+  "evidence": {
+    "artifact_refs": [
+      "artifact:mobile-video-primary",
+      "artifact:mobile-video-c2pa-manifest",
+      "artifact:mobile-video-clock-trace",
+      "artifact:mobile-video-ffprobe-metadata"
+    ],
+    "id": "evidence:mobile-video-capture-demo-001",
+    "notes": "Fixture-based mobile-video workflow demonstrating local bundle validation with declared timing.",
+    "policy_refs": [
+      "policy:mobile-demo-media-evidence-v0"
+    ]
+  },
+  "media": {
+    "artifacts": [
+      {
+        "container": "mp4",
+        "id": "artifact:mobile-video-primary",
+        "mime_type": "video/mp4",
+        "path": "../artifacts/mobile_video_placeholder.bin",
+        "role": "primary_media",
+        "sha256": "d58fdac388a1fecfe4490975d2dd6ade18f9d93e46ce06e3bcf18a9668fa7d6c",
+        "size_bytes": 81,
+        "time_context_ref": "time:mobile-video-declared-demo-001",
+        "timing": {
+          "prft_declared": false,
+          "timecode_declared": false
+        }
+      },
+      {
+        "container": "json",
+        "id": "artifact:mobile-video-c2pa-manifest",
+        "mime_type": "application/json",
+        "path": "../artifacts/provenance_sidecar.json",
+        "role": "sidecar_manifest",
+        "sha256": "557d1b752dc0f72114326664a9a10416a71d2fdd0ea5bebbfec3df7383c59d1a",
+        "size_bytes": 409,
+        "time_context_ref": "time:mobile-video-declared-demo-001",
+        "timing": {
+          "prft_declared": false,
+          "timecode_declared": false
+        }
+      },
+      {
+        "container": "json",
+        "id": "artifact:mobile-video-clock-trace",
+        "mime_type": "application/json",
+        "path": "../artifacts/network_timing_log.json",
+        "role": "clock_trace",
+        "sha256": "7512f7181d88cf12c32f2c9fd0034044a195cb90f3d6888789d4e614649be4ac",
+        "size_bytes": 1138,
+        "time_context_ref": "time:mobile-video-declared-demo-001",
+        "timing": {
+          "prft_declared": false,
+          "timecode_declared": false
+        }
+      },
+      {
+        "container": "json",
+        "id": "artifact:mobile-video-ffprobe-metadata",
+        "mime_type": "application/json",
+        "path": "../artifacts/ffprobe_metadata.json",
+        "role": "other",
+        "sha256": "6ce35898c6a23e4ae3328bd16f65932a97ff6c94766a32102d073820d4920cee",
+        "size_bytes": 669,
+        "time_context_ref": "time:mobile-video-declared-demo-001",
+        "timing": {
+          "prft_declared": false,
+          "timecode_declared": false
+        }
+      }
+    ]
+  },
+  "operation": {
+    "evidence_refs": [
+      "evidence:mobile-video-capture-demo-001"
+    ],
+    "id": "operation:mobile-video-capture-demo-001",
+    "media_refs": [
+      "artifact:mobile-video-primary",
+      "artifact:mobile-video-c2pa-manifest",
+      "artifact:mobile-video-clock-trace",
+      "artifact:mobile-video-ffprobe-metadata"
+    ],
+    "policy_ref": "policy:mobile-demo-media-evidence-v0",
+    "status": "succeeded",
+    "subject_ref": "subject:mobile-inspection-scene-001",
+    "type": "media.capture.declared_demo"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:media-hash-required",
+      "constraint:time-context-required",
+      "constraint:clock-trace-required",
+      "constraint:clock-trace-threshold",
+      "constraint:manifest-reference-closed"
+    ],
+    "id": "policy:mobile-demo-media-evidence-v0",
+    "label": "hash, declared time context, and clock trace required"
+  },
+  "profile": {
+    "name": "aep-media-evidence-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:mobile-demo-app",
+    "c2pa_manifest_ref": "artifact:mobile-video-c2pa-manifest",
+    "claim_generator": "aep-media mobile workflow example fixture",
+    "id": "provenance:mobile-video-capture-demo-001",
+    "media_refs": [
+      "artifact:mobile-video-primary",
+      "artifact:mobile-video-c2pa-manifest",
+      "artifact:mobile-video-clock-trace",
+      "artifact:mobile-video-ffprobe-metadata"
+    ],
+    "operation_ref": "operation:mobile-video-capture-demo-001",
+    "subject_ref": "subject:mobile-inspection-scene-001"
+  },
+  "statement_id": "aep-media:statement:mobile-video-network-timing-demo-001",
+  "subject": {
+    "id": "subject:mobile-inspection-scene-001",
+    "label": "mobile inspection scene",
+    "type": "media-observed-event"
+  },
+  "time_context": {
+    "end_utc": "2026-05-10T10:00:03Z",
+    "id": "time:mobile-video-declared-demo-001",
+    "source": "declared_demo",
+    "start_utc": "2026-05-10T10:00:00Z",
+    "sync_status": "declared"
+  },
+  "timestamp": "2026-05-10T10:00:03Z",
+  "validation": {
+    "expected_result": "pass",
+    "method": "schema+reference+media-hash+declared-time+clock-trace",
+    "required_checks": [
+      "schema_conformance",
+      "reference_closure",
+      "media_hash_recomputation",
+      "time_context_completeness",
+      "clock_trace_reference_closure",
+      "clock_trace_summary_recomputation",
+      "clock_trace_threshold_check"
+    ],
+    "validator": "agent-evidence validate-media-time-profile"
+  }
+}

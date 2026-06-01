@@ -30,6 +30,31 @@
   - Alternative: Mission 037 clean branch / PR hygiene for coherent JOSS
     readiness files.
 
+## M46 AEP-Media Agent Discoverability Link Sync
+- Current state: Mission 036G completed locally.
+- Scope:
+  - README agent-readable entry points;
+  - `docs/aep-media/README.md` link sync;
+  - README agent discoverability patch plan;
+  - Mission 036G audit report;
+  - linked AEP-Media docs, mobile-video fixture, adapter README, JOSS paper
+    draft, contribution/support docs, and mobile fixture regression test to
+    avoid broken GitHub links.
+- Boundaries:
+  - no implementation code changes;
+  - no validator/schema/adapter/evaluation semantic changes;
+  - no JOSS submission;
+  - no GitHub issue created;
+  - no old target upload artifacts staged.
+- Readiness:
+  - JOSS technical readiness: READY.
+  - JOSS submission readiness: WAITING FOR PUBLIC HISTORY.
+- Next mission:
+  - Mission 036H: publish one recruitment issue only after a real reviewer is
+    available or explicit authorization is set.
+  - Alternative: Mission 037 open a PR from the current maintenance branch for
+    review.
+
 ## M44 AEP-Media Public Recruitment for External Reproducibility Reviewers
 - Current state: Mission 036D completed locally.
 - Scope:

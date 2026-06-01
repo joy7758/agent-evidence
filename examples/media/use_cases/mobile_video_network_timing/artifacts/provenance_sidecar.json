@@ -1,0 +1,19 @@
+{
+  "manifest": {
+    "manifest_id": "urn:c2pa:mobile-demo:video-001",
+    "claim_generator": "aep-media-r1-mobile-video-workflow",
+    "signature_status": "declared_valid",
+    "ingredients": [
+      {
+        "title": "inspection-video.mp4",
+        "relationship": "parentOf"
+      }
+    ],
+    "assertions": [
+      {
+        "label": "demo.media.operation",
+        "kind": "fixture"
+      }
+    ]
+  }
+}

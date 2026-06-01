@@ -1,0 +1,37 @@
+{
+  "format": {
+    "filename": "inspection-video.mp4",
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "duration": "3.500000",
+    "size": "173",
+    "tags": {
+      "timecode": "10:00:00:00",
+      "major_brand": "mp42"
+    }
+  },
+  "streams": [
+    {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_type": "video",
+      "duration": "3.5",
+      "tags": {
+        "timecode": "10:00:00:00"
+      }
+    }
+  ],
+  "frames": [
+    {
+      "media_type": "video",
+      "pkt_pts_time": "0.000000"
+    },
+    {
+      "media_type": "video",
+      "pkt_pts_time": "1.750000"
+    },
+    {
+      "media_type": "video",
+      "pkt_pts_time": "3.500000"
+    }
+  ]
+}

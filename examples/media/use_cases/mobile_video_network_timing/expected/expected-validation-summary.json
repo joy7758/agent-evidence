@@ -1,0 +1,34 @@
+{
+  "fixture": "mobile_video_network_timing",
+  "profile": "aep-media-evidence-profile@0.1",
+  "valid_case": {
+    "build_media_bundle": "PASS aep-media-bundle@0.1 build",
+    "validate_media_profile_ok": true,
+    "verify_media_bundle_ok": true,
+    "verify_media_bundle_strict_time_ok": true
+  },
+  "negative_cases": [
+    {
+      "case": "invalid-mobile-video-broken-hash.json",
+      "expected_primary_code": "media_hash_mismatch",
+      "expected_stage": "validate-media-profile"
+    },
+    {
+      "case": "invalid-mobile-video-missing-timing-ref.json",
+      "expected_primary_code": "missing_clock_trace_ref",
+      "expected_stage": "verify-media-bundle --strict-time"
+    },
+    {
+      "case": "invalid-mobile-video-unresolved-provenance-ref.json",
+      "expected_primary_code": "unresolved_actor_ref",
+      "expected_stage": "validate-media-profile"
+    }
+  ],
+  "claim_boundary": [
+    "fixture-only mobile-video-style use case",
+    "no real mobile deployment claim",
+    "no real PTP proof",
+    "no full MP4 PRFT parser claim",
+    "no real C2PA signature verification claim"
+  ]
+}
