@@ -1,5 +1,31 @@
 # 当前状态
 
+## M47 AEP-Media Zenodo Release Timing Decision
+- 状态：完成（Mission 036H）。
+- 结论：
+  - 现在不创建新的 GitHub release。
+  - 现在不创建新的 Zenodo archive。
+  - 现在不申请或填写新的 DOI。
+- 当前 release / DOI：
+  - Current version：`aep-media-v0.1.0`。
+  - Existing DOI：`10.5281/zenodo.20107097`。
+- 原因：
+  - 最近工作主要是 governance、documentation、agent-readable discovery、external reviewer recruitment material。
+  - 这些是有价值的 JOSS waiting-period maintenance artifacts，但还不构成一个干净的维护发布。
+- 下一 release target：
+  - `aep-media-v0.1.1`。
+- 触发条件：
+  - mobile-video walkthrough merged。
+  - adapter-boundary docs merged。
+  - mobile-video fixture regression tests merged。
+  - CI status documented。
+  - 至少一个 meaningful issue / PR / external reproducibility review recorded。
+  - `CHANGELOG.md` updated。
+- 当前 readiness：
+  - JOSS technical readiness：READY。
+  - JOSS submission readiness：WAITING FOR PUBLIC HISTORY。
+  - Earliest honest JOSS submission date：2026-09-16 or later。
+
 ## M45 AEP-Media Agent-Readable Public Recruitment Rewrite
 - 状态：完成（Mission 036F）。
 - 目的：

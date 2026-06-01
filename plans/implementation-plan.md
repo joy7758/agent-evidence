@@ -1,5 +1,34 @@
 # implementation plan
 
+## M47 AEP-Media Zenodo Release Timing Decision
+- Current state: Mission 036H completed locally.
+- Decision:
+  - do not create a new GitHub release now;
+  - do not create a new Zenodo archive now;
+  - do not invent or record a new DOI.
+- Existing release metadata:
+  - current version: `aep-media-v0.1.0`;
+  - existing AEP-Media DOI: `10.5281/zenodo.20107097`.
+- Rationale:
+  - recent changes are governance, documentation, agent-readable discovery, and
+    external-review preparation;
+  - wait for a coherent maintenance release with public development evidence.
+- Next release target:
+  - `aep-media-v0.1.1`.
+- Trigger conditions:
+  - mobile-video walkthrough merged;
+  - adapter-boundary docs merged;
+  - mobile-video fixture regression tests merged;
+  - CI status documented;
+  - at least one meaningful issue / PR / external reproducibility review
+    recorded;
+  - `CHANGELOG.md` updated.
+- Expected archive route:
+  - GitHub release -> Zenodo archive -> DOI recorded in release metadata.
+- Readiness:
+  - JOSS technical readiness: READY.
+  - JOSS submission readiness: WAITING FOR PUBLIC HISTORY.
+
 ## M45 AEP-Media Agent-Readable Public Recruitment Rewrite
 - Current state: Mission 036F completed locally.
 - Scope:
