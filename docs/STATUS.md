@@ -49,6 +49,13 @@
   - 未触碰 excluded workspace。
 - 额外说明：
   - 为避免 README / llms / agent-index 在 GitHub 上出现断链，本轮纳入被链接的 AEP-Media docs、mobile-video fixture、adapter README、JOSS paper draft、CONTRIBUTING、SUPPORT 和 mobile fixture regression test。
+- 验证：
+  - `git diff --check`：PASS。
+  - Mobile fixture regression tests：`6 passed`。
+  - Red-line scan：PASS。
+- Commit / push：
+  - Discoverability commit：`a794d57 Link agent-readable AEP-Media entry points`。
+  - 已推送到 `origin/opentelemetry-to-eeoap-adapter`。
 - 当前 readiness：
   - JOSS technical readiness：READY。
   - JOSS submission readiness：WAITING FOR PUBLIC HISTORY。

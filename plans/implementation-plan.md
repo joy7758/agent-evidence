@@ -46,6 +46,13 @@
   - no JOSS submission;
   - no GitHub issue created;
   - no old target upload artifacts staged.
+- Validation:
+  - `git diff --check`: PASS.
+  - Mobile fixture regression tests: `6 passed`.
+  - Red-line scan: PASS.
+- Commit / push:
+  - Discoverability commit: `a794d57 Link agent-readable AEP-Media entry points`.
+  - Pushed to `origin/opentelemetry-to-eeoap-adapter`.
 - Readiness:
   - JOSS technical readiness: READY.
   - JOSS submission readiness: WAITING FOR PUBLIC HISTORY.

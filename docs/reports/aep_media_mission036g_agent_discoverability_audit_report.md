@@ -115,7 +115,8 @@ Restricted claim-boundary terms appear only in explicit non-claim contexts.
 
 ## 8. Commit Hash
 
-Pending scoped commit.
+- Discoverability commit: `a794d57 Link agent-readable AEP-Media entry points`
+- Push status: pushed to `origin/opentelemetry-to-eeoap-adapter`
 
 ## 9. Readiness
 
