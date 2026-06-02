@@ -1,0 +1,23 @@
+[
+  {
+    "baseline": "schema-only",
+    "detects": "JSON structural violations.",
+    "missed_invalid_count": 15,
+    "misses": "Relation, policy/evidence, provenance/output, validation/provenance, digest, and case-semantic failures.",
+    "safe_claim": "Schema-only validation is insufficient for relation-level operation-accountability review."
+  },
+  {
+    "baseline": "log-only",
+    "detects": "Presence of a fixture operation event.",
+    "missed_invalid_count": 15,
+    "misses": "Policy/evidence linkage, output/provenance closure, validation closure, and integrity.",
+    "safe_claim": "Logs are useful event evidence but do not close the accountability boundary."
+  },
+  {
+    "baseline": "policy-only",
+    "detects": "Local policy rule mismatches represented in the policy file.",
+    "missed_invalid_count": 13,
+    "misses": "Evidence, provenance, output closure, and digest failures.",
+    "safe_claim": "Policy-only review is partial and does not prove operation evidence closure."
+  }
+]

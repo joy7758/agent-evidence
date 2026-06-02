@@ -1,0 +1,118 @@
+{
+  "actor": {
+    "id": "actor:issue_pr_metadata:provenance_output_mismatch:runner",
+    "name": "repo-triage-bot",
+    "runtime": "representative-local-fixture",
+    "type": "automation"
+  },
+  "constraints": [
+    {
+      "description": "Only allowed triage labels may be applied to the issue fixture.",
+      "id": "constraint:case-rule"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:operation-log",
+        "digest": "sha256:cace8f5a5ef7af9a7edb965e3d9f8e104b1dcc592706a1d2af26d6caa1cc3b8b",
+        "locator": "urn:se-case:issue_pr_metadata:provenance_output_mismatch:operation-log",
+        "type": "operation-log"
+      },
+      {
+        "artifact_id": "artifact:policy",
+        "digest": "sha256:2e45f083a8b54889714f0a6b0d1eac6dea2bd3002b14a47f0314bdddbdb7d204",
+        "locator": "urn:se-case:issue_pr_metadata:provenance_output_mismatch:policy",
+        "type": "policy"
+      },
+      {
+        "artifact_id": "artifact:evidence",
+        "digest": "sha256:c7899054f480ecf6e4ae974328f91890a473236150ce71dc3cfacd1d720220b5",
+        "locator": "urn:se-case:issue_pr_metadata:provenance_output_mismatch:evidence",
+        "type": "case-evidence"
+      }
+    ],
+    "id": "evidence:issue_pr_metadata:provenance_output_mismatch",
+    "integrity": {
+      "artifacts_digest": "sha256:7273a944b37997706cbf88065b3c649983cea5a15166499db32e88f90fa399a8",
+      "references_digest": "sha256:8d75bf0f21f5f5730df29313f531b03e38695ec8532cdd04ee42cf2b582eacb7",
+      "statement_digest": "sha256:889d70131b940ad7cd77da44470900d35ee86c85421fd6824cc88c1f4092a0a0"
+    },
+    "operation_ref": "op:issue_pr_metadata:provenance_output_mismatch",
+    "policy_ref": "policy:issue_pr_metadata:provenance_output_mismatch",
+    "references": [
+      {
+        "digest": "sha256:97b9924562598f172978986291bab0158fb245e26c78afdb5436fb31997b257b",
+        "locator": "urn:se-case:issue_pr_metadata:provenance_output_mismatch:input",
+        "object_id": "obj:issue_pr_metadata:provenance_output_mismatch:subject",
+        "ref_id": "ref:input",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:d60442513b67ddae429d155af075153bd3c66a29b36ff3c04388d4ff9cae804a",
+        "locator": "urn:se-case:issue_pr_metadata:provenance_output_mismatch:output",
+        "object_id": "obj:issue_pr_metadata:provenance_output_mismatch:output",
+        "ref_id": "ref:output",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:issue_pr_metadata:provenance_output_mismatch:subject"
+  },
+  "operation": {
+    "description": "Issue update with provenance/output mismatch",
+    "id": "op:issue_pr_metadata:provenance_output_mismatch",
+    "input_refs": [
+      "ref:input"
+    ],
+    "output_refs": [
+      "ref:output"
+    ],
+    "policy_ref": "policy:issue_pr_metadata:provenance_output_mismatch",
+    "result": {
+      "status": "succeeded",
+      "summary": "Issue update with provenance/output mismatch"
+    },
+    "subject_ref": "obj:issue_pr_metadata:provenance_output_mismatch:subject",
+    "type": "repository.issue_metadata_update"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:case-rule"
+    ],
+    "id": "policy:issue_pr_metadata:provenance_output_mismatch",
+    "name": "repository-triage-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:issue_pr_metadata:provenance_output_mismatch:runner",
+    "id": "prov:issue_pr_metadata:provenance_output_mismatch",
+    "input_refs": [
+      "ref:input"
+    ],
+    "operation_ref": "op:issue_pr_metadata:provenance_output_mismatch",
+    "output_refs": [
+      "ref:stale-output"
+    ],
+    "subject_ref": "obj:issue_pr_metadata:provenance_output_mismatch:subject"
+  },
+  "statement_id": "eeoap:issue_pr_metadata:provenance_output_mismatch",
+  "subject": {
+    "digest": "sha256:97b9924562598f172978986291bab0158fb245e26c78afdb5436fb31997b257b",
+    "id": "obj:issue_pr_metadata:provenance_output_mismatch:subject",
+    "locator": "urn:se-case:issue_pr_metadata:provenance_output_mismatch:subject",
+    "type": "repository-issue"
+  },
+  "timestamp": "2026-06-02T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:issue_pr_metadata:provenance_output_mismatch",
+    "id": "validation:issue_pr_metadata:provenance_output_mismatch",
+    "method": "schema+reference+consistency+integrity+case-adapter",
+    "policy_ref": "policy:issue_pr_metadata:provenance_output_mismatch",
+    "provenance_ref": "prov:issue_pr_metadata:provenance_output_mismatch",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

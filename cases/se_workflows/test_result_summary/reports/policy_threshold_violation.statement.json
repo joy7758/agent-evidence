@@ -1,0 +1,118 @@
+{
+  "actor": {
+    "id": "actor:test_result_summary:policy_threshold_violation:runner",
+    "name": "test-summary-generator",
+    "runtime": "representative-local-fixture",
+    "type": "automation"
+  },
+  "constraints": [
+    {
+      "description": "Test summary must match the raw test result and release gate threshold.",
+      "id": "constraint:case-rule"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:operation-log",
+        "digest": "sha256:323dbcb0ff2e059a1d4ab983c63696944e1a0ffd5cf3110e974b6a437cfbacfa",
+        "locator": "urn:se-case:test_result_summary:policy_threshold_violation:operation-log",
+        "type": "operation-log"
+      },
+      {
+        "artifact_id": "artifact:policy",
+        "digest": "sha256:1d53fc3ff488273d1fdbbe4c6716379327bdb608b25914c5c13c985f5e73fa1f",
+        "locator": "urn:se-case:test_result_summary:policy_threshold_violation:policy",
+        "type": "policy"
+      },
+      {
+        "artifact_id": "artifact:evidence",
+        "digest": "sha256:fbcad3c42117f7eb325aa050f96b87b88cd247cc8b9ef1681fb03b5071aa6dd7",
+        "locator": "urn:se-case:test_result_summary:policy_threshold_violation:evidence",
+        "type": "case-evidence"
+      }
+    ],
+    "id": "evidence:test_result_summary:policy_threshold_violation",
+    "integrity": {
+      "artifacts_digest": "sha256:ce22bec289b92467a0edc86c73ed71000a133860c7a7b110c523c8f4974ffadf",
+      "references_digest": "sha256:9a65863f6fde0bce5bb7f2ae23071a1a365f6f1eb548eb3750e65dc047add315",
+      "statement_digest": "sha256:1539ee1ba7afcb51137e12f86a370c189da88ee9fb1852d461071cf87884419f"
+    },
+    "operation_ref": "op:test_result_summary:policy_threshold_violation",
+    "policy_ref": "policy:test_result_summary:policy_threshold_violation",
+    "references": [
+      {
+        "digest": "sha256:464ed35f5a699b394d84813a071c2f17df1fa5a6327434c20b5121f96cb1bfec",
+        "locator": "urn:se-case:test_result_summary:policy_threshold_violation:input",
+        "object_id": "obj:test_result_summary:policy_threshold_violation:subject",
+        "ref_id": "ref:input",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:b4ac000a8c4867708e3d4bd625b152701c824f47b38862288137aa22997056b4",
+        "locator": "urn:se-case:test_result_summary:policy_threshold_violation:output",
+        "object_id": "obj:test_result_summary:policy_threshold_violation:output",
+        "ref_id": "ref:output",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:test_result_summary:policy_threshold_violation:subject"
+  },
+  "operation": {
+    "description": "Test summary violates failed-test threshold",
+    "id": "op:test_result_summary:policy_threshold_violation",
+    "input_refs": [
+      "ref:input"
+    ],
+    "output_refs": [
+      "ref:output"
+    ],
+    "policy_ref": "policy:test_result_summary:policy_threshold_violation",
+    "result": {
+      "status": "succeeded",
+      "summary": "Test summary violates failed-test threshold"
+    },
+    "subject_ref": "obj:test_result_summary:policy_threshold_violation:subject",
+    "type": "test.result_summarize"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:case-rule"
+    ],
+    "id": "policy:test_result_summary:policy_threshold_violation",
+    "name": "test-summary-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:test_result_summary:policy_threshold_violation:runner",
+    "id": "prov:test_result_summary:policy_threshold_violation",
+    "input_refs": [
+      "ref:input"
+    ],
+    "operation_ref": "op:test_result_summary:policy_threshold_violation",
+    "output_refs": [
+      "ref:output"
+    ],
+    "subject_ref": "obj:test_result_summary:policy_threshold_violation:subject"
+  },
+  "statement_id": "eeoap:test_result_summary:policy_threshold_violation",
+  "subject": {
+    "digest": "sha256:464ed35f5a699b394d84813a071c2f17df1fa5a6327434c20b5121f96cb1bfec",
+    "id": "obj:test_result_summary:policy_threshold_violation:subject",
+    "locator": "urn:se-case:test_result_summary:policy_threshold_violation:subject",
+    "type": "test-run"
+  },
+  "timestamp": "2026-06-02T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:test_result_summary:policy_threshold_violation",
+    "id": "validation:test_result_summary:policy_threshold_violation",
+    "method": "schema+reference+consistency+integrity+case-adapter",
+    "policy_ref": "policy:test_result_summary:policy_threshold_violation",
+    "provenance_ref": "prov:test_result_summary:policy_threshold_violation",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

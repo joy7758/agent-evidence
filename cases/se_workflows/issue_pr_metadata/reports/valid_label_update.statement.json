@@ -1,0 +1,118 @@
+{
+  "actor": {
+    "id": "actor:issue_pr_metadata:valid_label_update:runner",
+    "name": "repo-triage-bot",
+    "runtime": "representative-local-fixture",
+    "type": "automation"
+  },
+  "constraints": [
+    {
+      "description": "Only allowed triage labels may be applied to the issue fixture.",
+      "id": "constraint:case-rule"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:operation-log",
+        "digest": "sha256:cace8f5a5ef7af9a7edb965e3d9f8e104b1dcc592706a1d2af26d6caa1cc3b8b",
+        "locator": "urn:se-case:issue_pr_metadata:valid_label_update:operation-log",
+        "type": "operation-log"
+      },
+      {
+        "artifact_id": "artifact:policy",
+        "digest": "sha256:2e45f083a8b54889714f0a6b0d1eac6dea2bd3002b14a47f0314bdddbdb7d204",
+        "locator": "urn:se-case:issue_pr_metadata:valid_label_update:policy",
+        "type": "policy"
+      },
+      {
+        "artifact_id": "artifact:evidence",
+        "digest": "sha256:c7899054f480ecf6e4ae974328f91890a473236150ce71dc3cfacd1d720220b5",
+        "locator": "urn:se-case:issue_pr_metadata:valid_label_update:evidence",
+        "type": "case-evidence"
+      }
+    ],
+    "id": "evidence:issue_pr_metadata:valid_label_update",
+    "integrity": {
+      "artifacts_digest": "sha256:60af066bc228ac6e81735624d02ebbdc129617ef9d6816e3d305ac900f840ca9",
+      "references_digest": "sha256:508608499d42c94b1f8785deb6d00badce978961e5a348d5cbaca20774da27ce",
+      "statement_digest": "sha256:04bc4a0b894818676f5e58796bc22ab9e71a78dc61a0bb8d137bff07d7622afc"
+    },
+    "operation_ref": "op:issue_pr_metadata:valid_label_update",
+    "policy_ref": "policy:issue_pr_metadata:valid_label_update",
+    "references": [
+      {
+        "digest": "sha256:97b9924562598f172978986291bab0158fb245e26c78afdb5436fb31997b257b",
+        "locator": "urn:se-case:issue_pr_metadata:valid_label_update:input",
+        "object_id": "obj:issue_pr_metadata:valid_label_update:subject",
+        "ref_id": "ref:input",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:d60442513b67ddae429d155af075153bd3c66a29b36ff3c04388d4ff9cae804a",
+        "locator": "urn:se-case:issue_pr_metadata:valid_label_update:output",
+        "object_id": "obj:issue_pr_metadata:valid_label_update:output",
+        "ref_id": "ref:output",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:issue_pr_metadata:valid_label_update:subject"
+  },
+  "operation": {
+    "description": "Valid issue metadata update under triage policy",
+    "id": "op:issue_pr_metadata:valid_label_update",
+    "input_refs": [
+      "ref:input"
+    ],
+    "output_refs": [
+      "ref:output"
+    ],
+    "policy_ref": "policy:issue_pr_metadata:valid_label_update",
+    "result": {
+      "status": "succeeded",
+      "summary": "Valid issue metadata update under triage policy"
+    },
+    "subject_ref": "obj:issue_pr_metadata:valid_label_update:subject",
+    "type": "repository.issue_metadata_update"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:case-rule"
+    ],
+    "id": "policy:issue_pr_metadata:valid_label_update",
+    "name": "repository-triage-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:issue_pr_metadata:valid_label_update:runner",
+    "id": "prov:issue_pr_metadata:valid_label_update",
+    "input_refs": [
+      "ref:input"
+    ],
+    "operation_ref": "op:issue_pr_metadata:valid_label_update",
+    "output_refs": [
+      "ref:output"
+    ],
+    "subject_ref": "obj:issue_pr_metadata:valid_label_update:subject"
+  },
+  "statement_id": "eeoap:issue_pr_metadata:valid_label_update",
+  "subject": {
+    "digest": "sha256:97b9924562598f172978986291bab0158fb245e26c78afdb5436fb31997b257b",
+    "id": "obj:issue_pr_metadata:valid_label_update:subject",
+    "locator": "urn:se-case:issue_pr_metadata:valid_label_update:subject",
+    "type": "repository-issue"
+  },
+  "timestamp": "2026-06-02T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:issue_pr_metadata:valid_label_update",
+    "id": "validation:issue_pr_metadata:valid_label_update",
+    "method": "schema+reference+consistency+integrity+case-adapter",
+    "policy_ref": "policy:issue_pr_metadata:valid_label_update",
+    "provenance_ref": "prov:issue_pr_metadata:valid_label_update",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "baseline_results": {
+    "log_only": {
+      "baseline": "log-only",
+      "capability_boundary": "Checks whether the operation event is present in the fixture log. It does not prove policy/evidence linkage, provenance/output closure, or integrity.",
+      "event_present": true,
+      "issues": [],
+      "ok": true
+    },
+    "policy_only": {
+      "baseline": "policy-only",
+      "capability_boundary": "Checks only local policy rule fields. It does not prove evidence, provenance, output closure, validation closure, or digest consistency.",
+      "issues": [],
+      "ok": true
+    },
+    "schema_only": {
+      "baseline": "schema-only",
+      "capability_boundary": "Structural JSON Schema validation only; no reference, policy/evidence, provenance/output, validation/provenance, digest, or case-semantic checks.",
+      "issues": [],
+      "ok": true
+    }
+  },
+  "case_id": "test_result_summary",
+  "case_name": "Test summary has wrong count",
+  "core_profile_report": {
+    "fail_fast": true,
+    "issue_count": 0,
+    "issue_summary": {
+      "by_code": {},
+      "by_stage": {}
+    },
+    "issues": [],
+    "ok": true,
+    "primary_error_code": null,
+    "profile": "execution-evidence-operation-accountability-profile@0.1",
+    "source": "/Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/test_result_summary/reports/wrong_count.statement.json",
+    "stages": [
+      {
+        "issues": [],
+        "name": "schema",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "references",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "consistency",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "integrity",
+        "ok": true,
+        "skipped": false
+      }
+    ],
+    "summary": [
+      "PASS execution-evidence-operation-accountability-profile@0.1 /Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/test_result_summary/reports/wrong_count.statement.json"
+    ]
+  },
+  "diagnostic_match": true,
+  "expected_primary_error_code": "test_summary_count_mismatch",
+  "expected_validity": false,
+  "interpretation": "Count mismatch is outside plain JSON shape and requires case semantics.",
+  "observed_primary_error_code": "test_summary_count_mismatch",
+  "observed_validity": false,
+  "operation_type": "test.result_summarize",
+  "privacy_classification": "generated-public-style-fixture",
+  "profile_aware_result": {
+    "case_semantic_issues": [
+      {
+        "code": "test_summary_count_mismatch",
+        "message": "summary skipped count does not match raw test result.",
+        "path": "payloads.output.summary.skipped",
+        "stage": "case_semantics"
+      }
+    ],
+    "core_profile_ok": true,
+    "core_profile_primary_error_code": null,
+    "ok": false,
+    "primary_error_code": "test_summary_count_mismatch"
+  },
+  "source_type": "representative reproducible SE workflow fixture",
+  "variant_id": "wrong_count"
+}

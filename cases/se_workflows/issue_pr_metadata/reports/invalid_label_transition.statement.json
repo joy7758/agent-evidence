@@ -1,0 +1,118 @@
+{
+  "actor": {
+    "id": "actor:issue_pr_metadata:invalid_label_transition:runner",
+    "name": "repo-triage-bot",
+    "runtime": "representative-local-fixture",
+    "type": "automation"
+  },
+  "constraints": [
+    {
+      "description": "Only allowed triage labels may be applied to the issue fixture.",
+      "id": "constraint:case-rule"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:operation-log",
+        "digest": "sha256:cace8f5a5ef7af9a7edb965e3d9f8e104b1dcc592706a1d2af26d6caa1cc3b8b",
+        "locator": "urn:se-case:issue_pr_metadata:invalid_label_transition:operation-log",
+        "type": "operation-log"
+      },
+      {
+        "artifact_id": "artifact:policy",
+        "digest": "sha256:2e45f083a8b54889714f0a6b0d1eac6dea2bd3002b14a47f0314bdddbdb7d204",
+        "locator": "urn:se-case:issue_pr_metadata:invalid_label_transition:policy",
+        "type": "policy"
+      },
+      {
+        "artifact_id": "artifact:evidence",
+        "digest": "sha256:0b922b968fc4edce75019e1cc2815e5cb9db8dd63d4d9e64dac9be641af1c110",
+        "locator": "urn:se-case:issue_pr_metadata:invalid_label_transition:evidence",
+        "type": "case-evidence"
+      }
+    ],
+    "id": "evidence:issue_pr_metadata:invalid_label_transition",
+    "integrity": {
+      "artifacts_digest": "sha256:e97ef7815fa25d00b2130f954bb36c675e5a31501e8275dd70b7b843574d6a66",
+      "references_digest": "sha256:3c9988be060649ac67670fd9e9c3088140b79d939069a5cb2829e635e14cdd4c",
+      "statement_digest": "sha256:9084f0c35ed7d53fcfb76a541fb4cc918ac5728baadb3209cb9de90016236115"
+    },
+    "operation_ref": "op:issue_pr_metadata:invalid_label_transition",
+    "policy_ref": "policy:issue_pr_metadata:invalid_label_transition",
+    "references": [
+      {
+        "digest": "sha256:97b9924562598f172978986291bab0158fb245e26c78afdb5436fb31997b257b",
+        "locator": "urn:se-case:issue_pr_metadata:invalid_label_transition:input",
+        "object_id": "obj:issue_pr_metadata:invalid_label_transition:subject",
+        "ref_id": "ref:input",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:46a60afe086c3ab4416ec621e125e453bd3e5e6227e259e8fe2d21f5b08ea6cb",
+        "locator": "urn:se-case:issue_pr_metadata:invalid_label_transition:output",
+        "object_id": "obj:issue_pr_metadata:invalid_label_transition:output",
+        "ref_id": "ref:output",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:issue_pr_metadata:invalid_label_transition:subject"
+  },
+  "operation": {
+    "description": "Issue update with disallowed label transition",
+    "id": "op:issue_pr_metadata:invalid_label_transition",
+    "input_refs": [
+      "ref:input"
+    ],
+    "output_refs": [
+      "ref:output"
+    ],
+    "policy_ref": "policy:issue_pr_metadata:invalid_label_transition",
+    "result": {
+      "status": "succeeded",
+      "summary": "Issue update with disallowed label transition"
+    },
+    "subject_ref": "obj:issue_pr_metadata:invalid_label_transition:subject",
+    "type": "repository.issue_metadata_update"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:case-rule"
+    ],
+    "id": "policy:issue_pr_metadata:invalid_label_transition",
+    "name": "repository-triage-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:issue_pr_metadata:invalid_label_transition:runner",
+    "id": "prov:issue_pr_metadata:invalid_label_transition",
+    "input_refs": [
+      "ref:input"
+    ],
+    "operation_ref": "op:issue_pr_metadata:invalid_label_transition",
+    "output_refs": [
+      "ref:output"
+    ],
+    "subject_ref": "obj:issue_pr_metadata:invalid_label_transition:subject"
+  },
+  "statement_id": "eeoap:issue_pr_metadata:invalid_label_transition",
+  "subject": {
+    "digest": "sha256:97b9924562598f172978986291bab0158fb245e26c78afdb5436fb31997b257b",
+    "id": "obj:issue_pr_metadata:invalid_label_transition:subject",
+    "locator": "urn:se-case:issue_pr_metadata:invalid_label_transition:subject",
+    "type": "repository-issue"
+  },
+  "timestamp": "2026-06-02T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:issue_pr_metadata:invalid_label_transition",
+    "id": "validation:issue_pr_metadata:invalid_label_transition",
+    "method": "schema+reference+consistency+integrity+case-adapter",
+    "policy_ref": "policy:issue_pr_metadata:invalid_label_transition",
+    "provenance_ref": "prov:issue_pr_metadata:invalid_label_transition",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

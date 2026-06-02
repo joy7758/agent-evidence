@@ -1,0 +1,112 @@
+{
+  "actor": {
+    "name": "test-summary-generator"
+  },
+  "baseline_expectations": {
+    "log_only": "event presence only",
+    "policy_only": "local policy fields only",
+    "schema_only": "structural only"
+  },
+  "case_id": "test_result_summary",
+  "case_name": "Test summary violates failed-test threshold",
+  "evidence_payload": {
+    "summary": "1 passed, 2 failed, 1 skipped"
+  },
+  "evidence_refs": [
+    "artifact:operation-log",
+    "artifact:policy",
+    "artifact:evidence"
+  ],
+  "expected_primary_error_code": "test_summary_count_mismatch",
+  "expected_validity": false,
+  "ids": {
+    "actor": "actor:test_result_summary:policy_threshold_violation:runner",
+    "evidence": "evidence:test_result_summary:policy_threshold_violation",
+    "operation": "op:test_result_summary:policy_threshold_violation",
+    "output": "obj:test_result_summary:policy_threshold_violation:output",
+    "policy": "policy:test_result_summary:policy_threshold_violation",
+    "provenance": "prov:test_result_summary:policy_threshold_violation",
+    "subject": "obj:test_result_summary:policy_threshold_violation:subject",
+    "validation": "validation:test_result_summary:policy_threshold_violation"
+  },
+  "input_refs": [
+    "ref:input"
+  ],
+  "integrity_refs": [
+    "evidence.integrity"
+  ],
+  "interpretation": "Case semantics first catch the inconsistent raw-summary count before threshold interpretation.",
+  "mutation": {
+    "kind": "policy_threshold_violation"
+  },
+  "operation_id": "op:test_result_summary:policy_threshold_violation",
+  "operation_payload": {
+    "log": {
+      "event": "test.summary.generate",
+      "event_present": true,
+      "run_id": "RUN-12"
+    },
+    "summary": "Test summary violates failed-test threshold"
+  },
+  "operation_type": "test.result_summarize",
+  "output_refs": [
+    "ref:output"
+  ],
+  "payloads": {
+    "input": {
+      "run_id": "RUN-12",
+      "tests": [
+        {
+          "name": "test_schema",
+          "outcome": "passed"
+        },
+        {
+          "name": "test_references",
+          "outcome": "passed"
+        },
+        {
+          "name": "test_policy_gate",
+          "outcome": "failed"
+        },
+        {
+          "name": "test_report",
+          "outcome": "skipped"
+        }
+      ]
+    },
+    "output": {
+      "run_id": "RUN-12",
+      "summary": {
+        "failed": 2,
+        "passed": 1,
+        "skipped": 1
+      }
+    }
+  },
+  "policy_payload": {
+    "description": "Test summary must match the raw test result and release gate threshold.",
+    "max_failed_tests": 1,
+    "name": "test-summary-policy"
+  },
+  "policy_refs": [
+    "policy:case"
+  ],
+  "privacy_classification": "generated-public-style-fixture",
+  "provenance_payload": {
+    "input_ref": "ref:input",
+    "output_ref": "ref:output",
+    "relation": "derived_from"
+  },
+  "provenance_refs": [
+    "prov:case"
+  ],
+  "reproducibility_notes": "Generated locally; no private, clinical, customer, or scraped issue data.",
+  "source_type": "representative reproducible SE workflow fixture",
+  "subject": {
+    "type": "test-run"
+  },
+  "validation_refs": [
+    "validation:case"
+  ],
+  "variant_id": "policy_threshold_violation"
+}

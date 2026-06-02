@@ -1,0 +1,118 @@
+{
+  "actor": {
+    "id": "actor:test_result_summary:digest_mismatch:runner",
+    "name": "test-summary-generator",
+    "runtime": "representative-local-fixture",
+    "type": "automation"
+  },
+  "constraints": [
+    {
+      "description": "Test summary must match the raw test result and release gate threshold.",
+      "id": "constraint:case-rule"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:operation-log",
+        "digest": "sha256:323dbcb0ff2e059a1d4ab983c63696944e1a0ffd5cf3110e974b6a437cfbacfa",
+        "locator": "urn:se-case:test_result_summary:digest_mismatch:operation-log",
+        "type": "operation-log"
+      },
+      {
+        "artifact_id": "artifact:policy",
+        "digest": "sha256:1d53fc3ff488273d1fdbbe4c6716379327bdb608b25914c5c13c985f5e73fa1f",
+        "locator": "urn:se-case:test_result_summary:digest_mismatch:policy",
+        "type": "policy"
+      },
+      {
+        "artifact_id": "artifact:evidence",
+        "digest": "sha256:7650e87795f175ee419fd44f0bcf7c460ea18bff3d4f972b9d17ccfaf38473d2",
+        "locator": "urn:se-case:test_result_summary:digest_mismatch:evidence",
+        "type": "case-evidence"
+      }
+    ],
+    "id": "evidence:test_result_summary:digest_mismatch",
+    "integrity": {
+      "artifacts_digest": "sha256:8e496c39c691c63eb24d362039d5a305bae95b712a4d3b95ecc1a30478c4a2b9",
+      "references_digest": "sha256:7b512ee0fba246d87be54b9b6ae66efa72717aba00e605f4bac11548338f7aed",
+      "statement_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    },
+    "operation_ref": "op:test_result_summary:digest_mismatch",
+    "policy_ref": "policy:test_result_summary:digest_mismatch",
+    "references": [
+      {
+        "digest": "sha256:464ed35f5a699b394d84813a071c2f17df1fa5a6327434c20b5121f96cb1bfec",
+        "locator": "urn:se-case:test_result_summary:digest_mismatch:input",
+        "object_id": "obj:test_result_summary:digest_mismatch:subject",
+        "ref_id": "ref:input",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:6aa437a9ab56173cf538dba380f76c91ef2e6a7883c90b1b74ba1cd876d3af8d",
+        "locator": "urn:se-case:test_result_summary:digest_mismatch:output",
+        "object_id": "obj:test_result_summary:digest_mismatch:output",
+        "ref_id": "ref:output",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:test_result_summary:digest_mismatch:subject"
+  },
+  "operation": {
+    "description": "Test summary with digest mismatch",
+    "id": "op:test_result_summary:digest_mismatch",
+    "input_refs": [
+      "ref:input"
+    ],
+    "output_refs": [
+      "ref:output"
+    ],
+    "policy_ref": "policy:test_result_summary:digest_mismatch",
+    "result": {
+      "status": "succeeded",
+      "summary": "Test summary with digest mismatch"
+    },
+    "subject_ref": "obj:test_result_summary:digest_mismatch:subject",
+    "type": "test.result_summarize"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:case-rule"
+    ],
+    "id": "policy:test_result_summary:digest_mismatch",
+    "name": "test-summary-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:test_result_summary:digest_mismatch:runner",
+    "id": "prov:test_result_summary:digest_mismatch",
+    "input_refs": [
+      "ref:input"
+    ],
+    "operation_ref": "op:test_result_summary:digest_mismatch",
+    "output_refs": [
+      "ref:output"
+    ],
+    "subject_ref": "obj:test_result_summary:digest_mismatch:subject"
+  },
+  "statement_id": "eeoap:test_result_summary:digest_mismatch",
+  "subject": {
+    "digest": "sha256:464ed35f5a699b394d84813a071c2f17df1fa5a6327434c20b5121f96cb1bfec",
+    "id": "obj:test_result_summary:digest_mismatch:subject",
+    "locator": "urn:se-case:test_result_summary:digest_mismatch:subject",
+    "type": "test-run"
+  },
+  "timestamp": "2026-06-02T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:test_result_summary:digest_mismatch",
+    "id": "validation:test_result_summary:digest_mismatch",
+    "method": "schema+reference+consistency+integrity+case-adapter",
+    "policy_ref": "policy:test_result_summary:digest_mismatch",
+    "provenance_ref": "prov:test_result_summary:digest_mismatch",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

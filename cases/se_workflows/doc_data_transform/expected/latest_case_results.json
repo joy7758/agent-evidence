@@ -1,0 +1,597 @@
+[
+  {
+    "baseline_results": {
+      "log_only": {
+        "baseline": "log-only",
+        "capability_boundary": "Checks whether the operation event is present in the fixture log. It does not prove policy/evidence linkage, provenance/output closure, or integrity.",
+        "event_present": true,
+        "issues": [],
+        "ok": true
+      },
+      "policy_only": {
+        "baseline": "policy-only",
+        "capability_boundary": "Checks only local policy rule fields. It does not prove evidence, provenance, output closure, validation closure, or digest consistency.",
+        "issues": [],
+        "ok": true
+      },
+      "schema_only": {
+        "baseline": "schema-only",
+        "capability_boundary": "Structural JSON Schema validation only; no reference, policy/evidence, provenance/output, validation/provenance, digest, or case-semantic checks.",
+        "issues": [],
+        "ok": true
+      }
+    },
+    "case_id": "doc_data_transform",
+    "case_name": "Valid documentation metadata generation",
+    "core_profile_report": {
+      "fail_fast": true,
+      "issue_count": 0,
+      "issue_summary": {
+        "by_code": {},
+        "by_stage": {}
+      },
+      "issues": [],
+      "ok": true,
+      "primary_error_code": null,
+      "profile": "execution-evidence-operation-accountability-profile@0.1",
+      "source": "/Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/valid_doc_metadata.statement.json",
+      "stages": [
+        {
+          "issues": [],
+          "name": "schema",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "references",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "consistency",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "integrity",
+          "ok": true,
+          "skipped": false
+        }
+      ],
+      "summary": [
+        "PASS execution-evidence-operation-accountability-profile@0.1 /Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/valid_doc_metadata.statement.json"
+      ]
+    },
+    "diagnostic_match": true,
+    "expected_primary_error_code": null,
+    "expected_validity": true,
+    "interpretation": "Valid transformation links source, rule, generated metadata, provenance, and digest.",
+    "observed_primary_error_code": null,
+    "observed_validity": true,
+    "operation_type": "documentation.metadata_transform",
+    "privacy_classification": "generated-public-style-fixture",
+    "profile_aware_result": {
+      "case_semantic_issues": [],
+      "core_profile_ok": true,
+      "core_profile_primary_error_code": null,
+      "ok": true,
+      "primary_error_code": null
+    },
+    "source_type": "representative reproducible SE workflow fixture",
+    "variant_id": "valid_doc_metadata"
+  },
+  {
+    "baseline_results": {
+      "log_only": {
+        "baseline": "log-only",
+        "capability_boundary": "Checks whether the operation event is present in the fixture log. It does not prove policy/evidence linkage, provenance/output closure, or integrity.",
+        "event_present": true,
+        "issues": [],
+        "ok": true
+      },
+      "policy_only": {
+        "baseline": "policy-only",
+        "capability_boundary": "Checks only local policy rule fields. It does not prove evidence, provenance, output closure, validation closure, or digest consistency.",
+        "issues": [],
+        "ok": true
+      },
+      "schema_only": {
+        "baseline": "schema-only",
+        "capability_boundary": "Structural JSON Schema validation only; no reference, policy/evidence, provenance/output, validation/provenance, digest, or case-semantic checks.",
+        "issues": [],
+        "ok": true
+      }
+    },
+    "case_id": "doc_data_transform",
+    "case_name": "Documentation metadata with digest mismatch",
+    "core_profile_report": {
+      "fail_fast": true,
+      "issue_count": 1,
+      "issue_summary": {
+        "by_code": {
+          "statement_digest_mismatch": 1
+        },
+        "by_stage": {
+          "integrity": 1
+        }
+      },
+      "issues": [
+        {
+          "code": "statement_digest_mismatch",
+          "message": "statement_digest does not match the canonical recomputed digest.",
+          "path": "evidence.integrity.statement_digest",
+          "stage": "integrity"
+        }
+      ],
+      "ok": false,
+      "primary_error_code": "statement_digest_mismatch",
+      "profile": "execution-evidence-operation-accountability-profile@0.1",
+      "source": "/Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/digest_mismatch.statement.json",
+      "stages": [
+        {
+          "issues": [],
+          "name": "schema",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "references",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "consistency",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [
+            {
+              "code": "statement_digest_mismatch",
+              "message": "statement_digest does not match the canonical recomputed digest.",
+              "path": "evidence.integrity.statement_digest",
+              "stage": "integrity"
+            }
+          ],
+          "name": "integrity",
+          "ok": false,
+          "skipped": false
+        }
+      ],
+      "summary": [
+        "FAIL execution-evidence-operation-accountability-profile@0.1 /Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/digest_mismatch.statement.json (1 issue(s))",
+        "Stages with issues: integrity=1",
+        "[statement_digest_mismatch] evidence.integrity.statement_digest: statement_digest does not match the canonical recomputed digest."
+      ]
+    },
+    "diagnostic_match": true,
+    "expected_primary_error_code": "statement_digest_mismatch",
+    "expected_validity": false,
+    "interpretation": "Integrity stage detects mutation after the statement was constructed.",
+    "observed_primary_error_code": "statement_digest_mismatch",
+    "observed_validity": false,
+    "operation_type": "documentation.metadata_transform",
+    "privacy_classification": "generated-public-style-fixture",
+    "profile_aware_result": {
+      "case_semantic_issues": [],
+      "core_profile_ok": false,
+      "core_profile_primary_error_code": "statement_digest_mismatch",
+      "ok": false,
+      "primary_error_code": "statement_digest_mismatch"
+    },
+    "source_type": "representative reproducible SE workflow fixture",
+    "variant_id": "digest_mismatch"
+  },
+  {
+    "baseline_results": {
+      "log_only": {
+        "baseline": "log-only",
+        "capability_boundary": "Checks whether the operation event is present in the fixture log. It does not prove policy/evidence linkage, provenance/output closure, or integrity.",
+        "event_present": true,
+        "issues": [],
+        "ok": true
+      },
+      "policy_only": {
+        "baseline": "policy-only",
+        "capability_boundary": "Checks only local policy rule fields. It does not prove evidence, provenance, output closure, validation closure, or digest consistency.",
+        "issues": [],
+        "ok": true
+      },
+      "schema_only": {
+        "baseline": "schema-only",
+        "capability_boundary": "Structural JSON Schema validation only; no reference, policy/evidence, provenance/output, validation/provenance, digest, or case-semantic checks.",
+        "issues": [],
+        "ok": true
+      }
+    },
+    "case_id": "doc_data_transform",
+    "case_name": "Documentation metadata with missing policy link",
+    "core_profile_report": {
+      "fail_fast": true,
+      "issue_count": 1,
+      "issue_summary": {
+        "by_code": {
+          "unresolved_evidence_policy_ref": 1
+        },
+        "by_stage": {
+          "references": 1
+        }
+      },
+      "issues": [
+        {
+          "code": "unresolved_evidence_policy_ref",
+          "message": "evidence.policy_ref must resolve to policy.id.",
+          "path": "evidence.policy_ref",
+          "stage": "references"
+        }
+      ],
+      "ok": false,
+      "primary_error_code": "unresolved_evidence_policy_ref",
+      "profile": "execution-evidence-operation-accountability-profile@0.1",
+      "source": "/Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/missing_policy_link.statement.json",
+      "stages": [
+        {
+          "issues": [],
+          "name": "schema",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [
+            {
+              "code": "unresolved_evidence_policy_ref",
+              "message": "evidence.policy_ref must resolve to policy.id.",
+              "path": "evidence.policy_ref",
+              "stage": "references"
+            }
+          ],
+          "name": "references",
+          "ok": false,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "consistency",
+          "ok": false,
+          "skip_reason": "Skipped because fail_fast stopped after reference validation failed.",
+          "skipped": true
+        },
+        {
+          "issues": [],
+          "name": "integrity",
+          "ok": false,
+          "skip_reason": "Skipped because fail_fast stopped after reference validation failed.",
+          "skipped": true
+        }
+      ],
+      "summary": [
+        "FAIL execution-evidence-operation-accountability-profile@0.1 /Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/missing_policy_link.statement.json (1 issue(s))",
+        "Stages with issues: references=1",
+        "[unresolved_evidence_policy_ref] evidence.policy_ref: evidence.policy_ref must resolve to policy.id."
+      ]
+    },
+    "diagnostic_match": true,
+    "expected_primary_error_code": "unresolved_evidence_policy_ref",
+    "expected_validity": false,
+    "interpretation": "Evidence no longer links to the declared transformation policy.",
+    "observed_primary_error_code": "unresolved_evidence_policy_ref",
+    "observed_validity": false,
+    "operation_type": "documentation.metadata_transform",
+    "privacy_classification": "generated-public-style-fixture",
+    "profile_aware_result": {
+      "case_semantic_issues": [],
+      "core_profile_ok": false,
+      "core_profile_primary_error_code": "unresolved_evidence_policy_ref",
+      "ok": false,
+      "primary_error_code": "unresolved_evidence_policy_ref"
+    },
+    "source_type": "representative reproducible SE workflow fixture",
+    "variant_id": "missing_policy_link"
+  },
+  {
+    "baseline_results": {
+      "log_only": {
+        "baseline": "log-only",
+        "capability_boundary": "Checks whether the operation event is present in the fixture log. It does not prove policy/evidence linkage, provenance/output closure, or integrity.",
+        "event_present": true,
+        "issues": [],
+        "ok": true
+      },
+      "policy_only": {
+        "baseline": "policy-only",
+        "capability_boundary": "Checks only local policy rule fields. It does not prove evidence, provenance, output closure, validation closure, or digest consistency.",
+        "issues": [],
+        "ok": true
+      },
+      "schema_only": {
+        "baseline": "schema-only",
+        "capability_boundary": "Structural JSON Schema validation only; no reference, policy/evidence, provenance/output, validation/provenance, digest, or case-semantic checks.",
+        "issues": [],
+        "ok": true
+      }
+    },
+    "case_id": "doc_data_transform",
+    "case_name": "Documentation metadata with provenance mismatch",
+    "core_profile_report": {
+      "fail_fast": true,
+      "issue_count": 1,
+      "issue_summary": {
+        "by_code": {
+          "provenance_output_refs_mismatch": 1
+        },
+        "by_stage": {
+          "consistency": 1
+        }
+      },
+      "issues": [
+        {
+          "code": "provenance_output_refs_mismatch",
+          "message": "provenance.output_refs must match operation.output_refs.",
+          "path": "provenance.output_refs",
+          "stage": "consistency"
+        }
+      ],
+      "ok": false,
+      "primary_error_code": "provenance_output_refs_mismatch",
+      "profile": "execution-evidence-operation-accountability-profile@0.1",
+      "source": "/Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/provenance_mismatch.statement.json",
+      "stages": [
+        {
+          "issues": [],
+          "name": "schema",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "references",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [
+            {
+              "code": "provenance_output_refs_mismatch",
+              "message": "provenance.output_refs must match operation.output_refs.",
+              "path": "provenance.output_refs",
+              "stage": "consistency"
+            }
+          ],
+          "name": "consistency",
+          "ok": false,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "integrity",
+          "ok": false,
+          "skip_reason": "Skipped because fail_fast stopped after consistency validation failed.",
+          "skipped": true
+        }
+      ],
+      "summary": [
+        "FAIL execution-evidence-operation-accountability-profile@0.1 /Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/provenance_mismatch.statement.json (1 issue(s))",
+        "Stages with issues: consistency=1",
+        "[provenance_output_refs_mismatch] provenance.output_refs: provenance.output_refs must match operation.output_refs."
+      ]
+    },
+    "diagnostic_match": true,
+    "expected_primary_error_code": "provenance_output_refs_mismatch",
+    "expected_validity": false,
+    "interpretation": "Provenance points away from the declared generated output.",
+    "observed_primary_error_code": "provenance_output_refs_mismatch",
+    "observed_validity": false,
+    "operation_type": "documentation.metadata_transform",
+    "privacy_classification": "generated-public-style-fixture",
+    "profile_aware_result": {
+      "case_semantic_issues": [],
+      "core_profile_ok": false,
+      "core_profile_primary_error_code": "provenance_output_refs_mismatch",
+      "ok": false,
+      "primary_error_code": "provenance_output_refs_mismatch"
+    },
+    "source_type": "representative reproducible SE workflow fixture",
+    "variant_id": "provenance_mismatch"
+  },
+  {
+    "baseline_results": {
+      "log_only": {
+        "baseline": "log-only",
+        "capability_boundary": "Checks whether the operation event is present in the fixture log. It does not prove policy/evidence linkage, provenance/output closure, or integrity.",
+        "event_present": true,
+        "issues": [],
+        "ok": true
+      },
+      "policy_only": {
+        "baseline": "policy-only",
+        "capability_boundary": "Checks only local policy rule fields. It does not prove evidence, provenance, output closure, validation closure, or digest consistency.",
+        "issues": [],
+        "ok": true
+      },
+      "schema_only": {
+        "baseline": "schema-only",
+        "capability_boundary": "Structural JSON Schema validation only; no reference, policy/evidence, provenance/output, validation/provenance, digest, or case-semantic checks.",
+        "issues": [],
+        "ok": true
+      }
+    },
+    "case_id": "doc_data_transform",
+    "case_name": "Documentation metadata generated from stale source digest",
+    "core_profile_report": {
+      "fail_fast": true,
+      "issue_count": 0,
+      "issue_summary": {
+        "by_code": {},
+        "by_stage": {}
+      },
+      "issues": [],
+      "ok": true,
+      "primary_error_code": null,
+      "profile": "execution-evidence-operation-accountability-profile@0.1",
+      "source": "/Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/stale_source_hash.statement.json",
+      "stages": [
+        {
+          "issues": [],
+          "name": "schema",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "references",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "consistency",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "integrity",
+          "ok": true,
+          "skipped": false
+        }
+      ],
+      "summary": [
+        "PASS execution-evidence-operation-accountability-profile@0.1 /Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/stale_source_hash.statement.json"
+      ]
+    },
+    "diagnostic_match": true,
+    "expected_primary_error_code": "stale_source_digest",
+    "expected_validity": false,
+    "interpretation": "Core profile structure passes, but case semantics catch stale source binding.",
+    "observed_primary_error_code": "stale_source_digest",
+    "observed_validity": false,
+    "operation_type": "documentation.metadata_transform",
+    "privacy_classification": "generated-public-style-fixture",
+    "profile_aware_result": {
+      "case_semantic_issues": [
+        {
+          "code": "stale_source_digest",
+          "message": "output source digest does not match the current source artifact.",
+          "path": "payloads.output.source_digest",
+          "stage": "case_semantics"
+        }
+      ],
+      "core_profile_ok": true,
+      "core_profile_primary_error_code": null,
+      "ok": false,
+      "primary_error_code": "stale_source_digest"
+    },
+    "source_type": "representative reproducible SE workflow fixture",
+    "variant_id": "stale_source_hash"
+  },
+  {
+    "baseline_results": {
+      "log_only": {
+        "baseline": "log-only",
+        "capability_boundary": "Checks whether the operation event is present in the fixture log. It does not prove policy/evidence linkage, provenance/output closure, or integrity.",
+        "event_present": true,
+        "issues": [],
+        "ok": true
+      },
+      "policy_only": {
+        "baseline": "policy-only",
+        "capability_boundary": "Checks only local policy rule fields. It does not prove evidence, provenance, output closure, validation closure, or digest consistency.",
+        "issues": [],
+        "ok": true
+      },
+      "schema_only": {
+        "baseline": "schema-only",
+        "capability_boundary": "Structural JSON Schema validation only; no reference, policy/evidence, provenance/output, validation/provenance, digest, or case-semantic checks.",
+        "issues": [],
+        "ok": true
+      }
+    },
+    "case_id": "doc_data_transform",
+    "case_name": "Documentation metadata with wrong derived output reference",
+    "core_profile_report": {
+      "fail_fast": true,
+      "issue_count": 1,
+      "issue_summary": {
+        "by_code": {
+          "provenance_output_refs_mismatch": 1
+        },
+        "by_stage": {
+          "consistency": 1
+        }
+      },
+      "issues": [
+        {
+          "code": "provenance_output_refs_mismatch",
+          "message": "provenance.output_refs must match operation.output_refs.",
+          "path": "provenance.output_refs",
+          "stage": "consistency"
+        }
+      ],
+      "ok": false,
+      "primary_error_code": "provenance_output_refs_mismatch",
+      "profile": "execution-evidence-operation-accountability-profile@0.1",
+      "source": "/Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/wrong_derived_output_ref.statement.json",
+      "stages": [
+        {
+          "issues": [],
+          "name": "schema",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "references",
+          "ok": true,
+          "skipped": false
+        },
+        {
+          "issues": [
+            {
+              "code": "provenance_output_refs_mismatch",
+              "message": "provenance.output_refs must match operation.output_refs.",
+              "path": "provenance.output_refs",
+              "stage": "consistency"
+            }
+          ],
+          "name": "consistency",
+          "ok": false,
+          "skipped": false
+        },
+        {
+          "issues": [],
+          "name": "integrity",
+          "ok": false,
+          "skip_reason": "Skipped because fail_fast stopped after consistency validation failed.",
+          "skipped": true
+        }
+      ],
+      "summary": [
+        "FAIL execution-evidence-operation-accountability-profile@0.1 /Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/wrong_derived_output_ref.statement.json (1 issue(s))",
+        "Stages with issues: consistency=1",
+        "[provenance_output_refs_mismatch] provenance.output_refs: provenance.output_refs must match operation.output_refs."
+      ]
+    },
+    "diagnostic_match": true,
+    "expected_primary_error_code": "provenance_output_refs_mismatch",
+    "expected_validity": false,
+    "interpretation": "Output derivation cannot be reviewed because provenance names an unresolved output.",
+    "observed_primary_error_code": "provenance_output_refs_mismatch",
+    "observed_validity": false,
+    "operation_type": "documentation.metadata_transform",
+    "privacy_classification": "generated-public-style-fixture",
+    "profile_aware_result": {
+      "case_semantic_issues": [],
+      "core_profile_ok": false,
+      "core_profile_primary_error_code": "provenance_output_refs_mismatch",
+      "ok": false,
+      "primary_error_code": "provenance_output_refs_mismatch"
+    },
+    "source_type": "representative reproducible SE workflow fixture",
+    "variant_id": "wrong_derived_output_ref"
+  }
+]

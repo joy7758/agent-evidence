@@ -1,0 +1,118 @@
+{
+  "actor": {
+    "id": "actor:issue_pr_metadata:unresolved_issue_input_ref:runner",
+    "name": "repo-triage-bot",
+    "runtime": "representative-local-fixture",
+    "type": "automation"
+  },
+  "constraints": [
+    {
+      "description": "Only allowed triage labels may be applied to the issue fixture.",
+      "id": "constraint:case-rule"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:operation-log",
+        "digest": "sha256:cace8f5a5ef7af9a7edb965e3d9f8e104b1dcc592706a1d2af26d6caa1cc3b8b",
+        "locator": "urn:se-case:issue_pr_metadata:unresolved_issue_input_ref:operation-log",
+        "type": "operation-log"
+      },
+      {
+        "artifact_id": "artifact:policy",
+        "digest": "sha256:2e45f083a8b54889714f0a6b0d1eac6dea2bd3002b14a47f0314bdddbdb7d204",
+        "locator": "urn:se-case:issue_pr_metadata:unresolved_issue_input_ref:policy",
+        "type": "policy"
+      },
+      {
+        "artifact_id": "artifact:evidence",
+        "digest": "sha256:c7899054f480ecf6e4ae974328f91890a473236150ce71dc3cfacd1d720220b5",
+        "locator": "urn:se-case:issue_pr_metadata:unresolved_issue_input_ref:evidence",
+        "type": "case-evidence"
+      }
+    ],
+    "id": "evidence:issue_pr_metadata:unresolved_issue_input_ref",
+    "integrity": {
+      "artifacts_digest": "sha256:e8e7f0a8b47b289ff7d8afe1b4560231d1e45eacd1443e6756d7c524185a3c95",
+      "references_digest": "sha256:dd426f438b7b44b624cd430421f45035e0bef591b142145413eeef81447a38dc",
+      "statement_digest": "sha256:1b42b82666a6062241263aaf3181779c0ebaef892f50f43bdfdea8178e226a6b"
+    },
+    "operation_ref": "op:issue_pr_metadata:unresolved_issue_input_ref",
+    "policy_ref": "policy:issue_pr_metadata:unresolved_issue_input_ref",
+    "references": [
+      {
+        "digest": "sha256:97b9924562598f172978986291bab0158fb245e26c78afdb5436fb31997b257b",
+        "locator": "urn:se-case:issue_pr_metadata:unresolved_issue_input_ref:input",
+        "object_id": "obj:issue_pr_metadata:unresolved_issue_input_ref:subject",
+        "ref_id": "ref:input",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:d60442513b67ddae429d155af075153bd3c66a29b36ff3c04388d4ff9cae804a",
+        "locator": "urn:se-case:issue_pr_metadata:unresolved_issue_input_ref:output",
+        "object_id": "obj:issue_pr_metadata:unresolved_issue_input_ref:output",
+        "ref_id": "ref:output",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:issue_pr_metadata:unresolved_issue_input_ref:subject"
+  },
+  "operation": {
+    "description": "Issue update with unresolved input reference",
+    "id": "op:issue_pr_metadata:unresolved_issue_input_ref",
+    "input_refs": [
+      "ref:missing-input"
+    ],
+    "output_refs": [
+      "ref:output"
+    ],
+    "policy_ref": "policy:issue_pr_metadata:unresolved_issue_input_ref",
+    "result": {
+      "status": "succeeded",
+      "summary": "Issue update with unresolved input reference"
+    },
+    "subject_ref": "obj:issue_pr_metadata:unresolved_issue_input_ref:subject",
+    "type": "repository.issue_metadata_update"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:case-rule"
+    ],
+    "id": "policy:issue_pr_metadata:unresolved_issue_input_ref",
+    "name": "repository-triage-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:issue_pr_metadata:unresolved_issue_input_ref:runner",
+    "id": "prov:issue_pr_metadata:unresolved_issue_input_ref",
+    "input_refs": [
+      "ref:missing-input"
+    ],
+    "operation_ref": "op:issue_pr_metadata:unresolved_issue_input_ref",
+    "output_refs": [
+      "ref:output"
+    ],
+    "subject_ref": "obj:issue_pr_metadata:unresolved_issue_input_ref:subject"
+  },
+  "statement_id": "eeoap:issue_pr_metadata:unresolved_issue_input_ref",
+  "subject": {
+    "digest": "sha256:97b9924562598f172978986291bab0158fb245e26c78afdb5436fb31997b257b",
+    "id": "obj:issue_pr_metadata:unresolved_issue_input_ref:subject",
+    "locator": "urn:se-case:issue_pr_metadata:unresolved_issue_input_ref:subject",
+    "type": "repository-issue"
+  },
+  "timestamp": "2026-06-02T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:issue_pr_metadata:unresolved_issue_input_ref",
+    "id": "validation:issue_pr_metadata:unresolved_issue_input_ref",
+    "method": "schema+reference+consistency+integrity+case-adapter",
+    "policy_ref": "policy:issue_pr_metadata:unresolved_issue_input_ref",
+    "provenance_ref": "prov:issue_pr_metadata:unresolved_issue_input_ref",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

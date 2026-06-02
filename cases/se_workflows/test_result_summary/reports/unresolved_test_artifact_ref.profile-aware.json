@@ -1,0 +1,106 @@
+{
+  "baseline_results": {
+    "log_only": {
+      "baseline": "log-only",
+      "capability_boundary": "Checks whether the operation event is present in the fixture log. It does not prove policy/evidence linkage, provenance/output closure, or integrity.",
+      "event_present": true,
+      "issues": [],
+      "ok": true
+    },
+    "policy_only": {
+      "baseline": "policy-only",
+      "capability_boundary": "Checks only local policy rule fields. It does not prove evidence, provenance, output closure, validation closure, or digest consistency.",
+      "issues": [],
+      "ok": true
+    },
+    "schema_only": {
+      "baseline": "schema-only",
+      "capability_boundary": "Structural JSON Schema validation only; no reference, policy/evidence, provenance/output, validation/provenance, digest, or case-semantic checks.",
+      "issues": [],
+      "ok": true
+    }
+  },
+  "case_id": "test_result_summary",
+  "case_name": "Test summary with unresolved test artifact reference",
+  "core_profile_report": {
+    "fail_fast": true,
+    "issue_count": 1,
+    "issue_summary": {
+      "by_code": {
+        "unresolved_input_ref": 1
+      },
+      "by_stage": {
+        "references": 1
+      }
+    },
+    "issues": [
+      {
+        "code": "unresolved_input_ref",
+        "message": "operation input ref does not resolve to evidence.references[].ref_id.",
+        "path": "operation.input_refs[0]",
+        "stage": "references"
+      }
+    ],
+    "ok": false,
+    "primary_error_code": "unresolved_input_ref",
+    "profile": "execution-evidence-operation-accountability-profile@0.1",
+    "source": "/Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/test_result_summary/reports/unresolved_test_artifact_ref.statement.json",
+    "stages": [
+      {
+        "issues": [],
+        "name": "schema",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [
+          {
+            "code": "unresolved_input_ref",
+            "message": "operation input ref does not resolve to evidence.references[].ref_id.",
+            "path": "operation.input_refs[0]",
+            "stage": "references"
+          }
+        ],
+        "name": "references",
+        "ok": false,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "consistency",
+        "ok": false,
+        "skip_reason": "Skipped because fail_fast stopped after reference validation failed.",
+        "skipped": true
+      },
+      {
+        "issues": [],
+        "name": "integrity",
+        "ok": false,
+        "skip_reason": "Skipped because fail_fast stopped after reference validation failed.",
+        "skipped": true
+      }
+    ],
+    "summary": [
+      "FAIL execution-evidence-operation-accountability-profile@0.1 /Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/test_result_summary/reports/unresolved_test_artifact_ref.statement.json (1 issue(s))",
+      "Stages with issues: references=1",
+      "[unresolved_input_ref] operation.input_refs[0]: operation input ref does not resolve to evidence.references[].ref_id."
+    ]
+  },
+  "diagnostic_match": true,
+  "expected_primary_error_code": "unresolved_input_ref",
+  "expected_validity": false,
+  "interpretation": "The summary statement cannot resolve its raw test-result input.",
+  "observed_primary_error_code": "unresolved_input_ref",
+  "observed_validity": false,
+  "operation_type": "test.result_summarize",
+  "privacy_classification": "generated-public-style-fixture",
+  "profile_aware_result": {
+    "case_semantic_issues": [],
+    "core_profile_ok": false,
+    "core_profile_primary_error_code": "unresolved_input_ref",
+    "ok": false,
+    "primary_error_code": "unresolved_input_ref"
+  },
+  "source_type": "representative reproducible SE workflow fixture",
+  "variant_id": "unresolved_test_artifact_ref"
+}

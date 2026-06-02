@@ -1,0 +1,106 @@
+{
+  "baseline_results": {
+    "log_only": {
+      "baseline": "log-only",
+      "capability_boundary": "Checks whether the operation event is present in the fixture log. It does not prove policy/evidence linkage, provenance/output closure, or integrity.",
+      "event_present": true,
+      "issues": [],
+      "ok": true
+    },
+    "policy_only": {
+      "baseline": "policy-only",
+      "capability_boundary": "Checks only local policy rule fields. It does not prove evidence, provenance, output closure, validation closure, or digest consistency.",
+      "issues": [],
+      "ok": true
+    },
+    "schema_only": {
+      "baseline": "schema-only",
+      "capability_boundary": "Structural JSON Schema validation only; no reference, policy/evidence, provenance/output, validation/provenance, digest, or case-semantic checks.",
+      "issues": [],
+      "ok": true
+    }
+  },
+  "case_id": "doc_data_transform",
+  "case_name": "Documentation metadata with missing policy link",
+  "core_profile_report": {
+    "fail_fast": true,
+    "issue_count": 1,
+    "issue_summary": {
+      "by_code": {
+        "unresolved_evidence_policy_ref": 1
+      },
+      "by_stage": {
+        "references": 1
+      }
+    },
+    "issues": [
+      {
+        "code": "unresolved_evidence_policy_ref",
+        "message": "evidence.policy_ref must resolve to policy.id.",
+        "path": "evidence.policy_ref",
+        "stage": "references"
+      }
+    ],
+    "ok": false,
+    "primary_error_code": "unresolved_evidence_policy_ref",
+    "profile": "execution-evidence-operation-accountability-profile@0.1",
+    "source": "/Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/missing_policy_link.statement.json",
+    "stages": [
+      {
+        "issues": [],
+        "name": "schema",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [
+          {
+            "code": "unresolved_evidence_policy_ref",
+            "message": "evidence.policy_ref must resolve to policy.id.",
+            "path": "evidence.policy_ref",
+            "stage": "references"
+          }
+        ],
+        "name": "references",
+        "ok": false,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "consistency",
+        "ok": false,
+        "skip_reason": "Skipped because fail_fast stopped after reference validation failed.",
+        "skipped": true
+      },
+      {
+        "issues": [],
+        "name": "integrity",
+        "ok": false,
+        "skip_reason": "Skipped because fail_fast stopped after reference validation failed.",
+        "skipped": true
+      }
+    ],
+    "summary": [
+      "FAIL execution-evidence-operation-accountability-profile@0.1 /Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/missing_policy_link.statement.json (1 issue(s))",
+      "Stages with issues: references=1",
+      "[unresolved_evidence_policy_ref] evidence.policy_ref: evidence.policy_ref must resolve to policy.id."
+    ]
+  },
+  "diagnostic_match": true,
+  "expected_primary_error_code": "unresolved_evidence_policy_ref",
+  "expected_validity": false,
+  "interpretation": "Evidence no longer links to the declared transformation policy.",
+  "observed_primary_error_code": "unresolved_evidence_policy_ref",
+  "observed_validity": false,
+  "operation_type": "documentation.metadata_transform",
+  "privacy_classification": "generated-public-style-fixture",
+  "profile_aware_result": {
+    "case_semantic_issues": [],
+    "core_profile_ok": false,
+    "core_profile_primary_error_code": "unresolved_evidence_policy_ref",
+    "ok": false,
+    "primary_error_code": "unresolved_evidence_policy_ref"
+  },
+  "source_type": "representative reproducible SE workflow fixture",
+  "variant_id": "missing_policy_link"
+}

@@ -1,0 +1,118 @@
+{
+  "actor": {
+    "id": "actor:test_result_summary:wrong_count:runner",
+    "name": "test-summary-generator",
+    "runtime": "representative-local-fixture",
+    "type": "automation"
+  },
+  "constraints": [
+    {
+      "description": "Test summary must match the raw test result and release gate threshold.",
+      "id": "constraint:case-rule"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:operation-log",
+        "digest": "sha256:323dbcb0ff2e059a1d4ab983c63696944e1a0ffd5cf3110e974b6a437cfbacfa",
+        "locator": "urn:se-case:test_result_summary:wrong_count:operation-log",
+        "type": "operation-log"
+      },
+      {
+        "artifact_id": "artifact:policy",
+        "digest": "sha256:1d53fc3ff488273d1fdbbe4c6716379327bdb608b25914c5c13c985f5e73fa1f",
+        "locator": "urn:se-case:test_result_summary:wrong_count:policy",
+        "type": "policy"
+      },
+      {
+        "artifact_id": "artifact:evidence",
+        "digest": "sha256:e50c787e45255a6d6d56b077e99f5506f5abcd9771c078c9fba118d3a28c7c8a",
+        "locator": "urn:se-case:test_result_summary:wrong_count:evidence",
+        "type": "case-evidence"
+      }
+    ],
+    "id": "evidence:test_result_summary:wrong_count",
+    "integrity": {
+      "artifacts_digest": "sha256:d46bac14466f613fce44a13f9453969a2373621822b87050cb4f75fb8ccc65ce",
+      "references_digest": "sha256:cf818ea4fe3cd7748b78c4e6513cf6d8d884dd8251a357a0db0cb75119fbf0e0",
+      "statement_digest": "sha256:993d54b4f04973618d6ac78e080c6c41d663a48e15dbb0d08d7ef755fddc4b47"
+    },
+    "operation_ref": "op:test_result_summary:wrong_count",
+    "policy_ref": "policy:test_result_summary:wrong_count",
+    "references": [
+      {
+        "digest": "sha256:464ed35f5a699b394d84813a071c2f17df1fa5a6327434c20b5121f96cb1bfec",
+        "locator": "urn:se-case:test_result_summary:wrong_count:input",
+        "object_id": "obj:test_result_summary:wrong_count:subject",
+        "ref_id": "ref:input",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:501360b644ef54deb3015303cbb26af4618f319bac9a3fb4e8f1c9a964827e80",
+        "locator": "urn:se-case:test_result_summary:wrong_count:output",
+        "object_id": "obj:test_result_summary:wrong_count:output",
+        "ref_id": "ref:output",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:test_result_summary:wrong_count:subject"
+  },
+  "operation": {
+    "description": "Test summary has wrong count",
+    "id": "op:test_result_summary:wrong_count",
+    "input_refs": [
+      "ref:input"
+    ],
+    "output_refs": [
+      "ref:output"
+    ],
+    "policy_ref": "policy:test_result_summary:wrong_count",
+    "result": {
+      "status": "succeeded",
+      "summary": "Test summary has wrong count"
+    },
+    "subject_ref": "obj:test_result_summary:wrong_count:subject",
+    "type": "test.result_summarize"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:case-rule"
+    ],
+    "id": "policy:test_result_summary:wrong_count",
+    "name": "test-summary-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:test_result_summary:wrong_count:runner",
+    "id": "prov:test_result_summary:wrong_count",
+    "input_refs": [
+      "ref:input"
+    ],
+    "operation_ref": "op:test_result_summary:wrong_count",
+    "output_refs": [
+      "ref:output"
+    ],
+    "subject_ref": "obj:test_result_summary:wrong_count:subject"
+  },
+  "statement_id": "eeoap:test_result_summary:wrong_count",
+  "subject": {
+    "digest": "sha256:464ed35f5a699b394d84813a071c2f17df1fa5a6327434c20b5121f96cb1bfec",
+    "id": "obj:test_result_summary:wrong_count:subject",
+    "locator": "urn:se-case:test_result_summary:wrong_count:subject",
+    "type": "test-run"
+  },
+  "timestamp": "2026-06-02T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:test_result_summary:wrong_count",
+    "id": "validation:test_result_summary:wrong_count",
+    "method": "schema+reference+consistency+integrity+case-adapter",
+    "policy_ref": "policy:test_result_summary:wrong_count",
+    "provenance_ref": "prov:test_result_summary:wrong_count",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

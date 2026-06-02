@@ -1,0 +1,95 @@
+{
+  "actor": {
+    "name": "repo-triage-bot"
+  },
+  "baseline_expectations": {
+    "log_only": "event presence only",
+    "policy_only": "local policy fields only",
+    "schema_only": "structural only"
+  },
+  "case_id": "issue_pr_metadata",
+  "case_name": "Valid issue metadata update under triage policy",
+  "evidence_payload": {
+    "change": "label needs-triage -> bug"
+  },
+  "evidence_refs": [
+    "artifact:operation-log",
+    "artifact:policy",
+    "artifact:evidence"
+  ],
+  "expected_primary_error_code": null,
+  "expected_validity": true,
+  "ids": {
+    "actor": "actor:issue_pr_metadata:valid_label_update:runner",
+    "evidence": "evidence:issue_pr_metadata:valid_label_update",
+    "operation": "op:issue_pr_metadata:valid_label_update",
+    "output": "obj:issue_pr_metadata:valid_label_update:output",
+    "policy": "policy:issue_pr_metadata:valid_label_update",
+    "provenance": "prov:issue_pr_metadata:valid_label_update",
+    "subject": "obj:issue_pr_metadata:valid_label_update:subject",
+    "validation": "validation:issue_pr_metadata:valid_label_update"
+  },
+  "input_refs": [
+    "ref:input"
+  ],
+  "integrity_refs": [
+    "evidence.integrity"
+  ],
+  "interpretation": "Valid metadata update closes policy, input, output, evidence, and provenance refs.",
+  "mutation": null,
+  "operation_id": "op:issue_pr_metadata:valid_label_update",
+  "operation_payload": {
+    "log": {
+      "event": "issue.label.update",
+      "event_present": true,
+      "issue_id": "ISSUE-101"
+    },
+    "summary": "Valid issue metadata update under triage policy"
+  },
+  "operation_type": "repository.issue_metadata_update",
+  "output_refs": [
+    "ref:output"
+  ],
+  "payloads": {
+    "input": {
+      "issue_id": "ISSUE-101",
+      "label": "needs-triage",
+      "state": "open"
+    },
+    "output": {
+      "issue_id": "ISSUE-101",
+      "label": "bug",
+      "state": "open"
+    }
+  },
+  "policy_payload": {
+    "allowed_labels": [
+      "bug",
+      "documentation",
+      "enhancement"
+    ],
+    "description": "Only allowed triage labels may be applied to the issue fixture.",
+    "name": "repository-triage-policy"
+  },
+  "policy_refs": [
+    "policy:case"
+  ],
+  "privacy_classification": "generated-public-style-fixture",
+  "provenance_payload": {
+    "input_ref": "ref:input",
+    "output_ref": "ref:output",
+    "relation": "derived_from"
+  },
+  "provenance_refs": [
+    "prov:case"
+  ],
+  "reproducibility_notes": "Generated locally; no private, clinical, customer, or scraped issue data.",
+  "source_type": "representative reproducible SE workflow fixture",
+  "subject": {
+    "type": "repository-issue"
+  },
+  "validation_refs": [
+    "validation:case"
+  ],
+  "variant_id": "valid_label_update"
+}

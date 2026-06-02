@@ -1,0 +1,118 @@
+{
+  "actor": {
+    "id": "actor:doc_data_transform:valid_doc_metadata:runner",
+    "name": "doc-metadata-generator",
+    "runtime": "representative-local-fixture",
+    "type": "automation"
+  },
+  "constraints": [
+    {
+      "description": "Generated metadata must be derived from the current source document.",
+      "id": "constraint:case-rule"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:operation-log",
+        "digest": "sha256:90db1c27fede30bfdcf513bd4933e9088c689e9b5536e349679255adcac161dc",
+        "locator": "urn:se-case:doc_data_transform:valid_doc_metadata:operation-log",
+        "type": "operation-log"
+      },
+      {
+        "artifact_id": "artifact:policy",
+        "digest": "sha256:0fcd70181ef56d14cfb3a25a7cf30e9ec36d22203a6795e2c096fffa7c6b4ddc",
+        "locator": "urn:se-case:doc_data_transform:valid_doc_metadata:policy",
+        "type": "policy"
+      },
+      {
+        "artifact_id": "artifact:evidence",
+        "digest": "sha256:388bbf461b8643efc852f7a30922b05a79b8dc337de87bcd8b93835efc9ac4c9",
+        "locator": "urn:se-case:doc_data_transform:valid_doc_metadata:evidence",
+        "type": "case-evidence"
+      }
+    ],
+    "id": "evidence:doc_data_transform:valid_doc_metadata",
+    "integrity": {
+      "artifacts_digest": "sha256:c803fbcb2ff516445987677e0e19b3f5d411992a93dae0e0e83ea12b8c8d5786",
+      "references_digest": "sha256:e3c1124f7d288776022082280abe69a9b3702fa3558cc1b87b940961d38bb989",
+      "statement_digest": "sha256:5c6d5ad35c65c030ec23941cb0cde893f58d23d1142b0759b0b1e275372e63c2"
+    },
+    "operation_ref": "op:doc_data_transform:valid_doc_metadata",
+    "policy_ref": "policy:doc_data_transform:valid_doc_metadata",
+    "references": [
+      {
+        "digest": "sha256:058c77663b9edf1ec2c8bdca056f3e6b06f2aa9e7e63ea3defb904fb37085f35",
+        "locator": "urn:se-case:doc_data_transform:valid_doc_metadata:input",
+        "object_id": "obj:doc_data_transform:valid_doc_metadata:subject",
+        "ref_id": "ref:input",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:8bdb007a179e7453ea4785b7538b819a53ac06f3a39a257cc437aa57c80203db",
+        "locator": "urn:se-case:doc_data_transform:valid_doc_metadata:output",
+        "object_id": "obj:doc_data_transform:valid_doc_metadata:output",
+        "ref_id": "ref:output",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:doc_data_transform:valid_doc_metadata:subject"
+  },
+  "operation": {
+    "description": "Valid documentation metadata generation",
+    "id": "op:doc_data_transform:valid_doc_metadata",
+    "input_refs": [
+      "ref:input"
+    ],
+    "output_refs": [
+      "ref:output"
+    ],
+    "policy_ref": "policy:doc_data_transform:valid_doc_metadata",
+    "result": {
+      "status": "succeeded",
+      "summary": "Valid documentation metadata generation"
+    },
+    "subject_ref": "obj:doc_data_transform:valid_doc_metadata:subject",
+    "type": "documentation.metadata_transform"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:case-rule"
+    ],
+    "id": "policy:doc_data_transform:valid_doc_metadata",
+    "name": "documentation-metadata-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:doc_data_transform:valid_doc_metadata:runner",
+    "id": "prov:doc_data_transform:valid_doc_metadata",
+    "input_refs": [
+      "ref:input"
+    ],
+    "operation_ref": "op:doc_data_transform:valid_doc_metadata",
+    "output_refs": [
+      "ref:output"
+    ],
+    "subject_ref": "obj:doc_data_transform:valid_doc_metadata:subject"
+  },
+  "statement_id": "eeoap:doc_data_transform:valid_doc_metadata",
+  "subject": {
+    "digest": "sha256:058c77663b9edf1ec2c8bdca056f3e6b06f2aa9e7e63ea3defb904fb37085f35",
+    "id": "obj:doc_data_transform:valid_doc_metadata:subject",
+    "locator": "urn:se-case:doc_data_transform:valid_doc_metadata:subject",
+    "type": "source-document"
+  },
+  "timestamp": "2026-06-02T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:doc_data_transform:valid_doc_metadata",
+    "id": "validation:doc_data_transform:valid_doc_metadata",
+    "method": "schema+reference+consistency+integrity+case-adapter",
+    "policy_ref": "policy:doc_data_transform:valid_doc_metadata",
+    "provenance_ref": "prov:doc_data_transform:valid_doc_metadata",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

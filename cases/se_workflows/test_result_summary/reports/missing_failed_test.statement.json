@@ -1,0 +1,118 @@
+{
+  "actor": {
+    "id": "actor:test_result_summary:missing_failed_test:runner",
+    "name": "test-summary-generator",
+    "runtime": "representative-local-fixture",
+    "type": "automation"
+  },
+  "constraints": [
+    {
+      "description": "Test summary must match the raw test result and release gate threshold.",
+      "id": "constraint:case-rule"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:operation-log",
+        "digest": "sha256:323dbcb0ff2e059a1d4ab983c63696944e1a0ffd5cf3110e974b6a437cfbacfa",
+        "locator": "urn:se-case:test_result_summary:missing_failed_test:operation-log",
+        "type": "operation-log"
+      },
+      {
+        "artifact_id": "artifact:policy",
+        "digest": "sha256:1d53fc3ff488273d1fdbbe4c6716379327bdb608b25914c5c13c985f5e73fa1f",
+        "locator": "urn:se-case:test_result_summary:missing_failed_test:policy",
+        "type": "policy"
+      },
+      {
+        "artifact_id": "artifact:evidence",
+        "digest": "sha256:9daa67828d1972b4ca039caede71937be32841afcfedb3403833e70ce8861977",
+        "locator": "urn:se-case:test_result_summary:missing_failed_test:evidence",
+        "type": "case-evidence"
+      }
+    ],
+    "id": "evidence:test_result_summary:missing_failed_test",
+    "integrity": {
+      "artifacts_digest": "sha256:1903e85f74f9ca2b3ffd3f4ce45715f13d8a992420bdf6d32bbd69e5801b3fb2",
+      "references_digest": "sha256:eb6f0b36f1f1f262699c4a2e6d68fec381cdcd031d3261861cd86182d8a76d61",
+      "statement_digest": "sha256:a4adcf3c4c46b4381f02ad9293bc8a1bdcfbd7910a8480980111f4d963427dd4"
+    },
+    "operation_ref": "op:test_result_summary:missing_failed_test",
+    "policy_ref": "policy:test_result_summary:missing_failed_test",
+    "references": [
+      {
+        "digest": "sha256:464ed35f5a699b394d84813a071c2f17df1fa5a6327434c20b5121f96cb1bfec",
+        "locator": "urn:se-case:test_result_summary:missing_failed_test:input",
+        "object_id": "obj:test_result_summary:missing_failed_test:subject",
+        "ref_id": "ref:input",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:2ec4d842de85ca6b13449ff2379120ad13a317890054284dcc54330be208b706",
+        "locator": "urn:se-case:test_result_summary:missing_failed_test:output",
+        "object_id": "obj:test_result_summary:missing_failed_test:output",
+        "ref_id": "ref:output",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:test_result_summary:missing_failed_test:subject"
+  },
+  "operation": {
+    "description": "Test summary omits a failed test",
+    "id": "op:test_result_summary:missing_failed_test",
+    "input_refs": [
+      "ref:input"
+    ],
+    "output_refs": [
+      "ref:output"
+    ],
+    "policy_ref": "policy:test_result_summary:missing_failed_test",
+    "result": {
+      "status": "succeeded",
+      "summary": "Test summary omits a failed test"
+    },
+    "subject_ref": "obj:test_result_summary:missing_failed_test:subject",
+    "type": "test.result_summarize"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:case-rule"
+    ],
+    "id": "policy:test_result_summary:missing_failed_test",
+    "name": "test-summary-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:test_result_summary:missing_failed_test:runner",
+    "id": "prov:test_result_summary:missing_failed_test",
+    "input_refs": [
+      "ref:input"
+    ],
+    "operation_ref": "op:test_result_summary:missing_failed_test",
+    "output_refs": [
+      "ref:output"
+    ],
+    "subject_ref": "obj:test_result_summary:missing_failed_test:subject"
+  },
+  "statement_id": "eeoap:test_result_summary:missing_failed_test",
+  "subject": {
+    "digest": "sha256:464ed35f5a699b394d84813a071c2f17df1fa5a6327434c20b5121f96cb1bfec",
+    "id": "obj:test_result_summary:missing_failed_test:subject",
+    "locator": "urn:se-case:test_result_summary:missing_failed_test:subject",
+    "type": "test-run"
+  },
+  "timestamp": "2026-06-02T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:test_result_summary:missing_failed_test",
+    "id": "validation:test_result_summary:missing_failed_test",
+    "method": "schema+reference+consistency+integrity+case-adapter",
+    "policy_ref": "policy:test_result_summary:missing_failed_test",
+    "provenance_ref": "prov:test_result_summary:missing_failed_test",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

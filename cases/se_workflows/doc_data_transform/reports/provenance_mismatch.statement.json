@@ -1,0 +1,118 @@
+{
+  "actor": {
+    "id": "actor:doc_data_transform:provenance_mismatch:runner",
+    "name": "doc-metadata-generator",
+    "runtime": "representative-local-fixture",
+    "type": "automation"
+  },
+  "constraints": [
+    {
+      "description": "Generated metadata must be derived from the current source document.",
+      "id": "constraint:case-rule"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:operation-log",
+        "digest": "sha256:90db1c27fede30bfdcf513bd4933e9088c689e9b5536e349679255adcac161dc",
+        "locator": "urn:se-case:doc_data_transform:provenance_mismatch:operation-log",
+        "type": "operation-log"
+      },
+      {
+        "artifact_id": "artifact:policy",
+        "digest": "sha256:0fcd70181ef56d14cfb3a25a7cf30e9ec36d22203a6795e2c096fffa7c6b4ddc",
+        "locator": "urn:se-case:doc_data_transform:provenance_mismatch:policy",
+        "type": "policy"
+      },
+      {
+        "artifact_id": "artifact:evidence",
+        "digest": "sha256:388bbf461b8643efc852f7a30922b05a79b8dc337de87bcd8b93835efc9ac4c9",
+        "locator": "urn:se-case:doc_data_transform:provenance_mismatch:evidence",
+        "type": "case-evidence"
+      }
+    ],
+    "id": "evidence:doc_data_transform:provenance_mismatch",
+    "integrity": {
+      "artifacts_digest": "sha256:3a83a3f43e0be314e160e12767a312d4538ca65056ed59e0a964d0d8f8c09672",
+      "references_digest": "sha256:1a6c9823603dc5926959e8ddd8226035b1c2c8775bc87f6218e8e9094bb932cd",
+      "statement_digest": "sha256:926d238e7575376384abe60297a6fc588c66043126b403803b0a9e0c1ad727aa"
+    },
+    "operation_ref": "op:doc_data_transform:provenance_mismatch",
+    "policy_ref": "policy:doc_data_transform:provenance_mismatch",
+    "references": [
+      {
+        "digest": "sha256:058c77663b9edf1ec2c8bdca056f3e6b06f2aa9e7e63ea3defb904fb37085f35",
+        "locator": "urn:se-case:doc_data_transform:provenance_mismatch:input",
+        "object_id": "obj:doc_data_transform:provenance_mismatch:subject",
+        "ref_id": "ref:input",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:8bdb007a179e7453ea4785b7538b819a53ac06f3a39a257cc437aa57c80203db",
+        "locator": "urn:se-case:doc_data_transform:provenance_mismatch:output",
+        "object_id": "obj:doc_data_transform:provenance_mismatch:output",
+        "ref_id": "ref:output",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:doc_data_transform:provenance_mismatch:subject"
+  },
+  "operation": {
+    "description": "Documentation metadata with provenance mismatch",
+    "id": "op:doc_data_transform:provenance_mismatch",
+    "input_refs": [
+      "ref:input"
+    ],
+    "output_refs": [
+      "ref:output"
+    ],
+    "policy_ref": "policy:doc_data_transform:provenance_mismatch",
+    "result": {
+      "status": "succeeded",
+      "summary": "Documentation metadata with provenance mismatch"
+    },
+    "subject_ref": "obj:doc_data_transform:provenance_mismatch:subject",
+    "type": "documentation.metadata_transform"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:case-rule"
+    ],
+    "id": "policy:doc_data_transform:provenance_mismatch",
+    "name": "documentation-metadata-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:doc_data_transform:provenance_mismatch:runner",
+    "id": "prov:doc_data_transform:provenance_mismatch",
+    "input_refs": [
+      "ref:input"
+    ],
+    "operation_ref": "op:doc_data_transform:provenance_mismatch",
+    "output_refs": [
+      "ref:stale-output"
+    ],
+    "subject_ref": "obj:doc_data_transform:provenance_mismatch:subject"
+  },
+  "statement_id": "eeoap:doc_data_transform:provenance_mismatch",
+  "subject": {
+    "digest": "sha256:058c77663b9edf1ec2c8bdca056f3e6b06f2aa9e7e63ea3defb904fb37085f35",
+    "id": "obj:doc_data_transform:provenance_mismatch:subject",
+    "locator": "urn:se-case:doc_data_transform:provenance_mismatch:subject",
+    "type": "source-document"
+  },
+  "timestamp": "2026-06-02T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:doc_data_transform:provenance_mismatch",
+    "id": "validation:doc_data_transform:provenance_mismatch",
+    "method": "schema+reference+consistency+integrity+case-adapter",
+    "policy_ref": "policy:doc_data_transform:provenance_mismatch",
+    "provenance_ref": "prov:doc_data_transform:provenance_mismatch",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

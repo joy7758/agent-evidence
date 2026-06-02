@@ -1,0 +1,118 @@
+{
+  "actor": {
+    "id": "actor:doc_data_transform:digest_mismatch:runner",
+    "name": "doc-metadata-generator",
+    "runtime": "representative-local-fixture",
+    "type": "automation"
+  },
+  "constraints": [
+    {
+      "description": "Generated metadata must be derived from the current source document.",
+      "id": "constraint:case-rule"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:operation-log",
+        "digest": "sha256:90db1c27fede30bfdcf513bd4933e9088c689e9b5536e349679255adcac161dc",
+        "locator": "urn:se-case:doc_data_transform:digest_mismatch:operation-log",
+        "type": "operation-log"
+      },
+      {
+        "artifact_id": "artifact:policy",
+        "digest": "sha256:0fcd70181ef56d14cfb3a25a7cf30e9ec36d22203a6795e2c096fffa7c6b4ddc",
+        "locator": "urn:se-case:doc_data_transform:digest_mismatch:policy",
+        "type": "policy"
+      },
+      {
+        "artifact_id": "artifact:evidence",
+        "digest": "sha256:388bbf461b8643efc852f7a30922b05a79b8dc337de87bcd8b93835efc9ac4c9",
+        "locator": "urn:se-case:doc_data_transform:digest_mismatch:evidence",
+        "type": "case-evidence"
+      }
+    ],
+    "id": "evidence:doc_data_transform:digest_mismatch",
+    "integrity": {
+      "artifacts_digest": "sha256:cc0ef5f44b80c6c944d4be102fb16b5266ff5cb7a18d8b717df6e34c025252c6",
+      "references_digest": "sha256:19a25f004f0d5c0b2d746195444ef2d6b33df4b4d38a995bf76806d480da233c",
+      "statement_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    },
+    "operation_ref": "op:doc_data_transform:digest_mismatch",
+    "policy_ref": "policy:doc_data_transform:digest_mismatch",
+    "references": [
+      {
+        "digest": "sha256:058c77663b9edf1ec2c8bdca056f3e6b06f2aa9e7e63ea3defb904fb37085f35",
+        "locator": "urn:se-case:doc_data_transform:digest_mismatch:input",
+        "object_id": "obj:doc_data_transform:digest_mismatch:subject",
+        "ref_id": "ref:input",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:8bdb007a179e7453ea4785b7538b819a53ac06f3a39a257cc437aa57c80203db",
+        "locator": "urn:se-case:doc_data_transform:digest_mismatch:output",
+        "object_id": "obj:doc_data_transform:digest_mismatch:output",
+        "ref_id": "ref:output",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "obj:doc_data_transform:digest_mismatch:subject"
+  },
+  "operation": {
+    "description": "Documentation metadata with digest mismatch",
+    "id": "op:doc_data_transform:digest_mismatch",
+    "input_refs": [
+      "ref:input"
+    ],
+    "output_refs": [
+      "ref:output"
+    ],
+    "policy_ref": "policy:doc_data_transform:digest_mismatch",
+    "result": {
+      "status": "succeeded",
+      "summary": "Documentation metadata with digest mismatch"
+    },
+    "subject_ref": "obj:doc_data_transform:digest_mismatch:subject",
+    "type": "documentation.metadata_transform"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:case-rule"
+    ],
+    "id": "policy:doc_data_transform:digest_mismatch",
+    "name": "documentation-metadata-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:doc_data_transform:digest_mismatch:runner",
+    "id": "prov:doc_data_transform:digest_mismatch",
+    "input_refs": [
+      "ref:input"
+    ],
+    "operation_ref": "op:doc_data_transform:digest_mismatch",
+    "output_refs": [
+      "ref:output"
+    ],
+    "subject_ref": "obj:doc_data_transform:digest_mismatch:subject"
+  },
+  "statement_id": "eeoap:doc_data_transform:digest_mismatch",
+  "subject": {
+    "digest": "sha256:058c77663b9edf1ec2c8bdca056f3e6b06f2aa9e7e63ea3defb904fb37085f35",
+    "id": "obj:doc_data_transform:digest_mismatch:subject",
+    "locator": "urn:se-case:doc_data_transform:digest_mismatch:subject",
+    "type": "source-document"
+  },
+  "timestamp": "2026-06-02T00:00:00Z",
+  "validation": {
+    "evidence_ref": "evidence:doc_data_transform:digest_mismatch",
+    "id": "validation:doc_data_transform:digest_mismatch",
+    "method": "schema+reference+consistency+integrity+case-adapter",
+    "policy_ref": "policy:doc_data_transform:digest_mismatch",
+    "provenance_ref": "prov:doc_data_transform:digest_mismatch",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}

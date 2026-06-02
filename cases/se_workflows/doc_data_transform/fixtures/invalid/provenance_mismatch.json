@@ -1,0 +1,94 @@
+{
+  "actor": {
+    "name": "doc-metadata-generator"
+  },
+  "baseline_expectations": {
+    "log_only": "event presence only",
+    "policy_only": "local policy fields only",
+    "schema_only": "structural only"
+  },
+  "case_id": "doc_data_transform",
+  "case_name": "Documentation metadata with provenance mismatch",
+  "evidence_payload": {
+    "transform": "extract title and source digest"
+  },
+  "evidence_refs": [
+    "artifact:operation-log",
+    "artifact:policy",
+    "artifact:evidence"
+  ],
+  "expected_primary_error_code": "provenance_output_refs_mismatch",
+  "expected_validity": false,
+  "ids": {
+    "actor": "actor:doc_data_transform:provenance_mismatch:runner",
+    "evidence": "evidence:doc_data_transform:provenance_mismatch",
+    "operation": "op:doc_data_transform:provenance_mismatch",
+    "output": "obj:doc_data_transform:provenance_mismatch:output",
+    "policy": "policy:doc_data_transform:provenance_mismatch",
+    "provenance": "prov:doc_data_transform:provenance_mismatch",
+    "subject": "obj:doc_data_transform:provenance_mismatch:subject",
+    "validation": "validation:doc_data_transform:provenance_mismatch"
+  },
+  "input_refs": [
+    "ref:input"
+  ],
+  "integrity_refs": [
+    "evidence.integrity"
+  ],
+  "interpretation": "Provenance points away from the declared generated output.",
+  "mutation": {
+    "kind": "provenance_output_mismatch"
+  },
+  "operation_id": "op:doc_data_transform:provenance_mismatch",
+  "operation_payload": {
+    "log": {
+      "doc_id": "DOC-7",
+      "event": "doc.metadata.generate",
+      "event_present": true
+    },
+    "summary": "Documentation metadata with provenance mismatch"
+  },
+  "operation_type": "documentation.metadata_transform",
+  "output_refs": [
+    "ref:output"
+  ],
+  "payloads": {
+    "input": {
+      "body": "Feature A fixed.",
+      "doc_id": "DOC-7",
+      "title": "Release notes"
+    },
+    "output": {
+      "doc_id": "DOC-7",
+      "rule": "extract-title-and-digest",
+      "source_digest": "sha256:058c77663b9edf1ec2c8bdca056f3e6b06f2aa9e7e63ea3defb904fb37085f35",
+      "title": "Release notes"
+    }
+  },
+  "policy_payload": {
+    "description": "Generated metadata must be derived from the current source document.",
+    "name": "documentation-metadata-policy",
+    "required_rule": "extract-title-and-digest"
+  },
+  "policy_refs": [
+    "policy:case"
+  ],
+  "privacy_classification": "generated-public-style-fixture",
+  "provenance_payload": {
+    "input_ref": "ref:input",
+    "output_ref": "ref:output",
+    "relation": "derived_from"
+  },
+  "provenance_refs": [
+    "prov:case"
+  ],
+  "reproducibility_notes": "Generated locally; no private, clinical, customer, or scraped issue data.",
+  "source_type": "representative reproducible SE workflow fixture",
+  "subject": {
+    "type": "source-document"
+  },
+  "validation_refs": [
+    "validation:case"
+  ],
+  "variant_id": "provenance_mismatch"
+}

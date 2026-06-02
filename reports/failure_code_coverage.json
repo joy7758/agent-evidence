@@ -1,0 +1,122 @@
+[
+  {
+    "case_id": "issue_pr_metadata",
+    "coverage_status": "covered",
+    "diagnostic_code": "invalid_label_transition",
+    "expected": "invalid_label_transition",
+    "observed": "invalid_label_transition",
+    "variant_id": "invalid_label_transition"
+  },
+  {
+    "case_id": "issue_pr_metadata",
+    "coverage_status": "covered",
+    "diagnostic_code": "unresolved_evidence_policy_ref",
+    "expected": "unresolved_evidence_policy_ref",
+    "observed": "unresolved_evidence_policy_ref",
+    "variant_id": "missing_policy_ref"
+  },
+  {
+    "case_id": "issue_pr_metadata",
+    "coverage_status": "covered",
+    "diagnostic_code": "provenance_output_refs_mismatch",
+    "expected": "provenance_output_refs_mismatch",
+    "observed": "provenance_output_refs_mismatch",
+    "variant_id": "provenance_output_mismatch"
+  },
+  {
+    "case_id": "issue_pr_metadata",
+    "coverage_status": "covered",
+    "diagnostic_code": "unresolved_input_ref",
+    "expected": "unresolved_input_ref",
+    "observed": "unresolved_input_ref",
+    "variant_id": "unresolved_issue_input_ref"
+  },
+  {
+    "case_id": "issue_pr_metadata",
+    "coverage_status": "covered",
+    "diagnostic_code": "unresolved_validation_provenance_ref",
+    "expected": "unresolved_validation_provenance_ref",
+    "observed": "unresolved_validation_provenance_ref",
+    "variant_id": "validation_provenance_missing"
+  },
+  {
+    "case_id": "doc_data_transform",
+    "coverage_status": "covered",
+    "diagnostic_code": "statement_digest_mismatch",
+    "expected": "statement_digest_mismatch",
+    "observed": "statement_digest_mismatch",
+    "variant_id": "digest_mismatch"
+  },
+  {
+    "case_id": "doc_data_transform",
+    "coverage_status": "covered",
+    "diagnostic_code": "unresolved_evidence_policy_ref",
+    "expected": "unresolved_evidence_policy_ref",
+    "observed": "unresolved_evidence_policy_ref",
+    "variant_id": "missing_policy_link"
+  },
+  {
+    "case_id": "doc_data_transform",
+    "coverage_status": "covered",
+    "diagnostic_code": "provenance_output_refs_mismatch",
+    "expected": "provenance_output_refs_mismatch",
+    "observed": "provenance_output_refs_mismatch",
+    "variant_id": "provenance_mismatch"
+  },
+  {
+    "case_id": "doc_data_transform",
+    "coverage_status": "covered",
+    "diagnostic_code": "stale_source_digest",
+    "expected": "stale_source_digest",
+    "observed": "stale_source_digest",
+    "variant_id": "stale_source_hash"
+  },
+  {
+    "case_id": "doc_data_transform",
+    "coverage_status": "covered",
+    "diagnostic_code": "provenance_output_refs_mismatch",
+    "expected": "provenance_output_refs_mismatch",
+    "observed": "provenance_output_refs_mismatch",
+    "variant_id": "wrong_derived_output_ref"
+  },
+  {
+    "case_id": "test_result_summary",
+    "coverage_status": "covered",
+    "diagnostic_code": "statement_digest_mismatch",
+    "expected": "statement_digest_mismatch",
+    "observed": "statement_digest_mismatch",
+    "variant_id": "digest_mismatch"
+  },
+  {
+    "case_id": "test_result_summary",
+    "coverage_status": "covered",
+    "diagnostic_code": "test_summary_count_mismatch",
+    "expected": "test_summary_count_mismatch",
+    "observed": "test_summary_count_mismatch",
+    "variant_id": "missing_failed_test"
+  },
+  {
+    "case_id": "test_result_summary",
+    "coverage_status": "covered",
+    "diagnostic_code": "test_summary_count_mismatch",
+    "expected": "test_summary_count_mismatch",
+    "observed": "test_summary_count_mismatch",
+    "variant_id": "policy_threshold_violation"
+  },
+  {
+    "case_id": "test_result_summary",
+    "coverage_status": "covered",
+    "diagnostic_code": "unresolved_input_ref",
+    "expected": "unresolved_input_ref",
+    "observed": "unresolved_input_ref",
+    "variant_id": "unresolved_test_artifact_ref"
+  },
+  {
+    "case_id": "test_result_summary",
+    "coverage_status": "covered",
+    "diagnostic_code": "test_summary_count_mismatch",
+    "expected": "test_summary_count_mismatch",
+    "observed": "test_summary_count_mismatch",
+    "variant_id": "wrong_count"
+  }
+]

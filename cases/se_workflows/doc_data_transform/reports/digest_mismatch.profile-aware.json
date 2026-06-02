@@ -1,0 +1,104 @@
+{
+  "baseline_results": {
+    "log_only": {
+      "baseline": "log-only",
+      "capability_boundary": "Checks whether the operation event is present in the fixture log. It does not prove policy/evidence linkage, provenance/output closure, or integrity.",
+      "event_present": true,
+      "issues": [],
+      "ok": true
+    },
+    "policy_only": {
+      "baseline": "policy-only",
+      "capability_boundary": "Checks only local policy rule fields. It does not prove evidence, provenance, output closure, validation closure, or digest consistency.",
+      "issues": [],
+      "ok": true
+    },
+    "schema_only": {
+      "baseline": "schema-only",
+      "capability_boundary": "Structural JSON Schema validation only; no reference, policy/evidence, provenance/output, validation/provenance, digest, or case-semantic checks.",
+      "issues": [],
+      "ok": true
+    }
+  },
+  "case_id": "doc_data_transform",
+  "case_name": "Documentation metadata with digest mismatch",
+  "core_profile_report": {
+    "fail_fast": true,
+    "issue_count": 1,
+    "issue_summary": {
+      "by_code": {
+        "statement_digest_mismatch": 1
+      },
+      "by_stage": {
+        "integrity": 1
+      }
+    },
+    "issues": [
+      {
+        "code": "statement_digest_mismatch",
+        "message": "statement_digest does not match the canonical recomputed digest.",
+        "path": "evidence.integrity.statement_digest",
+        "stage": "integrity"
+      }
+    ],
+    "ok": false,
+    "primary_error_code": "statement_digest_mismatch",
+    "profile": "execution-evidence-operation-accountability-profile@0.1",
+    "source": "/Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/digest_mismatch.statement.json",
+    "stages": [
+      {
+        "issues": [],
+        "name": "schema",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "references",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [],
+        "name": "consistency",
+        "ok": true,
+        "skipped": false
+      },
+      {
+        "issues": [
+          {
+            "code": "statement_digest_mismatch",
+            "message": "statement_digest does not match the canonical recomputed digest.",
+            "path": "evidence.integrity.statement_digest",
+            "stage": "integrity"
+          }
+        ],
+        "name": "integrity",
+        "ok": false,
+        "skipped": false
+      }
+    ],
+    "summary": [
+      "FAIL execution-evidence-operation-accountability-profile@0.1 /Users/zhangbin/Desktop/agent-evidence-se-cases-phase30-20260602/cases/se_workflows/doc_data_transform/reports/digest_mismatch.statement.json (1 issue(s))",
+      "Stages with issues: integrity=1",
+      "[statement_digest_mismatch] evidence.integrity.statement_digest: statement_digest does not match the canonical recomputed digest."
+    ]
+  },
+  "diagnostic_match": true,
+  "expected_primary_error_code": "statement_digest_mismatch",
+  "expected_validity": false,
+  "interpretation": "Integrity stage detects mutation after the statement was constructed.",
+  "observed_primary_error_code": "statement_digest_mismatch",
+  "observed_validity": false,
+  "operation_type": "documentation.metadata_transform",
+  "privacy_classification": "generated-public-style-fixture",
+  "profile_aware_result": {
+    "case_semantic_issues": [],
+    "core_profile_ok": false,
+    "core_profile_primary_error_code": "statement_digest_mismatch",
+    "ok": false,
+    "primary_error_code": "statement_digest_mismatch"
+  },
+  "source_type": "representative reproducible SE workflow fixture",
+  "variant_id": "digest_mismatch"
+}
