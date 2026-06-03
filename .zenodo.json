@@ -1,5 +1,5 @@
 {
-  "title": "Agent Evidence SE Workflow Case Prototype v0.1.0-rc2",
+  "title": "Agent Evidence SE Workflow Case Prototype v0.1.0-rc3",
   "upload_type": "software",
   "description": "Representative reproducible software engineering workflow fixtures for operation-accountability profile validation. This release candidate includes three SE workflow case prototypes, controlled invalid variants, baseline comparison outputs, reports, and reproducibility materials. It does not claim industrial real-world evaluation, production deployment, benchmark superiority, legal or compliance sufficiency, full FDO interoperability, or TSE v3 readiness.",
   "creators": [
@@ -9,7 +9,7 @@
     }
   ],
   "license": "Apache-2.0",
-  "version": "se-cases-v0.1.0-rc2",
+  "version": "se-cases-v0.1.0-rc3",
   "keywords": [
     "operation accountability",
     "software validation",
@@ -26,7 +26,7 @@
       "scheme": "url"
     },
     {
-      "identifier": "https://github.com/joy7758/agent-evidence/releases/tag/se-cases-v0.1.0-rc2",
+      "identifier": "https://github.com/joy7758/agent-evidence/releases/tag/se-cases-v0.1.0-rc3",
       "relation": "isSupplementTo",
       "scheme": "url"
     }
