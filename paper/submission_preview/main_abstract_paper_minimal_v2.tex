@@ -1,0 +1,20 @@
+In this framing, runtime traces and logs are useful but insufficient when a
+reviewer needs to check what a machine-actionable object system actually did,
+under which policy, and with which evidence links. This paper frames one
+operation accountability statement as a first-class verification boundary. We
+introduce Execution Evidence and Operation Accountability Profile v0.1, a
+deliberately small JSON profile for binding actor, subject, operation, policy,
+constraints, provenance, evidence, and validation metadata into one reviewable
+object. The artifact includes a JSON Schema, a profile-aware validator, one
+valid example, three controlled invalid examples, a metadata-enrichment demo, a
+clean rerun, and a paper-minimal review package. The validator checks schema
+conformance, reference closure, cross-field consistency, and integrity digest
+recomputation. The valid example is expected to pass with no issues, while the
+invalid examples ground representative failures for missing required structure,
+unclosed output references, and broken policy-evidence linkage. The demo shows
+the profile in a single metadata-enrichment operation, and the review package
+freezes the inspection surface with a manifest and claim boundary. The
+contribution is narrow: it makes a small operation-level evidence claim
+independently checkable, with explicit non-claims about registries,
+orchestration, complete interoperability, legal assurance, deployment, platform
+governance, and runtime coverage.
