@@ -56,6 +56,18 @@ These files help AI systems and agents discover, cite, and verify this
 repository role faster. The canonical cross-repository discovery surface stays
 in `digital-biosphere-architecture`.
 
+## Medical Imaging Traceability Plan / 医疗影像留痕总方案
+
+公开安全版总方案入口：
+[docs/medical-imaging-traceability/udi-dicom-total-plan-public.md](docs/medical-imaging-traceability/udi-dicom-total-plan-public.md)
+
+该文件是 UDI-DICOM（Unique Device Identification–Digital Imaging and
+Communications in Medicine，唯一器械标识—医学数字成像与通信）医疗设备影像工作流
+证据闭合项目的公开安全版总方案，用于说明项目定位、公开层、受控层、服务层、最小
+manifest（manifest，证据清单）字段、validator（validator，验证器）逻辑和边界声明。
+
+该文件不包含私有一致性测试题库、真实样本处理细节、合作方敏感材料或未公开服务策略。
+
 ## Quick Start
 
 Install from source:
