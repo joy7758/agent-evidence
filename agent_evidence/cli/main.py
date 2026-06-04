@@ -29,6 +29,7 @@ from agent_evidence.manifest import SignaturePolicy, SignerConfig, VerificationK
 from agent_evidence.models import EvidenceEnvelope
 from agent_evidence.oap import validate_profile_file
 from agent_evidence.recorder import EvidenceRecorder
+from agent_evidence.review_pack import create_paper_minimal_review_pack
 from agent_evidence.storage import migrate_records, open_store
 from agent_evidence.storage.base import EvidenceStore
 
@@ -46,6 +47,7 @@ AVAILABLE_CLI_COMMANDS = [
     "export automaton",
     "verify-export",
     "validate-profile",
+    "review-pack",
     "verify-bundle",
     "schema",
     "validate-media-profile",
@@ -546,6 +548,32 @@ def validate_profile_command(profile_path: Path, schema_path: Path | None) -> No
     click.echo(json.dumps(report, indent=2, sort_keys=True))
     if not report["ok"]:
         raise SystemExit(1)
+
+
+@main.group(name="review-pack")
+def review_pack_command() -> None:
+    """Build bounded review packages for paper-facing artifacts."""
+
+
+@review_pack_command.command(name="create")
+@click.option(
+    "--paper-minimal",
+    is_flag=True,
+    help="Create the EEOAP v0.1 paper-minimal inspection package.",
+)
+@click.option(
+    "--out",
+    "output_path",
+    required=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+)
+def review_pack_create_command(paper_minimal: bool, output_path: Path) -> None:
+    """Create a review package zip."""
+
+    if not paper_minimal:
+        raise click.ClickException("Only --paper-minimal review packages are currently supported.")
+    report = create_paper_minimal_review_pack(Path.cwd(), output_path)
+    click.echo(json.dumps(report, indent=2, sort_keys=True))
 
 
 @main.command()
