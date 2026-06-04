@@ -3,10 +3,12 @@
 Machine-actionable object systems increasingly leave behind runtime traces,
 event logs, command outputs, and validation receipts. These materials are useful
 for debugging and operational diagnosis, but they are not always sufficient for
-later review. A reviewer may need to answer a smaller and more specific
-question: what was the operation, who or what executed it, which object was
-acted on, which policy and constraints were referenced, which evidence items
-were emitted, and which checks make the statement independently reviewable?
+later review [@kent2006sp80092; @oliner2012loganalysis;
+@schneier1999secureauditlogs]. A reviewer may need to answer a smaller and
+more specific question: what was the operation, who or what executed it, which
+object was acted on, which policy and constraints were referenced, which
+evidence items were emitted, and which checks make the statement independently
+reviewable?
 
 This paper studies operation accountability as a first-class verification
 boundary. The boundary is intentionally small. Instead of treating a complete
@@ -60,6 +62,9 @@ may cite a subject, but the provenance and evidence sections must agree with
 that subject. A policy may cite constraints, but those constraints must resolve
 locally. Input and output references must close against evidence references, and
 the integrity fields must be recomputable over the relevant statement surfaces.
+This framing reuses provenance and policy lines as bounded components rather
+than as complete substitutes for the operation statement [@moreau2013provdm;
+@iannella2018odrl; @hu2014abac].
 
 This paper's evidence set is also bounded. It uses one valid example, three
 controlled invalid examples, and one metadata-enrichment demo. The invalid
@@ -124,7 +129,7 @@ section lists references and artifacts, assigns roles such as input or output,
 and includes integrity fields. The `validation` section records which validator
 and method are used and links validation back to evidence, provenance, and
 policy. Together, these sections form the bounded object checked by the
-profile-aware validator.
+profile-aware validator [@moreau2013provdm; @atkinson2019profiles].
 
 # 4. Profile-Aware Validator
 
@@ -143,7 +148,8 @@ constant profile name and version, array shapes, string lengths, enumerated
 result status values, and SHA-256 digest patterns. A missing required field or
 invalid shape is reported as a schema-level violation. In the paper-minimal
 path, the controlled example `examples/invalid-missing-required.json` grounds
-this failure surface with the primary error code `schema_violation`.
+this failure surface with the primary error code `schema_violation`
+[@wright2022jsonschema; @wright2022jsonschemavalidation].
 
 Reference closure checks whether local identifiers resolve within the statement
 where required. Operation input and output references must resolve to evidence
@@ -174,7 +180,8 @@ match recomputed canonical digests over the expected local surfaces.
 These four layers are intentionally small. They provide a repeatable path for
 checking one statement rather than a general assurance framework. Their value is
 that they turn a paper claim into a concrete command path with expected outputs
-for one valid example and three controlled invalid examples.
+for one valid example and three controlled invalid examples
+[@knublauch2017shacl].
 
 # 5. Paper-Minimal Artifact Package
 
@@ -209,7 +216,8 @@ can inspect `MANIFEST.json`, recompute SHA-256 digests over the listed files,
 and check that the package includes the required files. The review-package test
 path validates these properties for the paper-minimal package. This keeps the
 packaging layer aligned with the paper's main argument: small boundaries are
-more useful when their contents and checks are explicit.
+more useful when their contents and checks are explicit
+[@acm2020artifactbadging].
 
 # 6. Evaluation
 
@@ -259,7 +267,8 @@ monitoring, and incident reconstruction. However, a log or trace stream does
 not necessarily define a compact review object for one operation. The profile
 in this paper complements logs and traces by asking which fields need to be
 bound into a single operation accountability statement and which local checks
-can be rerun over that statement.
+can be rerun over that statement [@kent2006sp80092; @oliner2012loganalysis;
+@schneier1999secureauditlogs].
 
 W3C PROV provides a general model for representing provenance relationships
 among entities, activities, and agents. It is broader and more general than the
@@ -267,7 +276,8 @@ paper-minimal object here. This paper does not replace provenance models.
 Instead, it uses a narrow provenance section inside one statement to check that
 actor, subject, operation, input refs, and output refs agree with the rest of
 the profile. The focus is not general provenance expressiveness, but a small
-operation-level review boundary.
+operation-level review boundary [@moreau2013provdm; @simmhan2005provenance;
+@herschel2017surveyprovenance].
 
 in-toto and SLSA address supply-chain integrity for software artifacts. They
 make important distinctions about steps, materials, products, provenance, and
@@ -276,14 +286,15 @@ different in scope. It is not a supply-chain level framework and does not
 define a build-pipeline assurance level. It borrows the general insight that
 artifact integrity and step accountability benefit from explicit metadata and
 verifiable links, then applies that insight to one operation accountability
-statement.
+statement [@torresarias2019intoto; @slsaProvenance; @slsaBuildProvenance].
 
 FDO and DOIP work concerns digital objects, persistent identifiers, and
 interfaces for object interaction. This paper uses FDO-oriented language only
 as a local framing for object references and reviewable evidence links. It does
 not claim complete FDO interoperability or DOIP implementation. The profile is
 better read as a small operation-level statement format that may be discussed
-alongside object-system work, not as a full object infrastructure.
+alongside object-system work, not as a full object infrastructure
+[@kahn2006framework; @dona2018doip; @soilandreyes2024evaluating].
 
 # 8. Threats to Validity
 

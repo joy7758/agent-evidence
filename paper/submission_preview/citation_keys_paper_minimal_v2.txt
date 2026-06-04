@@ -1,1 +1,19 @@
-# no citation keys found in main_body_paper_minimal_v2.md
+acm2020artifactbadging
+atkinson2019profiles
+dona2018doip
+herschel2017surveyprovenance
+hu2014abac
+iannella2018odrl
+kahn2006framework
+kent2006sp80092
+knublauch2017shacl
+moreau2013provdm
+oliner2012loganalysis
+schneier1999secureauditlogs
+simmhan2005provenance
+slsaBuildProvenance
+slsaProvenance
+soilandreyes2024evaluating
+torresarias2019intoto
+wright2022jsonschema
+wright2022jsonschemavalidation

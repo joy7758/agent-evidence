@@ -83,6 +83,27 @@ not build failure.
 
 ## Reference Readiness Summary
 
+Restoration update:
+
+| item | previous result | restored result |
+| --- | ---: | ---: |
+| citation key count | 0 | 19 |
+| matched bibliography entry count | 0 | 12 |
+| missing bibliography key count | 0 | 7 |
+| real BibTeX entry count | 0 | 12 |
+| Related Work section present | yes | yes |
+| Related Work citation keys present | no | yes |
+
+Updated reference readiness verdict: ready for bibliography completion.
+
+The preview now has citation keys restored from local source material and
+existing reference families. Matched BibTeX entries were copied from existing
+repository `.bib` files. Seven restored keys still lack reliable local BibTeX
+entries, so the preview should not advance to layout patch or official source
+conversion until bibliography completion is done.
+
+Historical pre-restoration state:
+
 | item | result |
 | --- | ---: |
 | citation key count | 0 |
@@ -92,14 +113,15 @@ not build failure.
 | Related Work section present | yes |
 | Related Work citation keys present | no |
 
-Reference readiness classification: blocking for submission-quality related
-work, non-blocking for build.
+Reference readiness classification before restoration: blocking for
+submission-quality related work, non-blocking for build.
 
 The preview compiles because there are no citation commands to resolve. That is
 not enough for submission preparation. The Related Work section discusses
 external bodies of work, but the preview currently has no formal citation keys.
 Unless the citations were intentionally removed as a venue-specific decision,
-the preview should not advance to official source conversion.
+the preview should not advance to official source conversion. After restoration,
+the remaining blocker is bibliography completion for the seven missing keys.
 
 ## Claim Boundary Result
 
@@ -135,8 +157,8 @@ existing repository ignore rule for `build/`.
 
 ## Blocking Issues
 
-1. Submission-quality references are not ready: citation key count is 0 while a
-   Related Work section is present.
+1. Submission-quality references are not ready: 19 citation keys are restored,
+   but 7 keys still lack reliable local BibTeX entries.
 
 This is not a build blocker. It is a blocker for official source conversion.
 
@@ -145,9 +167,8 @@ This is not a build blocker. It is a blocker for official source conversion.
 1. PDF layout has 11 overfull hbox warnings and 21 underfull hbox warnings.
 2. The most severe overfull warnings are caused by long commands, paths, and
    preview tables.
-3. The zero-citation build naturally has no `.bbl` file; this is non-blocking
-   for build but reinforces that reference restoration should happen before
-   official conversion.
+3. The restored-citation build intentionally skips PDF generation until the 7
+   missing bibliography entries are completed.
 
 ## Verification
 

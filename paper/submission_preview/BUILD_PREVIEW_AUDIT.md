@@ -8,21 +8,21 @@ Status: ready for commit.
 
 | metric | value |
 | --- | ---: |
-| citation key count | 0 |
-| matched bibliography entry count | 0 |
-| missing bibliography key count | 0 |
+| citation key count | 19 |
+| matched bibliography entry count | 12 |
+| missing bibliography key count | 7 |
 
-The preview body currently contains no `@key` citation markers. The local
-preview bibliography file exists only as a non-fabricated placeholder and does
-not add invented reference metadata.
+The preview body now contains restored citation keys. Matched entries were
+copied only from existing repository BibTeX files. Missing keys are tracked in
+`MISSING_REFERENCES_PAPER_MINIMAL_V2.md`; no BibTeX entries were fabricated.
 
 ## Build Results
 
 | check | result |
 | --- | --- |
 | TeX generation result | passed |
-| PDF compile result | passed |
-| skip reason | none |
+| PDF compile result | skipped |
+| skip reason | bibliography incomplete |
 
 Observed command:
 
@@ -34,27 +34,28 @@ Observed output summary:
 
 ```text
 generated: paper/submission_preview/build/main_body_paper_minimal_v2.tex
-citation_key_count: 0
-matched_bibliography_entry_count: 0
-missing_bibliography_key_count: 0
-generated: paper/submission_preview/build/main_wrapper_paper_minimal_v2.pdf
+citation_key_count: 19
+matched_bibliography_entry_count: 12
+missing_bibliography_key_count: 7
+WARNING: bibliography incomplete; PDF generation skipped.
+missing keys written to: paper/submission_preview/build/missing_citation_keys.txt
 ```
 
-PDF preview:
+Missing keys:
 
 ```text
-path: paper/submission_preview/build/main_wrapper_paper_minimal_v2.pdf
-pages: 6
-size: 85770 bytes
+acm2020artifactbadging
+dona2018doip
+kahn2006framework
+slsaBuildProvenance
+slsaProvenance
+soilandreyes2024evaluating
+torresarias2019intoto
 ```
 
-The build log reports overfull and underfull box warnings caused by long command
-strings, code paths, and preview tables. These are layout-audit items for a
-later pass, not bibliography or source-generation blockers.
-
-Because the body contains zero citation keys, BibTeX entries are not required
-for this preview build. No `.bbl` file is expected in the current preview
-result.
+The current build is not acceptable for final submission because restored
+citations still have missing bibliography entries. This is an intentional
+skip, not a TeX generation failure.
 
 ## Boundary Checks
 
