@@ -46,6 +46,7 @@ NON_CLAIMS = [
     "production deployment",
     "broad platform governance",
     "broad runtime integration coverage",
+    "no compliance approval",
 ]
 
 REPRODUCE_TEXT = """# Reproduce Paper-Minimal Review Package
@@ -80,6 +81,7 @@ It does not claim:
 - production deployment
 - broad platform governance
 - broad runtime integration coverage
+- no compliance approval
 
 The package is intended for inspection of the current profile, schema,
 controlled examples, validator entrypoint, demo, rerun script, paper tables,

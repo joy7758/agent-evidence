@@ -62,6 +62,7 @@ def test_create_paper_minimal_review_pack_manifest_and_boundary(tmp_path: Path) 
             "production deployment",
             "broad platform governance",
             "broad runtime integration coverage",
+            "no compliance approval",
         ):
             assert non_claim in claim_boundary
 
@@ -80,6 +81,7 @@ def test_create_paper_minimal_review_pack_manifest_and_boundary(tmp_path: Path) 
             "examples/invalid-unclosed-reference.json",
             "examples/invalid-policy-link-broken.json",
         ]
+        assert "no compliance approval" in package_info["non_claims"]
 
         script_mode = archive.getinfo("scripts/reproduce_paper_minimal.sh").external_attr >> 16
         assert script_mode & 0o111
