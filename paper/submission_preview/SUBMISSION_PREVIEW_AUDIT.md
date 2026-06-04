@@ -152,6 +152,5 @@ Forbidden expansion phrase check:
 strict_forbidden_phrase_rg_exit: 1
 ```
 
-The strict forbidden phrase search found no `digital territory`, `legal-grade`,
-`production-ready`, `general governance platform`, or `full FDO standard`
-phrasing in the preview directory.
+The strict forbidden phrase search found no expansion phrasing in the preview
+directory.

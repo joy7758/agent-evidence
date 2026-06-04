@@ -63,6 +63,10 @@ paper/submission_preview/build/main_body_paper_minimal_v2.tex
 If `pandoc` is unavailable, the script exits nonzero with a clear error. If a
 LaTeX compiler or the configured bibliography file is unavailable, the script
 keeps the generated TeX preview and reports why PDF generation was skipped.
+Preview PDF compilation requires a local preview bibliography at
+`paper/submission_preview/references_paper_minimal_v2.bib`. If bibliography
+entries are incomplete, the build script generates TeX and skips PDF
+compilation.
 
 ## Mainline Rerun
 

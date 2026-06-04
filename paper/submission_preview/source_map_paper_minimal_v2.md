@@ -10,7 +10,10 @@
 | body output | `paper/submission_preview/main_body_paper_minimal_v2.md` |
 | wrapper output | `paper/submission_preview/main_wrapper_paper_minimal_v2.tex` |
 | temporary TeX body | `paper/submission_preview/build/main_body_paper_minimal_v2.tex` |
-| configured references path | `submission/58_references_tse.bib` |
+| citation keys | `paper/submission_preview/citation_keys_paper_minimal_v2.txt` |
+| preview references path | `paper/submission_preview/references_paper_minimal_v2.bib` |
+| missing references report | `paper/submission_preview/MISSING_REFERENCES_PAPER_MINIMAL_V2.md` |
+| build audit | `paper/submission_preview/BUILD_PREVIEW_AUDIT.md` |
 
 The body preview removes the source title and abstract, then promotes the
 remaining Markdown headings one level so pandoc can emit normal LaTeX section
