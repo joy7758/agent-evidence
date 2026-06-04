@@ -1,36 +1,33 @@
 # agent-evidence
 
-把 AI Agent / service operation 转换为可验证、可审计、可复核的 evidence object。<br>
-Turn AI agent operations into auditable and verifiable evidence objects.
+agent-evidence provides a minimal operation accountability profile and
+validator for independently checkable execution evidence.
 
-DOI: [10.5281/zenodo.19334062](https://doi.org/10.5281/zenodo.19334062)
+agent-evidence 提供一个最小操作问责配置文件和校验器，用于生成可独立检查的执行证据。
 
-AEP-Media v0.1.0 DOI:
-[10.5281/zenodo.20107097](https://doi.org/10.5281/zenodo.20107097)
+Repository DOI: [10.5281/zenodo.19334062](https://doi.org/10.5281/zenodo.19334062)
 
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
 ![Semantic Events](https://img.shields.io/badge/semantic%20events-v2.0.0-1f6feb)
 ![Status](https://img.shields.io/badge/status-experimental-orange)
 
-## Why this matters
+## Paper-Minimal Path
 
-普通 AI workflow 通常只留下聊天记录、trace 页面或零散日志。它们能帮助开发者排查问题，但很难直接交给审查者、客户、治理团队或后续系统复核。
-
-`agent-evidence` 关注的是一次 Agent / service operation 结束之后，能不能留下结构化证据：operation、policy、provenance、evidence、validation、hashes、verification result，以及可以被 validator 检查的 evidence object。
-
-这个仓库的目标不是再做一个通用 Agent 平台，而是提供一个最小、可运行、可验证的 operation evidence 路径。
-
-## What it provides
+The current paper-facing path is deliberately small:
 
 - `Execution Evidence and Operation Accountability Profile v0.1`
 - JSON Schema
 - profile-aware validator
-- valid / invalid examples
-- runnable single-path demo
-- LangChain-first evidence exporter and offline bundle verification
-- FDO-style mapping material for discussion, not a claim of official standard adoption
-- release and archive surface anchored by GitHub Release `v0.2.0` and DOI `10.5281/zenodo.19334062`
+- 1 valid example
+- 3 controlled invalid examples
+- metadata-enrichment demo
+- clean rerun
+- review package
+
+This path is bounded to one `operation accountability statement` and one
+validator path: schema conformance, reference closure, cross-field consistency,
+and integrity digest recomputation.
 
 ## Quick Start
 
@@ -42,33 +39,66 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
-Validate a minimal valid evidence profile:
+Run the paper-minimal rerun:
+
+```bash
+bash scripts/reproduce_paper_minimal.sh
+```
+
+Run the individual validator path:
 
 ```bash
 agent-evidence validate-profile examples/minimal-valid-evidence.json
-```
-
-Check that an intentionally invalid example fails:
-
-```bash
 agent-evidence validate-profile examples/invalid-missing-required.json
-```
-
-Run the single-path demo:
-
-```bash
+agent-evidence validate-profile examples/invalid-unclosed-reference.json
+agent-evidence validate-profile examples/invalid-policy-link-broken.json
 python3 demo/run_operation_accountability_demo.py
 ```
 
-Expected result:
+Expected results:
 
 - the valid example returns JSON with `"ok": true`
-- the invalid example returns JSON with `"ok": false` and one primary error code
-- the demo writes artifacts under `demo/artifacts/` and ends with one `PASS` summary line
+- the invalid examples fail with stable primary codes:
+  `schema_violation`, `unresolved_output_ref`, and
+  `unresolved_evidence_policy_ref`
+- the demo writes artifacts under `demo/artifacts/` and ends with one `PASS`
+  summary line
 
-## Paper reproducible demo
+## Claim Boundary
 
-For the minimal EEOAP paper reproducibility artifact, run:
+The current paper-minimal path does not claim:
+
+- general agent governance platform
+- official FAIR Digital Object standard
+- legal non-repudiation
+- production deployment
+- compliance approval
+- full FAIR Digital Object interoperability
+- broad runtime integration coverage
+
+See [Paper Boundary Freeze](./docs/PAPER_BOUNDARY_FREEZE.md),
+[Paper Mainline](./docs/PAPER_MAINLINE.md), and
+[Reproduce Paper Minimal](./docs/REPRODUCE_PAPER_MINIMAL.md).
+
+Historical and adjacent materials are preserved for research continuity, but
+the current paper-minimal path is limited to Execution Evidence and Operation
+Accountability Profile v0.1. See
+[Historical and Adjacent Surfaces](./docs/HISTORICAL_AND_ADJACENT_SURFACES.md).
+
+## Main Entry Points
+
+- Boundary freeze: [docs/PAPER_BOUNDARY_FREEZE.md](./docs/PAPER_BOUNDARY_FREEZE.md)
+- Mainline: [docs/PAPER_MAINLINE.md](./docs/PAPER_MAINLINE.md)
+- Minimal rerun guide: [docs/REPRODUCE_PAPER_MINIMAL.md](./docs/REPRODUCE_PAPER_MINIMAL.md)
+- Historical and adjacent surfaces: [docs/HISTORICAL_AND_ADJACENT_SURFACES.md](./docs/HISTORICAL_AND_ADJACENT_SURFACES.md)
+- Minimal rerun script: [scripts/reproduce_paper_minimal.sh](./scripts/reproduce_paper_minimal.sh)
+- Profile spec: [spec/execution-evidence-operation-accountability-profile-v0.1.md](./spec/execution-evidence-operation-accountability-profile-v0.1.md)
+- JSON Schema: [schema/execution-evidence-operation-accountability-profile-v0.1.schema.json](./schema/execution-evidence-operation-accountability-profile-v0.1.schema.json)
+- Demo: [demo/run_operation_accountability_demo.py](./demo/run_operation_accountability_demo.py)
+
+## Previous Paper Case Demo
+
+The repository also keeps an older `paper_case` reproducibility path:
 
 ```bash
 make paper-demo
@@ -77,6 +107,11 @@ make paper-demo
 Expected output includes `PASS valid evidence bundle` and `FAIL tampered output hash mismatch`. The `examples/paper_case/` files are a small paper_case demo for EEOAP execution evidence, operation accountability, validator review, and FDO-style mapping discussion.
 
 ## AEP-Media: time-aware media evidence validation
+
+This is an adjacent media evidence line, not the current paper-minimal path.
+AEP-Media materials are preserved for research continuity and should not be
+read as expanding the current `Execution Evidence and Operation Accountability
+Profile v0.1` paper boundary.
 
 AEP-Media is a small research-software path inside `agent-evidence` for local validation of
 time-aware media evidence bundles. It provides a media evidence profile, schemas, examples,
