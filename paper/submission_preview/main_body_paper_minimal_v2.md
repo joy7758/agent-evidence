@@ -139,7 +139,8 @@ layers are ordered from structural checks toward more semantic local checks.
 The validator is exposed through the command-line validation path:
 
 ```bash
-agent-evidence validate-profile <profile-json>
+agent-evidence validate-profile \
+  <profile-json>
 ```
 
 Schema conformance checks whether the JSON instance satisfies the declared
@@ -189,7 +190,9 @@ The paper-minimal artifact package turns the profile and validator path into an
 inspection package. It is created through the repository's review-pack command:
 
 ```bash
-agent-evidence review-pack create --paper-minimal --out dist/review-pack-paper-minimal.zip
+agent-evidence review-pack create \
+  --paper-minimal \
+  --out dist/review-pack-paper-minimal.zip
 ```
 
 The package includes boundary docs, profile/schema material, examples, the
@@ -226,19 +229,25 @@ example, three controlled invalid examples, and one metadata-enrichment demo.
 The evaluation is not a benchmark of many systems, not a comparison across
 frameworks, and not evidence of deployed operation.
 
-The valid example is `examples/minimal-valid-evidence.json`. It is expected to
-return `ok: true` and `issue_count: 0` when run through the profile-aware
-validator. This result shows that the minimal statement shape can satisfy the
-schema, close the required references, maintain cross-field consistency, and
-match the integrity digest checks under the profile's current assumptions.
+The valid example is:
+
+```text
+examples/minimal-valid-evidence.json
+```
+
+It is expected to return `ok: true` and `issue_count: 0` when run through the
+profile-aware validator. This result shows that the minimal statement shape can
+satisfy the schema, close the required references, maintain cross-field
+consistency, and match the integrity digest checks under the profile's current
+assumptions.
 
 The three invalid examples are expected to exit nonzero with stable primary
-codes. `examples/invalid-missing-required.json` is expected to produce
-`schema_violation`. `examples/invalid-unclosed-reference.json` is expected to
-produce `unresolved_output_ref`. `examples/invalid-policy-link-broken.json` is
-expected to produce `unresolved_evidence_policy_ref`. These cases are chosen to
-ground three representative failure modes rather than to exhaust the space of
-possible invalid statements.
+codes: `invalid_missing_required` produces `schema_violation`,
+`invalid_unclosed_reference` produces `unresolved_output_ref`, and
+`invalid_policy_link_broken` produces `unresolved_evidence_policy_ref`. These
+cases are chosen to ground three representative failure modes rather than to
+exhaust the space of possible invalid statements. Appendix A lists the exact
+example paths used for these cases.
 
 The metadata-enrichment demo is expected to end with a `PASS` summary line. The
 demo provides a concrete operation in which a metadata-enrichment actor emits a
@@ -367,22 +376,27 @@ bash scripts/reproduce_paper_minimal.sh
 The individual validator commands are:
 
 ```bash
-agent-evidence validate-profile examples/minimal-valid-evidence.json
-agent-evidence validate-profile examples/invalid-missing-required.json
-agent-evidence validate-profile examples/invalid-unclosed-reference.json
-agent-evidence validate-profile examples/invalid-policy-link-broken.json
-python demo/run_operation_accountability_demo.py
+agent-evidence validate-profile \
+  examples/minimal-valid-evidence.json
+agent-evidence validate-profile \
+  examples/invalid-missing-required.json
+agent-evidence validate-profile \
+  examples/invalid-unclosed-reference.json
+agent-evidence validate-profile \
+  examples/invalid-policy-link-broken.json
+python \
+  demo/run_operation_accountability_demo.py
 ```
 
 Expected outcomes:
 
-| command | expected exit | expected result |
+| case | expected exit | expected result |
 | --- | ---: | --- |
-| `agent-evidence validate-profile examples/minimal-valid-evidence.json` | 0 | `ok: true` / `issue_count: 0` |
-| `agent-evidence validate-profile examples/invalid-missing-required.json` | nonzero | `schema_violation` |
-| `agent-evidence validate-profile examples/invalid-unclosed-reference.json` | nonzero | `unresolved_output_ref` |
-| `agent-evidence validate-profile examples/invalid-policy-link-broken.json` | nonzero | `unresolved_evidence_policy_ref` |
-| `python demo/run_operation_accountability_demo.py` | 0 | `PASS` summary line |
+| `valid_minimal` | 0 | `ok: true` / `issue_count: 0` |
+| `invalid_missing_required` | nonzero | `schema_violation` |
+| `invalid_unclosed_reference` | nonzero | `unresolved_output_ref` |
+| `invalid_policy_link_broken` | nonzero | `unresolved_evidence_policy_ref` |
+| `demo_metadata_enrichment` | 0 | `PASS` summary line |
 
 # Appendix B: Claim Boundary
 
@@ -408,12 +422,12 @@ The paper-minimal review package includes the following content classes:
 
 | content class | representative files |
 | --- | --- |
-| boundary docs | `docs/PAPER_BOUNDARY_FREEZE.md`, `docs/PAPER_MAINLINE.md`, `docs/REPRODUCE_PAPER_MINIMAL.md` |
-| profile/schema material | `spec/execution-evidence-operation-accountability-profile-v0.1.md`, `schema/execution-evidence-operation-accountability-profile-v0.1.schema.json` |
-| examples | `examples/minimal-valid-evidence.json`, three controlled invalid examples |
-| demo | `demo/run_operation_accountability_demo.py` |
-| paper tables | `paper/tables/minimal_profile_tables.md` |
-| reproduction script | `scripts/reproduce_paper_minimal.sh` |
+| boundary docs | boundary freeze, mainline note, reproduction note |
+| profile/schema material | profile specification and JSON Schema |
+| examples | one valid example and three controlled invalid examples |
+| demo | metadata-enrichment demo |
+| paper tables | minimal profile tables |
+| reproduction script | paper-minimal rerun script |
 | generated package metadata | `MANIFEST.json`, `CLAIM_BOUNDARY.md`, `PACKAGE_INFO.json` |
 
 The package is intended for inspection. Reproduction commands are intended to

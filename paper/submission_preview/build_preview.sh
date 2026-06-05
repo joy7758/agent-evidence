@@ -51,13 +51,14 @@ MATCHED_COUNT="$(comm -12 "$CURRENT_KEYS" "$BIB_KEYS" | awk 'NF { count++ } END 
 MISSING_COUNT="$(awk 'NF { count++ } END { print count + 0 }' "$MISSING_KEYS")"
 
 pandoc "$BODY_MD" \
-  --from=gfm \
+  --from=markdown+citations \
   --to=latex \
+  --natbib \
   --syntax-highlighting=none \
   --top-level-division=section \
   --output="$BODY_TEX"
 
-perl -0pi -e 's/^\{\\def\\LTcaptype\{none\} % do not increment counter\n//mg; s/^\\begin\{longtable\}\[\]\{(.+)\}$/\\begin{table*}[t]\n\\centering\\small\n\\begin{tabular}{$1}/mg; s/^\\endhead\n//mg; s/^\\bottomrule\\noalign\{\}\n//mg; s/^\\endlastfoot\n//mg; s/^\\end\{longtable\}\n\}$/\\end{tabular}\n\\end{table*}/mg' "$BODY_TEX"
+perl -0pi -e 's/\\citep\{([^}]+)\}/\\cite{$1}/g; s/\\citet\{([^}]+)\}/\\cite{$1}/g; s/^\{\\def\\LTcaptype\{none\} % do not increment counter\n//mg; s/^\\begin\{longtable\}\[\]\{(.+)\}$/\\begin{table*}[t]\n\\centering\\scriptsize\n\\resizebox{\\textwidth}{!}{%\n\\begin{tabular}{$1}/mg; s/^\\endhead\n//mg; s/^\\bottomrule\\noalign\{\}\n//mg; s/^\\endlastfoot\n//mg; s/^\\end\{longtable\}\n\}$/\\end{tabular}%\n}\n\\end{table*}/mg' "$BODY_TEX"
 
 echo "generated: $BODY_TEX"
 echo "citation_key_count: $KEY_COUNT"

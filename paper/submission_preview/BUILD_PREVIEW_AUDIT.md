@@ -4,7 +4,7 @@
 
 Status: ready for commit.
 
-Reference readiness verdict: ready for layout patch.
+Layout readiness verdict: ready for final preview package audit.
 
 ## Citation And Bibliography
 
@@ -14,10 +14,10 @@ Reference readiness verdict: ready for layout patch.
 | matched bibliography entry count | 19 |
 | missing bibliography key count | 0 |
 
-The preview body contains 19 restored citation keys, and all 19 now have local
-BibTeX entries in `references_paper_minimal_v2.bib`. Seven entries were
-normalized from existing repository reference text with source provenance
-recorded in `BIBLIOGRAPHY_COMPLETION_AUDIT.md`; no web search was used.
+The preview body still contains the same 19 citation keys, and all 19 have
+local BibTeX entries in `references_paper_minimal_v2.bib`. No citation key,
+bibliography entry, example count, validator stage, or claim boundary was
+changed in the layout pass.
 
 ## Build Results
 
@@ -28,7 +28,7 @@ recorded in `BIBLIOGRAPHY_COMPLETION_AUDIT.md`; no web search was used.
 | skip reason | none |
 | PDF path | `paper/submission_preview/build/main_wrapper_paper_minimal_v2.pdf` |
 | PDF page count | 6 |
-| PDF file size | 106470 bytes |
+| PDF file size | 106275 bytes |
 
 Observed command:
 
@@ -48,18 +48,17 @@ generated: paper/submission_preview/build/main_wrapper_paper_minimal_v2.pdf
 
 Final LaTeX log summary:
 
-| warning type | count |
-| --- | ---: |
-| overfull hbox | 11 |
-| underfull hbox | 25 |
-| unresolved citation warnings in final log | 0 |
-| unresolved reference warnings in final log | 0 |
+| warning type | before layout patch | after layout patch |
+| --- | ---: | ---: |
+| overfull hbox | 11 | 1 |
+| underfull hbox | 25 | 20 |
+| unresolved citation warnings in final log | 0 | 0 |
+| unresolved reference warnings in final log | 0 | 0 |
 
-The preview `.bib` includes a BibTeX preamble bootstrap so the current
-`pandoc --from=gfm` preview path emits the bibliography without modifying the
-preview body, wrapper, or build script. This is a preview-build compatibility
-measure only. The next layout pass should still replace visible markdown-style
-citation markers in the generated PDF with normal rendered citations.
+The build script now converts preview citation markers to IEEE-compatible
+`\cite{...}` commands during TeX generation and scales preview tables to the
+available width. This is a preview build formatting step only; it does not
+modify the citation key list or the BibTeX database.
 
 ## Boundary Checks
 
@@ -67,4 +66,5 @@ citation markers in the generated PDF with normal rendered citations.
 | --- | --- |
 | official sources overwritten | false |
 | `submission/` modified | false |
+| bibliography changed in layout pass | false |
 | claim boundary changed | false |
