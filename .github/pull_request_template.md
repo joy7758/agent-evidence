@@ -13,6 +13,37 @@
 - [ ] Updated `docs/project-facts.md` if project facts change
 - [ ] Updated `docs/callable-surfaces.md` if CLI/API/MCP capabilities change
 
+## EEOAP Clause Gate
+
+Affected EEOAP clauses:
+
+- [ ] EEOAP-001: operation accountability statement
+- [ ] EEOAP-002: actor / subject / operation / timestamp binding
+- [ ] EEOAP-003: policy / evidence / provenance references
+- [ ] EEOAP-004: validator-readable validation report
+- [ ] EEOAP-005: clause citation in task or pull-request summary
+- [ ] Not applicable; explain why in the PR summary
+
+Validator command:
+
+```text
+agent-evidence validate-profile examples/minimal-valid-evidence.json
+```
+
+Validator result:
+
+```text
+<paste result or short PASS/FAIL summary>
+```
+
+Examples updated? yes/no:
+
+Known deviations:
+
+Claim hygiene confirmation:
+
+- [ ] This PR does not mark local packages as submitted, accepted, externally reviewed, certified, or published.
+
 ## Citation and Attribution
 
 - [ ] Updated `CITATION.cff` / `codemeta.json` if citation metadata changes
