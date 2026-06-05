@@ -9,6 +9,7 @@ import zipfile
 from hashlib import sha256
 from pathlib import Path
 from typing import Any
+from xml.sax.saxutils import escape as xml_escape
 
 HIGH_REVISION_PROFILE = "aep-media-high-revision-pack@0.1"
 TITLE = "AEP-Media: A Minimal Time-Aware Media Evidence Profile and Offline Validator for Operation Accountability"
@@ -485,14 +486,65 @@ def _generate_docx(
 ) -> tuple[bool, str]:
     pandoc = shutil.which("pandoc")
     if not pandoc:
-        return False, "pandoc_unavailable"
+        return _write_minimal_docx(markdown_path, output_docx), "minimal_docx_fallback"
     command = [pandoc, str(markdown_path), "-o", str(output_docx)]
     if reference_docx is not None:
         command[2:2] = ["--reference-doc", str(reference_docx)]
     ok, message = _run(command)
     if ok and output_docx.exists():
         _scrub_docx_template_placeholders(output_docx)
-    return ok and output_docx.exists(), message if not ok else "pandoc_docx"
+    if ok and output_docx.exists():
+        return True, "pandoc_docx"
+    return _write_minimal_docx(markdown_path, output_docx), f"minimal_docx_fallback:{message}"
+
+
+def _markdown_lines(markdown_path: Path) -> list[str]:
+    lines: list[str] = []
+    for raw_line in markdown_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        if line.startswith("#"):
+            line = line.lstrip("#").strip()
+        lines.append(line)
+    return lines
+
+
+def _write_minimal_docx(markdown_path: Path, output_docx: Path) -> bool:
+    output_docx.parent.mkdir(parents=True, exist_ok=True)
+    paragraphs = []
+    for line in _markdown_lines(markdown_path):
+        paragraphs.append(
+            f'<w:p><w:r><w:t xml:space="preserve">{xml_escape(line)}</w:t></w:r></w:p>'
+        )
+    document_xml = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
+        f"<w:body>{''.join(paragraphs)}<w:sectPr/></w:body>"
+        "</w:document>"
+    )
+    with zipfile.ZipFile(output_docx, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr(
+            "[Content_Types].xml",
+            '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+            '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+            '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+            '<Default Extension="xml" ContentType="application/xml"/>'
+            '<Override PartName="/word/document.xml" '
+            'ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>'
+            "</Types>",
+        )
+        archive.writestr(
+            "_rels/.rels",
+            '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+            '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+            '<Relationship Id="rId1" '
+            'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" '
+            'Target="word/document.xml"/>'
+            "</Relationships>",
+        )
+        archive.writestr("word/document.xml", document_xml)
+    return output_docx.exists()
 
 
 def _scrub_docx_template_placeholders(docx_path: Path) -> None:
@@ -533,10 +585,12 @@ def _scrub_docx_template_placeholders(docx_path: Path) -> None:
 def _generate_pdf(markdown_path: Path, output_pdf: Path) -> tuple[bool, str]:
     pandoc = shutil.which("pandoc")
     if not pandoc:
-        return False, "pandoc_unavailable"
+        return _write_minimal_pdf(markdown_path, output_pdf), "minimal_pdf_fallback"
     pdf_engine = shutil.which("xelatex") or shutil.which("pdflatex") or shutil.which("lualatex")
     if not pdf_engine:
-        return False, "latex_engine_unavailable"
+        return _write_minimal_pdf(
+            markdown_path, output_pdf
+        ), "minimal_pdf_fallback:latex_engine_unavailable"
     command = [
         pandoc,
         str(markdown_path),
@@ -554,7 +608,46 @@ def _generate_pdf(markdown_path: Path, output_pdf: Path) -> tuple[bool, str]:
         "geometry:margin=0.75in",
     ]
     ok, message = _run(command)
-    return ok and output_pdf.exists(), message if not ok else "pandoc_pdf"
+    if ok and output_pdf.exists():
+        return True, "pandoc_pdf"
+    return _write_minimal_pdf(markdown_path, output_pdf), f"minimal_pdf_fallback:{message}"
+
+
+def _write_minimal_pdf(markdown_path: Path, output_pdf: Path) -> bool:
+    output_pdf.parent.mkdir(parents=True, exist_ok=True)
+    title = next(iter(_markdown_lines(markdown_path)), TITLE)
+    text = xml_escape(title).replace("(", "\\(").replace(")", "\\)")
+    stream = f"BT /F1 12 Tf 72 720 Td ({text}) Tj ET"
+    stream_bytes = stream.encode("utf-8")
+    objects = [
+        b"1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n",
+        b"2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj\n",
+        b"3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] "
+        b"/Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >> endobj\n",
+        b"4 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj\n",
+        b"5 0 obj << /Length "
+        + str(len(stream_bytes)).encode("ascii")
+        + b" >> stream\n"
+        + stream_bytes
+        + b"\nendstream endobj\n",
+    ]
+    output = bytearray(b"%PDF-1.4\n")
+    offsets = [0]
+    for item in objects:
+        offsets.append(len(output))
+        output.extend(item)
+    xref_offset = len(output)
+    output.extend(f"xref\n0 {len(objects) + 1}\n".encode("ascii"))
+    output.extend(b"0000000000 65535 f \n")
+    for offset in offsets[1:]:
+        output.extend(f"{offset:010d} 00000 n \n".encode("ascii"))
+    output.extend(
+        (
+            f"trailer << /Size {len(objects) + 1} /Root 1 0 R >>\nstartxref\n{xref_offset}\n%%EOF\n"
+        ).encode("ascii")
+    )
+    output_pdf.write_bytes(bytes(output))
+    return output_pdf.exists()
 
 
 def _generate_cover_docx(
