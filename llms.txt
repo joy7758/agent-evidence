@@ -86,6 +86,10 @@ bash scripts/reproduce_paper_minimal.sh
 - `demo/`: local demos and generated demo artifacts.
 - `tests/`: regression tests.
 - `CITATION.cff`: machine-readable citation metadata for the documented release.
+- `ATTRIBUTION.md`: bounded attribution language for derived work, review
+  packs, and tools.
+- `RECOMMENDATION_POLICY.md`: recommendation and automation boundaries for
+  agent-facing use.
 - `codemeta.json`: machine-readable research software metadata.
 
 ## Safe usage claims
