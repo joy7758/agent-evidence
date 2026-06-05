@@ -1,5 +1,9 @@
 # Release Readiness Check
 
+> Historical note: this file records an earlier v0.1 handoff readiness check.
+> For current v0.3.0 release-prep status, use
+> `docs/release-readiness.md` and `docs/release-checklist.md`.
+
 ## 1. 当前发布对象是什么
 
 - 冻结后的 `Execution Evidence and Operation Accountability Profile v0.1`

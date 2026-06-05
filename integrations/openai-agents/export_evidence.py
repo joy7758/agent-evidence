@@ -38,7 +38,7 @@ def capture_runtime_trace() -> dict[str, Any]:
     }
 
 
-def convert_to_evidence_object(runtime_trace: dict[str, Any]) -> dict[str, Any]:
+def build_runtime_evidence_export(runtime_trace: dict[str, Any]) -> dict[str, Any]:
     steps = [
         {
             "step_id": step["id"],
@@ -70,7 +70,7 @@ def convert_to_evidence_object(runtime_trace: dict[str, Any]) -> dict[str, Any]:
         }
     )
     return {
-        "object_type": "execution-evidence-object",
+        "object_type": "runtime-evidence-export",
         "agent_framework": runtime_trace["agent_framework"],
         "run_id": runtime_trace["run_id"],
         "steps": steps,
@@ -86,13 +86,13 @@ def convert_to_evidence_object(runtime_trace: dict[str, Any]) -> dict[str, Any]:
 
 def export_json_evidence_bundle(output_path: str | Path) -> Path:
     runtime_trace = capture_runtime_trace()
-    evidence_object = convert_to_evidence_object(runtime_trace)
+    runtime_evidence_export = build_runtime_evidence_export(runtime_trace)
     target = Path(output_path)
-    target.write_text(json.dumps(evidence_object, indent=2) + "\n", encoding="utf-8")
+    target.write_text(json.dumps(runtime_evidence_export, indent=2) + "\n", encoding="utf-8")
     return target
 
 
 if __name__ == "__main__":
-    destination = Path(__file__).with_name("openai-evidence-object.json")
+    destination = Path(__file__).with_name("openai-runtime-evidence-export.json")
     written = export_json_evidence_bundle(destination)
     print(written)

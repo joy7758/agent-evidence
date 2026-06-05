@@ -87,6 +87,7 @@ def test_cli_capabilities_json_outputs_required_metadata() -> None:
         "version",
         "purpose",
         "canonical_callable_surface",
+        "local_callable_wrappers",
         "available_cli_commands",
         "artifact_types",
         "integrations",
@@ -101,24 +102,48 @@ def test_cli_capabilities_json_outputs_required_metadata() -> None:
     assert payload["canonical_callable_surface"]["type"] == "cli"
     assert payload["canonical_callable_surface"]["available"] is True
     assert "capabilities" in payload["available_cli_commands"]
+    assert "serve" in payload["available_cli_commands"]
+    assert "mcp" in payload["available_cli_commands"]
+    wrappers = {wrapper["name"]: wrapper for wrapper in payload["local_callable_wrappers"]}
+    openapi = wrappers["OpenAPI"]
+    assert openapi["name"] == "OpenAPI"
+    assert openapi["available"] is True
+    assert openapi["scope"] == "local"
+    assert openapi["default_host"] == "127.0.0.1"
+    mcp = wrappers["MCP"]
+    assert mcp["available"] is True
+    assert mcp["scope"] == "local"
+    assert mcp["transport"] == "stdio"
     assert payload["citation_file"] == "CITATION.cff"
     assert payload["attribution_file"] == "ATTRIBUTION.md"
     assert payload["recommendation_policy_file"] == "RECOMMENDATION_POLICY.md"
     assert payload["claims_to_avoid"]
 
 
-def test_cli_capabilities_json_does_not_claim_openapi_or_mcp_available() -> None:
+def test_cli_capabilities_json_reports_local_openapi_and_mcp_wrappers() -> None:
     runner = CliRunner()
 
     result = runner.invoke(main, ["capabilities", "--json"])
 
     assert result.exit_code == 0, result.output
     payload = json.loads(result.output)
+    wrappers = {wrapper["name"].lower(): wrapper for wrapper in payload["local_callable_wrappers"]}
+    assert wrappers["openapi"]["available"] is True
+    assert wrappers["openapi"]["command"].startswith("agent-evidence serve")
+    assert wrappers["mcp"]["available"] is True
+    assert wrappers["mcp"]["command"] == "agent-evidence mcp --transport stdio"
+    assert wrappers["mcp"]["tools"] == [
+        "list_capabilities",
+        "list_schemas",
+        "validate_profile",
+        "verify_bundle",
+    ]
+    assert wrappers["mcp"]["prompts"] == []
     planned_surfaces = {
         surface["name"].lower(): surface for surface in payload["planned_but_unavailable_surfaces"]
     }
-    assert planned_surfaces["openapi"]["available"] is False
-    assert planned_surfaces["mcp"]["available"] is False
+    assert "openapi" not in planned_surfaces
+    assert "mcp" not in planned_surfaces
 
 
 def test_cli_capabilities_json_matches_registered_commands() -> None:

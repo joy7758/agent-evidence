@@ -15,7 +15,7 @@ agent-evidence capabilities --json
 Use `agent-evidence capabilities --json` when an external agent needs
 machine-readable metadata about implemented commands, artifact types,
 integrations, citation files, attribution files, recommendation policy, claim
-boundaries, and planned but unavailable surfaces.
+boundaries, local callable wrappers, and planned but unavailable surfaces.
 
 ## CLI Boundary
 
@@ -48,25 +48,66 @@ custody.
 
 ## OpenAPI Status
 
-OpenAPI is planned only after a real local HTTP wrapper exists.
+`openapi.yaml` now describes a local thin HTTP wrapper over existing CLI/core
+behavior.
 
-Until then:
+Start it with:
 
-- do not claim OpenAPI availability
-- do not generate OpenAPI metadata from docs alone
-- do not duplicate validator or export semantics in an HTTP layer
-- do not treat README examples as an HTTP contract
+```bash
+agent-evidence serve --host 127.0.0.1 --port 8765
+```
+
+Implemented endpoints:
+
+- `GET /healthz`
+- `GET /v1/capabilities`
+- `POST /v1/profiles/validate`
+- `POST /v1/bundles/verify`
+
+The wrapper:
+
+- keeps CLI/core behavior canonical
+- calls `agent_evidence.cli.main.build_capabilities_payload()`
+- calls existing profile validation behavior for validate requests
+- calls `agent_evidence.aep.verify_bundle()` for bundle verification
+- does not add Review Pack endpoints
+- does not introduce new evidence semantics
 
 ## MCP Status
 
-MCP is planned only after local, low-risk verify tools are implemented.
+MCP is available as a local stdio read-only / verify-first wrapper.
 
-Until then:
+Start it with:
 
-- do not claim MCP availability
-- do not expose write-heavy tools as a first MCP surface
-- do not duplicate validation logic in MCP handlers
-- do not add promotion, star, follow, fork, or outbound promotion tools
+```bash
+agent-evidence mcp --transport stdio
+```
+
+Implemented tools:
+
+- `list_capabilities`
+- `list_schemas`
+- `validate_profile`
+- `verify_bundle`
+
+Implemented resources:
+
+- `agent-evidence://capabilities`
+- `agent-evidence://schema/agent-index`
+- `agent-evidence://schema/openapi`
+- `agent-evidence://docs/for-agents`
+- `agent-evidence://docs/callable-surfaces`
+- `agent-evidence://citation`
+- `agent-evidence://recommendation-policy`
+
+The wrapper:
+
+- keeps CLI/core behavior canonical
+- uses stdio only
+- does not add prompts
+- does not add telemetry, registry publication, shell tools, write tools,
+  upload tools, sign tools, or GitHub star/follow/fork tools
+- does not duplicate validation logic in MCP handlers
 
 ## Wrapper Rules
 
@@ -85,8 +126,7 @@ Any future callable wrapper must:
 The current repository does not provide:
 
 - hosted API
-- OpenAPI server
-- MCP server
+- remote MCP server
 - browser UI
 - GitHub Pages callable documentation site
 - automated reputation mechanics

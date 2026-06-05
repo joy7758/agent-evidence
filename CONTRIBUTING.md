@@ -1,116 +1,98 @@
-# Contributing to agent-evidence
+# Contributing
 
-Thank you for considering a contribution. This repository focuses on structured
-evidence objects for AI agent and service operations, including the AEP-Media
-research-software path for local validation of media evidence bundles.
+`agent-evidence` is intentionally narrow. It packages AI agent and service
+operation evidence into local, verifiable artifacts and keeps validation,
+offline verification, signed export metadata, receipts, and review packs inside
+that boundary.
 
-## Project Scope
+## Good Contribution Types
 
-Contributions should preserve the current evidence-validation boundary:
+Good contributions include:
 
-- local profile validation;
-- offline bundle building and verification;
-- command-line workflows;
-- examples, tests, schemas, specs, and reproducibility documentation;
-- fixture-based adapter ingestion for media/time/provenance metadata.
+- validator correctness fixes
+- schema clarification
+- valid and invalid examples
+- offline verification improvements
+- signed export safety checks
+- review pack improvements
+- documentation that improves agent discovery, citation, or reuse
+- tests for CLI behavior and bundle verification
 
-Do not add claims or implementation shortcuts that turn this project into a
-legal proof system, production forensic platform, trusted timestamping service,
-full C2PA verifier, full MP4 PRFT parser, or chain-of-custody system without
-explicit evidence and review.
+## Out-of-Scope Changes
+
+Please do not broaden this repository into:
+
+- a full agent platform
+- hosted APIs
+- remote MCP services
+- hidden telemetry
+- automatic promotion
+- reputation automation
+- legal compliance claims
+- official FDO standard claims
+
+OpenAPI and MCP work must stay local, thin, and aligned with existing
+validation/export logic unless a separate maintainer-approved plan changes that
+boundary.
 
 ## Development Setup
+
+Create a local environment and install development dependencies:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -e ".[dev]"
+pip install -e ".[dev]"
 ```
 
-If you only need the package without development tooling:
+Run the main checks:
 
 ```bash
-python -m pip install -e .
+pytest -q
+ruff check .
+ruff format --check .
+python scripts/generate_agent_index.py --check
+python scripts/generate_llms_full.py --check
+git diff --check
 ```
 
-## Running Tests
-
-Run the full test suite:
+For quick CLI smoke checks:
 
 ```bash
-python -m pytest -q
+agent-evidence validate-profile examples/minimal-valid-evidence.json
+agent-evidence capabilities --json
 ```
 
-Run targeted AEP-Media checks:
+## Pull Request Checklist
 
-```bash
-python -m pytest \
-  tests/test_media_profile.py \
-  tests/test_media_bundle.py \
-  tests/test_media_time.py \
-  tests/test_media_adapters.py \
-  tests/test_media_evaluation.py \
-  tests/test_media_cli_registration.py \
-  -q
-```
+Before opening a pull request:
 
-Run core AEP-Media CLI examples:
+- keep the patch focused on one behavior, documentation, metadata, or safety
+  concern
+- add or update tests for validator, CLI, export, or bundle-verification
+  behavior when behavior changes
+- update examples when schema or validation expectations change
+- cite affected EEOAP clauses and include protocol-gate validation results
+  when protocol, evidence, validator, workflow, example, or PR metadata changes
+- update generated agent metadata when source discovery files change
+- update `DEVELOPMENT_LEDGER.md` and `DEVELOPMENT_LEDGER.jsonl` for meaningful
+  behavior, metadata, policy, or agent-facing discovery changes
+- preserve claim boundaries from `AGENTS.md`, `llms.txt`,
+  `docs/project-facts.md`, and `README.md`
+- avoid committing secrets, private keys, sensitive runtime evidence, or
+  production review packs
 
-```bash
-agent-evidence validate-media-profile examples/media/minimal-valid-media-evidence.json
-agent-evidence validate-media-time-profile examples/media/time/minimal-valid-time-aware-media-evidence.json
-agent-evidence run-media-evaluation --out /tmp/aep-media-evaluation
-```
+## Maintainer Review Focus
 
-Run style checks:
+Maintainers should focus review on:
 
-```bash
-ruff check agent_evidence tests
-```
-
-## Reporting Issues
-
-Please use GitHub issues for bug reports, documentation problems, and feature
-requests. Include:
-
-- the command you ran;
-- expected behavior;
-- actual behavior;
-- Python version;
-- package version or commit;
-- a minimal redacted fixture if possible.
-
-Do not upload private media, personal evidence records, credentials, tokens, or
-sensitive logs. Use synthetic or redacted fixtures.
-
-## Pull Requests
-
-Pull requests should:
-
-- describe the user-facing and agent-facing change;
-- include tests or explain why tests are not applicable;
-- update docs/examples when behavior changes;
-- avoid committing large binary artifacts;
-- avoid private evidence or non-redacted media;
-- preserve the claim boundary below.
-
-If you used substantial AI assistance for code, tests, documentation, or paper
-wording, disclose that in the pull request notes and describe what was reviewed
-or validated by a human contributor.
-
-## Claim Boundary
-
-Contributors must not add unsupported claims of:
-
-- legal admissibility;
-- non-repudiation;
-- chain of custody;
-- trusted timestamping;
-- real PTP proof;
-- full MP4 PRFT parsing;
-- real C2PA signature verification;
-- production deployment;
-- broad forensic sufficiency.
-
-Those terms may appear only as explicit limitations or non-claims unless a
-future contribution adds and documents the required evidence.
+- whether the change stays inside the current evidence packaging and
+  verification boundary
+- validator correctness and schema compatibility
+- manifest, hash, and bundle path handling
+- signed export metadata safety
+- JSON, CSV, and XML export safety
+- offline verification receipts and review-pack clarity
+- dependency and GitHub Actions permission changes
+- whether docs or metadata introduce unsupported legal, compliance, AI Act, FDO
+  standard, hosted-service, or adoption claims

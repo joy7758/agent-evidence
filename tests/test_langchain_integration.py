@@ -1,5 +1,9 @@
 import asyncio
 import importlib.util
+import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 from uuid import uuid4
 
@@ -16,11 +20,11 @@ from agent_evidence.integrations import (
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage.local import LocalEvidenceStore
 
+ROOT = Path(__file__).resolve().parents[1]
+
 
 def _load_langchain_minimal_example():
-    example_path = (
-        Path(__file__).resolve().parents[1] / "examples" / "langchain_minimal_evidence.py"
-    )
+    example_path = ROOT / "examples" / "langchain_minimal_evidence.py"
     spec = importlib.util.spec_from_file_location(
         "langchain_minimal_evidence_example",
         example_path,
@@ -209,3 +213,81 @@ def test_langchain_minimal_evidence_example_smoke(tmp_path: Path) -> None:
     assert Path(summary["manifest_path"]).exists()
     assert Path(summary["public_key_path"]).exists()
     assert summary["verify_result"]["ok"] is True
+
+
+def test_langchain_minimal_evidence_subprocess_and_cli_verify(tmp_path: Path) -> None:
+    output_dir = tmp_path / "langchain-minimal-evidence"
+    env = os.environ.copy()
+    for name in [
+        "ANTHROPIC_API_KEY",
+        "GOOGLE_API_KEY",
+        "LANGCHAIN_API_KEY",
+        "MISTRAL_API_KEY",
+        "OPENAI_API_KEY",
+    ]:
+        env.pop(name, None)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "examples/langchain_minimal_evidence.py",
+            "--output-dir",
+            str(output_dir),
+        ],
+        cwd=ROOT,
+        env=env,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(result.stdout)
+    assert payload["ok"] is True
+
+    expected_files = [
+        "runtime-events.jsonl",
+        "langchain-evidence.bundle.json",
+        "langchain-evidence.manifest.json",
+        "manifest-private.pem",
+        "manifest-public.pem",
+        "summary.json",
+    ]
+    for filename in expected_files:
+        assert (output_dir / filename).exists(), filename
+
+    summary = json.loads((output_dir / "summary.json").read_text(encoding="utf-8"))
+    bundle_path = output_dir / "langchain-evidence.bundle.json"
+    public_key_path = output_dir / "manifest-public.pem"
+    agent_evidence_cli = Path(sys.executable).with_name("agent-evidence")
+    assert agent_evidence_cli.exists()
+    verify_result = subprocess.run(
+        [
+            str(agent_evidence_cli),
+            "verify-export",
+            "--bundle",
+            str(bundle_path),
+            "--public-key",
+            str(public_key_path),
+        ],
+        cwd=ROOT,
+        env=env,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    verify_payload = json.loads(verify_result.stdout)
+    assert verify_payload["ok"] is True
+    assert summary["verify_result"]["ok"] is True
+    assert summary["verify_command"].startswith("agent-evidence verify-export")
+
+
+def test_langchain_minimal_cookbook_references_runnable_path() -> None:
+    text = (ROOT / "docs/cookbooks/langchain_minimal_evidence.md").read_text(encoding="utf-8")
+
+    for required in [
+        "examples/langchain_minimal_evidence.py",
+        "agent-evidence verify-export",
+        "summary.json",
+        "runtime-events.jsonl",
+        "langchain-evidence.bundle.json",
+    ]:
+        assert required in text

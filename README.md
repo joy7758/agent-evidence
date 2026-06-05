@@ -1,33 +1,72 @@
 # agent-evidence
 
-agent-evidence provides a minimal operation accountability profile and
-validator for independently checkable execution evidence.
+把 AI Agent / service operation 转换为可验证、可审计、可复核的 evidence object。<br>
+Turn AI agent operations into auditable and verifiable evidence objects.
 
-agent-evidence 提供一个最小操作问责配置文件和校验器，用于生成可独立检查的执行证据。
-
-Repository DOI: [10.5281/zenodo.19334062](https://doi.org/10.5281/zenodo.19334062)
+DOI: [10.5281/zenodo.19334061](https://doi.org/10.5281/zenodo.19334061)
 
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
 ![Semantic Events](https://img.shields.io/badge/semantic%20events-v2.0.0-1f6feb)
 ![Status](https://img.shields.io/badge/status-experimental-orange)
 
-## Paper-Minimal Path
+## Maintainer automation fit
 
-The current paper-facing path is deliberately small:
+`agent-evidence` is maintained as a narrow open-source package for verifiable
+AI agent operation evidence. Codex can help reduce maintainer load by reviewing
+pull requests, expanding regression tests, checking validator and signed-export
+boundaries, preparing release notes, and keeping agent-facing documentation
+consistent.
+
+Human maintainer review remains required. The project does not claim legal
+non-repudiation, compliance certification, AI Act approval, or official FDO
+standard status.
+
+## Why this matters
+
+普通 AI workflow 通常只留下聊天记录、trace 页面或零散日志。它们能帮助开发者排查问题，但很难直接交给审查者、客户、治理团队或后续系统复核。
+
+`agent-evidence` 关注的是一次 Agent / service operation 结束之后，能不能留下结构化证据：operation、policy、provenance、evidence、validation、hashes、verification result，以及可以被 validator 检查的 evidence object。
+
+这个仓库的目标不是再做一个通用 Agent 平台，而是提供一个最小、可运行、可验证的 operation evidence 路径。
+
+## What it provides
 
 - `Execution Evidence and Operation Accountability Profile v0.1`
 - JSON Schema
 - profile-aware validator
-- 1 valid example
-- 3 controlled invalid examples
-- metadata-enrichment demo
-- clean rerun
-- review package
+- valid / invalid examples
+- runnable single-path demo
+- LangChain-first evidence exporter and offline bundle verification
+- FDO-style mapping material for discussion, not a claim of official standard adoption
+- v0.6.0 released with Review Pack V0.3: local, offline, verify-first
+  reviewer-facing packaging for verified signed exports; available as
+  `agent-evidence==0.6.0` on PyPI and archived on Zenodo; not legal,
+  compliance, or AI Act approval
 
-This path is bounded to one `operation accountability statement` and one
-validator path: schema conformance, reference closure, cross-field consistency,
-and integrity digest recomputation.
+## AI / agent entry points
+
+- `llms.txt`
+- `AGENTS.md`
+- `CITATION.cff`
+- Canonical AI discovery index: [https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/ai-discovery-index.md](https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/ai-discovery-index.md)
+- Canonical AI citation map: [https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/ai-citation-map.json](https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/ai-citation-map.json)
+
+These files help AI systems and agents discover, cite, and verify this
+repository role faster. The canonical cross-repository discovery surface stays
+in `digital-biosphere-architecture`.
+
+## Medical Imaging Traceability Plan / 医疗影像留痕总方案
+
+公开安全版总方案入口：
+[docs/medical-imaging-traceability/udi-dicom-total-plan-public.md](docs/medical-imaging-traceability/udi-dicom-total-plan-public.md)
+
+该文件是 UDI-DICOM（Unique Device Identification–Digital Imaging and
+Communications in Medicine，唯一器械标识—医学数字成像与通信）医疗设备影像工作流
+证据闭合项目的公开安全版总方案，用于说明项目定位、公开层、受控层、服务层、最小
+manifest（manifest，证据清单）字段、validator（validator，验证器）逻辑和边界声明。
+
+该文件不包含私有一致性测试题库、真实样本处理细节、合作方敏感材料或未公开服务策略。
 
 ## Quick Start
 
@@ -39,177 +78,29 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
-Run the paper-minimal rerun:
-
-```bash
-bash scripts/reproduce_paper_minimal.sh
-```
-
-Run the individual validator path:
+Validate a minimal valid evidence profile:
 
 ```bash
 agent-evidence validate-profile examples/minimal-valid-evidence.json
+```
+
+Check that an intentionally invalid example fails:
+
+```bash
 agent-evidence validate-profile examples/invalid-missing-required.json
-agent-evidence validate-profile examples/invalid-unclosed-reference.json
-agent-evidence validate-profile examples/invalid-policy-link-broken.json
+```
+
+Run the single-path demo:
+
+```bash
 python3 demo/run_operation_accountability_demo.py
 ```
 
-Expected results:
+Expected result:
 
 - the valid example returns JSON with `"ok": true`
-- the invalid examples fail with stable primary codes:
-  `schema_violation`, `unresolved_output_ref`, and
-  `unresolved_evidence_policy_ref`
-- the demo writes artifacts under `demo/artifacts/` and ends with one `PASS`
-  summary line
-
-## Claim Boundary
-
-The current paper-minimal path does not claim:
-
-- general agent governance platform
-- official FAIR Digital Object standard
-- legal non-repudiation
-- production deployment
-- compliance approval
-- full FAIR Digital Object interoperability
-- broad runtime integration coverage
-
-See [Paper Boundary Freeze](./docs/PAPER_BOUNDARY_FREEZE.md),
-[Paper Mainline](./docs/PAPER_MAINLINE.md), and
-[Reproduce Paper Minimal](./docs/REPRODUCE_PAPER_MINIMAL.md).
-
-Historical and adjacent materials are preserved for research continuity, but
-the current paper-minimal path is limited to Execution Evidence and Operation
-Accountability Profile v0.1. See
-[Historical and Adjacent Surfaces](./docs/HISTORICAL_AND_ADJACENT_SURFACES.md).
-
-## Main Entry Points
-
-- Boundary freeze: [docs/PAPER_BOUNDARY_FREEZE.md](./docs/PAPER_BOUNDARY_FREEZE.md)
-- Mainline: [docs/PAPER_MAINLINE.md](./docs/PAPER_MAINLINE.md)
-- Minimal rerun guide: [docs/REPRODUCE_PAPER_MINIMAL.md](./docs/REPRODUCE_PAPER_MINIMAL.md)
-- Historical and adjacent surfaces: [docs/HISTORICAL_AND_ADJACENT_SURFACES.md](./docs/HISTORICAL_AND_ADJACENT_SURFACES.md)
-- Minimal rerun script: [scripts/reproduce_paper_minimal.sh](./scripts/reproduce_paper_minimal.sh)
-- Profile spec: [spec/execution-evidence-operation-accountability-profile-v0.1.md](./spec/execution-evidence-operation-accountability-profile-v0.1.md)
-- JSON Schema: [schema/execution-evidence-operation-accountability-profile-v0.1.schema.json](./schema/execution-evidence-operation-accountability-profile-v0.1.schema.json)
-- Demo: [demo/run_operation_accountability_demo.py](./demo/run_operation_accountability_demo.py)
-
-## Previous Paper Case Demo
-
-The repository also keeps an older `paper_case` reproducibility path:
-
-```bash
-make paper-demo
-```
-
-Expected output includes `PASS valid evidence bundle` and `FAIL tampered output hash mismatch`. The `examples/paper_case/` files are a small paper_case demo for EEOAP execution evidence, operation accountability, validator review, and FDO-style mapping discussion.
-
-## AEP-Media: time-aware media evidence validation
-
-This is an adjacent media evidence line, not the current paper-minimal path.
-AEP-Media materials are preserved for research continuity and should not be
-read as expanding the current `Execution Evidence and Operation Accountability
-Profile v0.1` paper boundary.
-
-AEP-Media is a small research-software path inside `agent-evidence` for local validation of
-time-aware media evidence bundles. It provides a media evidence profile, schemas, examples,
-offline bundle verification, strict declared time-trace checks, adapter-only ingestion fixtures,
-and reproducible evaluation reports.
-
-Release metadata:
-
-- Title: AEP-Media: Reusable Research Software for Offline Validation of Time-Aware Media Evidence Bundles
-- Author: Bin Zhang
-- ORCID: 0009-0002-8861-1481
-- Email: joy7759@gmail.com
-- Version: `aep-media-v0.1.0`
-- GitHub release: <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>
-- Zenodo DOI: `10.5281/zenodo.20107097`
-- Zenodo record: <https://zenodo.org/records/20107097>
-- License: Apache-2.0
-
-Install from source:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-```
-
-Validate the minimal media profile example:
-
-```bash
-agent-evidence validate-media-profile examples/media/minimal-valid-media-evidence.json
-```
-
-Build and verify an offline media bundle:
-
-```bash
-agent-evidence build-media-bundle examples/media/minimal-valid-media-evidence.json --out /tmp/aep-media-bundle-check
-agent-evidence verify-media-bundle /tmp/aep-media-bundle-check
-```
-
-Run strict declared time-trace validation:
-
-```bash
-agent-evidence validate-media-time-profile examples/media/time/minimal-valid-time-aware-media-evidence.json
-agent-evidence build-media-bundle examples/media/time/minimal-valid-time-aware-media-evidence.json --out /tmp/aep-media-time-bundle-check
-agent-evidence verify-media-bundle /tmp/aep-media-time-bundle-check --strict-time
-```
-
-Generate the media evaluation matrix:
-
-```bash
-agent-evidence run-media-evaluation --out demo/output/media_evaluation_demo
-```
-
-Adapter ingestion commands are also exposed for fixture-based workflows:
-
-```bash
-agent-evidence ingest-linuxptp-trace --help
-agent-evidence ingest-ffmpeg-prft --help
-agent-evidence ingest-c2pa-manifest --help
-```
-
-Adapter fixtures normalize LinuxPTP-style logs, FFmpeg PRFT-style metadata, and C2PA-like
-manifest metadata into local AEP-Media reports. They are ingestion adapters, not proof that
-external tools or signatures were verified.
-
-AEP-Media does not claim legal admissibility, non-repudiation, trusted timestamping, real PTP
-proof, a full MP4 PRFT parser, real C2PA signature verification, chain of custody, or production
-deployment.
-
-## Agent-readable project entry points
-
-- `llms.txt`: compact project map for LLMs and coding agents.
-- `docs/aep-media/agent-index.md`: command-oriented index for reviewers and agents.
-- `docs/aep-media/mobile-video-walkthrough.md`: fresh-clone reproduction path.
-- `docs/aep-media/adapter-boundaries.md`: adapter ingestion boundaries and non-claims.
-- `paper/paper.md`: JOSS software paper draft.
-- `CONTRIBUTING.md`: contribution workflow.
-- `SUPPORT.md`: support and issue-reporting guidance.
-
-Key AEP-Media entry points:
-
-- AEP-Media docs index: [docs/aep-media/](./docs/aep-media/)
-- Agent index: [docs/aep-media/agent-index.md](./docs/aep-media/agent-index.md)
-- Agent project map: [llms.txt](./llms.txt)
-- Mobile-video walkthrough: [docs/aep-media/mobile-video-walkthrough.md](./docs/aep-media/mobile-video-walkthrough.md)
-- Adapter boundaries: [docs/aep-media/adapter-boundaries.md](./docs/aep-media/adapter-boundaries.md)
-- JOSS paper draft: [paper/paper.md](./paper/paper.md)
-- Profile spec: [spec/aep-media-profile-v0.1.md](./spec/aep-media-profile-v0.1.md)
-- Bundle spec: [spec/aep-media-bundle-v0.1.md](./spec/aep-media-bundle-v0.1.md)
-- Time-trace spec: [spec/aep-media-time-trace-v0.1.md](./spec/aep-media-time-trace-v0.1.md)
-- Adapter spec: [spec/aep-media-adapters-v0.1.md](./spec/aep-media-adapters-v0.1.md)
-- Schemas: [schema/](./schema/)
-- Examples: [examples/media/](./examples/media/)
-- Demos: [demo/](./demo/)
-- Reports: [docs/reports/](./docs/reports/)
-- How to cite: [docs/how-to-cite.md](./docs/how-to-cite.md)
-- Contributing: [CONTRIBUTING.md](./CONTRIBUTING.md)
-- Support: [SUPPORT.md](./SUPPORT.md)
+- the invalid example returns JSON with `"ok": false` and one primary error code
+- the demo writes artifacts under `demo/artifacts/` and ends with one `PASS` summary line
 
 ## Fastest LangChain proof
 

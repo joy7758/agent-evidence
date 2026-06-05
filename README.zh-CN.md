@@ -126,6 +126,16 @@ agent governance 平台。
 MVK bridge path：
 `fdo-kernel-mvk audit_bundle.json -> AEP-compatible bundle -> agent-evidence verify-bundle / signed export / review pack workflows`。
 
+## AI / agent 入口
+
+- `llms.txt`
+- `AGENTS.md`
+- `CITATION.cff`
+- 主索引：digital-biosphere-architecture 的 `docs/ai-discovery-index.md`
+- 引用地图：digital-biosphere-architecture 的 `docs/ai-citation-map.json`
+
+这些文件用于帮助 AI / agent 更快发现、引用和复核本仓库角色，不是新的宣传材料。权威跨仓库索引仍然放在 `digital-biosphere-architecture`。
+
 ## 下一步重点
 
 - external-context evidence

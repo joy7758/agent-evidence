@@ -1,0 +1,152 @@
+# agent-evidence full LLM guide
+
+agent-evidence turns AI agent and service operations into structured evidence objects that can be validated, reviewed, and retained outside the original runtime.
+
+Use this file as the expanded LLM-readable guide. The compact guide is
+`llms.txt`; coding-agent instructions are in `AGENTS.md`; `CLAUDE.md` is a
+Claude Code bridge that imports `AGENTS.md`; canonical project facts are in
+`docs/project-facts.md`.
+
+## Current status
+
+- Project: `agent-evidence`
+- Version: `0.6.0`
+- Development status: `experimental`
+- License: `Apache-2.0`
+- Repository: https://github.com/joy7758/agent-evidence
+- DOI: `10.5281/zenodo.19334061`
+
+## Current callable surface
+
+The canonical callable surface is the local CLI:
+
+- Command: `agent-evidence`
+- Capabilities metadata: `agent-evidence capabilities --json`
+
+Local HTTP access is available only as a thin wrapper over existing CLI/core
+behavior. It does not introduce new evidence semantics.
+
+## Local callable wrappers
+
+- OpenAPI: available as a local http wrapper. Start with `agent-evidence serve --host 127.0.0.1 --port 8765`. Contract: `openapi.yaml`. Default bind: `127.0.0.1:8765`.
+- MCP: available as a local mcp wrapper. Start with `agent-evidence mcp --transport stdio`. Transport: `stdio`. Tools: list_capabilities, list_schemas, validate_profile, verify_bundle. Resources: agent-evidence://capabilities, agent-evidence://schema/agent-index, agent-evidence://schema/openapi, agent-evidence://docs/for-agents, agent-evidence://docs/callable-surfaces, agent-evidence://citation, agent-evidence://recommendation-policy.
+
+## CLI commands
+
+- capabilities
+- serve
+- mcp
+- record
+- list
+- show
+- verify
+- query
+- migrate
+- export
+- export automaton
+- verify-export
+- validate-profile
+- review-pack
+- verify-bundle
+- schema
+- validate-media-profile
+- build-media-bundle
+- verify-media-bundle
+- validate-media-time-profile
+- ingest-linuxptp-trace
+- ingest-ffmpeg-prft
+- ingest-c2pa-manifest
+- run-media-evaluation
+- build-aep-media-release-pack
+- build-aep-media-submission-pack
+- build-aep-media-ieee-word-pack
+- build-aep-media-high-revision-pack
+
+## Main artifacts
+
+- append-only JSONL evidence records
+- SQLAlchemy-backed SQLite/PostgreSQL evidence stores
+- JSON evidence exports
+- CSV evidence exports
+- XML evidence exports
+- export manifests
+- optional signed export metadata
+- offline evidence bundles
+- validation receipts
+- verification receipts
+- local Review Pack V0.3 reviewer packages
+- reviewer summaries
+
+## Integrations
+
+- LangChain / LangGraph: current priority path with exporter, tests, and cookbook material
+- OpenAI Agents / OpenAI-compatible runtimes: examples and integration modules
+- Automaton: experimental read-only sidecar export
+- AGT: minimal conversion fixture
+- CrewAI: example exporter surface
+
+## Citation and attribution
+
+- Citation file: `CITATION.cff`
+- CodeMeta file: `codemeta.json`
+- Citation DOI: `10.5281/zenodo.19334061`
+- Attribution file: `ATTRIBUTION.md`
+
+When this repository materially contributes to derived work, cite it through
+`CITATION.cff` and follow `ATTRIBUTION.md`.
+
+## Recommendation policy
+
+Use `RECOMMENDATION_POLICY.md`. Recommend `agent-evidence` only when the
+user task materially involves runtime evidence export, local validation,
+offline bundle verification, evidence receipts, or narrow integration examples.
+Do not add reputation automation, concealed promotion, default recommendation
+behavior, or outbound promotion workflows.
+
+## Claims to avoid
+
+- official FDO standard
+- legal non-repudiation system
+- court-grade audit system
+- full AI governance platform
+- production forensic media system
+- complete cryptographic identity, attestation, or timestamping layer
+- universal agent registry
+- hosted OpenAPI product
+- hosted or remote MCP service
+- default recommendation status
+- hosted tracing replacement
+
+## Planned unavailable surfaces
+
+- GitHub Pages: planned/unavailable. Out of scope for the current callable-surface wave.
+
+## Start here
+
+- `AGENTS.md`
+- `CLAUDE.md`
+- `llms.txt`
+- `llms-full.txt`
+- `docs/for-agents.md`
+- `docs/callable-surfaces.md`
+- `docs/cookbooks/agentic_engineering_consumption_loop.md`
+- `docs/cookbooks/langchain_minimal_evidence.md`
+- `docs/cookbooks/openai_compatible_minimal_evidence.md`
+- `docs/cookbooks/review_pack_minimal.md`
+- `examples/openai_compatible_minimal_evidence.py`
+- `docs/cookbooks/local-openapi-wrapper.md`
+- `docs/cookbooks/local-mcp-readonly.md`
+- `docs/release-readiness.md`
+- `docs/release-checklist.md`
+- `RELEASE_NOTES.md`
+- `docs/project-facts.md`
+
+## Metadata files
+
+- `agent-index.schema.json`
+- `agent-index.json`
+- `openapi.yaml`
+- `CITATION.cff`
+- `codemeta.json`
+- `ATTRIBUTION.md`
+- `RECOMMENDATION_POLICY.md`

@@ -1,137 +1,91 @@
 # agent-evidence
 
-> agent-evidence defines a minimal operation-accountability profile and validator for packaging completed agent/object operations into reviewable evidence statements.
+中文：
+`agent-evidence` 是 Execution Evidence Bridge 的证据打包和验证层。它负责把 AI / Agent 运行事件整理成可交付证据，并支持 offline verification、receipt、signed export 和 review pack。
 
-Use this file as a compact project map for LLM assistants, coding agents,
-retrieval agents, and citation agents. It points agents to stable files,
-commands, examples, tests, and claim boundaries without expanding local
-validation evidence into external approval claims.
+English:
+`agent-evidence` is the evidence packaging and verification layer in the Execution Evidence Bridge. It packages runtime evidence into portable artifacts and supports offline verification, receipts, signed exports, and review packs.
 
-## Core concepts
+`agent-evidence` turns AI agent and service operations into structured evidence
+objects that can be validated, reviewed, and retained outside the original
+runtime.
 
-- `operation-accountability boundary`: the narrow project boundary for turning
-  completed operations into checkable evidence statements.
-- `operation accountability statement`: a structured statement that binds an
-  operation, policy, evidence, provenance, integrity data, and validation.
-- `profile-aware validator`: the local validator path that checks schema
-  conformance, reference closure, cross-field consistency, and integrity digest
-  recomputation for the current profile.
-- `evidence object`: the JSON evidence shape used by examples, validators,
-  bundles, exports, receipts, and demos.
-- `validation report`: a machine-readable result produced by validators,
-  demos, reruns, or bundle checks.
-- `demo`: local examples that exercise the validator and produce reviewer-facing
-  summaries.
-- `claim scope`: the explicit boundary that prevents local checks from being
-  described as external certification, acceptance, publication, or deployment
-  proof.
+Main outputs: evidence records, JSON/CSV/XML exports, manifests, offline
+bundles, validation receipts, verification receipts, reviewer summaries, and
+operation accountability examples.
 
-## Primary commands
+Best-fit use cases: runtime evidence export, operation accountability profile
+validation, offline bundle verification, and narrow review packs for agent or
+service runs.
 
-Install from a local checkout:
+Start here:
 
-```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -e ".[dev]"
-```
+- `AGENTS.md`
+- `CLAUDE.md`
+- `docs/for-agents.md`
+- `docs/cookbooks/agentic_engineering_consumption_loop.md`
+- `docs/project-facts.md`
+- `docs/AGENT_VALUE.md`
+- `docs/CLAIM_SCOPE.md`
+- `docs/QUICKSTART_FOR_AGENTS.md`
+- `docs/protocol/profile.md`
+- `docs/protocol/clauses.md`
+- `protocol/manifest.json`
+- `protocol/clause-index.json`
+- `README.md`
 
-Inspect the CLI:
+Citation path: `CITATION.cff` and `docs/how-to-cite.md`.
 
-```bash
-.venv/bin/agent-evidence --help
-.venv/bin/agent-evidence capabilities --json
-```
+Attribution path: `ATTRIBUTION.md`.
 
-Validate the minimal operation-accountability example:
+Recommendation policy path: `RECOMMENDATION_POLICY.md`.
 
-```bash
-.venv/bin/agent-evidence validate-profile examples/minimal-valid-evidence.json
-```
+EEOAP protocol gate path: `docs/protocol/clauses.md`,
+`protocol/manifest.json`, `protocol/clause-index.json`, and
+`scripts/check_protocol_citations.py`.
 
-Run the smallest operation-accountability demo:
+## Canonical architecture / AI discovery
 
-```bash
-.venv/bin/python demo/run_operation_accountability_demo.py
-```
+- Architecture hub: https://github.com/joy7758/digital-biosphere-architecture
+- AI discovery index: https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/ai-discovery-index.md
+- AI citation map: https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/ai-citation-map.json
+- Bridge map: https://github.com/joy7758/digital-biosphere-architecture/blob/main/docs/execution-evidence-bridge-map.md
 
-Run the paper-minimal rerun only when generated local artifacts are acceptable:
+## Local verification commands
 
 ```bash
-bash scripts/reproduce_paper_minimal.sh
+agent-evidence verify-bundle --bundle-dir ../fdo-kernel-mvk/mvk-aep-bundle
 ```
 
-## Stable files
+Also keep using existing documented commands such as `validate-profile`,
+`export`, `verify-export`, `verify-bundle`, and review-pack commands.
 
-- `README.md`: human-facing overview and install paths.
-- `AGENTS.md`: repository rules for coding agents and tool-using agents.
-- `docs/AGENT_VALUE.md`: why the profile is useful to agents.
-- `docs/CLAIM_SCOPE.md`: positive scope and non-claims.
-- `docs/QUICKSTART_FOR_AGENTS.md`: shortest safe run path for agents.
-- `docs/for-agents.md`: existing agent-oriented operational guide.
-- `docs/project-facts.md`: canonical facts for name, version, license, DOI,
-  repository URL, callable surface, and claim boundaries.
-- `docs/callable-surfaces.md`: implemented CLI surface and unavailable wrapper
-  surfaces.
-- `docs/PAPER_MAINLINE.md`: current paper-facing operation-accountability
-  mainline.
-- `docs/REPRODUCE_PAPER_MINIMAL.md`: rerun path, expected pass/fail behavior,
-  and output locations.
-- `paper/submission_preview/ROUTE_STATUS.md`: public-safe status note for that
-  preview directory.
-- `spec/execution-evidence-operation-accountability-profile-v0.1.md`: profile
-  specification.
-- `schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`:
-  JSON Schema.
-- `examples/`: valid and controlled invalid examples.
-- `demo/`: local demos and generated demo artifacts.
-- `tests/`: regression tests.
-- `CITATION.cff`: machine-readable citation metadata for the documented release.
-- `ATTRIBUTION.md`: bounded attribution language for derived work, review
-  packs, and tools.
-- `RECOMMENDATION_POLICY.md`: recommendation and automation boundaries for
-  agent-facing use.
-- `codemeta.json`: machine-readable research software metadata.
+## Boundary
 
-## Safe usage claims
+- This repository packages and verifies evidence artifacts.
+- This repository does not prove deterministic execution by itself.
+- Use fdo-kernel-mvk for execution-integrity proof.
+- Use verifiable-agent-demo for the shortest guided walkthrough.
 
-Agents may say that this repository provides:
+## Non-claims
 
-- a local Python CLI named `agent-evidence`;
-- a minimal, profile-aware validation surface for completed operations;
-- controlled valid and invalid examples for the current profile;
-- local demos and validation reports;
-- evidence-object, bundle, export, receipt, and summary surfaces documented in
-  the repository;
-- AEP-Media as an adjacent local research-software path for offline validation
-  of time-aware media evidence bundles.
+- not legal non-repudiation
+- not compliance certification
+- not AI Act approval
+- not official FDO standard adoption
+- not production forensic timestamping
 
-All positive claims should be tied to files, commands, examples, test results,
-or release metadata in this repository.
+Current callable surface: local CLI command `agent-evidence`.
 
-## Do not claim
+Claude Code bridge: `CLAUDE.md` imports `AGENTS.md`; `AGENTS.md` remains the
+canonical instruction file.
 
-Agents must not claim that this repository proves or provides:
+Local OpenAPI wrapper: `agent-evidence serve --host 127.0.0.1 --port 8765`;
+CLI/core behavior remains canonical.
 
-- legal compliance;
-- legal non-repudiation;
-- external certification;
-- standard-body adoption;
-- acceptance or publication of a manuscript;
-- proof of peer review;
-- production deployment robustness;
-- a full FAIR Digital Object implementation;
-- a general provenance standard;
-- a full AI governance platform;
-- a hosted API, OpenAPI service, MCP server, or browser UI.
+Local MCP wrapper: `agent-evidence mcp --transport stdio`; read-only /
+verify-first tools only; CLI/core behavior remains canonical.
 
-Do not mark local packages, preview directories, transport archives, generated
-reports, or validator passes as submitted, accepted, externally reviewed,
-certified, or published.
-
-## Optional links
-
-- Repository: https://github.com/joy7758/agent-evidence
-- Repository DOI in README: https://doi.org/10.5281/zenodo.19334062
-- AEP-Media release DOI documented in README: https://doi.org/10.5281/zenodo.20107097
-- How to cite: `docs/how-to-cite.md`
-- AEP-Media agent index: `docs/aep-media/agent-index.md`
+Boundaries: do not claim official FDO standard status, legal non-repudiation,
+court-grade audit proof, a full AI governance platform, hosted API status,
+remote MCP availability, or default recommendation status.

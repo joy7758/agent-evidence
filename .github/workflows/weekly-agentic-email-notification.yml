@@ -1,0 +1,116 @@
+name: Weekly Agentic Compatibility Email Notification
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * 1"
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/agentic-intelligence/reports/**-weekly-agentic-compatibility.md"
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  notify:
+    name: Create weekly agentic notification issue
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Create Chinese reminder issue
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          shopt -s nullglob
+          reports=(docs/agentic-intelligence/reports/*-weekly-agentic-compatibility.md)
+          latest_report=""
+          report_date="$(TZ=Asia/Singapore date +%F)"
+
+          if (( ${#reports[@]} > 0 )); then
+            latest_report="$(printf '%s\n' "${reports[@]}" | sort | tail -n 1)"
+            filename="$(basename "${latest_report}")"
+            report_date="${filename%%-weekly-agentic-compatibility.md}"
+          fi
+
+          if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            title="【Agentic 周报结果】${report_date} 智能体兼容性情报已生成"
+            status_line="新的 weekly agentic compatibility report 已进入仓库。"
+          else
+            title="【Agentic 周报提醒】${report_date} 智能体兼容性情报"
+            status_line="请按周度流程判断是否需要生成或复核本周报告。"
+          fi
+
+          existing="$(
+            gh issue list \
+              --state open \
+              --limit 100 \
+              --json title \
+              --jq '.[].title' | grep -Fx -- "${title}" || true
+          )"
+
+          if [[ -n "${existing}" ]]; then
+            echo "Open issue already exists for: ${title}"
+            exit 0
+          fi
+
+          if [[ -n "${latest_report}" ]]; then
+            report_line="- 报告文件：\`${latest_report}\`"
+          else
+            report_line="- 报告文件：暂未找到 weekly report 文件。"
+          fi
+
+          body_file="$(mktemp)"
+          cat > "${body_file}" <<BODY
+          @joy7758
+
+          ## 本周状态
+
+          ${status_line}
+
+          ## 报告文件
+
+          ${report_line}
+
+          ## 需要人工判断的事项
+
+          - 是否需要阅读或补充本周 agentic compatibility report。
+          - 是否有 docs-only、metadata-only 或 test-only 候选动作。
+          - 是否存在必须拒绝的自动化、推广、发版或 overclaim 风险。
+
+          ## Top recommendations placeholder
+
+          - 待人工从报告中摘录 Top recommendations。
+          - 若尚未生成报告，先决定是否按人工流程生成。
+
+          ## No-Go 提醒
+
+          - 不自动改仓库
+          - 不自动开 PR
+          - 不自动发版
+          - 不自动推广
+          - 不制造 fake adoption
+          - 不要求 star/follow/fork
+          - 不做 AI Act / legal / compliance claim
+
+          ## 人工决策选项
+
+          - [ ] 不采取行动，继续观察
+          - [ ] 接受 docs-only 候选
+          - [ ] 接受 metadata-only 候选
+          - [ ] 接受 test-only 候选
+          - [ ] 需要 code-affecting PR，但先做单独 planning
+          - [ ] 拒绝 / No-Go
+          BODY
+
+          gh issue create \
+            --title "${title}" \
+            --body-file "${body_file}" \
+            --assignee joy7758

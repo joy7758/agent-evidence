@@ -2,50 +2,51 @@
 
 Use `CITATION.cff` as the machine-readable source for citation metadata.
 
-## Preferred Citation for AEP-Media v0.1.0
+## Preferred Citation
 
 Plain-text citation:
 
-Bin Zhang. `AEP-Media`: Reusable Research Software for Offline Validation of
-Time-Aware Media Evidence Bundles. Version `aep-media-v0.1.0`. Repository:
-<https://github.com/joy7758/agent-evidence>. DOI:
-<https://doi.org/10.5281/zenodo.20107097>.
+Bin Zhang. `agent-evidence`: Runtime evidence exporter and validator for AI
+agent and service operations. Version 0.6.0. DOI:
+10.5281/zenodo.19334061.
 
-Release URL: <https://github.com/joy7758/agent-evidence/releases/tag/aep-media-v0.1.0>.
+Repository: <https://github.com/joy7758/agent-evidence>
 
-Zenodo record: <https://zenodo.org/records/20107097>.
-
-Author ORCID: <https://orcid.org/0009-0002-8861-1481>.
-
-Correspondence: joy7759@gmail.com.
-
-## BibTeX Draft
+## BibTeX
 
 ```bibtex
-@software{zhang_aep_media_2026,
+@software{zhang_agent_evidence_2026,
   author = {Zhang, Bin},
-  title = {AEP-Media: Reusable Research Software for Offline Validation of Time-Aware Media Evidence Bundles},
-  version = {aep-media-v0.1.0},
-  doi = {10.5281/zenodo.20107097},
+  title = {agent-evidence},
+  version = {0.6.0},
+  doi = {10.5281/zenodo.19334061},
   url = {https://github.com/joy7758/agent-evidence},
-  license = {Apache-2.0}
+  license = {Apache-2.0},
+  note = {Runtime evidence exporter and validator for AI agent and service operations}
 }
 ```
 
-## Repository-Level DOI
+## Citing a Specific Version or Release
 
-The broader `agent-evidence` repository has previously recorded DOI
-`10.5281/zenodo.19334062`. Before using that DOI for SoftwareX, confirm whether
-it resolves to the exact AEP-Media release intended for citation.
+When citing a specific release, prefer the DOI and version recorded for that
+release. The current project DOI in `README.md` is the Zenodo concept DOI:
+`10.5281/zenodo.19334061`.
 
-## Historical Release DOI
+Exact release DOI currently documented:
+
+- `10.5281/zenodo.19998176` for the GitHub Release v0.3.0 archive.
+- `10.5281/zenodo.19998690` for the GitHub Release v0.3.1 archive.
+- `10.5281/zenodo.20004271` for the GitHub Release v0.4.0 archive.
+- `10.5281/zenodo.20011103` for the GitHub Release v0.5.0 archive.
+- `10.5281/zenodo.20013667` for the GitHub Release v0.6.0 archive.
 
 Historical release DOI present in this repository:
 
 - `10.5281/zenodo.19055948` for the v0.1 live-chain release note in
   `release/v0.1-live-chain/RELEASE_NOTE.md`
 
-Use release-specific metadata when reproducing or discussing a specific release.
+Use release-specific metadata when reproducing or discussing that release
+instead of the current repository-level artifact.
 
 ## Uncertain Fields
 

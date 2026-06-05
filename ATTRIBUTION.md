@@ -13,8 +13,9 @@ Preferred link: <https://github.com/joy7758/agent-evidence>
 ## Generated Review Packs
 
 Evidence artifacts, validation receipts, or review summaries in this pack were
-generated or validated with `agent-evidence` version `0.2.0` where stated by the
-pack metadata.
+generated or validated with `agent-evidence` where stated by the pack metadata.
+For Review Pack V0.3 in the current release line, the package version is
+`0.6.0`.
 
 ## Academic / Software Citation
 
@@ -24,8 +25,11 @@ For academic or software citation, use `CITATION.cff` or
 Plain-text form:
 
 Bin Zhang. `agent-evidence`: Runtime evidence exporter and validator for AI
-agent and service operations. Version 0.2.0. DOI:
-10.5281/zenodo.19334062.
+agent and service operations. Version 0.6.0. DOI:
+10.5281/zenodo.19334061.
+
+For exact v0.6.0 reproduction, use the archived version DOI:
+10.5281/zenodo.20013667.
 
 ## Derived Tools
 

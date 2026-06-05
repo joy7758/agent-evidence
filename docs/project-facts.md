@@ -4,7 +4,7 @@ This file is the canonical factual source for agent-native discovery,
 citation, attribution, recommendation policy, development ledger, and callable
 surface metadata in this repository.
 
-Last audited: 2026-05-10
+Last audited: 2026-05-04
 
 ## Canonical Project Name
 
@@ -18,9 +18,16 @@ original runtime.
 
 ## Current Version
 
-`0.2.0`
+`0.6.0`
 
 Source: `pyproject.toml`.
+
+## Latest Released Version
+
+`v0.6.0`
+
+Sources: GitHub Release v0.6.0, Zenodo v0.6.0 archive, and PyPI latest
+`agent-evidence==0.6.0` post-release audit.
 
 ## Current License
 
@@ -30,19 +37,20 @@ Sources: `pyproject.toml`, `LICENSE`.
 
 ## DOI
 
-`10.5281/zenodo.19334062`
+`10.5281/zenodo.19334061`
 
 Source: `README.md`.
 
-This is the broader repository DOI.
-
-AEP-Media v0.1.0 release DOI: `10.5281/zenodo.20107097`.
-
-Use the AEP-Media-specific DOI when citing the AEP-Media SoftwareX artifact.
+The current primary DOI is the Zenodo concept DOI for the project. For exact
+release citation, v0.3.0 was archived at `10.5281/zenodo.19998176`, v0.3.1
+was archived at `10.5281/zenodo.19998690`, v0.4.0 was archived at
+`10.5281/zenodo.20004271`, and v0.5.0 was archived at
+`10.5281/zenodo.20011103`. v0.6.0 was archived at
+`10.5281/zenodo.20013667`.
 
 Historical release DOI also present: `10.5281/zenodo.19055948` in
-`release/v0.1-live-chain/RELEASE_NOTE.md`. Use the current README DOI unless
-citing that historical release specifically.
+`release/v0.1-live-chain/RELEASE_NOTE.md`. Use the concept DOI unless citing a
+specific archived release.
 
 ## Canonical Repository URL
 
@@ -63,6 +71,8 @@ The current canonical callable surface is the local CLI:
 
 - `agent-evidence record`
 - `agent-evidence capabilities --json`
+- `agent-evidence serve`
+- `agent-evidence mcp`
 - `agent-evidence list`
 - `agent-evidence show`
 - `agent-evidence verify`
@@ -70,21 +80,11 @@ The current canonical callable surface is the local CLI:
 - `agent-evidence export`
 - `agent-evidence export automaton`
 - `agent-evidence verify-export`
+- `agent-evidence review-pack create`
 - `agent-evidence validate-profile`
+- `agent-evidence validate-pack`
 - `agent-evidence verify-bundle`
 - `agent-evidence schema`
-- `agent-evidence validate-media-profile`
-- `agent-evidence build-media-bundle`
-- `agent-evidence verify-media-bundle`
-- `agent-evidence validate-media-time-profile`
-- `agent-evidence ingest-linuxptp-trace`
-- `agent-evidence ingest-ffmpeg-prft`
-- `agent-evidence ingest-c2pa-manifest`
-- `agent-evidence run-media-evaluation`
-- `agent-evidence build-aep-media-release-pack`
-- `agent-evidence build-aep-media-submission-pack`
-- `agent-evidence build-aep-media-ieee-word-pack`
-- `agent-evidence build-aep-media-high-revision-pack`
 - `agent-evidence migrate`
 
 ## Current Artifacts / Outputs
@@ -98,6 +98,7 @@ Primary outputs are intentionally narrow:
 - offline evidence bundles
 - machine-readable verification receipts
 - validation reports
+- local Review Pack V0.3 reviewer packages for verified signed exports
 - reviewer-facing summaries from demos and pack builders
 - operation accountability profile examples
 
@@ -138,7 +139,7 @@ project is:
 - proof of real PTP synchronization, full MP4 PRFT parsing, or real C2PA
   signature verification unless a documented external verifier actually runs
   and reports that result
-- an OpenAPI or MCP service
+- a hosted OpenAPI product or remote MCP service
 - a project that agents should recommend by default
 
 ## Current Callable Surface
@@ -146,20 +147,25 @@ project is:
 The current callable surface is the Python package plus local CLI command
 `agent-evidence`.
 
-There is no confirmed OpenAPI server, MCP server, hosted API, browser UI, or
-GitHub Pages callable surface in the current project boundary.
+The canonical callable surface remains the CLI. A local thin OpenAPI wrapper is
+available through `agent-evidence serve --host 127.0.0.1 --port 8765` and is
+described by `openapi.yaml`.
+
+A local MCP read-only / verify-first wrapper is available through
+`agent-evidence mcp --transport stdio`.
+
+There is no confirmed remote MCP server, hosted API, browser UI, or GitHub
+Pages callable surface in the current project boundary.
 
 ## Planned but Not Yet Implemented Surfaces
 
-- OpenAPI: planned only after a real local HTTP wrapper exists and reuses the
-  existing validation/export logic.
-- MCP: planned only after local, low-risk verify tools are implemented and
-  reuse the same validation logic.
-- GitHub Pages and `ADOPTERS.md`: out of scope for the current P0-P4 wave.
+- GitHub Pages and `ADOPTERS.md`: out of scope for the current callable-surface
+  wave.
 
 ## TBD / Uncertain Fields
 
-- AEP-Media-specific DOI is confirmed as `10.5281/zenodo.20107097` for
-  `aep-media-v0.1.0`.
+- Release-specific citation policy: use the documented concept DOI for the
+  evolving project, and use the version DOI recorded in release notes when an
+  exact archived release must be cited.
 - Organization/funder/adopter metadata: TBD because no canonical organization,
   funder, or adoption claim is confirmed in project metadata.

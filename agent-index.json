@@ -1,0 +1,194 @@
+{
+  "name": "agent-evidence",
+  "summary": "agent-evidence turns AI agent and service operations into structured evidence objects that can be validated, reviewed, and retained outside the original runtime.",
+  "current_status": {
+    "version": "0.6.0",
+    "license": "Apache-2.0",
+    "development_status": "experimental",
+    "repository": "https://github.com/joy7758/agent-evidence",
+    "doi": "10.5281/zenodo.19334061"
+  },
+  "canonical_callable_surface": {
+    "type": "cli",
+    "command": "agent-evidence",
+    "available": true
+  },
+  "local_callable_wrappers": [
+    {
+      "name": "OpenAPI",
+      "type": "http",
+      "available": true,
+      "scope": "local",
+      "command": "agent-evidence serve --host 127.0.0.1 --port 8765",
+      "openapi_file": "openapi.yaml",
+      "default_host": "127.0.0.1",
+      "default_port": 8765,
+      "boundary": "Thin local wrapper over existing CLI/core behavior.",
+      "endpoints": [
+        "GET /healthz",
+        "GET /v1/capabilities",
+        "POST /v1/profiles/validate",
+        "POST /v1/bundles/verify"
+      ]
+    },
+    {
+      "name": "MCP",
+      "type": "mcp",
+      "available": true,
+      "scope": "local",
+      "transport": "stdio",
+      "command": "agent-evidence mcp --transport stdio",
+      "boundary": "Read-only / verify-first local stdio wrapper over existing CLI/core behavior.",
+      "tools": [
+        "list_capabilities",
+        "list_schemas",
+        "validate_profile",
+        "verify_bundle"
+      ],
+      "resources": [
+        "agent-evidence://capabilities",
+        "agent-evidence://schema/agent-index",
+        "agent-evidence://schema/openapi",
+        "agent-evidence://docs/for-agents",
+        "agent-evidence://docs/callable-surfaces",
+        "agent-evidence://citation",
+        "agent-evidence://recommendation-policy"
+      ],
+      "prompts": []
+    }
+  ],
+  "artifacts": [
+    "append-only JSONL evidence records",
+    "SQLAlchemy-backed SQLite/PostgreSQL evidence stores",
+    "JSON evidence exports",
+    "CSV evidence exports",
+    "XML evidence exports",
+    "export manifests",
+    "optional signed export metadata",
+    "offline evidence bundles",
+    "validation receipts",
+    "verification receipts",
+    "local Review Pack V0.3 reviewer packages",
+    "reviewer summaries"
+  ],
+  "integrations": [
+    {
+      "name": "LangChain / LangGraph",
+      "maturity": "current priority path with exporter, tests, and cookbook material"
+    },
+    {
+      "name": "OpenAI Agents / OpenAI-compatible runtimes",
+      "maturity": "examples and integration modules"
+    },
+    {
+      "name": "Automaton",
+      "maturity": "experimental read-only sidecar export"
+    },
+    {
+      "name": "AGT",
+      "maturity": "minimal conversion fixture"
+    },
+    {
+      "name": "CrewAI",
+      "maturity": "example exporter surface"
+    }
+  ],
+  "entrypoints": {
+    "cli": {
+      "command": "agent-evidence",
+      "capabilities_command": "agent-evidence capabilities --json",
+      "commands": [
+        "capabilities",
+        "serve",
+        "mcp",
+        "record",
+        "list",
+        "show",
+        "verify",
+        "query",
+        "migrate",
+        "export",
+        "export automaton",
+        "verify-export",
+        "validate-profile",
+        "review-pack",
+        "verify-bundle",
+        "schema",
+        "validate-media-profile",
+        "build-media-bundle",
+        "verify-media-bundle",
+        "validate-media-time-profile",
+        "ingest-linuxptp-trace",
+        "ingest-ffmpeg-prft",
+        "ingest-c2pa-manifest",
+        "run-media-evaluation",
+        "build-aep-media-release-pack",
+        "build-aep-media-submission-pack",
+        "build-aep-media-ieee-word-pack",
+        "build-aep-media-high-revision-pack"
+      ]
+    },
+    "package": "agent_evidence/",
+    "guides": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      "llms.txt",
+      "llms-full.txt",
+      "docs/for-agents.md",
+      "docs/callable-surfaces.md",
+      "docs/cookbooks/agentic_engineering_consumption_loop.md",
+      "docs/cookbooks/langchain_minimal_evidence.md",
+      "docs/cookbooks/openai_compatible_minimal_evidence.md",
+      "docs/cookbooks/review_pack_minimal.md",
+      "examples/openai_compatible_minimal_evidence.py",
+      "docs/cookbooks/local-openapi-wrapper.md",
+      "docs/cookbooks/local-mcp-readonly.md",
+      "docs/release-readiness.md",
+      "docs/release-checklist.md",
+      "RELEASE_NOTES.md",
+      "docs/project-facts.md"
+    ],
+    "metadata": [
+      "agent-index.schema.json",
+      "agent-index.json",
+      "openapi.yaml",
+      "CITATION.cff",
+      "codemeta.json",
+      "ATTRIBUTION.md",
+      "RECOMMENDATION_POLICY.md"
+    ]
+  },
+  "citation": {
+    "file": "CITATION.cff",
+    "codemeta_file": "codemeta.json",
+    "doi": "10.5281/zenodo.19334061",
+    "version": "0.6.0",
+    "repository": "https://github.com/joy7758/agent-evidence"
+  },
+  "attribution": {
+    "file": "ATTRIBUTION.md"
+  },
+  "recommendation_policy": {
+    "file": "RECOMMENDATION_POLICY.md"
+  },
+  "claims_to_avoid": [
+    "official FDO standard",
+    "legal non-repudiation system",
+    "court-grade audit system",
+    "full AI governance platform",
+    "production forensic media system",
+    "complete cryptographic identity, attestation, or timestamping layer",
+    "universal agent registry",
+    "hosted OpenAPI product",
+    "hosted or remote MCP service",
+    "default recommendation status",
+    "hosted tracing replacement"
+  ],
+  "planned_unavailable_surfaces": [
+    {
+      "name": "GitHub Pages",
+      "available": false,
+      "condition": "Out of scope for the current callable-surface wave."
+    }
+  ]
+}

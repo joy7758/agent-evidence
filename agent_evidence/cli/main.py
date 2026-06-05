@@ -29,7 +29,12 @@ from agent_evidence.manifest import SignaturePolicy, SignerConfig, VerificationK
 from agent_evidence.models import EvidenceEnvelope
 from agent_evidence.oap import validate_profile_file
 from agent_evidence.recorder import EvidenceRecorder
-from agent_evidence.review_pack import create_paper_minimal_review_pack
+from agent_evidence.review_pack import (
+    ReviewPackError,
+    ReviewPackVerificationError,
+    create_paper_minimal_review_pack,
+    create_review_pack,
+)
 from agent_evidence.storage import migrate_records, open_store
 from agent_evidence.storage.base import EvidenceStore
 
@@ -37,6 +42,8 @@ PACKAGE_NAME = "agent-evidence"
 
 AVAILABLE_CLI_COMMANDS = [
     "capabilities",
+    "serve",
+    "mcp",
     "record",
     "list",
     "show",
@@ -72,32 +79,61 @@ CLAIMS_TO_AVOID = [
     "production forensic media system",
     "complete cryptographic identity, attestation, or timestamping layer",
     "universal agent registry",
-    "OpenAPI service",
-    "MCP service",
+    "hosted OpenAPI product",
+    "hosted or remote MCP service",
     "default recommendation status",
 ]
 
 PLANNED_UNAVAILABLE_SURFACES = [
     {
-        "name": "OpenAPI",
+        "name": "GitHub Pages",
         "available": False,
-        "condition": (
-            "Only after a real local HTTP wrapper exists and reuses existing "
-            "validation/export logic."
-        ),
+        "condition": "Out of scope for the current callable-surface wave.",
+    },
+]
+
+LOCAL_CALLABLE_WRAPPERS = [
+    {
+        "name": "OpenAPI",
+        "type": "http",
+        "available": True,
+        "scope": "local",
+        "command": "agent-evidence serve --host 127.0.0.1 --port 8765",
+        "openapi_file": "openapi.yaml",
+        "default_host": "127.0.0.1",
+        "default_port": 8765,
+        "boundary": "Thin local wrapper over existing CLI/core behavior.",
+        "endpoints": [
+            "GET /healthz",
+            "GET /v1/capabilities",
+            "POST /v1/profiles/validate",
+            "POST /v1/bundles/verify",
+        ],
     },
     {
         "name": "MCP",
-        "available": False,
-        "condition": (
-            "Only after local, low-risk verify tools are implemented and reuse "
-            "existing validation/export logic."
-        ),
-    },
-    {
-        "name": "GitHub Pages",
-        "available": False,
-        "condition": "Out of scope for the current P0-P4 wave.",
+        "type": "mcp",
+        "available": True,
+        "scope": "local",
+        "transport": "stdio",
+        "command": "agent-evidence mcp --transport stdio",
+        "boundary": "Read-only / verify-first local stdio wrapper over existing CLI/core behavior.",
+        "tools": [
+            "list_capabilities",
+            "list_schemas",
+            "validate_profile",
+            "verify_bundle",
+        ],
+        "resources": [
+            "agent-evidence://capabilities",
+            "agent-evidence://schema/agent-index",
+            "agent-evidence://schema/openapi",
+            "agent-evidence://docs/for-agents",
+            "agent-evidence://docs/callable-surfaces",
+            "agent-evidence://citation",
+            "agent-evidence://recommendation-policy",
+        ],
+        "prompts": [],
     },
 ]
 
@@ -122,7 +158,7 @@ def current_package_version() -> str:
     try:
         return package_version(PACKAGE_NAME)
     except PackageNotFoundError:
-        return "0.2.0"
+        return "0.6.0"
 
 
 def build_capabilities_payload() -> dict[str, Any]:
@@ -135,6 +171,7 @@ def build_capabilities_payload() -> dict[str, Any]:
             "command": "agent-evidence",
             "available": True,
         },
+        "local_callable_wrappers": LOCAL_CALLABLE_WRAPPERS,
         "available_cli_commands": AVAILABLE_CLI_COMMANDS,
         "artifact_types": [
             "append-only JSONL evidence records",
@@ -147,6 +184,7 @@ def build_capabilities_payload() -> dict[str, Any]:
             "offline evidence bundles",
             "validation receipts",
             "verification receipts",
+            "local Review Pack V0.3 reviewer packages",
             "reviewer summaries",
         ],
         "integrations": [
@@ -435,6 +473,38 @@ def capabilities(json_output: bool) -> None:
 
 
 @main.command()
+@click.option("--host", default="127.0.0.1", show_default=True)
+@click.option("--port", default=8765, show_default=True, type=int)
+def serve(host: str, port: int) -> None:
+    """Run the local OpenAPI-described HTTP wrapper."""
+
+    from agent_evidence.server.local_api import serve as serve_local_api
+
+    serve_local_api(host=host, port=port)
+
+
+@main.command(name="mcp")
+@click.option(
+    "--transport",
+    default="stdio",
+    show_default=True,
+    type=click.Choice(["stdio"]),
+    help="MCP transport. Only stdio is supported.",
+)
+def mcp_command(transport: str) -> None:
+    """Run the local MCP read-only / verify-first wrapper."""
+
+    try:
+        from agent_evidence.mcp.server import run_mcp_server
+    except RuntimeError as exc:
+        raise click.ClickException(str(exc)) from exc
+    try:
+        run_mcp_server(transport=transport)
+    except RuntimeError as exc:
+        raise click.ClickException(str(exc)) from exc
+
+
+@main.command()
 @click.option("--store", "store_target", required=True)
 @click.option("--actor", required=True)
 @click.option("--event-type", "event_type")
@@ -548,32 +618,6 @@ def validate_profile_command(profile_path: Path, schema_path: Path | None) -> No
     click.echo(json.dumps(report, indent=2, sort_keys=True))
     if not report["ok"]:
         raise SystemExit(1)
-
-
-@main.group(name="review-pack")
-def review_pack_command() -> None:
-    """Build bounded review packages for paper-facing artifacts."""
-
-
-@review_pack_command.command(name="create")
-@click.option(
-    "--paper-minimal",
-    is_flag=True,
-    help="Create the EEOAP v0.1 paper-minimal inspection package.",
-)
-@click.option(
-    "--out",
-    "output_path",
-    required=True,
-    type=click.Path(dir_okay=False, path_type=Path),
-)
-def review_pack_create_command(paper_minimal: bool, output_path: Path) -> None:
-    """Create a review package zip."""
-
-    if not paper_minimal:
-        raise click.ClickException("Only --paper-minimal review packages are currently supported.")
-    report = create_paper_minimal_review_pack(Path.cwd(), output_path)
-    click.echo(json.dumps(report, indent=2, sort_keys=True))
 
 
 @main.command()
@@ -1087,6 +1131,127 @@ def verify_export_command(
     click.echo(json.dumps(result, indent=2, sort_keys=True))
     if not result["ok"]:
         raise click.ClickException("Export verification failed.")
+
+
+@main.group(name="review-pack")
+def review_pack_command() -> None:
+    """Create bounded local reviewer-facing packages."""
+
+
+@review_pack_command.command(name="create")
+@click.option(
+    "--paper-minimal",
+    is_flag=True,
+    help="Create the EEOAP v0.1 paper-minimal inspection package.",
+)
+@click.option(
+    "--out",
+    "paper_minimal_output",
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Output zip path for --paper-minimal.",
+)
+@click.option(
+    "--bundle",
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Signed JSON export bundle to verify before packaging.",
+)
+@click.option(
+    "--public-key",
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Manifest public key used for signed export verification.",
+)
+@click.option(
+    "--summary",
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Optional source summary.json to include as a reviewer aid.",
+)
+@click.option(
+    "--output-dir",
+    type=click.Path(file_okay=False, path_type=Path),
+    help="Directory where the Review Pack will be written.",
+)
+@click.option(
+    "--json-errors",
+    is_flag=True,
+    help="Emit structured JSON on Review Pack creation failure.",
+)
+def review_pack_create_command(
+    paper_minimal: bool,
+    paper_minimal_output: Path | None,
+    bundle: Path | None,
+    public_key: Path | None,
+    summary: Path | None,
+    output_dir: Path | None,
+    json_errors: bool,
+) -> None:
+    """Create a local Review Pack after required validation passes."""
+
+    if paper_minimal:
+        if paper_minimal_output is None:
+            raise click.ClickException("Provide --out when using --paper-minimal.")
+        if (
+            bundle is not None
+            or public_key is not None
+            or summary is not None
+            or output_dir is not None
+        ):
+            raise click.ClickException(
+                "Use --paper-minimal with --out, or bundle Review Pack options, not both."
+            )
+        report = create_paper_minimal_review_pack(Path.cwd(), paper_minimal_output)
+        click.echo(json.dumps(report, indent=2, sort_keys=True))
+        return
+
+    if paper_minimal_output is not None:
+        raise click.ClickException(
+            "Only --paper-minimal review packages are currently supported when using --out."
+        )
+    if bundle is None or public_key is None or output_dir is None:
+        raise click.ClickException(
+            "Provide --bundle, --public-key, and --output-dir, or use --paper-minimal --out."
+        )
+
+    try:
+        result = create_review_pack(
+            bundle_path=bundle,
+            public_key_path=public_key,
+            summary_path=summary,
+            output_dir=output_dir,
+        )
+    except ReviewPackVerificationError as exc:
+        if json_errors:
+            _echo_review_pack_error(exc, reason="verification_failed")
+            raise click.exceptions.Exit(1) from exc
+        raise click.ClickException(str(exc)) from exc
+    except ReviewPackError as exc:
+        if json_errors:
+            _echo_review_pack_error(exc, reason=_review_pack_error_reason(exc))
+            raise click.exceptions.Exit(1) from exc
+        raise click.ClickException(str(exc)) from exc
+    click.echo(json.dumps(result, indent=2, sort_keys=True))
+
+
+def _review_pack_error_reason(exc: ReviewPackError) -> str:
+    message = str(exc).lower()
+    if "already exists and is not empty" in message:
+        return "output_dir_not_empty"
+    if "path is not a file" in message:
+        return "invalid_input"
+    if "secret-like content detected" in message:
+        return "secret_scan_failed"
+    return "unknown"
+
+
+def _echo_review_pack_error(exc: ReviewPackError, *, reason: str) -> None:
+    payload = {
+        "ok": False,
+        "error": {
+            "code": "review_pack_create_failed",
+            "message": str(exc),
+            "reason": reason,
+        },
+    }
+    click.echo(json.dumps(payload, indent=2, sort_keys=True))
 
 
 @main.command(name="verify-bundle")
