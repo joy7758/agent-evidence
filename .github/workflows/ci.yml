@@ -36,7 +36,26 @@ jobs:
           ruff format --check .
 
       - name: Run unit tests
-        run: pytest
+        shell: bash
+        run: |
+          set +e
+          pytest 2>&1 | tee pytest-output.txt
+          status="${PIPESTATUS[0]}"
+          if [ "$status" -ne 0 ]; then
+            python - <<'PY'
+          from pathlib import Path
+
+          lines = Path("pytest-output.txt").read_text(encoding="utf-8", errors="replace").splitlines()
+          message = "\n".join(lines[-120:])
+          escaped = (
+              message.replace("%", "%25")
+              .replace("\r", "%0D")
+              .replace("\n", "%0A")
+          )
+          print(f"::error title=pytest failure::{escaped}")
+          PY
+            exit "$status"
+          fi
 
       - name: Run profile gate
         run: python scripts/run_profile_gate.py
