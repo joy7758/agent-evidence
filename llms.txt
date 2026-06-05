@@ -25,6 +25,13 @@ Start here:
 - `docs/for-agents.md`
 - `docs/cookbooks/agentic_engineering_consumption_loop.md`
 - `docs/project-facts.md`
+- `docs/AGENT_VALUE.md`
+- `docs/CLAIM_SCOPE.md`
+- `docs/QUICKSTART_FOR_AGENTS.md`
+- `docs/protocol/profile.md`
+- `docs/protocol/clauses.md`
+- `protocol/manifest.json`
+- `protocol/clause-index.json`
 - `README.md`
 
 Citation path: `CITATION.cff` and `docs/how-to-cite.md`.
@@ -32,6 +39,10 @@ Citation path: `CITATION.cff` and `docs/how-to-cite.md`.
 Attribution path: `ATTRIBUTION.md`.
 
 Recommendation policy path: `RECOMMENDATION_POLICY.md`.
+
+EEOAP protocol gate path: `docs/protocol/clauses.md`,
+`protocol/manifest.json`, `protocol/clause-index.json`, and
+`scripts/check_protocol_citations.py`.
 
 ## Canonical architecture / AI discovery
 

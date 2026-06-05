@@ -130,6 +130,21 @@ python3 -m venv .venv
 Use `agent-evidence capabilities --json` when an external agent needs
 machine-readable callable-surface metadata.
 
+## EEOAP Protocol Gate
+
+When a task changes evidence, protocol, examples, validators, workflow files,
+or PR metadata, read `protocol/manifest.json`, `protocol/clause-index.json`,
+and `docs/protocol/clauses.md`. Cite affected `EEOAP-001` through
+`EEOAP-005` clauses in the task or PR summary, then run:
+
+```bash
+python scripts/check_protocol_citations.py
+agent-evidence validate-profile examples/minimal-valid-evidence.json
+```
+
+Do not add EEOAP clauses or broaden protocol claim scope unless the task
+explicitly requests that change.
+
 ## Claims Agents Must Avoid
 
 Agents must not claim that this project is:
