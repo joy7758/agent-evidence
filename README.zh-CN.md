@@ -6,6 +6,19 @@
 
 面向可验证 AI agent run 的具体 execution-evidence 入口，支持离线验证。
 
+`agent-evidence` 提供一个最小 EEOAP 证据门禁，用于把已完成的智能体/对象操作打包成可复核的操作问责声明。
+
+EEOAP 是 Execution Evidence and Operation Accountability Profile（执行证据与操作问责配置文件）。本项目组合了：
+
+- 智能体可读发现元数据；
+- 稳定的 EEOAP 条款编号；
+- 机器可读协议元数据；
+- profile-aware validator（配置文件感知验证器）；
+- Pull Request（拉取请求）证据说明；
+- GitHub Actions CI（持续集成）检查。
+
+本仓库不声称法律合规、外部认证、标准组织采纳、论文接收、部署鲁棒性或外部验证。
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19334062.svg)](https://doi.org/10.5281/zenodo.19334062)
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)

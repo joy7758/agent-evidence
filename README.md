@@ -3,6 +3,24 @@
 把 AI Agent / service operation 转换为可验证、可审计、可复核的 evidence object。<br>
 Turn AI agent operations into auditable and verifiable evidence objects.
 
+`agent-evidence` provides a minimal EEOAP evidence gate for packaging
+completed agent/object operations into reviewable operation accountability
+statements.
+
+EEOAP means Execution Evidence and Operation Accountability Profile. The
+project combines:
+
+- agent-readable discovery metadata;
+- stable EEOAP clause identifiers;
+- machine-readable protocol metadata;
+- a profile-aware validator;
+- Pull Request evidence guidance;
+- GitHub Actions CI checks.
+
+This repository does not claim legal compliance, external certification,
+standard-body adoption, publication acceptance, deployment robustness, or
+external validation.
+
 DOI: [10.5281/zenodo.19334061](https://doi.org/10.5281/zenodo.19334061)
 
 [![CI](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/joy7758/agent-evidence/actions/workflows/ci.yml)
