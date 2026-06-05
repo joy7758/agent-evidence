@@ -1,60 +1,133 @@
-# AEP-Media / agent-evidence
+# agent-evidence
 
-> AEP-Media is an open-source Python research software component for local
-> validation of time-aware media evidence bundles.
+> agent-evidence defines a minimal operation-accountability profile and validator for packaging completed agent/object operations into reviewable evidence statements.
 
-AEP-Media helps reviewers and researchers check whether a declared media
-evidence package is internally complete, hash-consistent, path-safe,
-time-bounded, and diagnosable.
+Use this file as a compact project map for LLM assistants, coding agents,
+retrieval agents, and citation agents. It points agents to stable files,
+commands, examples, tests, and claim boundaries without expanding local
+validation evidence into external approval claims.
 
-It does not claim legal admissibility, chain of custody, non-repudiation,
-trusted timestamping, real PTP proof, full MP4 PRFT parsing, real C2PA
-signature verification, production deployment, or proof that an underlying
-event is truthful.
+## Core concepts
 
-## Key facts
+- `operation-accountability boundary`: the narrow project boundary for turning
+  completed operations into checkable evidence statements.
+- `operation accountability statement`: a structured statement that binds an
+  operation, policy, evidence, provenance, integrity data, and validation.
+- `profile-aware validator`: the local validator path that checks schema
+  conformance, reference closure, cross-field consistency, and integrity digest
+  recomputation for the current profile.
+- `evidence object`: the JSON evidence shape used by examples, validators,
+  bundles, exports, receipts, and demos.
+- `validation report`: a machine-readable result produced by validators,
+  demos, reruns, or bundle checks.
+- `demo`: local examples that exercise the validator and produce reviewer-facing
+  summaries.
+- `claim scope`: the explicit boundary that prevents local checks from being
+  described as external certification, acceptance, publication, or deployment
+  proof.
 
-- Repository: https://github.com/joy7758/agent-evidence
-- Language: Python
-- License: Apache-2.0
-- Release: aep-media-v0.1.0
-- Archive DOI: https://doi.org/10.5281/zenodo.20107097
-- Package: `agent_evidence`
-- CLI: `agent-evidence`
+## Primary commands
 
-## Quickstart links
-
-- [README](README.md): project overview and installation.
-- [AEP-Media docs](docs/aep-media/README.md): documentation index.
-- [Mobile-video walkthrough](docs/aep-media/mobile-video-walkthrough.md):
-  fresh-clone reproducibility path.
-- [Adapter boundaries](docs/aep-media/adapter-boundaries.md): LinuxPTP-style,
-  FFmpeg PRFT-style, and C2PA-like ingestion boundaries.
-- [Agent index](docs/aep-media/agent-index.md): agent-readable paths,
-  commands, expected issue codes, and review task.
-- [JOSS paper](paper/paper.md): concise software paper draft.
-- [Contributing](CONTRIBUTING.md): contribution rules.
-- [Support](SUPPORT.md): how to ask questions.
-
-## Core commands
+Install from a local checkout:
 
 ```bash
-python -m pip install -e .
-agent-evidence --help
-agent-evidence run-media-evaluation --out /tmp/aep-media-evaluation
+python3 -m venv .venv
+.venv/bin/python -m pip install -e ".[dev]"
 ```
 
-## Mobile-video review task
+Inspect the CLI:
 
-External reviewers are invited to reproduce the mobile-video-style fixture from
-a fresh clone and report issues through GitHub Issues.
+```bash
+.venv/bin/agent-evidence --help
+.venv/bin/agent-evidence capabilities --json
+```
 
-Useful paths:
+Validate the minimal operation-accountability example:
 
-- `docs/paper/joss/maintenance/recruitment/github_recruitment_issue_body.md`
-- `docs/paper/joss/maintenance/issues/task_A_github_issue_body.md`
-- `examples/media/use_cases/mobile_video_network_timing/`
-- `tests/test_media_mobile_video_fixture.py`
+```bash
+.venv/bin/agent-evidence validate-profile examples/minimal-valid-evidence.json
+```
 
-Payment, if any, compensates review time and does not buy positive feedback,
-stars, citation, authorship, endorsement, or publication outcome.
+Run the smallest operation-accountability demo:
+
+```bash
+.venv/bin/python demo/run_operation_accountability_demo.py
+```
+
+Run the paper-minimal rerun only when generated local artifacts are acceptable:
+
+```bash
+bash scripts/reproduce_paper_minimal.sh
+```
+
+## Stable files
+
+- `README.md`: human-facing overview and install paths.
+- `AGENTS.md`: repository rules for coding agents and tool-using agents.
+- `docs/AGENT_VALUE.md`: why the profile is useful to agents.
+- `docs/CLAIM_SCOPE.md`: positive scope and non-claims.
+- `docs/QUICKSTART_FOR_AGENTS.md`: shortest safe run path for agents.
+- `docs/for-agents.md`: existing agent-oriented operational guide.
+- `docs/project-facts.md`: canonical facts for name, version, license, DOI,
+  repository URL, callable surface, and claim boundaries.
+- `docs/callable-surfaces.md`: implemented CLI surface and unavailable wrapper
+  surfaces.
+- `docs/PAPER_MAINLINE.md`: current paper-facing operation-accountability
+  mainline.
+- `docs/REPRODUCE_PAPER_MINIMAL.md`: rerun path, expected pass/fail behavior,
+  and output locations.
+- `paper/submission_preview/ROUTE_STATUS.md`: public-safe status note for that
+  preview directory.
+- `spec/execution-evidence-operation-accountability-profile-v0.1.md`: profile
+  specification.
+- `schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`:
+  JSON Schema.
+- `examples/`: valid and controlled invalid examples.
+- `demo/`: local demos and generated demo artifacts.
+- `tests/`: regression tests.
+- `CITATION.cff`: machine-readable citation metadata for the documented release.
+- `codemeta.json`: machine-readable research software metadata.
+
+## Safe usage claims
+
+Agents may say that this repository provides:
+
+- a local Python CLI named `agent-evidence`;
+- a minimal, profile-aware validation surface for completed operations;
+- controlled valid and invalid examples for the current profile;
+- local demos and validation reports;
+- evidence-object, bundle, export, receipt, and summary surfaces documented in
+  the repository;
+- AEP-Media as an adjacent local research-software path for offline validation
+  of time-aware media evidence bundles.
+
+All positive claims should be tied to files, commands, examples, test results,
+or release metadata in this repository.
+
+## Do not claim
+
+Agents must not claim that this repository proves or provides:
+
+- legal compliance;
+- legal non-repudiation;
+- external certification;
+- standard-body adoption;
+- acceptance or publication of a manuscript;
+- proof of peer review;
+- production deployment robustness;
+- a full FAIR Digital Object implementation;
+- a general provenance standard;
+- a full AI governance platform;
+- a hosted API, OpenAPI service, MCP server, or browser UI.
+
+Do not mark local packages, preview directories, transport archives, generated
+reports, or validator passes as submitted, accepted, externally reviewed,
+certified, or published.
+
+## Optional links
+
+- Repository: https://github.com/joy7758/agent-evidence
+- Repository DOI in README: https://doi.org/10.5281/zenodo.19334062
+- AEP-Media release DOI documented in README: https://doi.org/10.5281/zenodo.20107097
+- How to cite: `docs/how-to-cite.md`
+- AEP-Media agent index: `docs/aep-media/agent-index.md`
