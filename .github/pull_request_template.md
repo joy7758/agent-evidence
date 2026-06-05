@@ -13,32 +13,69 @@
 - [ ] Updated `docs/project-facts.md` if project facts change
 - [ ] Updated `docs/callable-surfaces.md` if CLI/API/MCP capabilities change
 
-## EEOAP Clause Gate
+## EEOAP Clause Citation
 
-Affected EEOAP clauses:
+This Pull Request must comply with the Execution Evidence and Operation Accountability
+Profile (EEOAP) when it changes protocol metadata, validation behavior, examples,
+agent-facing documentation, or operation-accountability code paths.
 
-- [ ] EEOAP-001: operation accountability statement
-- [ ] EEOAP-002: actor / subject / operation / timestamp binding
-- [ ] EEOAP-003: policy / evidence / provenance references
-- [ ] EEOAP-004: validator-readable validation report
-- [ ] EEOAP-005: clause citation in task or pull-request summary
+List all applicable EEOAP clause identifiers implemented or affected:
+
+- [ ] EEOAP-001: Completed operation must produce an operation accountability statement
+- [ ] EEOAP-002: Statement must bind actor, subject, operation, and timestamp
+- [ ] EEOAP-003: Statement must bind policy, evidence, and provenance references
+- [ ] EEOAP-004: Statement must produce or reference a validator-readable validation report
+- [ ] EEOAP-005: Implementation changes must cite affected EEOAP clauses in the task or PR summary
 - [ ] Not applicable; explain why in the PR summary
 
-Validator command:
+Cited clauses:
 
 ```text
+EEOAP-XXX, EEOAP-YYY
+```
+
+## EEOAP Protocol Validation
+
+Run the protocol gate commands and include the results before requesting review:
+
+```bash
+python -m json.tool protocol/manifest.json
+python -m json.tool protocol/clause-index.json
+python scripts/check_protocol_citations.py
 agent-evidence validate-profile examples/minimal-valid-evidence.json
 ```
 
-Validator result:
+Validation output:
 
 ```text
-<paste result or short PASS/FAIL summary>
+<paste "ok": true, PASS output, or a brief failure summary>
 ```
 
-Examples updated? yes/no:
+Any validation failure should be fixed before requesting review.
+
+Example update check:
+
+- [ ] Updated minimal examples if contract fields changed
+- [ ] Updated tests if behavior changed
+- [ ] Updated documentation under `docs/protocol/` if protocol behavior changed
+
+Affected example files:
+
+```text
+examples/...
+```
 
 Known deviations:
+
+```text
+EEOAP-XXX deviation explanation...
+```
+
+Final EEOAP statement:
+
+- [ ] All relevant EEOAP clauses have been cited above
+- [ ] All protocol validation commands have been executed and passed
+- [ ] This PR complies with EEOAP unless deviations are listed above
 
 Claim hygiene confirmation:
 
