@@ -2,14 +2,12 @@
 
 ## Overall Verdict
 
-Submission readiness verdict: ready for reference restoration.
+Submission readiness verdict: ready for layout patch.
 
-The isolated submission preview can generate TeX and PDF. The PDF build is not
-blocked. However, the preview is not ready for official source conversion
-because the body contains a Related Work section but zero citation keys and zero
-real bibliography entries. The next step should restore citations and local
-bibliography entries from existing source material without expanding the paper
-scope.
+The isolated submission preview now has restored citation keys and complete
+local bibliography coverage. The build generates TeX and PDF from the preview
+source with no missing bibliography keys. It is ready for a layout-focused pass,
+not for formal source replacement.
 
 ## PDF Build Result
 
@@ -27,15 +25,15 @@ Observed result:
 | PDF compile result | passed |
 | PDF path | `paper/submission_preview/build/main_wrapper_paper_minimal_v2.pdf` |
 | PDF page count | 6 |
-| PDF file size | 85770 bytes |
+| PDF file size | 106470 bytes |
 | LaTeX log path | `paper/submission_preview/build/main_wrapper_paper_minimal_v2.log` |
 
 Build output summary:
 
 ```text
 generated: paper/submission_preview/build/main_body_paper_minimal_v2.tex
-citation_key_count: 0
-matched_bibliography_entry_count: 0
+citation_key_count: 19
+matched_bibliography_entry_count: 19
 missing_bibliography_key_count: 0
 generated: paper/submission_preview/build/main_wrapper_paper_minimal_v2.pdf
 ```
@@ -45,62 +43,63 @@ generated: paper/submission_preview/build/main_wrapper_paper_minimal_v2.pdf
 | warning type | count | interpretation |
 | --- | ---: | --- |
 | overfull hbox | 11 | non-blocking layout risk |
-| underfull hbox | 21 | non-blocking layout risk |
-| undefined citation | 0 | no unresolved citation at build time |
-| undefined reference | 0 | no unresolved cross-reference at build time |
-| missing file warning | 1 | expected missing `.bbl` in zero-citation build |
-| bibliography warning | 1 | expected missing `.bbl` in zero-citation build |
+| underfull hbox | 25 | non-blocking layout risk |
+| undefined citation | 0 | no unresolved citation in final log |
+| undefined reference | 0 | no unresolved cross-reference in final log |
+| missing file warning | 0 | final build has a generated `.bbl` |
+| bibliography warning | 0 | final build has bibliography entries |
 
-The single `.bbl` warning is not a build blocker in this preview because the
-body has zero citation commands. It should not be interpreted as bibliography
-readiness for submission.
+The preview `.bib` uses a preamble bootstrap to make the current GFM-to-LaTeX
+preview path emit bibliography entries without modifying the preview body,
+wrapper, or build script. The generated PDF still shows markdown-style citation
+markers in body text; that is a layout/source-preview issue for the next pass,
+not a bibliography-completion blocker.
 
 Most severe layout snippets from the build log:
 
 | rank | log evidence |
 | ---: | --- |
-| 1 | `Overfull hbox (355.25523pt too wide) ... lines 479--497` |
-| 2 | `Overfull hbox (288.0pt too wide) ... lines 221--221` |
-| 3 | `Overfull hbox (180.0pt too wide) ... lines 419--419` |
-| 4 | `Overfull hbox (180.0pt too wide) ... lines 419--419` |
-| 5 | `Overfull hbox (168.0pt too wide) ... lines 419--419` |
-| 6 | `Overfull hbox (156.0pt too wide) ... lines 419--419` |
-| 7 | `Overfull hbox (107.16507pt too wide) ... lines 425--440` |
-| 8 | `Overfull hbox (61.39897pt too wide) ... lines 261--267` |
-| 9 | `Overfull hbox (36.0pt too wide) ... lines 419--419` |
-| 10 | `Overfull hbox (24.0pt too wide) ... lines 166--166` |
+| 1 | `Overfull hbox (355.25523pt too wide) ... lines 489--507` |
+| 2 | `Overfull hbox (288.0pt too wide) ... lines 226--226` |
+| 3 | `Overfull hbox (180.0pt too wide) ... lines 429--429` |
+| 4 | `Overfull hbox (180.0pt too wide) ... lines 429--429` |
+| 5 | `Overfull hbox (168.0pt too wide) ... lines 429--429` |
+| 6 | `Overfull hbox (156.0pt too wide) ... lines 429--429` |
+| 7 | `Overfull hbox (107.16507pt too wide) ... lines 435--450` |
+| 8 | `Overfull hbox (61.39897pt too wide) ... lines 267--273` |
+| 9 | `Overfull hbox (36.0pt too wide) ... lines 429--429` |
+| 10 | `Overfull hbox (24.0pt too wide) ... lines 170--170` |
 
 Underfull warnings are concentrated around validator explanation paragraphs and
 long code/path fragments. The overfull warnings are more important for the next
 layout pass because they indicate visible line-width overflow from long command
 strings, paths, and tables.
 
-Layout risk classification: non-blocking.
+Layout risk classification: non-blocking for bibliography completion.
 
-Rationale: the PDF builds successfully and has no undefined citations or
-undefined cross-references. The remaining risk is visible formatting quality,
-not build failure.
+Rationale: the PDF builds successfully and has no unresolved citations or
+cross-references in the final log. The remaining risk is visible formatting and
+preview citation rendering quality, not missing bibliography metadata.
 
 ## Reference Readiness Summary
 
-Restoration update:
+Completion update:
 
-| item | previous result | restored result |
+| item | restored result | completion result |
 | --- | ---: | ---: |
-| citation key count | 0 | 19 |
-| matched bibliography entry count | 0 | 12 |
-| missing bibliography key count | 0 | 7 |
-| real BibTeX entry count | 0 | 12 |
+| citation key count | 19 | 19 |
+| matched bibliography entry count | 12 | 19 |
+| missing bibliography key count | 7 | 0 |
+| real BibTeX entry count | 12 | 19 |
 | Related Work section present | yes | yes |
-| Related Work citation keys present | no | yes |
+| Related Work citation keys present | yes | yes |
 
-Updated reference readiness verdict: ready for bibliography completion.
+Updated reference readiness verdict: ready for layout patch.
 
-The preview now has citation keys restored from local source material and
-existing reference families. Matched BibTeX entries were copied from existing
-repository `.bib` files. Seven restored keys still lack reliable local BibTeX
-entries, so the preview should not advance to layout patch or official source
-conversion until bibliography completion is done.
+The preview now has citation keys restored from local source material and full
+local BibTeX coverage. The seven previously missing entries were recovered from
+existing repository reference text and are documented in
+`BIBLIOGRAPHY_COMPLETION_AUDIT.md`.
 
 Historical pre-restoration state:
 
@@ -116,12 +115,8 @@ Historical pre-restoration state:
 Reference readiness classification before restoration: blocking for
 submission-quality related work, non-blocking for build.
 
-The preview compiles because there are no citation commands to resolve. That is
-not enough for submission preparation. The Related Work section discusses
-external bodies of work, but the preview currently has no formal citation keys.
-Unless the citations were intentionally removed as a venue-specific decision,
-the preview should not advance to official source conversion. After restoration,
-the remaining blocker is bibliography completion for the seven missing keys.
+After restoration and bibliography completion, the remaining work is layout
+quality and preview citation rendering, not reference recovery.
 
 ## Claim Boundary Result
 
@@ -157,18 +152,18 @@ existing repository ignore rule for `build/`.
 
 ## Blocking Issues
 
-1. Submission-quality references are not ready: 19 citation keys are restored,
-   but 7 keys still lack reliable local BibTeX entries.
+No bibliography-completion blockers remain.
 
-This is not a build blocker. It is a blocker for official source conversion.
+This is still not a signal to replace formal source files. The preview needs a
+layout pass and citation-rendering cleanup before any formal-source decision.
 
 ## Non-Blocking Issues
 
-1. PDF layout has 11 overfull hbox warnings and 21 underfull hbox warnings.
+1. PDF layout has 11 overfull hbox warnings and 25 underfull hbox warnings.
 2. The most severe overfull warnings are caused by long commands, paths, and
    preview tables.
-3. The restored-citation build intentionally skips PDF generation until the 7
-   missing bibliography entries are completed.
+3. The generated PDF still displays markdown-style citation markers because the
+   preview GFM conversion path does not render them as numeric citations.
 
 ## Verification
 
@@ -178,7 +173,7 @@ current repository's `artifacts/` directory.
 ```text
 bash scripts/reproduce_paper_minimal.sh
 ok: true
-git_commit: 5c3c48e
+git_commit: a1a6630
 ```
 
 Observed case results:
@@ -205,18 +200,18 @@ All checks passed!
 
 ## Suggested Next Codex Goal
 
-Recommended thirteenth goal:
+Recommended fifteenth goal:
 
 ```text
-Restore submission-preview citations and local bibliography from existing known
-source materials without web search and without expanding scope.
+Patch the isolated submission preview layout and citation rendering only under
+paper/submission_preview, without replacing formal source files.
 ```
 
-The restoration should use existing repository or prior-source material only,
-and should not fabricate BibTeX entries.
+The next pass should focus on long commands, long paths, tables, and
+markdown-style citation marker rendering.
 
 ## Suggested Commit Message
 
 ```text
-Audit submission preview layout and references
+Complete submission preview bibliography from local sources
 ```

@@ -15,6 +15,7 @@
 | missing references report | `paper/submission_preview/MISSING_REFERENCES_PAPER_MINIMAL_V2.md` |
 | build audit | `paper/submission_preview/BUILD_PREVIEW_AUDIT.md` |
 | reference restoration audit | `paper/submission_preview/REFERENCE_RESTORATION_AUDIT.md` |
+| bibliography completion audit | `paper/submission_preview/BIBLIOGRAPHY_COMPLETION_AUDIT.md` |
 
 The body preview removes the source title and abstract, then promotes the
 remaining Markdown headings one level so pandoc can emit normal LaTeX section

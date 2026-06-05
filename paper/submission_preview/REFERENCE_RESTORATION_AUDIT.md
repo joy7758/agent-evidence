@@ -2,13 +2,12 @@
 
 ## Overall Verdict
 
-Readiness verdict: ready for bibliography completion.
+Readiness verdict: bibliography completed; ready for layout patch.
 
-Citation keys were restored to the isolated submission preview without changing
-the paper-minimal claim boundary. Matched BibTeX entries were copied only from
-existing repository `.bib` files. Seven restored citation keys still lack
-reliable local BibTeX entries, so PDF generation is intentionally skipped after
-TeX generation until bibliography completion is done.
+Citation keys remain restored in the isolated submission preview without
+changing the paper-minimal claim boundary. The original 12 matched BibTeX
+entries remain present, and the seven previously missing entries now have local
+BibTeX coverage documented in `BIBLIOGRAPHY_COMPLETION_AUDIT.md`.
 
 ## Restored Citation Keys
 
@@ -38,38 +37,18 @@ wright2022jsonschemavalidation
 
 ## Matched BibTeX Entries
 
-Matched bibliography entry count: 12.
+Matched bibliography entry count: 19.
 
-Matched entries were copied from existing repository BibTeX files:
+The first 12 matched entries came from existing repository BibTeX files:
 
 - `paper/submission_tosem/references.bib`
 - `paper/submission_tosem/acmart/references.bib`
 
-Matched keys:
+The seven completion entries were normalized from existing repository reference
+text, not from web search. Their provenance is recorded in
+`BIBLIOGRAPHY_COMPLETION_AUDIT.md`.
 
-```text
-atkinson2019profiles
-herschel2017surveyprovenance
-hu2014abac
-iannella2018odrl
-kent2006sp80092
-knublauch2017shacl
-moreau2013provdm
-oliner2012loganalysis
-schneier1999secureauditlogs
-simmhan2005provenance
-wright2022jsonschema
-wright2022jsonschemavalidation
-```
-
-No BibTeX entries were fabricated.
-
-## Missing BibTeX Entries
-
-Missing bibliography key count: 7.
-
-Missing keys are tracked in
-`paper/submission_preview/MISSING_REFERENCES_PAPER_MINIMAL_V2.md`.
+Completed keys:
 
 ```text
 acm2020artifactbadging
@@ -81,9 +60,18 @@ soilandreyes2024evaluating
 torresarias2019intoto
 ```
 
+No BibTeX entries were fabricated.
+
+## Missing BibTeX Entries
+
+Missing bibliography key count: 0.
+
+`paper/submission_preview/MISSING_REFERENCES_PAPER_MINIMAL_V2.md` now records
+all seven previously missing keys as recovered.
+
 ## Files Changed
 
-Changed files in this restoration pass:
+Changed files in the original restoration pass:
 
 - `paper/submission_preview/main_body_paper_minimal_v2.md`
 - `paper/submission_preview/references_paper_minimal_v2.bib`
@@ -93,6 +81,16 @@ Changed files in this restoration pass:
 - `paper/submission_preview/PDF_LAYOUT_AND_REFERENCE_AUDIT.md`
 - `paper/submission_preview/source_map_paper_minimal_v2.md`
 - `paper/submission_preview/REFERENCE_RESTORATION_AUDIT.md`
+
+Changed files in the bibliography-completion pass:
+
+- `paper/submission_preview/references_paper_minimal_v2.bib`
+- `paper/submission_preview/MISSING_REFERENCES_PAPER_MINIMAL_V2.md`
+- `paper/submission_preview/BUILD_PREVIEW_AUDIT.md`
+- `paper/submission_preview/PDF_LAYOUT_AND_REFERENCE_AUDIT.md`
+- `paper/submission_preview/source_map_paper_minimal_v2.md`
+- `paper/submission_preview/REFERENCE_RESTORATION_AUDIT.md`
+- `paper/submission_preview/BIBLIOGRAPHY_COMPLETION_AUDIT.md`
 
 ## Scope Boundary Check
 
@@ -107,8 +105,9 @@ Changed files in this restoration pass:
 | non-claims changed | false |
 | adjacent surfaces promoted to mainline | false |
 
-The restoration only reconnects existing preview sentences to local citation
-keys and local bibliography tracking. It does not add a new claim family.
+The restoration and completion passes only reconnect preview sentences to local
+citation keys and local bibliography entries. They do not add a new claim
+family.
 
 ## Build Result
 
@@ -123,20 +122,25 @@ Observed result:
 ```text
 generated: paper/submission_preview/build/main_body_paper_minimal_v2.tex
 citation_key_count: 19
-matched_bibliography_entry_count: 12
-missing_bibliography_key_count: 7
-WARNING: bibliography incomplete; PDF generation skipped.
-missing keys written to: paper/submission_preview/build/missing_citation_keys.txt
+matched_bibliography_entry_count: 19
+missing_bibliography_key_count: 0
+generated: paper/submission_preview/build/main_wrapper_paper_minimal_v2.pdf
 ```
 
 TeX generation result: passed.
 
-PDF compile result: skipped.
+PDF compile result: passed.
 
-Skip reason: bibliography incomplete.
+PDF path: `paper/submission_preview/build/main_wrapper_paper_minimal_v2.pdf`.
 
-This skip is intentional. The preview should not generate a PDF with unresolved
-citations and should not be marked ready for official source conversion.
+PDF page count: 6.
+
+PDF file size: 106470 bytes.
+
+The preview `.bib` includes a preamble bootstrap so the current preview
+conversion path emits bibliography entries without changing the preview body,
+wrapper, or build script. The next layout pass should address visible
+markdown-style citation markers in the generated PDF.
 
 ## Reproduction Result
 
@@ -148,7 +152,7 @@ the current repository's `artifacts/` directory.
 ```text
 bash scripts/reproduce_paper_minimal.sh
 ok: true
-git_commit: 47117a1
+git_commit: a1a6630
 ```
 
 Observed case results:
@@ -179,16 +183,15 @@ All checks passed!
 
 ## Suggested Next Codex Goal
 
-Recommended fourteenth goal:
+Recommended fifteenth goal:
 
 ```text
-Complete submission-preview bibliography entries for the seven missing keys
-from existing reliable source material, without web search and without
-fabricating BibTeX metadata.
+Patch isolated submission-preview layout and citation rendering without
+touching formal source files.
 ```
 
 ## Suggested Commit Message
 
 ```text
-Restore submission preview citations and bibliography tracking
+Complete submission preview bibliography from local sources
 ```
