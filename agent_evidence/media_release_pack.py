@@ -387,18 +387,23 @@ Install the project dependencies in the repository virtual environment if they a
 
 def _paper_files(repo_root: Path) -> dict[str, str]:
     paper_dir = repo_root / "docs" / "paper"
-    names = [
-        "aep_media_manuscript_draft.md",
-        "aep_media_abstract.md",
-        "aep_media_methods_section.md",
-        "aep_media_evaluation_section.md",
-        "aep_media_threats_to_validity.md",
-    ]
+    sources = {
+        "aep_media_manuscript_draft.md": [
+            paper_dir / "aep_media_manuscript_draft.md",
+            paper_dir / "softwarex" / "aep_media_softwarex_manuscript_draft.md",
+            paper_dir / "softwarex" / "final" / "aep_media_softwarex_final_manuscript.md",
+        ],
+        "aep_media_abstract.md": [paper_dir / "aep_media_abstract.md"],
+        "aep_media_methods_section.md": [paper_dir / "aep_media_methods_section.md"],
+        "aep_media_evaluation_section.md": [paper_dir / "aep_media_evaluation_section.md"],
+        "aep_media_threats_to_validity.md": [paper_dir / "aep_media_threats_to_validity.md"],
+    }
     files: dict[str, str] = {}
-    for name in names:
-        path = paper_dir / name
-        if path.exists():
-            files[name] = path.read_text(encoding="utf-8")
+    for name, candidates in sources.items():
+        for path in candidates:
+            if path.exists():
+                files[name] = path.read_text(encoding="utf-8")
+                break
     return files
 
 

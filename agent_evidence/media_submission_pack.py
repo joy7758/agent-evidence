@@ -15,6 +15,39 @@ FORBIDDEN_WORKSPACE_LABEL = "paper-ncs-" + "execution-evidence"
 
 TEXT_SUFFIXES = {".csv", ".json", ".md", ".txt"}
 
+SUBMISSION_BOUNDARY_NOTE = """
+## Local Submission-Pack Boundary Note
+
+This generated local package does not claim real PTP proof.
+This generated local package does not claim full MP4 PRFT parsing.
+This generated local package does not claim real C2PA signature verification.
+This generated local package does not claim legal admissibility.
+This generated local package does not claim non-repudiation.
+This generated local package does not claim trusted timestamping.
+This generated local package does not claim production deployment.
+"""
+
+GENERATED_APPENDIX = """
+# AEP-Media Submission Appendix
+
+This generated appendix preserves the local pack boundary for a clean repository
+checkout. It points reviewers to the release pack, reproducibility checklist,
+claim-boundary report, evaluation summary, and artifact inventory included in
+this local package.
+
+This is not an external submission record, not peer-review evidence, and not
+evidence of acceptance or publication.
+"""
+
+GENERATED_FORMAT_PREFLIGHT = """
+# AEP-Media Format Preflight
+
+This generated preflight note exists to keep the local submission-preparation
+pack reproducible from tracked repository files. It does not authorize venue
+upload and does not mark this repository state as submitted, accepted,
+externally reviewed, or published.
+"""
+
 
 def _write_json(path: Path, payload: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -58,6 +91,25 @@ def _sanitize_text(text: str, *, repo_root: Path, out_dir: Path) -> str:
 def _copy_text(source: Path, target: Path, *, repo_root: Path, out_dir: Path) -> None:
     text = source.read_text(encoding="utf-8")
     _write_text(target, _sanitize_text(text, repo_root=repo_root, out_dir=out_dir))
+
+
+def _copy_text_with_note(
+    source: Path,
+    target: Path,
+    *,
+    repo_root: Path,
+    out_dir: Path,
+    note: str,
+) -> None:
+    text = source.read_text(encoding="utf-8") + note
+    _write_text(target, _sanitize_text(text, repo_root=repo_root, out_dir=out_dir))
+
+
+def _first_existing(candidates: list[Path]) -> Path | None:
+    for path in candidates:
+        if path.exists():
+            return path
+    return None
 
 
 def _checksums(out_dir: Path) -> None:
@@ -125,20 +177,35 @@ def build_aep_media_submission_pack(
 
     paper_dir = resolved_repo_root / "docs" / "paper"
     report_dir = resolved_repo_root / "docs" / "reports"
-    paper_files = [
-        "aep_media_tse_submission_draft.md",
-        "aep_media_abstract.md",
-        "aep_media_methods_section.md",
-        "aep_media_evaluation_section.md",
-        "aep_media_threats_to_validity.md",
-        "aep_media_related_work_notes.md",
-    ]
-    for paper_file in paper_files:
-        source = paper_dir / paper_file
-        if source.exists():
+    paper_files = {
+        "aep_media_tse_submission_draft.md": [
+            paper_dir / "aep_media_tse_submission_draft.md",
+            paper_dir / "softwarex" / "final" / "aep_media_softwarex_final_manuscript.md",
+            paper_dir / "softwarex" / "aep_media_softwarex_manuscript_draft.md",
+        ],
+        "aep_media_abstract.md": [paper_dir / "aep_media_abstract.md"],
+        "aep_media_methods_section.md": [paper_dir / "aep_media_methods_section.md"],
+        "aep_media_evaluation_section.md": [paper_dir / "aep_media_evaluation_section.md"],
+        "aep_media_threats_to_validity.md": [paper_dir / "aep_media_threats_to_validity.md"],
+        "aep_media_related_work_notes.md": [paper_dir / "aep_media_related_work_notes.md"],
+    }
+    for paper_file, candidates in paper_files.items():
+        source = _first_existing(candidates)
+        if source is None:
+            continue
+        target = resolved_out_dir / "manuscript" / paper_file
+        if paper_file == "aep_media_tse_submission_draft.md":
+            _copy_text_with_note(
+                source,
+                target,
+                repo_root=resolved_repo_root,
+                out_dir=resolved_out_dir,
+                note=SUBMISSION_BOUNDARY_NOTE,
+            )
+        else:
             _copy_text(
                 source,
-                resolved_out_dir / "manuscript" / paper_file,
+                target,
                 repo_root=resolved_repo_root,
                 out_dir=resolved_out_dir,
             )
@@ -162,6 +229,9 @@ def build_aep_media_submission_pack(
                 repo_root=resolved_repo_root,
                 out_dir=resolved_out_dir,
             )
+    appendix_path = resolved_out_dir / "supplement" / "aep_media_submission_appendix.md"
+    if not appendix_path.exists():
+        _write_text(appendix_path, GENERATED_APPENDIX)
 
     format_files = [
         "aep_media_tse_format_preflight.md",
@@ -174,6 +244,19 @@ def build_aep_media_submission_pack(
             _copy_text(
                 source,
                 resolved_out_dir / "format" / format_file,
+                repo_root=resolved_repo_root,
+                out_dir=resolved_out_dir,
+            )
+    preflight_path = resolved_out_dir / "format" / "aep_media_tse_format_preflight.md"
+    if not preflight_path.exists():
+        _write_text(preflight_path, GENERATED_FORMAT_PREFLIGHT)
+    checklist_path = resolved_out_dir / "format" / "aep_media_submission_checklist.md"
+    if not checklist_path.exists():
+        checklist_source = paper_dir / "softwarex" / "aep_media_softwarex_submission_checklist.md"
+        if checklist_source.exists():
+            _copy_text(
+                checklist_source,
+                checklist_path,
                 repo_root=resolved_repo_root,
                 out_dir=resolved_out_dir,
             )
