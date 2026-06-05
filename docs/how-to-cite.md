@@ -20,7 +20,7 @@ Repository: <https://github.com/joy7758/agent-evidence>
   title = {agent-evidence},
   version = {0.6.0},
   doi = {10.5281/zenodo.19334061},
-  url = {https://github.com/joy7758/agent-evidence},
+  url = "https://github.com/joy7758/agent-evidence",
   license = {Apache-2.0},
   note = {Runtime evidence exporter and validator for AI agent and service operations}
 }
