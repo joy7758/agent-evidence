@@ -79,9 +79,8 @@ machine-readable validation result instead of relying only on narrative logs.
 
 Related files:
 
-- `docs/REPRODUCE_PAPER_MINIMAL.md`
 - `demo/run_operation_accountability_demo.py`
-- `scripts/reproduce_paper_minimal.sh`
+- `examples/minimal-valid-evidence.json`
 
 Validator surface: validation-report output.
 

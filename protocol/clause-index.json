@@ -50,9 +50,8 @@
       "title": "Statement must produce or reference a validator-readable validation report",
       "required_surface": "validation_report",
       "related_files": [
-        "docs/REPRODUCE_PAPER_MINIMAL.md",
         "demo/run_operation_accountability_demo.py",
-        "scripts/reproduce_paper_minimal.sh"
+        "examples/minimal-valid-evidence.json"
       ],
       "validator_surface": "validation_report_output",
       "citation_hint": "Execution Evidence and Operation Accountability Profile v0.1, clause EEOAP-004."

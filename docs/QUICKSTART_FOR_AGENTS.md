@@ -33,8 +33,8 @@ Expected behavior:
 - the valid example exits with status `0`;
 - the JSON result includes `"ok": true`.
 
-Controlled invalid examples are documented in `docs/REPRODUCE_PAPER_MINIMAL.md`.
-They are expected to fail with stable primary codes.
+Controlled invalid examples live under `examples/invalid-*.json`. They are
+expected to fail with stable primary codes.
 
 ## Run the smallest demo
 
@@ -48,30 +48,12 @@ Expected behavior:
 - the output ends with a `PASS` summary line for the current profile;
 - generated demo artifacts stay under `demo/artifacts/`.
 
-## Run the paper-minimal rerun when needed
-
-```bash
-bash scripts/reproduce_paper_minimal.sh
-```
-
-Expected behavior is documented in `docs/REPRODUCE_PAPER_MINIMAL.md`.
-
-The rerun writes generated local outputs under:
-
-```text
-artifacts/paper-minimal-rerun/
-```
-
-Do not commit generated rerun outputs unless a later task explicitly scopes
-that commit.
-
 ## Where examples live
 
 - `examples/minimal-valid-evidence.json`
 - `examples/invalid-missing-required.json`
 - `examples/invalid-unclosed-reference.json`
 - `examples/invalid-policy-link-broken.json`
-- `examples/media/` for the adjacent AEP-Media path
 
 ## Where reports live
 
