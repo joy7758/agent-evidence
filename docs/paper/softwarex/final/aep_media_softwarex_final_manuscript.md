@@ -122,7 +122,7 @@ For the AEP-Media v0.1.0 release, the final validation run reports:
 
 The case categories include valid conformance cases, invalid single-rule cases, bundle tamper cases, strict-time failures, adapter-ingestion cases, and optional-tool reporting cases. Expected failures include missing time context, media hash mismatch, unresolved policy reference, bundle checksum mismatch, path escape, missing clock-trace reference, clock offset threshold exceedance, clock window mismatch, missing PRFT metadata, and declared invalid C2PA-like signature status.
 
-Supplementary file S1 (`AEP-Media_SoftwareX_Supplementary.zip`) contains the supplement README, reproducibility instructions, claim-boundary statement, software inventory, evaluation summary, selected schemas, selected examples, checksums, and release-validation reports used to support the results reported in this paper.
+Supplementary file S1 contains the supplement README, reproducibility instructions, claim-boundary statement, software inventory, evaluation summary, selected schemas, selected examples, checksums, and release-validation report pointers used to support the results reported in this paper. The machine-readable release materials are available through the GitHub release and Zenodo archive.
 
 ## 4. Impact
 

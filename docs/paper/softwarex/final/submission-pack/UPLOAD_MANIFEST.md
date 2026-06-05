@@ -9,7 +9,7 @@
    `main/AEP-Media_SoftwareX_Manuscript.pdf`
 
 3. Supplementary file S1:
-   `AEP-Media_SoftwareX_Supplementary.zip`
+   `supplementary/AEP-Media_SoftwareX_Supplementary_S1.pdf`
 
 4. Cover letter:
    `cover-letter/AEP-Media_SoftwareX_Cover_Letter.md`
@@ -18,6 +18,7 @@
 ## Do Not Upload
 
 - any `.tex` file
+- `AEP-Media_SoftwareX_Supplementary.zip`
 - `AEP-Media-SoftwareX-Submission-Ready.zip`
 - `AEP-Media-v0.1.0-release-candidate.zip`
 - old TSE or IEEE files

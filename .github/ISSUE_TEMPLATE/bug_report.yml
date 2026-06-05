@@ -1,0 +1,50 @@
+name: Bug report
+description: Report a reproducible problem in agent-evidence or AEP-Media.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please use synthetic or redacted fixtures only. Do not upload private media, credentials, tokens, or sensitive evidence.
+  - type: textarea
+    id: command
+    attributes:
+      label: Command run
+      description: Paste the exact command or minimal Python invocation.
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: fixture
+    attributes:
+      label: Minimal fixture or redacted input
+      description: Provide the smallest synthetic/redacted input needed to reproduce the issue.
+      render: json
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: "3.11.9"
+  - type: input
+    id: version
+    attributes:
+      label: agent-evidence version or commit
+      placeholder: "aep-media-v0.1.0 / commit hash"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Redacted logs
+      render: text

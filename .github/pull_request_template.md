@@ -23,6 +23,8 @@
 - [ ] `pytest -q`
 - [ ] `agent-evidence capabilities --json | python -m json.tool`
 - [ ] Metadata validation checks pass
+- [ ] AEP-Media targeted tests pass if media validation behavior changed
+- [ ] No large binary artifacts or private evidence/media were added
 
 ## Claims-to-Avoid Check
 
@@ -31,3 +33,9 @@
 - [ ] Does not claim a full AI governance platform
 - [ ] Does not claim OpenAPI/MCP availability unless implemented
 - [ ] Does not add hidden promotion, reputation automation, or outbound promotion
+- [ ] Does not claim legal admissibility, chain of custody, trusted timestamping, real PTP proof, full MP4 PRFT parsing, real C2PA signature verification, or production deployment
+
+## AI Assistance Disclosure
+
+- [ ] I did not use substantial AI assistance for this change
+- [ ] I used substantial AI assistance and disclosed the scope in the PR notes

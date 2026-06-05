@@ -78,7 +78,7 @@ AEP-Media is reusable research software for local validation of time-aware media
 
 ## Supplementary Material
 
-Supplementary file S1 (`AEP-Media_SoftwareX_Supplementary.zip`) contains the supplement README, reproducibility instructions, claim-boundary statement, software inventory, evaluation summary, selected schemas, selected examples, checksums, and release-validation reports.
+Supplementary file S1 is provided as a portal-safe PDF for Editorial Manager. It contains the supplement README, reproducibility instructions, claim-boundary statement, software inventory, evaluation summary, selected schemas, selected examples, checksums, and release-validation report pointers. The machine-readable release materials are available through the GitHub release and Zenodo archive.
 
 ## AI-Assisted Writing Disclosure
 

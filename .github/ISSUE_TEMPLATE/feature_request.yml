@@ -1,0 +1,41 @@
+name: Feature request
+description: Propose a scoped feature or validation surface.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: What research or validation workflow would this support?
+    validations:
+      required: true
+  - type: textarea
+    id: validation-surface
+    attributes:
+      label: Validation surface
+      description: What should be checked, reported, or packaged?
+    validations:
+      required: true
+  - type: textarea
+    id: expected-codes
+    attributes:
+      label: Expected issue codes or failure behavior
+      description: If applicable, describe expected pass/fail or issue-code behavior.
+  - type: dropdown
+    id: external-tools
+    attributes:
+      label: External tools required?
+      options:
+        - "No"
+        - "Optional"
+        - "Required"
+    validations:
+      required: true
+  - type: textarea
+    id: claim-boundary
+    attributes:
+      label: Claim-boundary check
+      description: Confirm this does not add unsupported legal/forensic/timestamping/production claims.
+    validations:
+      required: true
