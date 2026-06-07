@@ -48,6 +48,9 @@ Documentation = "https://github.com/joy7758/agent-evidence/blob/main/README.md"
 Citation = "https://doi.org/10.5281/zenodo.19334061"
 
 [project.optional-dependencies]
+test = [
+  "pytest>=8.0",
+]
 dev = [
   "pytest>=8.0",
   "pre-commit>=3.7,<5.0",
