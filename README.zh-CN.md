@@ -43,20 +43,21 @@ agent governance 平台。
 当前 canonical package 是
 `Execution Evidence and Operation Accountability Profile v0.1`。
 
-冻结信息：
-- GitHub Release：`v0.2.0`
-- DOI：[10.5281/zenodo.19334062](https://doi.org/10.5281/zenodo.19334062)
-- 该 release 内部冻结的 package 版本仍是 `v0.1`
+RC0 交付面说明：
+- 候选交付面以 `packaging/commercial-delivery-surface.json` 和
+  `docs/COMMERCIAL_DELIVERY_SURFACE.md` 为准。
+- 论文、投稿、稿件、媒体和门户上传材料不属于 EEOAP 交付面。
+- 本仓库状态不表示 commercial-ready、production-ready、external validation、
+  certification、standardization、submission、acceptance 或 publication。
 
 核心入口：
-- 规范：`spec/execution-evidence-operation-accountability-profile-v0.1.md`
-- Schema：`schema/execution-evidence-operation-accountability-profile-v0.1.schema.json`
 - Validator CLI：`agent-evidence validate-profile <file>`
-- 样例：`examples/README.md`
-- Demo：`demo/README.md`
-- reviewer-facing 高风险入口：`docs/high-risk-scenario-entry.md`
-- 状态与验收：`docs/STATUS.md`、`docs/ACCEPTANCE-CHECKLIST.md`
-- 投稿交付：`submission/package-manifest.md`、`submission/final-handoff.md`
+- 最小样例：`examples/minimal-valid-evidence.json`
+- Demo：`demo/run_operation_accountability_demo.py`
+- 协议元数据：`protocol/manifest.json`、`protocol/clause-index.json`
+- 协议文档：`docs/protocol/profile.md`、`docs/protocol/clauses.md`、`docs/protocol/citation-guide.md`
+- 智能体入口：`llms.txt`、`AGENTS.md`
+- 交付面边界：`docs/COMMERCIAL_DELIVERY_SURFACE.md`
 
 ## Minimal v0.1 walkthrough
 
@@ -83,24 +84,19 @@ agent governance 平台。
 已知环境说明：
 - 仓库 `.venv` 在 Python 3.14 下跑更大范围测试时，可能出现一条 `langchain_core` warning；它不影响最小 profile、validator 或 demo 路径
 
-## 论文台账
+## 交付面边界
 
-下面这些文件就是当前项目与论文状态的统一台账入口：
+EEOAP 交付面只覆盖智能体可读入口、协议元数据、最小验证路径、支持文档和本地检查脚本。
+论文、投稿、稿件、媒体、路线控制和门户上传材料不属于 EEOAP 交付面。
 
-- 项目状态与里程碑台账：`docs/STATUS.md`
-- 旗舰论文工作日志：`paper/flagship/WORKLOG.md`
-- 稿件基线说明：`submission/manuscript-baselines.md`
-- claims-to-evidence 映射表：`paper/flagship/13_claims_to_evidence_map.md`
-- validation 结果总表：`paper/flagship/18_validation_results_table.md`
+## 交付口径纪律
 
-## 稿件口径纪律
+不要把本仓库的本地包、演练包或校验结果表述为 submitted、accepted、published、
+externally reviewed、externally validated、certified、standardized、
+commercial-ready 或 production-ready。
 
-不要混写不同稿件表面。
-
-- `B1-minimal-frozen`：`Execution Evidence and Operation Accountability Profile v0.1`；主张 = 最小验证边界
-- `B4-high-risk-current-main`：reviewer-facing 的高风险入口；更适合未来 high-risk / compliance-interface 稿件
-- `B2-extended-middle`：除非整篇重写，否则继续停放
-- `B3-aep-live-chain`：保留为历史 AEP runtime-evidence 表面
+候选交付面仍是 internal hardening only（仅内部硬化），不是发布、认证、标准化、
+外部验证、生产部署或外部试点启动。
 
 ## 本仓库已经建立了什么
 
@@ -108,8 +104,8 @@ agent governance 平台。
 - execution evidence 与 operation accountability 的最小 profile
 - 带显式 error code 的 profile-aware validator
 - 单链路 demo
-- reviewer-facing 的场景切片
-- 能把论文主张压到具体仓库资产上的证据表面
+- 可复核的场景切片
+- 能把协议条款压到具体仓库资产上的证据表面
 
 ## 范围纪律
 
@@ -153,7 +149,7 @@ MVK bridge path：
 
 - external-context evidence
 - third-party checker
-- introduction / discussion / conclusion 的连续 manuscript assembly
+- 独立复核路径和更清晰的客户支持边界
 
 ## 历史脉络
 

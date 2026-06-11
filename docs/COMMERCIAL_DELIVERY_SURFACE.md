@@ -30,7 +30,23 @@ The included surface is limited to:
 - EEOAP protocol metadata and protocol documentation;
 - minimal examples and the operation-accountability demo path;
 - EEOAP evidence-gate workflow, PR template, and repo-local skill material;
+- Stage 1 support documentation for error codes, troubleshooting, and support
+  boundaries;
 - focused tests for the citation checker, CLI, and delivery-surface checker.
+
+## Stage 1 Support Documents
+
+The Stage 1 support documents are part of the delivery surface because they
+define how a user or coding agent should interpret local failures without
+expanding the project scope:
+
+- `docs/ERROR_CODES.md`
+- `docs/TROUBLESHOOTING.md`
+- `docs/SUPPORT_BOUNDARY.md`
+
+These files do not add protocol clauses, change validator behavior, or claim
+commercial readiness. They only make the existing internal hardening surface
+easier to inspect and support.
 
 ## Excluded Surface
 
