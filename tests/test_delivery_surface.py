@@ -8,6 +8,11 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CHECKER = REPO_ROOT / "scripts" / "check_delivery_surface.py"
 SURFACE = REPO_ROOT / "packaging" / "commercial-delivery-surface.json"
+REQUIRED_STAGE1_SUPPORT_DOCS = {
+    "docs/ERROR_CODES.md",
+    "docs/TROUBLESHOOTING.md",
+    "docs/SUPPORT_BOUNDARY.md",
+}
 
 
 def run_checker(*args: str) -> tuple[int, dict[str, object]]:
@@ -35,6 +40,36 @@ def test_current_delivery_surface_passes() -> None:
     assert output["ok"] is True
     assert output["status"] == "surface_ok"
     assert output["included_count"] > 0
+
+
+def test_stage1_support_docs_are_in_delivery_surface() -> None:
+    payload = json.loads(SURFACE.read_text(encoding="utf-8"))
+    included_paths = set(payload["included_paths"])
+
+    assert REQUIRED_STAGE1_SUPPORT_DOCS.issubset(included_paths)
+
+
+def test_current_delivery_surface_excludes_non_delivery_path_tokens() -> None:
+    payload = json.loads(SURFACE.read_text(encoding="utf-8"))
+    included_paths = payload["included_paths"]
+    forbidden_tokens = (
+        "paper",
+        "papers",
+        "submission",
+        "submissions",
+        "manuscript",
+        "manuscripts",
+        "media",
+        "route",
+        "routes",
+        "_local_archive",
+    )
+    forbidden_suffixes = (".docx", ".pdf", ".zip")
+
+    for include_path in included_paths:
+        lowered = include_path.lower()
+        assert not any(token in lowered for token in forbidden_tokens)
+        assert not lowered.endswith(forbidden_suffixes)
 
 
 def test_missing_include_path_fails_with_expected_code(tmp_path: Path) -> None:
