@@ -168,10 +168,9 @@ def build_agent_index() -> dict[str, Any]:
         ],
     )
     version = _ensure_consistent(
-        "version",
+        "release metadata version",
         [
             _clean_markdown_value(_markdown_section("docs/project-facts.md", "Current Version")),
-            capabilities["version"],
             citation["version"],
             codemeta["version"],
         ],

@@ -7,7 +7,8 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.6.0"
+PACKAGE_VERSION = "0.1.0rc0"
+RELEASE_METADATA_VERSION = "0.6.0"
 CONCEPT_DOI = "10.5281/zenodo.19334061"
 STALE_V020_DOI = "10.5281/zenodo.19334062"
 V030_VERSION_DOI = "10.5281/zenodo.19998176"
@@ -22,21 +23,22 @@ def _project_version() -> str:
     return str(pyproject["project"]["version"])
 
 
-def test_release_versions_are_aligned() -> None:
-    version = _project_version()
+def test_package_version_is_aligned_to_rc0() -> None:
+    assert _project_version() == PACKAGE_VERSION
 
+
+def test_release_metadata_versions_remain_aligned() -> None:
     citation = yaml.safe_load((ROOT / "CITATION.cff").read_text(encoding="utf-8"))
     codemeta = json.loads((ROOT / "codemeta.json").read_text(encoding="utf-8"))
     agent_index = json.loads((ROOT / "agent-index.json").read_text(encoding="utf-8"))
     project_facts = (ROOT / "docs/project-facts.md").read_text(encoding="utf-8")
     llms_full = (ROOT / "llms-full.txt").read_text(encoding="utf-8")
 
-    assert version == VERSION
-    assert str(citation["version"]) == version
-    assert str(codemeta["version"]) == version
-    assert str(agent_index["current_status"]["version"]) == version
-    assert f"`{version}`" in project_facts
-    assert f"- Version: `{version}`" in llms_full
+    assert str(citation["version"]) == RELEASE_METADATA_VERSION
+    assert str(codemeta["version"]) == RELEASE_METADATA_VERSION
+    assert str(agent_index["current_status"]["version"]) == RELEASE_METADATA_VERSION
+    assert f"`{RELEASE_METADATA_VERSION}`" in project_facts
+    assert f"- Version: `{RELEASE_METADATA_VERSION}`" in llms_full
 
 
 def test_release_metadata_uses_concept_doi_as_primary_project_doi() -> None:
