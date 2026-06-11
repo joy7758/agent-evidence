@@ -32,6 +32,10 @@ The included surface is limited to:
 - EEOAP evidence-gate workflow, PR template, and repo-local skill material;
 - Stage 1 support documentation for error codes, troubleshooting, and support
   boundaries;
+- Stage 1 workflow permission, advisory/enforce mode, and workflow-hardening
+  summary documentation;
+- validation support files used by package-level checker, validator, and
+  negative-control tests;
 - focused tests for the citation checker, CLI, and delivery-surface checker.
 
 ## Stage 1 Support Documents
@@ -47,6 +51,27 @@ expanding the project scope:
 These files do not add protocol clauses, change validator behavior, or claim
 commercial readiness. They only make the existing internal hardening surface
 easier to inspect and support.
+
+## Validation Support Files
+
+The delivery surface includes validation support files needed for package-level
+checks:
+
+- workflow permission review documentation;
+- advisory/enforce mode documentation;
+- Stage 1 workflow hardening summary documentation;
+- validator schema files;
+- invalid examples used as negative controls;
+- exact spec files required by the protocol citation checker.
+
+These files are included only so an unpacked package can run the existing local
+checkers, validator, and focused tests. Paper, submission, manuscript, media,
+route, and portal-upload materials remain excluded.
+
+Including validation support files does not make the project commercial-ready or
+production-ready. It also does not create external validation, certification,
+standardization, legal compliance, publication, tag, release, or package
+publication.
 
 ## Excluded Surface
 

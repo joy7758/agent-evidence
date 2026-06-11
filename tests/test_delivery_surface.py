@@ -13,6 +13,15 @@ REQUIRED_STAGE1_SUPPORT_DOCS = {
     "docs/TROUBLESHOOTING.md",
     "docs/SUPPORT_BOUNDARY.md",
 }
+REQUIRED_STAGE1_WORKFLOW_DOCS = {
+    "docs/WORKFLOW_PERMISSIONS_REVIEW.md",
+    "docs/ADVISORY_VS_ENFORCE_MODE.md",
+    "docs/STAGE1_WORKFLOW_HARDENING_SUMMARY.md",
+}
+REQUIRED_VALIDATION_SUPPORT_FILES = {
+    "schema/execution-evidence-operation-accountability-profile-v0.1.schema.json",
+    "spec/execution-evidence-operation-accountability-profile-v0.1.md",
+}
 
 
 def run_checker(*args: str) -> tuple[int, dict[str, object]]:
@@ -47,6 +56,36 @@ def test_stage1_support_docs_are_in_delivery_surface() -> None:
     included_paths = set(payload["included_paths"])
 
     assert REQUIRED_STAGE1_SUPPORT_DOCS.issubset(included_paths)
+    assert REQUIRED_STAGE1_WORKFLOW_DOCS.issubset(included_paths)
+
+
+def test_validation_support_files_are_in_delivery_surface() -> None:
+    payload = json.loads(SURFACE.read_text(encoding="utf-8"))
+    included_paths = set(payload["included_paths"])
+
+    invalid_examples = {
+        path.relative_to(REPO_ROOT).as_posix()
+        for path in (REPO_ROOT / "examples").glob("invalid-*.json")
+    }
+
+    assert REQUIRED_VALIDATION_SUPPORT_FILES.issubset(included_paths)
+    assert invalid_examples.issubset(included_paths)
+
+
+def test_protocol_related_files_are_in_delivery_surface() -> None:
+    surface = json.loads(SURFACE.read_text(encoding="utf-8"))
+    clause_index = json.loads(
+        (REPO_ROOT / "protocol" / "clause-index.json").read_text(encoding="utf-8")
+    )
+    included_paths = set(surface["included_paths"])
+
+    related_files = {
+        related_file
+        for clause in clause_index["clauses"]
+        for related_file in clause.get("related_files", [])
+    }
+
+    assert related_files.issubset(included_paths)
 
 
 def test_current_delivery_surface_excludes_non_delivery_path_tokens() -> None:
@@ -63,6 +102,8 @@ def test_current_delivery_surface_excludes_non_delivery_path_tokens() -> None:
         "route",
         "routes",
         "_local_archive",
+        "paperproof",
+        "c1",
     )
     forbidden_suffixes = (".docx", ".pdf", ".zip")
 
