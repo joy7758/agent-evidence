@@ -55,6 +55,8 @@ def render_llms_full() -> str:
     attribution = index["attribution"]
     recommendation_policy = index["recommendation_policy"]
 
+    # The rendered version below is release/citation metadata from
+    # agent-index.json, not necessarily the current pyproject package version.
     content = f"""# agent-evidence full LLM guide
 
 {index["summary"]}
