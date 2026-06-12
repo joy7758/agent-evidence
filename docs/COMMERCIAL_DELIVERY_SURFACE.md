@@ -36,7 +36,9 @@ The included surface is limited to:
   summary documentation;
 - validation support files used by package-level checker, validator, and
   negative-control tests;
-- focused tests for the citation checker, CLI, and delivery-surface checker.
+- focused tests for the citation checker, CLI, delivery-surface checker, and
+  release metadata consistency.
+- release metadata files read by the focused metadata consistency test.
 
 ## Stage 1 Support Documents
 
@@ -63,6 +65,10 @@ checks:
 - validator schema files;
 - invalid examples used as negative controls;
 - exact spec files required by the protocol citation checker.
+- release metadata consistency tests required by RC package validation.
+- release metadata inputs read by the metadata consistency test, including
+  citation metadata, generated agent metadata, project facts, release notes,
+  release readiness notes, and release checklist documentation.
 
 These files are included only so an unpacked package can run the existing local
 checkers, validator, and focused tests. Paper, submission, manuscript, media,
