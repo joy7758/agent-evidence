@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGE_VERSION = "0.1.0rc0"
+PACKAGE_VERSION = "0.1.0rc2"
 RELEASE_METADATA_VERSION = "0.6.0"
 CONCEPT_DOI = "10.5281/zenodo.19334061"
 STALE_V020_DOI = "10.5281/zenodo.19334062"
