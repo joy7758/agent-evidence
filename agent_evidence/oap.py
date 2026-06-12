@@ -10,8 +10,8 @@ from jsonschema import Draft202012Validator
 
 PROFILE_NAME = "execution-evidence-operation-accountability-profile"
 PROFILE_VERSION = "0.1"
-ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_PATH = ROOT / "schema" / f"{PROFILE_NAME}-v{PROFILE_VERSION}.schema.json"
+PACKAGE_ROOT = Path(__file__).resolve().parent
+SCHEMA_PATH = PACKAGE_ROOT / "schema" / f"{PROFILE_NAME}-v{PROFILE_VERSION}.schema.json"
 
 
 def load_profile(path: str | Path) -> dict[str, Any]:

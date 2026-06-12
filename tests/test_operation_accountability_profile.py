@@ -6,9 +6,15 @@ import pytest
 from click.testing import CliRunner
 
 from agent_evidence.cli.main import main
-from agent_evidence.oap import build_validation_report, load_profile, validate_profile_file
+from agent_evidence.oap import (
+    SCHEMA_PATH,
+    build_validation_report,
+    load_profile,
+    validate_profile_file,
+)
 
 EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
+ROOT = Path(__file__).resolve().parents[1]
 
 
 @pytest.mark.parametrize(
@@ -24,6 +30,23 @@ def test_valid_operation_accountability_profile_passes(filename: str) -> None:
 
     assert report["ok"] is True
     assert report["issue_count"] == 0
+
+
+def test_default_profile_schema_is_packaged_with_runtime_module() -> None:
+    assert SCHEMA_PATH.exists()
+    assert SCHEMA_PATH.parts[-3:] == (
+        "agent_evidence",
+        "schema",
+        "execution-evidence-operation-accountability-profile-v0.1.schema.json",
+    )
+
+
+def test_packaged_profile_schema_matches_public_schema() -> None:
+    public_schema = (
+        ROOT / "schema" / "execution-evidence-operation-accountability-profile-v0.1.schema.json"
+    )
+
+    assert SCHEMA_PATH.read_bytes() == public_schema.read_bytes()
 
 
 @pytest.mark.parametrize(
