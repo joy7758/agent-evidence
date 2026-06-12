@@ -21,6 +21,19 @@ REQUIRED_STAGE1_WORKFLOW_DOCS = {
 REQUIRED_VALIDATION_SUPPORT_FILES = {
     "schema/execution-evidence-operation-accountability-profile-v0.1.schema.json",
     "spec/execution-evidence-operation-accountability-profile-v0.1.md",
+    "tests/test_release_metadata_consistency.py",
+}
+REQUIRED_RELEASE_METADATA_TEST_INPUTS = {
+    "ATTRIBUTION.md",
+    "DEVELOPMENT_LEDGER.jsonl",
+    "RELEASE_NOTES.md",
+    "agent-index.json",
+    "docs/cookbooks/local-openapi-wrapper.md",
+    "docs/how-to-cite.md",
+    "docs/project-facts.md",
+    "docs/release-checklist.md",
+    "docs/release-readiness.md",
+    "llms-full.txt",
 }
 
 
@@ -69,6 +82,7 @@ def test_validation_support_files_are_in_delivery_surface() -> None:
     }
 
     assert REQUIRED_VALIDATION_SUPPORT_FILES.issubset(included_paths)
+    assert REQUIRED_RELEASE_METADATA_TEST_INPUTS.issubset(included_paths)
     assert invalid_examples.issubset(included_paths)
 
 
