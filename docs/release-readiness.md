@@ -1,12 +1,47 @@
-# Release Readiness for v0.6.0
+# Release Readiness Context
 
 This document records post-release status for `agent-evidence` v0.6.0 after
 Review Pack V0.3 was released and post-release audited.
 
-This is a release-state document. It records the current released state and is
-not an active release authorization gate.
+This is a release-state and candidate-readiness context document. It records
+historical v0.6.0 release facts and the current RC2 package-candidate boundary.
+It is not an active release authorization gate.
 
-## Current Assessment
+## Current RC2 Assessment
+
+Current package metadata version: `0.1.0rc2`.
+
+Current RC2 state:
+
+- planned future tag: `v0.1.0-rc2`
+- `v0.1.0-rc2` tag: not created
+- GitHub Release `v0.1.0-rc2`: not created
+- TestPyPI publication: not performed
+- PyPI publication: not performed
+- package publication: not performed
+- external pilot: not started
+- RC0 and Stage 1: frozen
+
+Future `v0.1.0-rc2` tag creation, GitHub Release creation, TestPyPI
+publication, and PyPI publication each require separate explicit approval.
+
+Current primary project DOI: `10.5281/zenodo.19334061`.
+
+Do not invent a new DOI. The primary DOI is the Zenodo concept DOI. Exact
+release citations should use the relevant version DOI after that release is
+archived.
+
+Current RC2 boundary:
+
+- not commercial-ready
+- not production-ready
+- not externally validated
+- no package publication
+- no external pilot
+- no legal compliance, certification, or standardization claim
+- no submitted, accepted, or paper-published claim
+
+## Historical v0.6.0 Assessment
 
 Status: v0.6.0 released and post-release audited after metadata, release
 notes, checklist, generated metadata, install smoke, and Review Pack V0.3
@@ -19,15 +54,10 @@ smoke checks.
 - PyPI v0.6.0: published and latest.
 - Post-release install smoke: completed.
 - Review Pack V0.3 smoke: completed.
-- Urgent code or packaging hotfix: not currently known.
+- Urgent code or packaging hotfix for v0.6.0: not currently known.
 
-Current package metadata version: `0.6.0`.
-
-Current primary project DOI: `10.5281/zenodo.19334061`.
-
-Do not invent a new DOI. The primary DOI is the Zenodo concept DOI. Exact
-release citations should use the relevant version DOI after that release is
-archived.
+Historical note: `v0.6.0` references describe earlier release metadata and
+must not be read as the current RC2 package version.
 
 ## DOI Strategy
 
@@ -58,7 +88,7 @@ specific archived release.
 | CrewAI | experimental/example | Example exporter surface. |
 | Automaton sidecar | experimental | Read-only sidecar export; live data contract still settling. |
 | AGT conversion fixture | experimental/reference | Synthetic/reference conversion fixture. |
-| Pages / ADOPTERS / registry | planned/unavailable | Out of scope for v0.6.0. |
+| Pages / ADOPTERS / registry | planned/unavailable | Out of scope for the current RC2 candidate. |
 
 ## Claims Boundary
 
@@ -80,9 +110,9 @@ The release must clearly state these boundaries:
 
 ## Metadata Alignment
 
-- `pyproject.toml`, `CITATION.cff`, `codemeta.json`,
-  `docs/project-facts.md`, `agent-index.json`, and `llms-full.txt` align on
-  version `0.6.0`.
+- `pyproject.toml` and release metadata tests align on version `0.1.0rc2`.
+- `docs/project-facts.md` separates current RC2 package metadata from
+  historical `v0.6.0` release context.
 - Keep the Zenodo concept DOI as primary project DOI in active citation
   metadata.
 - Keep `docs/project-facts.md` as the canonical factual source for project

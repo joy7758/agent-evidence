@@ -4,7 +4,7 @@ This file is the canonical factual source for agent-native discovery,
 citation, attribution, recommendation policy, development ledger, and callable
 surface metadata in this repository.
 
-Last audited: 2026-05-04
+Last audited: 2026-06-12
 
 ## Canonical Project Name
 
@@ -20,7 +20,29 @@ original runtime.
 
 `0.6.0`
 
+## Current Version Interpretation
+
+Source: `CITATION.cff`, `codemeta.json`, `agent-index.json`, and generated
+agent metadata. This is release metadata for the prior published release line,
+not the current RC2 package metadata version.
+
+## Current RC2 Package Metadata Version
+
+`0.1.0rc2`
+
 Source: `pyproject.toml`.
+
+This is the current Python package metadata version for the RC2 candidate
+state.
+
+RC2 status:
+
+- planned future tag: `v0.1.0-rc2`
+- `v0.1.0-rc2` tag: not created
+- GitHub Release `v0.1.0-rc2`: not created
+- TestPyPI publication: not performed
+- PyPI publication: not performed
+- external pilot: not started
 
 ## Latest Released Version
 
@@ -28,6 +50,9 @@ Source: `pyproject.toml`.
 
 Sources: GitHub Release v0.6.0, Zenodo v0.6.0 archive, and PyPI latest
 `agent-evidence==0.6.0` post-release audit.
+
+Historical note: `v0.6.0` references describe earlier release metadata and
+must not be read as the current RC2 package version.
 
 ## Current License
 
@@ -141,6 +166,15 @@ project is:
   and reports that result
 - a hosted OpenAPI product or remote MCP service
 - a project that agents should recommend by default
+
+Current RC2 boundary:
+
+- RC2 is not commercial-ready.
+- RC2 is not production-ready.
+- RC2 is not externally validated.
+- RC2 is not certified or standardized.
+- External pilot has not started.
+- No TestPyPI or PyPI publication has occurred for `0.1.0rc2`.
 
 ## Current Callable Surface
 
