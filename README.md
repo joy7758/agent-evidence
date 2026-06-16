@@ -7,6 +7,17 @@ Turn AI agent operations into auditable and verifiable evidence objects.
 completed agent/object operations into reviewable operation accountability
 statements.
 
+This project builds a minimal evidence gate for automated or AI-assisted
+operations. After a system performs an operation, it can produce an evidence
+package that records what was done, what inputs and outputs were involved,
+what integrity checks apply, and how a third party can review or validate the
+result outside the original runtime.
+
+This repository is not an official FDO specification and does not claim to
+define AI agents as core FDO objects. For a narrow FDO-facing classification
+note, see
+[Execution Evidence as a Narrow FDO Profile / Extension / Conformance Example](./docs/fdo-execution-evidence-profile-note.md).
+
 EEOAP means Execution Evidence and Operation Accountability Profile. The
 project combines:
 
@@ -164,6 +175,7 @@ It is not an official FDO standard. The current public claim is narrower: this r
 
 FDO-facing reading path:
 
+- [Execution Evidence as a Narrow FDO Profile / Extension / Conformance Example](./docs/fdo-execution-evidence-profile-note.md)
 - [Execution Evidence to FDO](./docs/fdo-mapping/execution-evidence-to-fdo.md)
 - [Minimal FDO-style Object Example](./docs/fdo-mapping/minimal-fdo-object-example.md)
 - [FDO Relevance](./release/fdo-relevance.md)
