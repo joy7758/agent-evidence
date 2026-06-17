@@ -1,0 +1,24 @@
+{
+  "title": "Origin AEP v0.1: A Local Event Surface for Agent Execution Evidence",
+  "version": "0.1",
+  "status": "local protocol-candidate draft",
+  "authors": [
+    {
+      "name": "Bin Zhang",
+      "role": "author"
+    }
+  ],
+  "primary_category_suggestion": "cs.SE",
+  "secondary_category_suggestions": [
+    "cs.AI"
+  ],
+  "abstract_file": "abstract.md",
+  "draft_file": "draft_paper.md",
+  "artifact_urls": {
+    "repository": "https://example.invalid/agent-evidence-origin-aep-v0-1",
+    "release_candidate": "https://example.invalid/origin-aep-v0-1-release-candidate",
+    "spec_package": "https://example.invalid/origin-aep-v0-1-spec-package"
+  },
+  "human_review_required_before_submission": true,
+  "claim_boundary": "Local protocol-candidate draft only; no legal compliance, external certification, official standard adoption, production readiness, acceptance, publication, or vendor endorsement claim."
+}

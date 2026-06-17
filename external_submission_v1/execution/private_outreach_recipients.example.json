@@ -1,0 +1,20 @@
+{
+  "recipients": [
+    {
+      "name": "Official Team Alias",
+      "email": "verified-public-team-email@example.invalid",
+      "channel": "email",
+      "target": "cursor|graphite|mcp",
+      "source": "manual_verified_by_user",
+      "template": "cursor_email.md"
+    },
+    {
+      "name": "Cursor Security Team",
+      "email": "security@cursor.com",
+      "channel": "email",
+      "target": "cursor",
+      "source": "manual_verified_by_user",
+      "template": "cursor_security_audit_feedback_email.md"
+    }
+  ]
+}

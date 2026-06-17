@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/origin-aep-execution-evidence-v0.1.schema.json",
+  "title": "Origin AEP Execution Evidence v0.1",
+  "type": "object",
+  "required": [
+    "event",
+    "trace",
+    "audit",
+    "certification_artifact"
+  ],
+  "properties": {
+    "event": {
+      "type": "object"
+    },
+    "trace": {
+      "type": "array"
+    },
+    "audit": {
+      "type": "object"
+    },
+    "certification_artifact": {
+      "type": "object"
+    }
+  }
+}

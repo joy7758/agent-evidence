@@ -4,7 +4,7 @@ PRE_COMMIT ?= ./.venv/bin/pre-commit
 PYTEST ?= ./.venv/bin/pytest
 RUFF ?= ./.venv/bin/ruff
 
-.PHONY: install install-postgres test gate specimen test-postgres lint format hooks pre-commit clean
+.PHONY: install install-postgres test gate specimen demo test-postgres lint format hooks pre-commit clean
 
 install:
 	$(PIP) install -e ".[dev,langchain,sql]"
@@ -20,6 +20,11 @@ gate:
 
 specimen:
 	$(PYTHON) scripts/run_specimen_gate.py
+
+demo:
+	$(PYTHON) demo/run_operation_accountability_demo.py
+	mkdir -p .agent-evidence/runs
+	cp demo/artifacts/minimal-profile-evidence.json .agent-evidence/runs/demo.json
 
 test-postgres:
 	./scripts/run_postgres_integration.sh

@@ -25,3 +25,7 @@ docs/outreach/*
 paper/flagship/private_repo_bundle/
 paper/flagship/submission_private_contact_local.txt
 paper/flagship/private_repo_sync_note.local.txt
+# External submission private outreach artifacts
+external_submission_v1/execution/private_outreach_recipients.json
+external_submission_v1/execution/outbox/*.eml
+external_submission_v1/execution/EMAIL_SEND_LOG.md
