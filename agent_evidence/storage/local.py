@@ -1,10 +1,18 @@
 from __future__ import annotations
 
 import json
+import os
 from collections.abc import Callable
+from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 from threading import RLock
+from typing import Iterator
+
+if os.name == "nt":
+    import msvcrt
+else:
+    import fcntl
 
 from agent_evidence.models import EvidenceEnvelope
 from agent_evidence.storage.base import EvidenceStore, LatestHashes
@@ -31,10 +39,30 @@ class LocalEvidenceStore(EvidenceStore):
         build_envelope_from_tip: Callable[[LatestHashes], EvidenceEnvelope],
     ) -> EvidenceEnvelope:
         with self._lock:
-            latest_hashes = self._latest_hashes_unlocked()
-            envelope = build_envelope_from_tip(latest_hashes)
-            self._append_unlocked(envelope)
-            return envelope
+            with self._file_mutex():
+                latest_hashes = self._latest_hashes_unlocked()
+                envelope = build_envelope_from_tip(latest_hashes)
+                self._append_unlocked(envelope)
+                return envelope
+
+    @contextmanager
+    def _file_mutex(self) -> Iterator[None]:
+        lock_path = self.path.with_name(f"{self.path.name}.lock")
+        lock_path.parent.mkdir(parents=True, exist_ok=True)
+        with lock_path.open("a+b") as handle:
+            if os.name == "nt":
+                handle.seek(0)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)
+            else:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                if os.name == "nt":
+                    handle.seek(0)
+                    msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+                else:
+                    fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
 
     def _last_envelope(self) -> EvidenceEnvelope | None:
         if not self.path.exists() or self.path.stat().st_size == 0:

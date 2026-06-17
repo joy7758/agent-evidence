@@ -1,9 +1,29 @@
+import multiprocessing
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from queue import Empty
+from typing import Any
 
 from agent_evidence.crypto.chain import verify_chain
 from agent_evidence.recorder import EvidenceRecorder
 from agent_evidence.storage.local import LocalEvidenceStore
+
+
+def _record_in_process(
+    path: str,
+    index: int,
+    start_event: Any,
+    result_queue: Any,
+) -> None:
+    start_event.wait(timeout=10)
+    store = LocalEvidenceStore(path)
+    recorder = EvidenceRecorder(store)
+    envelope = recorder.record(
+        actor=f"process-{index}",
+        event_type="concurrent.process",
+        inputs={"index": index},
+    )
+    result_queue.put(envelope.hashes.event_hash)
 
 
 def _assert_single_linear_chain(records: list, expected_count: int) -> None:
@@ -140,3 +160,38 @@ def test_local_store_record_is_atomic_for_multithreaded_appends(tmp_path: Path) 
     assert len(event_hashes) == record_count
     assert len(set(event_hashes)) == record_count
     _assert_single_linear_chain(store.list(), record_count)
+
+
+def test_local_store_record_is_atomic_for_multiprocess_appends(tmp_path: Path) -> None:
+    path = tmp_path / "multiprocess.evidence.jsonl"
+    process_count = 12
+    context = multiprocessing.get_context("spawn")
+    start_event = context.Event()
+    result_queue = context.Queue()
+    processes = [
+        context.Process(
+            target=_record_in_process,
+            args=(str(path), index, start_event, result_queue),
+        )
+        for index in range(process_count)
+    ]
+
+    for process in processes:
+        process.start()
+    start_event.set()
+    for process in processes:
+        process.join(timeout=20)
+
+    for process in processes:
+        assert process.exitcode == 0
+
+    event_hashes = []
+    for _ in range(process_count):
+        try:
+            event_hashes.append(result_queue.get(timeout=5))
+        except Empty as exc:
+            raise AssertionError("missing multiprocess record result") from exc
+
+    assert len(event_hashes) == process_count
+    assert len(set(event_hashes)) == process_count
+    _assert_single_linear_chain(LocalEvidenceStore(path).list(), process_count)
