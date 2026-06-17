@@ -1,10 +1,22 @@
 # Final External Action Report
 
-- Publication status: pending human approval.
+- Timestamp UTC: 2026-06-17T16:56:28Z.
+- PR #107 merge status: merged into `main`.
+- Main commit: `23492b78a06099258f318cd131a8c971e265aea6`.
+- Repo-local gate interpretation: tag/release is forbidden by `eeoap-evidence-gate`; public issue and email are external post/email actions and remain blocked while `RELEASE_DECISION_RECORD.md` approval checkbox is unchecked.
+- Tag status: NO_TAG_CREATED.
+- Release status: NO_RELEASE_CREATED.
+- Publication status: release route blocked by repo-local no-tag/no-release gate.
 - Release URL: pending.
+- Public review issue status: blocked by repo-local gate; no issue was created.
 - Review issue URL: pending.
-- Email status: not configured.
+- Email status: blocked by repo-local gate; no private recipient file was created and no email was sent.
 - Recipients count: 0.
+- Exact recipient used: none.
+- Guessed emails used: no.
+- Graphite/MCP email sent: no.
 - External endorsement claimed: no.
 - arXiv status: not submitted.
-- Manual actions remaining: approve release gate, publish manually if approved, fill public URLs, and use official channels manually.
+- Validation summary: local gates, demo, tests, spec validator, protocol citation check, and profile validation passed.
+- Local drift summary: `.agent-evidence/` exists as untracked local demo output and was not staged.
+- Manual actions remaining: a maintainer must decide whether to update the external-action approval record before any public issue or `security@cursor.com` security/audit feedback email. GitHub release remains blocked unless the repo-local no-tag/no-release gate changes.
