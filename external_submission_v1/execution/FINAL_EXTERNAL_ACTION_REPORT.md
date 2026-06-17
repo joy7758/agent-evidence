@@ -19,4 +19,6 @@
 - arXiv status: not submitted.
 - Validation summary: local gates, demo, tests, spec validator, protocol citation check, and profile validation passed.
 - Local drift summary: `.agent-evidence/` exists as untracked local demo output and was not staged.
-- Manual actions remaining: a maintainer must decide whether to update the external-action approval record before any public issue or `security@cursor.com` security/audit feedback email. GitHub release remains blocked unless the repo-local no-tag/no-release gate changes.
+- NEXT_REQUIRED_STATE: HUMAN_APPROVAL_RECORD_REQUIRED.
+- No further external action is allowed until `NO_RELEASE_EXTERNAL_REVIEW_APPROVAL.md` contains the exact human approval phrase and the checklist in `RELEASE_DECISION_RECORD.md` is completed by a human maintainer.
+- Manual actions remaining: a maintainer must decide whether to update the no-tag/no-release external review approval record before any public issue or `security@cursor.com` security/audit feedback email. GitHub release remains blocked unless the repo-local no-tag/no-release gate changes.

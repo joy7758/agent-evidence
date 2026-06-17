@@ -14,6 +14,7 @@
 - `external_submission_v1/cursor_outreach/one_page_pitch.md`
 - `external_submission_v1/execution/CONTACT_SOURCE_SUMMARY.md`
 - `external_submission_v1/execution/FINAL_EXTERNAL_ACTION_REPORT.md`
+- `external_submission_v1/execution/NO_RELEASE_EXTERNAL_REVIEW_EXECUTION_RUNBOOK.md`
 - `external_submission_v1/execution/OFFICIAL_CHANNEL_POSTING_RUNBOOK.md`
 - `external_submission_v1/execution/VERIFIED_CHANNELS.md`
 - `external_submission_v1/execution/VERIFIED_PUBLIC_CONTACTS.md`
@@ -30,6 +31,7 @@
 - `external_submission_v1/github_release/README_public.md`
 - `external_submission_v1/github_release/RELEASE_NOTES_v0_1.md`
 - `external_submission_v1/publish_gate/CLAIM_BOUNDARY_SCAN.py`
+- `external_submission_v1/publish_gate/NO_RELEASE_EXTERNAL_REVIEW_APPROVAL.md`
 - `external_submission_v1/publish_gate/NO_GO_CRITERIA.md`
 - `external_submission_v1/publish_gate/PATH_REFERENCE_SCAN.py`
 - `external_submission_v1/publish_gate/PLACEHOLDER_SCAN.py`
