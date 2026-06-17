@@ -29,8 +29,10 @@ def main():
         code = max(code, r.returncode)
     text = REC.read_text(encoding="utf-8")
     markers = [
-        "decision: PENDING_HUMAN_APPROVAL",
-        "- [ ] Human approval to perform external actions",
+        "decision: PENDING_FINAL_HUMAN_APPROVAL_FOR_NO_RELEASE_EXTERNAL_REVIEW",
+        "- [ ] I approve the no-tag/no-release external review route only.",
+        "- [ ] I approve one GitHub public review issue.",
+        "- [ ] I approve one Cursor security/audit feedback email to `security@cursor.com` only.",
         "No external action has been performed",
     ]
     miss = [m for m in markers if m not in text]
@@ -40,7 +42,7 @@ def main():
     if miss:
         code = max(code, 1)
     else:
-        print("decision_record=PENDING_HUMAN_APPROVAL")
+        print("decision_record=PENDING_FINAL_HUMAN_APPROVAL_FOR_NO_RELEASE_EXTERNAL_REVIEW")
         print("human_approval_checked=false")
     print(
         "release_readiness=READY_FOR_HUMAN_REVIEW"

@@ -19,7 +19,7 @@ def main():
     print("Origin External Submission Execution Kit v1.0")
     print(f"root={ROOT}")
     print("publishes_external_artifacts=false")
-    print("decision=PENDING_HUMAN_APPROVAL")
+    print("decision=PENDING_FINAL_HUMAN_APPROVAL_FOR_NO_RELEASE_EXTERNAL_REVIEW")
     for d in sorted(p for p in ROOT.iterdir() if p.is_dir()):
         print(f"artifact_count {d.name}={sum(1 for x in d.rglob('*') if x.is_file())}")
     code = 0
