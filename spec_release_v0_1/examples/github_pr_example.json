@@ -1,0 +1,77 @@
+{
+  "event": {
+    "intent": {
+      "summary": "Prepare a local evidence package for a pull request."
+    },
+    "context": {
+      "repository": "agent-evidence",
+      "pull_request": 105
+    },
+    "action": {
+      "diff_summary": "Generated local release-review artifacts."
+    },
+    "evidence": {
+      "tests": [
+        {
+          "name": "spec_validator",
+          "status": "passed"
+        }
+      ]
+    },
+    "risk": {
+      "level": "low"
+    },
+    "authority": {
+      "actor": "local-maintainer",
+      "agent": "codex",
+      "trigger": "manual local review"
+    }
+  },
+  "trace": [
+    {
+      "index": 0,
+      "stage": "EVENT"
+    },
+    {
+      "index": 1,
+      "stage": "CI"
+    },
+    {
+      "index": 2,
+      "stage": "RISK"
+    },
+    {
+      "index": 3,
+      "stage": "REVIEW"
+    },
+    {
+      "index": 4,
+      "stage": "MERGE"
+    }
+  ],
+  "audit": {
+    "policy_status": "local_policy_checked",
+    "causal_edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ]
+  },
+  "certification_artifact": {
+    "certification_id": "local-receipt-example-001",
+    "verifiable": true,
+    "replayable": true,
+    "scope": "local deterministic artifact, not external certification",
+    "hashes": {
+      "event_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "trace_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "audit_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "certification_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+    }
+  }
+}
