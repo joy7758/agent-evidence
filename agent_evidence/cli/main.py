@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import tomllib
 from collections.abc import Callable
 from datetime import datetime, timezone
 from importlib.metadata import PackageNotFoundError
@@ -146,7 +147,15 @@ def current_package_version() -> str:
     try:
         return package_version(PACKAGE_NAME)
     except PackageNotFoundError:
-        return "0.2.0"
+        pyproject_path = Path(__file__).resolve().parents[2] / "pyproject.toml"
+        try:
+            pyproject = tomllib.loads(pyproject_path.read_text(encoding="utf-8"))
+            version = pyproject["project"]["version"]
+        except (OSError, KeyError, TypeError, tomllib.TOMLDecodeError):
+            return "0+unknown"
+        if isinstance(version, str) and version.strip():
+            return version.strip()
+        return "0+unknown"
 
 
 def build_capabilities_payload() -> dict[str, Any]:

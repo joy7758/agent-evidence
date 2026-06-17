@@ -27,6 +27,28 @@ AUTOMATON_COMPATIBILITY_TARGETS = canonicalize(
     }
 )
 
+ALLOWED_AUTOMATON_TABLES = frozenset(
+    {
+        "identity",
+        "registry",
+        "turns",
+        "tool_calls",
+        "policy_decisions",
+        "modifications",
+        "transactions",
+        "onchain_transactions",
+    }
+)
+
+ALLOWED_AUTOMATON_ORDER_BY = {
+    "turns": frozenset({"timestamp", "created_at", "id"}),
+    "tool_calls": frozenset({"created_at", "id"}),
+    "policy_decisions": frozenset({"created_at", "id"}),
+    "modifications": frozenset({"timestamp", "created_at", "id"}),
+    "transactions": frozenset({"created_at", "id"}),
+    "onchain_transactions": frozenset({"created_at", "id", "tx_hash"}),
+}
+
 
 @dataclass(frozen=True)
 class RuntimeMetadata:
@@ -68,6 +90,12 @@ def _open_readonly_database(state_db_path: str | Path) -> sqlite3.Connection:
     return connection
 
 
+def _safe_sql_identifier(value: str, allowed: set[str] | frozenset[str], kind: str) -> str:
+    if value not in allowed:
+        raise ValueError(f"Unsupported Automaton SQL {kind}: {value!r}")
+    return value
+
+
 def _table_exists(connection: sqlite3.Connection, table_name: str) -> bool:
     row = connection.execute(
         "SELECT name FROM sqlite_master WHERE type='table' AND name = ?",
@@ -83,10 +111,20 @@ def _query_rows(
     order_by: str,
     limit: int,
 ) -> list[dict[str, Any]]:
+    safe_table_name = _safe_sql_identifier(
+        table_name,
+        ALLOWED_AUTOMATON_TABLES,
+        "table name",
+    )
+    safe_order_by = _safe_sql_identifier(
+        order_by,
+        ALLOWED_AUTOMATON_ORDER_BY.get(safe_table_name, frozenset()),
+        "order column",
+    )
     if not _table_exists(connection, table_name):
         return []
     rows = connection.execute(
-        f"SELECT * FROM {table_name} ORDER BY {order_by} ASC LIMIT ?",
+        f"SELECT * FROM {safe_table_name} ORDER BY {safe_order_by} ASC LIMIT ?",
         (limit,),
     ).fetchall()
     return [dict(row) for row in rows]
@@ -189,8 +227,13 @@ def _detect_runtime_metadata(runtime_root: str | Path | None) -> RuntimeMetadata
 def _source_schema_fingerprint(connection: sqlite3.Connection, *, table_names: list[str]) -> str:
     schema_snapshot: dict[str, Any] = {}
     for table_name in table_names:
-        columns = connection.execute(f"PRAGMA table_info({table_name})").fetchall()
-        schema_snapshot[table_name] = [
+        safe_table_name = _safe_sql_identifier(
+            table_name,
+            ALLOWED_AUTOMATON_TABLES,
+            "table name",
+        )
+        columns = connection.execute(f"PRAGMA table_info({safe_table_name})").fetchall()
+        schema_snapshot[safe_table_name] = [
             {
                 "name": row["name"],
                 "type": row["type"],
@@ -682,7 +725,9 @@ def export_automaton_bundle(
         )
         source_schema_fingerprint = _source_schema_fingerprint(
             connection,
-            table_names=table_names,
+            table_names=[
+                table_name for table_name in table_names if table_name in ALLOWED_AUTOMATON_TABLES
+            ],
         )
 
     runtime_metadata = _detect_runtime_metadata(runtime_root)

@@ -21,7 +21,7 @@ def test_weekly_agentic_email_notification_workflow_permissions_and_token() -> N
     assert "contents: read" in text
     assert "issues: write" in text
     assert "GH_TOKEN: ${{ github.token }}" in text
-    assert "actions/checkout@v4" in text
+    assert "actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4" in text
 
 
 def test_weekly_agentic_email_notification_workflow_issue_content() -> None:

@@ -16,6 +16,15 @@ class EvidenceStore(ABC):
         raise NotImplementedError
 
     def append_atomic(self, build_envelope_from_tip: AtomicEnvelopeBuilder) -> EvidenceEnvelope:
+        """Build and append an envelope using the current store tip.
+
+        The base implementation is best-effort only. It does not guarantee
+        cross-process atomicity because another writer can update the store
+        between reading the latest hashes and appending the envelope. Stores
+        that claim concurrent safety must override this method and hold a
+        storage-specific mutex across the whole read-tip/build/append critical
+        section.
+        """
         latest_hashes = self.latest_hashes()
         envelope = build_envelope_from_tip(latest_hashes)
         self.append(envelope)

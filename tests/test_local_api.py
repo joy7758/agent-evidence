@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import logging
+import shutil
 import threading
 from contextlib import contextmanager
 from pathlib import Path
@@ -8,8 +10,10 @@ from typing import Iterator
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
+import pytest
 from click.testing import CliRunner
 
+import agent_evidence.server.local_api as local_api
 from agent_evidence.aep import verify_bundle
 from agent_evidence.cli.main import build_capabilities_payload, main
 from agent_evidence.oap import build_validation_report, load_profile
@@ -118,6 +122,78 @@ def test_local_api_validate_profile_path_matches_core_behavior() -> None:
         )
 
 
+def test_local_api_validate_profile_path_allows_allowed_root_file(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    allowed_root = tmp_path / "allowed"
+    allowed_root.mkdir()
+    profile_path = allowed_root / "profile.json"
+    shutil.copy(ROOT / "examples/minimal-valid-evidence.json", profile_path)
+    monkeypatch.setenv("AGENT_EVIDENCE_ALLOWED_ROOT", str(allowed_root))
+
+    profile = load_profile(profile_path)
+    expected = build_validation_report(profile, source=str(profile_path), fail_fast=True)
+
+    with running_server() as base_url:
+        assert (
+            post_json(f"{base_url}/v1/profiles/validate", {"profile_path": str(profile_path)})
+            == expected
+        )
+
+
+def test_local_api_rejects_path_outside_allowed_root(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    allowed_root = tmp_path / "allowed"
+    outside_root = tmp_path / "outside"
+    allowed_root.mkdir()
+    outside_root.mkdir()
+    profile_path = outside_root / "profile.json"
+    shutil.copy(ROOT / "examples/minimal-valid-evidence.json", profile_path)
+    monkeypatch.setenv("AGENT_EVIDENCE_ALLOWED_ROOT", str(allowed_root))
+
+    with running_server() as base_url:
+        try:
+            post_json(f"{base_url}/v1/profiles/validate", {"profile_path": str(profile_path)})
+        except HTTPError as exc:
+            assert exc.code == 400
+            payload = read_http_error(exc)
+            assert payload["ok"] is False
+            assert payload["error"]["code"] == "invalid_request"
+            assert "outside" in payload["error"]["message"]
+        else:
+            raise AssertionError("outside allowed root path should fail")
+
+
+def test_local_api_rejects_direct_symlink(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    allowed_root = tmp_path / "allowed"
+    allowed_root.mkdir()
+    target = allowed_root / "profile.json"
+    symlink = allowed_root / "profile-link.json"
+    shutil.copy(ROOT / "examples/minimal-valid-evidence.json", target)
+    try:
+        symlink.symlink_to(target)
+    except OSError as exc:
+        pytest.skip(f"symlinks unavailable: {exc}")
+    monkeypatch.setenv("AGENT_EVIDENCE_ALLOWED_ROOT", str(allowed_root))
+
+    with running_server() as base_url:
+        try:
+            post_json(f"{base_url}/v1/profiles/validate", {"profile_path": str(symlink)})
+        except HTTPError as exc:
+            assert exc.code == 400
+            payload = read_http_error(exc)
+            assert payload["ok"] is False
+            assert payload["error"]["code"] == "invalid_request"
+        else:
+            raise AssertionError("direct symlink path should fail")
+
+
 def test_local_api_verify_bundle_matches_core_behavior() -> None:
     bundle_path = ROOT / "tests/fixtures/agent_evidence_profile/valid/basic-bundle"
     expected = verify_bundle(bundle_path)
@@ -127,6 +203,38 @@ def test_local_api_verify_bundle_matches_core_behavior() -> None:
             post_json(f"{base_url}/v1/bundles/verify", {"bundle_path": str(bundle_path)})
             == expected
         )
+
+
+def test_local_api_internal_exception_is_logged_and_sanitized(
+    monkeypatch: pytest.MonkeyPatch,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    def fail_capabilities() -> dict:
+        raise RuntimeError("sensitive internal failure")
+
+    monkeypatch.setattr(local_api, "build_capabilities_payload", fail_capabilities)
+
+    with caplog.at_level(logging.ERROR, logger="agent_evidence.server.local_api"):
+        with running_server() as base_url:
+            try:
+                get_json(f"{base_url}/v1/capabilities")
+            except HTTPError as exc:
+                assert exc.code == 500
+                payload = read_http_error(exc)
+                assert payload == {
+                    "ok": False,
+                    "error": {
+                        "code": "internal_error",
+                        "message": "Internal server error.",
+                    },
+                }
+            else:
+                raise AssertionError("internal exception should fail")
+
+    assert any(
+        "Unhandled local API GET request error." in record.message for record in caplog.records
+    )
+    assert "sensitive internal failure" not in payload["error"]["message"]
 
 
 def test_local_api_rejects_unsupported_validate_shape() -> None:
@@ -188,13 +296,13 @@ def test_local_api_missing_profile_path_error_is_sanitized() -> None:
         except HTTPError as exc:
             assert exc.code == 400
             payload = read_http_error(exc)
-            assert payload == {
-                "ok": False,
-                "error": {
-                    "code": "invalid_request",
-                    "message": "Unable to read or parse profile_path.",
-                },
+            assert payload["ok"] is False
+            assert payload["error"]["code"] == "invalid_request"
+            assert payload["error"]["message"] in {
+                "Path is outside the allowed local boundary.",
+                "Path does not exist.",
             }
+            assert missing_path not in payload["error"]["message"]
         else:
             raise AssertionError("missing profile_path should fail")
 

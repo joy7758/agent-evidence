@@ -3,9 +3,16 @@ import sqlite3
 import subprocess
 from pathlib import Path
 
+import pytest
+
 from agent_evidence.aep import load_bundle_payload, verify_bundle
 from agent_evidence.integrations import export_automaton_bundle
-from agent_evidence.integrations.automaton import DEFAULT_POLICY_REF
+from agent_evidence.integrations.automaton import (
+    DEFAULT_POLICY_REF,
+    _query_rows,
+    _safe_sql_identifier,
+    _source_schema_fingerprint,
+)
 
 
 def _run(cmd: list[str], cwd: Path) -> None:
@@ -432,3 +439,75 @@ def test_automaton_exporter_runtime_root_falls_back_to_package_version(tmp_path:
     assert "source_runtime_version unavailable" not in manifest["export_warnings"]
     assert "source_runtime_commit unavailable" in manifest["export_warnings"]
     assert "source_runtime_dirty unavailable" in manifest["export_warnings"]
+
+
+def test_automaton_sql_identifier_allows_known_table_and_order_by(tmp_path: Path) -> None:
+    state_db = tmp_path / "state.db"
+    _create_minimal_state_db(state_db)
+
+    with sqlite3.connect(state_db) as connection:
+        connection.row_factory = sqlite3.Row
+        rows = _query_rows(connection, table_name="turns", order_by="timestamp", limit=5)
+
+    assert [row["id"] for row in rows] == ["turn-1"]
+
+
+@pytest.mark.parametrize(
+    ("value", "allowed", "kind"),
+    [
+        ("foo; DROP TABLE identity; --", frozenset({"identity"}), "table name"),
+        ("id DESC; DROP TABLE x; --", frozenset({"id"}), "order column"),
+    ],
+)
+def test_automaton_sql_identifier_rejects_non_whitelisted_values(
+    value: str,
+    allowed: frozenset[str],
+    kind: str,
+) -> None:
+    with pytest.raises(ValueError):
+        _safe_sql_identifier(value, allowed, kind)
+
+
+def test_automaton_query_rows_rejects_malicious_table_name(tmp_path: Path) -> None:
+    state_db = tmp_path / "state.db"
+    _create_minimal_state_db(state_db)
+
+    with sqlite3.connect(state_db) as connection:
+        connection.row_factory = sqlite3.Row
+        with pytest.raises(ValueError):
+            _query_rows(
+                connection,
+                table_name="foo; DROP TABLE identity; --",
+                order_by="timestamp",
+                limit=5,
+            )
+
+
+def test_automaton_query_rows_rejects_malicious_order_by(tmp_path: Path) -> None:
+    state_db = tmp_path / "state.db"
+    _create_minimal_state_db(state_db)
+
+    with sqlite3.connect(state_db) as connection:
+        connection.row_factory = sqlite3.Row
+        with pytest.raises(ValueError):
+            _query_rows(
+                connection,
+                table_name="turns",
+                order_by="id DESC; DROP TABLE x; --",
+                limit=5,
+            )
+
+
+def test_automaton_source_schema_fingerprint_rejects_malicious_pragma_table(
+    tmp_path: Path,
+) -> None:
+    state_db = tmp_path / "state.db"
+    _create_minimal_state_db(state_db)
+
+    with sqlite3.connect(state_db) as connection:
+        connection.row_factory = sqlite3.Row
+        with pytest.raises(ValueError):
+            _source_schema_fingerprint(
+                connection,
+                table_names=["identity; DROP TABLE turns; --"],
+            )

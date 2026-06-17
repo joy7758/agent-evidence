@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import logging
+import os
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -15,6 +17,9 @@ DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8765
 SERVICE_NAME = "agent-evidence-local-api"
 MAX_REQUEST_BYTES = 1 * 1024 * 1024
+ALLOWED_ROOT_ENV = "AGENT_EVIDENCE_ALLOWED_ROOT"
+
+logger = logging.getLogger(__name__)
 
 
 class RequestError(ValueError):
@@ -43,6 +48,7 @@ class AgentEvidenceRequestHandler(BaseHTTPRequestHandler):
                 return
             self._write_error("not_found", "Route not found.", HTTPStatus.NOT_FOUND)
         except Exception:
+            logger.exception("Unhandled local API GET request error.")
             self._internal_error()
 
     def do_POST(self) -> None:  # noqa: N802
@@ -56,6 +62,7 @@ class AgentEvidenceRequestHandler(BaseHTTPRequestHandler):
                 return
             self._write_error("not_found", "Route not found.", HTTPStatus.NOT_FOUND)
         except Exception:
+            logger.exception("Unhandled local API POST request error.")
             self._internal_error()
 
     def do_PUT(self) -> None:  # noqa: N802
@@ -94,15 +101,19 @@ class AgentEvidenceRequestHandler(BaseHTTPRequestHandler):
                 self._write_json(report)
                 return
             if "profile_path" in request:
-                profile_path = _required_string(request, "profile_path")
+                profile_path = _required_local_path(
+                    request,
+                    "profile_path",
+                    expected_kind="file",
+                )
                 try:
-                    profile = load_profile(Path(profile_path))
+                    profile = load_profile(profile_path)
                 except (OSError, ValueError):
                     self._invalid_request("Unable to read or parse profile_path.")
                     return
                 report = build_validation_report(
                     profile,
-                    source=profile_path,
+                    source=str(profile_path),
                     fail_fast=fail_fast,
                 )
                 self._write_json(report)
@@ -114,8 +125,12 @@ class AgentEvidenceRequestHandler(BaseHTTPRequestHandler):
     def _handle_verify_bundle(self) -> None:
         try:
             request = self._read_json_body()
-            bundle_path = _required_string(request, "bundle_path")
-            self._write_json(verify_bundle(Path(bundle_path)))
+            bundle_path = _required_local_path(
+                request,
+                "bundle_path",
+                expected_kind="directory",
+            )
+            self._write_json(verify_bundle(bundle_path))
         except RequestError as exc:
             self._write_error(exc.code, exc.message, HTTPStatus.BAD_REQUEST)
 
@@ -181,6 +196,63 @@ def _required_string(payload: dict[str, Any], key: str) -> str:
     if not isinstance(value, str) or not value:
         raise RequestError("invalid_request", f"{key} must be a non-empty string.")
     return value
+
+
+def _allowed_root() -> Path:
+    raw_root = os.environ.get(ALLOWED_ROOT_ENV)
+    if raw_root:
+        return Path(raw_root).expanduser().resolve()
+    return Path.cwd().resolve()
+
+
+def _is_relative_to(path: Path, root: Path) -> bool:
+    try:
+        path.relative_to(root)
+    except ValueError:
+        return False
+    return True
+
+
+def _contains_symlink(path: Path) -> bool:
+    candidates = [path, *path.parents]
+    for candidate in candidates:
+        try:
+            if candidate.is_symlink():
+                return True
+        except OSError:
+            return True
+    return False
+
+
+def _resolve_allowed_path(raw_path: str, *, expected_kind: str) -> Path:
+    candidate = Path(raw_path).expanduser()
+    if _contains_symlink(candidate):
+        raise RequestError("invalid_request", "Path is outside the allowed local boundary.")
+
+    try:
+        resolved = candidate.resolve(strict=True)
+    except OSError as exc:
+        raise RequestError("invalid_request", "Path does not exist.") from exc
+
+    allowed_root = _allowed_root()
+    if not _is_relative_to(resolved, allowed_root):
+        raise RequestError("invalid_request", "Path is outside the allowed local boundary.")
+    if resolved.is_symlink():
+        raise RequestError("invalid_request", "Path is outside the allowed local boundary.")
+    if expected_kind == "file" and not resolved.is_file():
+        raise RequestError("invalid_request", "Path must be a regular file.")
+    if expected_kind == "directory" and not resolved.is_dir():
+        raise RequestError("invalid_request", "Path must be a directory.")
+    return resolved
+
+
+def _required_local_path(
+    payload: dict[str, Any],
+    key: str,
+    *,
+    expected_kind: str,
+) -> Path:
+    return _resolve_allowed_path(_required_string(payload, key), expected_kind=expected_kind)
 
 
 def _optional_bool(payload: dict[str, Any], key: str, *, default: bool) -> bool:
