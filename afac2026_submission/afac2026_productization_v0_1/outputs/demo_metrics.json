@@ -1,0 +1,11 @@
+{
+  "actual_transaction_generated_count": 0,
+  "audit_trace_linkage_rate": 1.0,
+  "average_decision_latency_ms": 29,
+  "blocked_unsafe_action_count": 1,
+  "external_execution_connected": false,
+  "mandatory_review_count": 2,
+  "policy_violation_count": 0,
+  "receipt_completeness_rate": 1.0,
+  "scenario_count": 3
+}

@@ -1,0 +1,162 @@
+{
+  "ontology_id": "afac2026_trps_action_ontology_v0_1",
+  "version": "0.1.0",
+  "actions": [
+    {
+      "action_code": "ALLOW",
+      "business_meaning": "Permit the low-risk recommendation to proceed inside the offline review flow.",
+      "allowed_when": [
+        "aggregate risk is within budget",
+        "evidence is complete",
+        "no high-volatility mandatory review rule is triggered",
+        "no unsafe intent is present"
+      ],
+      "forbidden_when": [
+        "missing evidence affects the decision",
+        "risk budget is exceeded",
+        "unsafe intent is detected"
+      ],
+      "required_receipt_fields": [
+        "receipt_id",
+        "decision_id",
+        "gate_decision",
+        "final_action",
+        "rationale",
+        "reproducibility_hash"
+      ],
+      "human_role_required": "risk_analyst"
+    },
+    {
+      "action_code": "WARN",
+      "business_meaning": "Allow the offline recommendation only with visible caution and receipt logging.",
+      "allowed_when": [
+        "risk remains within budget",
+        "soft caution is useful for human review",
+        "receipt can explain the residual risk"
+      ],
+      "forbidden_when": [
+        "hard constraints require escalation or block",
+        "evidence is missing"
+      ],
+      "required_receipt_fields": [
+        "receipt_id",
+        "decision_id",
+        "risk_summary",
+        "gate_decision",
+        "limitations",
+        "reproducibility_hash"
+      ],
+      "human_role_required": "risk_analyst"
+    },
+    {
+      "action_code": "REVIEW_REQUIRED",
+      "business_meaning": "Pause the action and route it to a qualified reviewer before the next business step.",
+      "allowed_when": [
+        "high volatility is present",
+        "risk budget pressure is material but not a hard block",
+        "human review can decide whether simulation should continue"
+      ],
+      "forbidden_when": [
+        "unsafe intent or missing evidence requires block",
+        "conflicting signals require safe-mode degradation"
+      ],
+      "required_receipt_fields": [
+        "receipt_id",
+        "decision_id",
+        "triggered_constraints",
+        "human_review_status",
+        "final_action",
+        "rationale"
+      ],
+      "human_role_required": "risk_manager"
+    },
+    {
+      "action_code": "ESCALATE",
+      "business_meaning": "Escalate the decision to a higher control role due to material risk pressure.",
+      "allowed_when": [
+        "risk budget is exceeded",
+        "high volatility is present",
+        "the action remains reviewable without external execution"
+      ],
+      "forbidden_when": [
+        "missing evidence requires hard block",
+        "unsafe intent requires hard block"
+      ],
+      "required_receipt_fields": [
+        "receipt_id",
+        "decision_id",
+        "risk_summary",
+        "triggered_constraints",
+        "human_review_status",
+        "final_action",
+        "rationale"
+      ],
+      "human_role_required": "risk_committee_delegate"
+    },
+    {
+      "action_code": "BLOCK",
+      "business_meaning": "Stop the unsafe action and preserve a receipt for review.",
+      "allowed_when": [
+        "evidence is missing",
+        "unsafe intent is present",
+        "the requested action violates hard policy"
+      ],
+      "forbidden_when": [
+        "complete low-risk input has no hard-policy trigger"
+      ],
+      "required_receipt_fields": [
+        "receipt_id",
+        "decision_id",
+        "triggered_constraints",
+        "gate_decision",
+        "human_review_status",
+        "final_action",
+        "limitations",
+        "reproducibility_hash"
+      ],
+      "human_role_required": "control_owner"
+    },
+    {
+      "action_code": "DEGRADE_TO_SAFE_MODE",
+      "business_meaning": "Convert a risky action request into a safe offline review artifact.",
+      "allowed_when": [
+        "conflicting signals are detected",
+        "the system can preserve reviewability without executing the requested action"
+      ],
+      "forbidden_when": [
+        "a hard block is required by missing evidence or unsafe intent"
+      ],
+      "required_receipt_fields": [
+        "receipt_id",
+        "decision_id",
+        "triggered_constraints",
+        "gate_decision",
+        "final_action",
+        "rationale"
+      ],
+      "human_role_required": "risk_manager"
+    },
+    {
+      "action_code": "HUMAN_OVERRIDE",
+      "business_meaning": "Record that a qualified human made the final local review decision.",
+      "allowed_when": [
+        "policy permits human accountability to resolve a non-hard-block case",
+        "reviewer role is recorded",
+        "receipt records the override rationale"
+      ],
+      "forbidden_when": [
+        "hard policy requires block",
+        "reviewer identity or rationale is absent"
+      ],
+      "required_receipt_fields": [
+        "receipt_id",
+        "decision_id",
+        "human_review_status",
+        "final_action",
+        "rationale",
+        "limitations"
+      ],
+      "human_role_required": "authorized_human_reviewer"
+    }
+  ]
+}

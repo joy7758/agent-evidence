@@ -1,0 +1,99 @@
+{
+  "policy_id": "afac2026_trps_policy_constraints_v0_1",
+  "policy_version": "0.1.0",
+  "default_risk_budget": 0.6,
+  "high_volatility_threshold": 0.7,
+  "constraints": [
+    {
+      "constraint_id": "no_autonomous_live_trade",
+      "severity": "hard",
+      "description": "The demo must not authorize autonomous external execution.",
+      "trigger_when": {
+        "prohibited_intent": true
+      },
+      "allowed_gate_actions": [
+        "BLOCK",
+        "DEGRADE_TO_SAFE_MODE"
+      ]
+    },
+    {
+      "constraint_id": "max_risk_budget",
+      "severity": "hard",
+      "description": "Aggregate risk above the scenario budget must not pass as an allow decision.",
+      "trigger_when": {
+        "aggregate_risk_gt_budget": true
+      },
+      "allowed_gate_actions": [
+        "REVIEW_REQUIRED",
+        "ESCALATE",
+        "BLOCK",
+        "DEGRADE_TO_SAFE_MODE"
+      ]
+    },
+    {
+      "constraint_id": "mandatory_review_for_high_volatility",
+      "severity": "review",
+      "description": "High volatility requires a human review or escalation gate.",
+      "trigger_when": {
+        "volatility_index_gte": 0.7
+      },
+      "allowed_gate_actions": [
+        "REVIEW_REQUIRED",
+        "ESCALATE",
+        "BLOCK",
+        "DEGRADE_TO_SAFE_MODE"
+      ]
+    },
+    {
+      "constraint_id": "block_on_missing_evidence",
+      "severity": "hard",
+      "description": "Missing required evidence must stop the requested action.",
+      "trigger_when": {
+        "evidence_missing": true
+      },
+      "allowed_gate_actions": [
+        "BLOCK"
+      ]
+    },
+    {
+      "constraint_id": "degrade_on_conflicting_signals",
+      "severity": "safe_mode",
+      "description": "Conflicting signals should be degraded to a safe offline review object unless a hard block applies.",
+      "trigger_when": {
+        "conflicting_signals": true
+      },
+      "allowed_gate_actions": [
+        "DEGRADE_TO_SAFE_MODE",
+        "BLOCK"
+      ]
+    },
+    {
+      "constraint_id": "audit_receipt_required",
+      "severity": "hard",
+      "description": "Every scenario decision must produce a complete receipt.",
+      "trigger_when": {
+        "always": true
+      },
+      "allowed_gate_actions": [
+        "ALLOW",
+        "WARN",
+        "REVIEW_REQUIRED",
+        "ESCALATE",
+        "BLOCK",
+        "DEGRADE_TO_SAFE_MODE",
+        "HUMAN_OVERRIDE"
+      ]
+    },
+    {
+      "constraint_id": "kill_switch_required",
+      "severity": "hard",
+      "description": "The scenario must expose a kill-switch state before any simulated execution result is recorded.",
+      "trigger_when": {
+        "kill_switch_available": false
+      },
+      "allowed_gate_actions": [
+        "BLOCK"
+      ]
+    }
+  ]
+}

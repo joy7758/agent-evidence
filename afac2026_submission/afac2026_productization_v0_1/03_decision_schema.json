@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/joy7758/agent-evidence/afac2026/trps-productization-v0.1/decision.schema.json",
+  "title": "AFAC2026 TRPS Decision Object",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_id",
+    "scenario_id",
+    "timestamp",
+    "belief_state",
+    "risk_distribution",
+    "constrained_policy",
+    "candidate_action",
+    "gate_decision",
+    "human_review",
+    "simulated_execution",
+    "receipt"
+  ],
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "description": "Stable local identifier for the generated decision."
+    },
+    "scenario_id": {
+      "type": "string",
+      "description": "Identifier of the synthetic demo scenario."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp for local demo generation."
+    },
+    "belief_state": {
+      "type": "object",
+      "description": "Structured view of known facts, uncertainty, evidence state, and user intent."
+    },
+    "risk_distribution": {
+      "type": "object",
+      "required": [
+        "market_risk",
+        "liquidity_risk",
+        "evidence_risk",
+        "intent_risk",
+        "operational_risk",
+        "aggregate_risk"
+      ],
+      "properties": {
+        "market_risk": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "liquidity_risk": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence_risk": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "intent_risk": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "operational_risk": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "aggregate_risk": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "constrained_policy": {
+      "type": "object",
+      "required": [
+        "policy_version",
+        "triggered_constraints",
+        "unhandled_constraints"
+      ],
+      "properties": {
+        "policy_version": {
+          "type": "string"
+        },
+        "triggered_constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unhandled_constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "candidate_action": {
+      "type": "object",
+      "required": [
+        "action_code",
+        "rationale"
+      ],
+      "properties": {
+        "action_code": {
+          "type": "string"
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "gate_decision": {
+      "type": "object",
+      "required": [
+        "action_code",
+        "decision_reason",
+        "policy_violation_count"
+      ],
+      "properties": {
+        "action_code": {
+          "type": "string"
+        },
+        "decision_reason": {
+          "type": "string"
+        },
+        "policy_violation_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "human_review": {
+      "type": "object",
+      "required": [
+        "required",
+        "role",
+        "status"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "role": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "simulated_execution": {
+      "type": "object",
+      "required": [
+        "mode",
+        "executed",
+        "actual_transaction_generated",
+        "external_execution_connected"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string"
+        },
+        "executed": {
+          "type": "boolean"
+        },
+        "actual_transaction_generated": {
+          "type": "boolean"
+        },
+        "external_execution_connected": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "receipt": {
+      "$ref": "06_receipt_schema.json"
+    }
+  }
+}

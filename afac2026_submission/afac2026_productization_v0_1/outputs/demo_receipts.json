@@ -1,0 +1,316 @@
+{
+  "decisions": [
+    {
+      "belief_state": {
+        "evidence_status": {
+          "completeness": 1.0,
+          "missing_items": []
+        },
+        "intent_class": "review_only",
+        "known_facts": [
+          "synthetic account has sufficient cash buffer",
+          "market volatility is normal",
+          "evidence references are complete"
+        ],
+        "uncertainties": [
+          "next-period market movement remains unknown"
+        ]
+      },
+      "candidate_action": {
+        "action_code": "WARN",
+        "rationale": "Low risk remains inside budget, but receipt-level caution is useful for institutional review."
+      },
+      "constrained_policy": {
+        "policy_version": "0.1.0",
+        "triggered_constraints": [
+          "audit_receipt_required"
+        ],
+        "unhandled_constraints": []
+      },
+      "decision_id": "decision-01-b3fedaafb7",
+      "gate_decision": {
+        "action_code": "WARN",
+        "decision_reason": "Risk is inside budget, but receipt-level caution is preserved.",
+        "expected_gate_decision": "WARN",
+        "policy_violation_count": 0
+      },
+      "human_review": {
+        "approval_scope": "simulation_only",
+        "final_external_execution_authorized": false,
+        "required": false,
+        "role": "risk_analyst",
+        "status": "desk_acknowledged_for_demo"
+      },
+      "receipt": {
+        "decision_id": "decision-01-b3fedaafb7",
+        "final_action": "WARN",
+        "gate_decision": "WARN",
+        "human_review_status": "desk_acknowledged_for_demo",
+        "input_summary": {
+          "intent_class": "review_only",
+          "name_zh": "场景 A：正常市场下的低风险策略建议",
+          "requested_operation": "pre_trade_risk_governance_review",
+          "scenario_id": "AFAC_TRPS_A_LOW_RISK_NORMAL_MARKET"
+        },
+        "limitations": [
+          "Local synthetic demo only.",
+          "No real customer data.",
+          "No investment advice.",
+          "No external execution connectivity.",
+          "No claim of external approval."
+        ],
+        "model_version": "trps_productization_demo_v0.1",
+        "policy_version": "0.1.0",
+        "rationale": "Risk is inside budget, but receipt-level caution is preserved.",
+        "receipt_id": "receipt-8a92ff7a745c29f6",
+        "reproducibility_hash": "928a04571453a02747019ae55d42e742",
+        "risk_summary": {
+          "aggregate_risk": 0.24,
+          "evidence_risk": 0.0,
+          "intent_risk": 0.05,
+          "liquidity_risk": 0.16,
+          "market_risk": 0.22,
+          "operational_risk": 0.12
+        },
+        "scenario_hash": "d9f7757f825cad55f0392cee",
+        "triggered_constraints": [
+          "audit_receipt_required"
+        ]
+      },
+      "risk_distribution": {
+        "aggregate_risk": 0.24,
+        "evidence_risk": 0.0,
+        "intent_risk": 0.05,
+        "liquidity_risk": 0.16,
+        "market_risk": 0.22,
+        "operational_risk": 0.12
+      },
+      "scenario_id": "AFAC_TRPS_A_LOW_RISK_NORMAL_MARKET",
+      "simulated_execution": {
+        "actual_transaction_generated": false,
+        "executed": true,
+        "execution_note": "The demo records a review outcome only.",
+        "external_execution_connected": false,
+        "latency_ms": 15,
+        "mode": "offline_synthetic_simulation"
+      },
+      "timestamp": "2026-06-20T00:00:00Z"
+    },
+    {
+      "belief_state": {
+        "evidence_status": {
+          "completeness": 1.0,
+          "missing_items": []
+        },
+        "intent_class": "review_before_action",
+        "known_facts": [
+          "market shock is active",
+          "volatility exceeds review threshold",
+          "risk budget pressure is material"
+        ],
+        "uncertainties": [
+          "liquidity depth after shock",
+          "short-window model stability"
+        ]
+      },
+      "candidate_action": {
+        "action_code": "REVIEW_REQUIRED",
+        "rationale": "High volatility and risk budget pressure require human review before the next business step."
+      },
+      "constrained_policy": {
+        "policy_version": "0.1.0",
+        "triggered_constraints": [
+          "audit_receipt_required",
+          "max_risk_budget",
+          "mandatory_review_for_high_volatility"
+        ],
+        "unhandled_constraints": []
+      },
+      "decision_id": "decision-02-d4efacb1de",
+      "gate_decision": {
+        "action_code": "ESCALATE",
+        "decision_reason": "Risk budget pressure and high volatility require escalation.",
+        "expected_gate_decision": "ESCALATE",
+        "policy_violation_count": 0
+      },
+      "human_review": {
+        "approval_scope": "simulation_only",
+        "final_external_execution_authorized": false,
+        "required": true,
+        "role": "risk_committee_delegate",
+        "status": "required_and_escalated_for_demo"
+      },
+      "receipt": {
+        "decision_id": "decision-02-d4efacb1de",
+        "final_action": "ESCALATE",
+        "gate_decision": "ESCALATE",
+        "human_review_status": "required_and_escalated_for_demo",
+        "input_summary": {
+          "intent_class": "review_before_action",
+          "name_zh": "场景 B：市场冲击、高波动、风险预算超限",
+          "requested_operation": "pre_trade_risk_governance_review",
+          "scenario_id": "AFAC_TRPS_B_MARKET_SHOCK_HIGH_VOLATILITY"
+        },
+        "limitations": [
+          "Local synthetic demo only.",
+          "No real customer data.",
+          "No investment advice.",
+          "No external execution connectivity.",
+          "No claim of external approval."
+        ],
+        "model_version": "trps_productization_demo_v0.1",
+        "policy_version": "0.1.0",
+        "rationale": "Risk budget pressure and high volatility require escalation.",
+        "receipt_id": "receipt-391f9dafdf1af5fe",
+        "reproducibility_hash": "5171bf70cabeea8a294ca3dee047e083",
+        "risk_summary": {
+          "aggregate_risk": 0.74,
+          "evidence_risk": 0.05,
+          "intent_risk": 0.35,
+          "liquidity_risk": 0.64,
+          "market_risk": 0.82,
+          "operational_risk": 0.48
+        },
+        "scenario_hash": "6730964765f391345210344e",
+        "triggered_constraints": [
+          "audit_receipt_required",
+          "max_risk_budget",
+          "mandatory_review_for_high_volatility"
+        ]
+      },
+      "risk_distribution": {
+        "aggregate_risk": 0.74,
+        "evidence_risk": 0.05,
+        "intent_risk": 0.35,
+        "liquidity_risk": 0.64,
+        "market_risk": 0.82,
+        "operational_risk": 0.48
+      },
+      "scenario_id": "AFAC_TRPS_B_MARKET_SHOCK_HIGH_VOLATILITY",
+      "simulated_execution": {
+        "actual_transaction_generated": false,
+        "executed": true,
+        "execution_note": "The demo records a review outcome only.",
+        "external_execution_connected": false,
+        "latency_ms": 28,
+        "mode": "offline_synthetic_simulation"
+      },
+      "timestamp": "2026-06-20T00:00:00Z"
+    },
+    {
+      "belief_state": {
+        "evidence_status": {
+          "completeness": 0.35,
+          "missing_items": [
+            "source_evidence_reference",
+            "authorization_record",
+            "risk_owner_acknowledgement"
+          ]
+        },
+        "intent_class": "unsafe_bypass_attempt",
+        "known_facts": [
+          "input asks the system to bypass review",
+          "required evidence references are absent",
+          "signals conflict across risk and intent fields"
+        ],
+        "uncertainties": [
+          "source reliability",
+          "authorization context",
+          "downstream operational exposure"
+        ]
+      },
+      "candidate_action": {
+        "action_code": "BLOCK",
+        "rationale": "Missing evidence and unsafe bypass intent trigger a hard stop with receipt preservation."
+      },
+      "constrained_policy": {
+        "policy_version": "0.1.0",
+        "triggered_constraints": [
+          "audit_receipt_required",
+          "no_autonomous_live_trade",
+          "max_risk_budget",
+          "mandatory_review_for_high_volatility",
+          "block_on_missing_evidence",
+          "degrade_on_conflicting_signals"
+        ],
+        "unhandled_constraints": []
+      },
+      "decision_id": "decision-03-5a62a8e77c",
+      "gate_decision": {
+        "action_code": "BLOCK",
+        "decision_reason": "Hard policy stopped the requested action and preserved the review receipt.",
+        "expected_gate_decision": "BLOCK",
+        "policy_violation_count": 0
+      },
+      "human_review": {
+        "approval_scope": "simulation_only",
+        "final_external_execution_authorized": false,
+        "required": true,
+        "role": "control_owner",
+        "status": "required_for_block_review"
+      },
+      "receipt": {
+        "decision_id": "decision-03-5a62a8e77c",
+        "final_action": "BLOCK",
+        "gate_decision": "BLOCK",
+        "human_review_status": "required_for_block_review",
+        "input_summary": {
+          "intent_class": "unsafe_bypass_attempt",
+          "name_zh": "场景 C：误导性输入、证据缺失、越权交易意图",
+          "requested_operation": "force_execution_without_required_review",
+          "scenario_id": "AFAC_TRPS_C_MISLEADING_MISSING_EVIDENCE"
+        },
+        "limitations": [
+          "Local synthetic demo only.",
+          "No real customer data.",
+          "No investment advice.",
+          "No external execution connectivity.",
+          "No claim of external approval."
+        ],
+        "model_version": "trps_productization_demo_v0.1",
+        "policy_version": "0.1.0",
+        "rationale": "Hard policy stopped the requested action and preserved the review receipt.",
+        "receipt_id": "receipt-bf026920a9b83c7b",
+        "reproducibility_hash": "cf014c335168a10c352d473889f49623",
+        "risk_summary": {
+          "aggregate_risk": 0.9,
+          "evidence_risk": 0.92,
+          "intent_risk": 0.96,
+          "liquidity_risk": 0.7,
+          "market_risk": 0.76,
+          "operational_risk": 0.9
+        },
+        "scenario_hash": "158635f43e321f78bb5f75f6",
+        "triggered_constraints": [
+          "audit_receipt_required",
+          "no_autonomous_live_trade",
+          "max_risk_budget",
+          "mandatory_review_for_high_volatility",
+          "block_on_missing_evidence",
+          "degrade_on_conflicting_signals"
+        ]
+      },
+      "risk_distribution": {
+        "aggregate_risk": 0.9,
+        "evidence_risk": 0.92,
+        "intent_risk": 0.96,
+        "liquidity_risk": 0.7,
+        "market_risk": 0.76,
+        "operational_risk": 0.9
+      },
+      "scenario_id": "AFAC_TRPS_C_MISLEADING_MISSING_EVIDENCE",
+      "simulated_execution": {
+        "actual_transaction_generated": false,
+        "executed": true,
+        "execution_note": "The demo records a review outcome only.",
+        "external_execution_connected": false,
+        "latency_ms": 44,
+        "mode": "offline_synthetic_simulation"
+      },
+      "timestamp": "2026-06-20T00:00:00Z"
+    }
+  ],
+  "generated_at": "2026-06-20T00:00:00Z",
+  "model_version": "trps_productization_demo_v0.1",
+  "scenario_pack_id": "afac2026_trps_demo_scenarios_v0_1"
+}

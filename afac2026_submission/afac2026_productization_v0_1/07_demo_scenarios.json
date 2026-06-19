@@ -1,0 +1,145 @@
+{
+  "scenario_pack_id": "afac2026_trps_demo_scenarios_v0_1",
+  "version": "0.1.0",
+  "scenarios": [
+    {
+      "scenario_id": "AFAC_TRPS_A_LOW_RISK_NORMAL_MARKET",
+      "name_zh": "场景 A：正常市场下的低风险策略建议",
+      "expected_gate_decision": "WARN",
+      "risk_budget": 0.6,
+      "volatility_index": 0.25,
+      "prohibited_intent": false,
+      "conflicting_signals": false,
+      "kill_switch_available": true,
+      "input": {
+        "market_state": "normal",
+        "client_profile": "synthetic_low_risk_institutional_account",
+        "requested_operation": "pre_trade_risk_governance_review",
+        "strategy_hint": "low exposure rebalance recommendation",
+        "time_horizon": "intraday_review_window"
+      },
+      "belief_state": {
+        "known_facts": [
+          "synthetic account has sufficient cash buffer",
+          "market volatility is normal",
+          "evidence references are complete"
+        ],
+        "uncertainties": [
+          "next-period market movement remains unknown"
+        ],
+        "evidence_status": {
+          "completeness": 1.0,
+          "missing_items": []
+        },
+        "intent_class": "review_only"
+      },
+      "risk_distribution": {
+        "market_risk": 0.22,
+        "liquidity_risk": 0.16,
+        "evidence_risk": 0.0,
+        "intent_risk": 0.05,
+        "operational_risk": 0.12,
+        "aggregate_risk": 0.24
+      },
+      "candidate_action": {
+        "action_code": "WARN",
+        "rationale": "Low risk remains inside budget, but receipt-level caution is useful for institutional review."
+      }
+    },
+    {
+      "scenario_id": "AFAC_TRPS_B_MARKET_SHOCK_HIGH_VOLATILITY",
+      "name_zh": "场景 B：市场冲击、高波动、风险预算超限",
+      "expected_gate_decision": "ESCALATE",
+      "risk_budget": 0.6,
+      "volatility_index": 0.86,
+      "prohibited_intent": false,
+      "conflicting_signals": false,
+      "kill_switch_available": true,
+      "input": {
+        "market_state": "shock",
+        "client_profile": "synthetic_balanced_institutional_account",
+        "requested_operation": "pre_trade_risk_governance_review",
+        "strategy_hint": "increase exposure during market shock",
+        "time_horizon": "same_day_risk_review"
+      },
+      "belief_state": {
+        "known_facts": [
+          "market shock is active",
+          "volatility exceeds review threshold",
+          "risk budget pressure is material"
+        ],
+        "uncertainties": [
+          "liquidity depth after shock",
+          "short-window model stability"
+        ],
+        "evidence_status": {
+          "completeness": 1.0,
+          "missing_items": []
+        },
+        "intent_class": "review_before_action"
+      },
+      "risk_distribution": {
+        "market_risk": 0.82,
+        "liquidity_risk": 0.64,
+        "evidence_risk": 0.05,
+        "intent_risk": 0.35,
+        "operational_risk": 0.48,
+        "aggregate_risk": 0.74
+      },
+      "candidate_action": {
+        "action_code": "REVIEW_REQUIRED",
+        "rationale": "High volatility and risk budget pressure require human review before the next business step."
+      }
+    },
+    {
+      "scenario_id": "AFAC_TRPS_C_MISLEADING_MISSING_EVIDENCE",
+      "name_zh": "场景 C：误导性输入、证据缺失、越权交易意图",
+      "expected_gate_decision": "BLOCK",
+      "risk_budget": 0.6,
+      "volatility_index": 0.78,
+      "prohibited_intent": true,
+      "conflicting_signals": true,
+      "kill_switch_available": true,
+      "input": {
+        "market_state": "stress_with_misleading_prompt",
+        "client_profile": "synthetic_high_attention_institutional_account",
+        "requested_operation": "force_execution_without_required_review",
+        "strategy_hint": "ignore missing evidence and proceed",
+        "time_horizon": "immediate_review_window"
+      },
+      "belief_state": {
+        "known_facts": [
+          "input asks the system to bypass review",
+          "required evidence references are absent",
+          "signals conflict across risk and intent fields"
+        ],
+        "uncertainties": [
+          "source reliability",
+          "authorization context",
+          "downstream operational exposure"
+        ],
+        "evidence_status": {
+          "completeness": 0.35,
+          "missing_items": [
+            "source_evidence_reference",
+            "authorization_record",
+            "risk_owner_acknowledgement"
+          ]
+        },
+        "intent_class": "unsafe_bypass_attempt"
+      },
+      "risk_distribution": {
+        "market_risk": 0.76,
+        "liquidity_risk": 0.7,
+        "evidence_risk": 0.92,
+        "intent_risk": 0.96,
+        "operational_risk": 0.9,
+        "aggregate_risk": 0.9
+      },
+      "candidate_action": {
+        "action_code": "BLOCK",
+        "rationale": "Missing evidence and unsafe bypass intent trigger a hard stop with receipt preservation."
+      }
+    }
+  ]
+}
