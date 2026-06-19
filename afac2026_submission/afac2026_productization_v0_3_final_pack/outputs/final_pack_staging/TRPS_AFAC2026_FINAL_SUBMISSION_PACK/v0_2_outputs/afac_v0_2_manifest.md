@@ -1,0 +1,42 @@
+# AFAC v0.2 Manifest
+
+- `pack_id`: `afac2026_trps_demo_submission_pack_v0_2`
+- `version`: `0.2`
+- `status`: `local_demo_submission_material_not_submitted`
+- `demo_entry`: `demo/index.html`
+- `data_entry`: `demo/assets/trps_demo_data.json`
+- `readiness_total_score`: `95.17`
+- `no_push`: `True`
+- `no_tag`: `True`
+- `no_external_submission`: `True`
+
+## Files
+
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/00_v0_1_acceptance.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/01_static_demo_guide.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/02_portal_fields_zh.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/03_portal_fields_en.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/04_project_solution.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/05_business_case.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/06_governance_and_compliance.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/07_metrics_translation.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/08_pitch_deck_markdown.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/09_qa_defense_30_questions.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/10_claim_evidence_map.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/11_submission_checklist.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/README.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/demo/app.js`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/demo/assets/trps_demo_data.json`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/demo/index.html`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/demo/style.css`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/outputs/.gitkeep`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/outputs/afac_v0_2_manifest.json`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/outputs/afac_v0_2_manifest.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/outputs/submission_readiness_score.json`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/outputs/submission_readiness_score.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/outputs/validation_report.json`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/outputs/validation_report.md`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/scripts/build_static_demo.py`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/scripts/generate_submission_pack.py`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/scripts/run_all.sh`
+- `afac2026_submission/afac2026_productization_v0_2_demo_pack/scripts/validate_v0_2_pack.py`

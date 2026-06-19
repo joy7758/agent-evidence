@@ -1,0 +1,32 @@
+{
+  "affected_eeoap_clauses": [
+    "EEOAP-001",
+    "EEOAP-003",
+    "EEOAP-004",
+    "EEOAP-005"
+  ],
+  "errors": [],
+  "external_execution_connected": false,
+  "final_pack_sha256_exists": true,
+  "forbidden_claim_hit_count": 0,
+  "forbidden_claim_hits": [],
+  "missing_required_files": [],
+  "non_blocking_warnings": [
+    "Python 3.14/Pydantic warning observed in profile validator"
+  ],
+  "ok": true,
+  "policy_violation_count": 0,
+  "qa_question_count": 50,
+  "readiness_score": 95.67,
+  "real_api_keyword_hit_count": 0,
+  "real_api_keyword_hits": [],
+  "true_order_count": 0,
+  "zip_demo_index_found": true,
+  "zip_exists": true,
+  "zip_file_count": 40,
+  "zip_forbidden_entries": [],
+  "zip_portal_copybook_found": true,
+  "zip_root_ok": true,
+  "zip_sha256": "e43bd1cecfc35020812f935b265690479a8efb22d1cbd8267d3a2d692f179df2",
+  "zip_size_bytes": 51666
+}

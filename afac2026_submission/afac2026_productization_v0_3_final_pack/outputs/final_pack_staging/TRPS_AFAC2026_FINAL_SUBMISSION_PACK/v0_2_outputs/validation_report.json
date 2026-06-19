@@ -1,0 +1,35 @@
+{
+  "actual_transaction_generated_count": 0,
+  "affected_eeoap_clauses": [
+    "EEOAP-001",
+    "EEOAP-003",
+    "EEOAP-004",
+    "EEOAP-005"
+  ],
+  "claim_evidence_map_exists": true,
+  "demo_data_exists": true,
+  "demo_index_exists": true,
+  "errors": [],
+  "external_execution_connected": false,
+  "forbidden_claim_hit_count": 0,
+  "forbidden_claim_hits": [],
+  "json_files_parsed": [
+    "demo/assets/trps_demo_data.json",
+    "outputs/afac_v0_2_manifest.json",
+    "outputs/submission_readiness_score.json",
+    "outputs/validation_report.json"
+  ],
+  "missing_required_files": [],
+  "ok": true,
+  "pitch_page_count": 12,
+  "policy_violation_count": 0,
+  "portal_en_fields_ok": true,
+  "portal_zh_fields_ok": true,
+  "qa_question_count": 30,
+  "real_api_keyword_hit_count": 0,
+  "real_api_keyword_hits": [],
+  "required_file_count": 26,
+  "required_files_ok": true,
+  "v0_1_outputs_readable": true,
+  "v0_1_validation_ok": true
+}

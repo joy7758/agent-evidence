@@ -1,0 +1,46 @@
+{
+  "dimensions": [
+    {
+      "evidence_path": "02_portal_copybook_final.md",
+      "name": "portal_copy_readiness",
+      "score": 96
+    },
+    {
+      "evidence_path": "07_pitch_script_8min.md;10_slide_deck_content_final.md",
+      "name": "pitch_readiness",
+      "score": 95
+    },
+    {
+      "evidence_path": "06_demo_guide_final.md;v0_2_demo/demo/index.html",
+      "name": "demo_readiness",
+      "score": 96
+    },
+    {
+      "evidence_path": "09_qa_defense_final.md",
+      "name": "qa_readiness",
+      "score": 95
+    },
+    {
+      "evidence_path": "05_governance_note_final.md;13_risk_register.md",
+      "name": "governance_safety",
+      "score": 98
+    },
+    {
+      "evidence_path": "scripts/build_final_zip.py;outputs/final_pack_manifest.json",
+      "name": "zip_packaging_readiness",
+      "score": 94
+    }
+  ],
+  "generated_at": "2026-06-20T00:00:00Z",
+  "pack_id": "afac2026_trps_final_submission_pack_v0_3",
+  "pptx_status": {
+    "fallback_path": "outputs/pptx_generation_skipped.md",
+    "pptx_generated": false,
+    "pptx_path": null,
+    "reason": "No module named 'pptx'"
+  },
+  "status": "local_final_submission_pack_not_submitted",
+  "total_score": 95.67,
+  "v0_2_total_score": 95.17,
+  "v0_2_validation_ok": true
+}

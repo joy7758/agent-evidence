@@ -1,0 +1,25 @@
+{
+  "actual_transaction_generated_count": 0,
+  "affected_eeoap_clauses": [
+    "EEOAP-001",
+    "EEOAP-003",
+    "EEOAP-004",
+    "EEOAP-005"
+  ],
+  "decision_count": 3,
+  "errors": [],
+  "external_execution_connected": false,
+  "forbidden_claim_hit_count": 0,
+  "forbidden_claim_hits": [],
+  "json_parse_errors": [],
+  "missing_required_files": [],
+  "ok": true,
+  "policy_violation_count": 0,
+  "real_api_keyword_hit_count": 0,
+  "real_api_keyword_hits": [],
+  "receipt_completeness_ok": true,
+  "receipt_missing_fields": [],
+  "required_file_count": 18,
+  "scenario_count": 3,
+  "scenario_receipt_coverage_ok": true
+}
