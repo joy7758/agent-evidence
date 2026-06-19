@@ -1,0 +1,62 @@
+{
+  "dimensions": [
+    {
+      "evidence_path": "demo/index.html",
+      "name": "demo_readiness",
+      "reason": "Offline static demo exists with scenario cards and decision details.",
+      "score": 96
+    },
+    {
+      "evidence_path": "06_governance_and_compliance.md",
+      "name": "governance_readiness",
+      "reason": "Human review, kill switch, policy gate, and receipt boundaries are explicit.",
+      "score": 95
+    },
+    {
+      "evidence_path": "02_portal_fields_zh.md;03_portal_fields_en.md",
+      "name": "portal_text_readiness",
+      "reason": "Chinese and English portal field drafts are prepared.",
+      "score": 94
+    },
+    {
+      "evidence_path": "07_metrics_translation.md;outputs/demo_metrics.json",
+      "name": "metrics_readiness",
+      "reason": "Technical metrics are translated into judge-facing business meaning.",
+      "score": 96
+    },
+    {
+      "evidence_path": "outputs/validation_report.json",
+      "name": "compliance_safety",
+      "reason": "Forbidden-claim and execution-keyword checks are expected to remain zero.",
+      "score": 98
+    },
+    {
+      "evidence_path": "05_business_case.md;08_pitch_deck_markdown.md",
+      "name": "commercial_story",
+      "reason": "Target buyers, pain points, value metrics, and pitch story are drafted.",
+      "score": 92
+    }
+  ],
+  "generated_at": "2026-06-20T00:00:00Z",
+  "pack_id": "afac2026_trps_demo_submission_pack_v0_2",
+  "total_score": 95.17,
+  "v0_1_metrics": {
+    "actual_transaction_generated_count": 0,
+    "audit_trace_linkage_rate": 1.0,
+    "average_decision_latency_ms": 29,
+    "blocked_unsafe_action_count": 1,
+    "external_execution_connected": false,
+    "mandatory_review_count": 2,
+    "policy_violation_count": 0,
+    "receipt_completeness_rate": 1.0,
+    "scenario_count": 3
+  },
+  "v0_1_validation": {
+    "actual_transaction_generated_count": 0,
+    "external_execution_connected": false,
+    "forbidden_claim_hit_count": 0,
+    "ok": true,
+    "policy_violation_count": 0,
+    "real_api_keyword_hit_count": 0
+  }
+}
