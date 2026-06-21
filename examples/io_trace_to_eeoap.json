@@ -1,0 +1,80 @@
+{
+  "affected_clauses": [
+    "EEOAP-001",
+    "EEOAP-002",
+    "EEOAP-003",
+    "EEOAP-004",
+    "EEOAP-005"
+  ],
+  "boundary": "Local IO example for reviewer inspection; not production telemetry, external certification, publication acceptance, or legal non-repudiation.",
+  "input": {
+    "format": "OpenTelemetry OTLP JSON trace",
+    "source": "data/otel/raw_demo_trace.json",
+    "span_chain": [
+      {
+        "traceId": "5B8EFFF798038103D269B633813FC60C",
+        "spanId": "EEE19B7EC3C1B174",
+        "parentSpanId": "EEE19B7EC3C1B173",
+        "name": "I'm a server span",
+        "startTimeUnixNano": "1544712660000000000",
+        "endTimeUnixNano": "1544712661000000000",
+        "kind": 2,
+        "attributes": {
+          "my.span.attr": "some value"
+        }
+      }
+    ]
+  },
+  "transformation_mapping": [
+    {
+      "from": "resourceSpans[].scopeSpans[].spans[].traceId",
+      "to": "subject.id and statement_id suffix",
+      "example": "trace:5B8EFFF798038103D269B633813FC60C"
+    },
+    {
+      "from": "resourceSpans[].scopeSpans[].spans[].spanId",
+      "to": "adapter record spans[].span_id and derived_from_span_ids[]",
+      "example": "EEE19B7EC3C1B174"
+    },
+    {
+      "from": "startTimeUnixNano",
+      "to": "timestamp",
+      "example": "2018-12-13T14:51:00Z"
+    },
+    {
+      "from": "raw OTLP JSON canonical digest",
+      "to": "subject.digest and evidence.references[role=input].digest",
+      "example": "sha256:da1ba12f5786bf7b0d37a6cb00821820158f63bc71b37c36389f9b633dbd8cdd"
+    }
+  ],
+  "output": {
+    "format": "EEOAP operation-accountability statement",
+    "source": "data/eeoap/real_trace_evidence.json",
+    "statement_id": "eeoap:otel:5b8efff798038103d269b633813fc60c",
+    "timestamp": "2018-12-13T14:51:00Z",
+    "operation": {
+      "id": "op:otel-to-eeoap:5b8efff798038103d269b633813fc60c",
+      "type": "telemetry.trace.convert",
+      "result": {
+        "status": "succeeded",
+        "summary": "converted 1 OTLP span(s) into a local EEOAP statement"
+      }
+    },
+    "evidence": {
+      "input_ref": {
+        "digest": "sha256:da1ba12f5786bf7b0d37a6cb00821820158f63bc71b37c36389f9b633dbd8cdd",
+        "locator": "data/otel/raw_demo_trace.json",
+        "ref_id": "ref:raw-otlp-trace"
+      },
+      "output_ref": {
+        "locator": "data/eeoap/real_trace_evidence.json",
+        "ref_id": "ref:eeoap-statement"
+      },
+      "validation": {
+        "method": "schema+reference+consistency",
+        "status": "verifiable",
+        "validator": "agent-evidence validate-profile"
+      }
+    }
+  }
+}

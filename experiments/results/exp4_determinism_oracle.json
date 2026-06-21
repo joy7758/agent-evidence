@@ -1,0 +1,51 @@
+{
+  "affected_clauses": [
+    "EEOAP-001",
+    "EEOAP-002",
+    "EEOAP-003",
+    "EEOAP-004",
+    "EEOAP-005"
+  ],
+  "boundary": "Local experiment receipt only; not production telemetry, external validation, certification, publication status, or deployment proof.",
+  "description": "Repeated conversion of the same OTLP JSON fixture with canonicalized evidence-content comparison.",
+  "deterministic_content_equivalence": true,
+  "experiment_id": "exp4_determinism_oracle",
+  "input_trace": "data/otel/raw_demo_trace.json",
+  "issue_count": 0,
+  "iterations": 3,
+  "oracle_compares": [
+    "canonicalized evidence content",
+    "validator outcome status"
+  ],
+  "oracle_excludes": [
+    "environment-specific locator fields"
+  ],
+  "output_profile": "data/eeoap/real_trace_evidence.json",
+  "primary_error_code": null,
+  "runs": [
+    {
+      "canonical_evidence_digest": "sha256:60f8e396c449584579c0c32f0c2396352cf5f90479b537d221fd68a8749c2983",
+      "issue_count": 0,
+      "iteration": 0,
+      "validator_ok": true,
+      "validator_status_digest": "sha256:f124aedde1b723b0032c2431dce2f38e51f1e69072ce75adfb2b1f23fdb22806"
+    },
+    {
+      "canonical_evidence_digest": "sha256:60f8e396c449584579c0c32f0c2396352cf5f90479b537d221fd68a8749c2983",
+      "issue_count": 0,
+      "iteration": 1,
+      "validator_ok": true,
+      "validator_status_digest": "sha256:f124aedde1b723b0032c2431dce2f38e51f1e69072ce75adfb2b1f23fdb22806"
+    },
+    {
+      "canonical_evidence_digest": "sha256:60f8e396c449584579c0c32f0c2396352cf5f90479b537d221fd68a8749c2983",
+      "issue_count": 0,
+      "iteration": 2,
+      "validator_ok": true,
+      "validator_status_digest": "sha256:f124aedde1b723b0032c2431dce2f38e51f1e69072ce75adfb2b1f23fdb22806"
+    }
+  ],
+  "source_type": "determinism_oracle",
+  "span_count": 1,
+  "validator_ok": true
+}

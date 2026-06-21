@@ -1,0 +1,3 @@
+- Deterministic OTLP JSON to structured execution evidence conversion
+- Reproducible pipeline with schema validation and provenance tracking
+- Real OpenTelemetry fixture plus synthetic and noisy evaluation cases

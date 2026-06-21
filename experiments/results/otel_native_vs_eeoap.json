@@ -1,0 +1,37 @@
+{
+  "comparison_constraints": [
+    "All systems use the identical input trace: data/otel/raw_demo_trace.json.",
+    "No preprocessing differences are allowed before comparison.",
+    "Only the output representation differs across rows."
+  ],
+  "input_trace": "data/otel/raw_demo_trace.json",
+  "rows": [
+    {
+      "binds_policy_or_constraints": "no",
+      "binds_provenance": "no",
+      "includes_evidence_refs": "no",
+      "notes": "Preserves OTLP trace payload but does not bind policy, provenance, evidence references, or local validator output.",
+      "preserves_trace_identity": "yes",
+      "system": "Baseline A: raw OpenTelemetry trace storage",
+      "validator_readable_output": "no"
+    },
+    {
+      "binds_policy_or_constraints": "no",
+      "binds_provenance": "no",
+      "includes_evidence_refs": "no",
+      "notes": "Portable JSON improves transport but remains observability-oriented rather than operation-accountability-oriented.",
+      "preserves_trace_identity": "yes",
+      "system": "Baseline B: OpenTelemetry trace plus JSON export only",
+      "validator_readable_output": "no"
+    },
+    {
+      "binds_policy_or_constraints": "yes",
+      "binds_provenance": "yes",
+      "includes_evidence_refs": "yes",
+      "notes": "Adds operation, policy, provenance, evidence references, integrity digests, and local validator-readable output.",
+      "preserves_trace_identity": "yes",
+      "system": "System: OpenTelemetry to EEOAP conversion",
+      "validator_readable_output": "yes"
+    }
+  ]
+}

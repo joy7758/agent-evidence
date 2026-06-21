@@ -1,0 +1,48 @@
+{
+  "evidence": [
+    {
+      "derived_from_span_ids": [
+        "EEE19B7EC3C1B174"
+      ],
+      "digest": "sha256:da1ba12f5786bf7b0d37a6cb00821820158f63bc71b37c36389f9b633dbd8cdd",
+      "evidence_id": "evidence:raw-otlp-trace",
+      "locator": "data/otel/raw_demo_trace.json",
+      "object_ref": "trace:5B8EFFF798038103D269B633813FC60C",
+      "role": "input"
+    },
+    {
+      "derived_from_span_ids": [
+        "EEE19B7EC3C1B174"
+      ],
+      "digest": "sha256:5ddd951a2553a72c4a445e69fde6264efdfc5a2c0e5c8ecf6cf79156dc86a9a9",
+      "evidence_id": "evidence:eeoap-statement",
+      "locator": "data/eeoap/real_trace_evidence.json",
+      "object_ref": "eeoap:otel:5b8efff798038103d269b633813fc60c",
+      "role": "output"
+    }
+  ],
+  "execution_id": "eeoap:otel:5b8efff798038103d269b633813fc60c",
+  "spans": [
+    {
+      "attributes": {
+        "my.span.attr": "some value"
+      },
+      "end_time_unix_nano": "1544712661000000000",
+      "kind": 2,
+      "name": "I'm a server span",
+      "parent_span_id": "EEE19B7EC3C1B173",
+      "span_id": "EEE19B7EC3C1B174",
+      "start_time_unix_nano": "1544712660000000000",
+      "trace_id": "5B8EFFF798038103D269B633813FC60C"
+    }
+  ],
+  "status": "succeeded",
+  "timestamp": "2018-12-13T14:51:00Z",
+  "trace_source": {
+    "digest": "sha256:da1ba12f5786bf7b0d37a6cb00821820158f63bc71b37c36389f9b633dbd8cdd",
+    "format": "otlp-json",
+    "locator": "data/otel/raw_demo_trace.json",
+    "system": "opentelemetry"
+  },
+  "version": "v0.1"
+}

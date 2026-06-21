@@ -1,0 +1,72 @@
+{
+  "clauses": [
+    {
+      "clause_id": "EEOAP-001",
+      "title": "Completed operation must produce an operation accountability statement",
+      "required_surface": "operation_accountability_statement",
+      "related_files": [
+        "spec/execution-evidence-operation-accountability-profile-v0.1.md",
+        "schema/execution-evidence-operation-accountability-profile-v0.1.schema.json",
+        "examples/minimal-valid-evidence.json"
+      ],
+      "validator_surface": "schema_and_profile",
+      "citation_hint": "Execution Evidence and Operation Accountability Profile v0.1, clause EEOAP-001."
+    },
+    {
+      "clause_id": "EEOAP-002",
+      "title": "Statement must bind actor, subject, operation, and timestamp",
+      "required_fields": [
+        "actor",
+        "subject",
+        "operation",
+        "timestamp"
+      ],
+      "related_files": [
+        "schema/execution-evidence-operation-accountability-profile-v0.1.schema.json",
+        "examples/minimal-valid-evidence.json"
+      ],
+      "validator_surface": "schema",
+      "citation_hint": "Execution Evidence and Operation Accountability Profile v0.1, clause EEOAP-002."
+    },
+    {
+      "clause_id": "EEOAP-003",
+      "title": "Statement must bind policy, evidence, and provenance references",
+      "required_fields": [
+        "policy",
+        "evidence",
+        "provenance"
+      ],
+      "related_files": [
+        "schema/execution-evidence-operation-accountability-profile-v0.1.schema.json",
+        "examples/minimal-valid-evidence.json",
+        "examples/invalid-unclosed-reference.json",
+        "examples/invalid-policy-link-broken.json"
+      ],
+      "validator_surface": "references_and_consistency",
+      "citation_hint": "Execution Evidence and Operation Accountability Profile v0.1, clause EEOAP-003."
+    },
+    {
+      "clause_id": "EEOAP-004",
+      "title": "Statement must produce or reference a validator-readable validation report",
+      "required_surface": "validation_report",
+      "related_files": [
+        "demo/run_operation_accountability_demo.py",
+        "examples/minimal-valid-evidence.json"
+      ],
+      "validator_surface": "validation_report_output",
+      "citation_hint": "Execution Evidence and Operation Accountability Profile v0.1, clause EEOAP-004."
+    },
+    {
+      "clause_id": "EEOAP-005",
+      "title": "Implementation changes must cite affected EEOAP clauses in task or pull-request summaries",
+      "required_surface": "clause_citation",
+      "related_files": [
+        ".github/pull_request_template.md",
+        "scripts/check_protocol_citations.py",
+        "protocol/clause-index.json"
+      ],
+      "validator_surface": "local_clause_citation_check",
+      "citation_hint": "Affected clauses: EEOAP-005."
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/agent-evidence/execution-evidence-object.schema.json",
+  "title": "ExecutionEvidenceObject",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "agent_framework",
+    "run_id",
+    "steps",
+    "hashes",
+    "context",
+    "timestamp"
+  ],
+  "properties": {
+    "object_type": {
+      "type": "string",
+      "const": "execution-evidence-object"
+    },
+    "agent_framework": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "step_id",
+          "step_type",
+          "action",
+          "status"
+        ],
+        "properties": {
+          "step_id": {
+            "type": "string"
+          },
+          "step_type": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_hash",
+        "trace_hash",
+        "proof_hash"
+      ],
+      "properties": {
+        "action_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "trace_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "proof_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "context": {
+      "type": "object"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

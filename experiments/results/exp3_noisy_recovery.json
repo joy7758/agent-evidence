@@ -1,0 +1,22 @@
+{
+  "affected_clauses": [
+    "EEOAP-001",
+    "EEOAP-002",
+    "EEOAP-003",
+    "EEOAP-004",
+    "EEOAP-005"
+  ],
+  "boundary": "Local experiment receipt only; not production telemetry, external validation, certification, publication status, or deployment proof.",
+  "description": "Noisy public OTLP example converted while preserving span identifiers.",
+  "experiment_id": "exp3_noisy_recovery",
+  "issue_count": 0,
+  "noise_model": "extra top-level, scope, resource, and span fields",
+  "output_profile": "experiments/results/exp3_noisy_recovery_evidence.json",
+  "primary_error_code": null,
+  "recovered_span_ids": [
+    "EEE19B7EC3C1B174"
+  ],
+  "source_type": "public_opentelemetry_proto_example_with_non_semantic_noise",
+  "span_count": 1,
+  "validator_ok": true
+}

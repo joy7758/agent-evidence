@@ -1,0 +1,26 @@
+{
+  "artifact_id": "otel-proto-examples-trace-json",
+  "boundary": "Verifiable provenance for a public OpenTelemetry example fixture used as local trace-format grounding. This record does not claim production telemetry, external validation, certification, or publication acceptance.",
+  "extracted_artifact": {
+    "canonical_json_digest": "sha256:da1ba12f5786bf7b0d37a6cb00821820158f63bc71b37c36389f9b633dbd8cdd",
+    "local_file": "data/otel/raw_demo_trace.json",
+    "local_file_sha256": "sha256:3188145da2e54661cc1e2bdf66d05dc8a5939219ccfc6993388bda9114fb138f"
+  },
+  "extraction": {
+    "method": "automated_fetch_script",
+    "script": "scripts/fetch_otel_demo_trace.py",
+    "timestamp_utc": "2026-06-20T19:40:49.561451Z"
+  },
+  "license": {
+    "name": "Apache License 2.0",
+    "source": "https://github.com/open-telemetry/opentelemetry-proto/blob/main/LICENSE"
+  },
+  "upstream": {
+    "commit_date_utc": "2024-01-09T19:14:14Z",
+    "commit_hash": "c56093a326ec7d9c2436c778c50f656cb73b718c",
+    "commit_url": "https://github.com/open-telemetry/opentelemetry-proto/commit/c56093a326ec7d9c2436c778c50f656cb73b718c",
+    "file_path": "examples/trace.json",
+    "raw_url": "https://raw.githubusercontent.com/open-telemetry/opentelemetry-proto/main/examples/trace.json",
+    "repository_url": "https://github.com/open-telemetry/opentelemetry-proto"
+  }
+}

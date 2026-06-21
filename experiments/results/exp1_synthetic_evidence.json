@@ -1,0 +1,116 @@
+{
+  "actor": {
+    "id": "actor:opentelemetry-demo-source",
+    "name": "OpenTelemetry OTLP JSON example",
+    "runtime": "opentelemetry-proto/examples/trace.json",
+    "type": "telemetry-source"
+  },
+  "constraints": [
+    {
+      "description": "The EEOAP statement must reference the digest of the input OTLP JSON trace.",
+      "id": "constraint:bind-raw-trace-digest"
+    },
+    {
+      "description": "Trace and span identifiers must be preserved in reviewer-visible evidence.",
+      "id": "constraint:preserve-span-identifiers"
+    },
+    {
+      "description": "Validation is local and does not claim external certification.",
+      "id": "constraint:local-validation-only"
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "artifact_id": "artifact:normalized-spans",
+        "digest": "sha256:857942e0604e74108b73974db922a282927d29524131422860ef605780eb3534",
+        "locator": "data/eeoap/real_trace_adapter_record.json",
+        "type": "normalized-opentelemetry-spans"
+      }
+    ],
+    "id": "evidence:otel-to-eeoap:11111111111111111111111111111111",
+    "integrity": {
+      "artifacts_digest": "sha256:d5703b719e0884fea75df7b590e10ff27c88043a263f93935b2f8052ed9e22f7",
+      "references_digest": "sha256:b0b926848ca7ddb678d48f47c62bf3c6bcdc8448f6e0f437e8d055188565b0e7",
+      "statement_digest": "sha256:e75dd0630ad76858cba3bb20f78d04eebf638152ff82283c29e0062998c191f5"
+    },
+    "operation_ref": "op:otel-to-eeoap:11111111111111111111111111111111",
+    "policy_ref": "policy:eeoap-v0.1-local-trace-grounding",
+    "references": [
+      {
+        "digest": "sha256:ddd98612e7c4b9ced7834859be531b324f3f19b9657d80c69a533204ce6fc59d",
+        "locator": "experiments/results/exp1_synthetic_trace.json",
+        "object_id": "trace:11111111111111111111111111111111",
+        "ref_id": "ref:raw-otlp-trace",
+        "role": "input"
+      },
+      {
+        "digest": "sha256:056033aa6fddbf89c919298184015da2fe4590a0f9ef42a815a40758b1f0e6d4",
+        "locator": "data/eeoap/real_trace_evidence.json",
+        "object_id": "eeoap:otel:11111111111111111111111111111111",
+        "ref_id": "ref:eeoap-statement",
+        "role": "output"
+      }
+    ],
+    "subject_ref": "trace:11111111111111111111111111111111"
+  },
+  "operation": {
+    "description": "Convert one OTLP JSON trace into a local EEOAP evidence statement.",
+    "id": "op:otel-to-eeoap:11111111111111111111111111111111",
+    "input_refs": [
+      "ref:raw-otlp-trace"
+    ],
+    "output_refs": [
+      "ref:eeoap-statement"
+    ],
+    "policy_ref": "policy:eeoap-v0.1-local-trace-grounding",
+    "result": {
+      "status": "succeeded",
+      "summary": "converted 2 OTLP span(s) into a local EEOAP statement"
+    },
+    "subject_ref": "trace:11111111111111111111111111111111",
+    "type": "telemetry.trace.convert"
+  },
+  "policy": {
+    "constraint_refs": [
+      "constraint:bind-raw-trace-digest",
+      "constraint:preserve-span-identifiers",
+      "constraint:local-validation-only"
+    ],
+    "id": "policy:eeoap-v0.1-local-trace-grounding",
+    "name": "local-eeoap-trace-grounding-policy"
+  },
+  "profile": {
+    "name": "execution-evidence-operation-accountability-profile",
+    "version": "0.1"
+  },
+  "provenance": {
+    "actor_ref": "actor:opentelemetry-demo-source",
+    "id": "prov:otel-to-eeoap:11111111111111111111111111111111",
+    "input_refs": [
+      "ref:raw-otlp-trace"
+    ],
+    "operation_ref": "op:otel-to-eeoap:11111111111111111111111111111111",
+    "output_refs": [
+      "ref:eeoap-statement"
+    ],
+    "subject_ref": "trace:11111111111111111111111111111111"
+  },
+  "statement_id": "eeoap:otel:11111111111111111111111111111111",
+  "subject": {
+    "digest": "sha256:ddd98612e7c4b9ced7834859be531b324f3f19b9657d80c69a533204ce6fc59d",
+    "id": "trace:11111111111111111111111111111111",
+    "locator": "experiments/results/exp1_synthetic_trace.json",
+    "type": "opentelemetry-trace"
+  },
+  "timestamp": "2023-11-14T22:13:20Z",
+  "validation": {
+    "evidence_ref": "evidence:otel-to-eeoap:11111111111111111111111111111111",
+    "id": "validation:otel-to-eeoap:11111111111111111111111111111111",
+    "method": "schema+reference+consistency",
+    "policy_ref": "policy:eeoap-v0.1-local-trace-grounding",
+    "provenance_ref": "prov:otel-to-eeoap:11111111111111111111111111111111",
+    "status": "verifiable",
+    "validator": "agent-evidence validate-profile"
+  }
+}
