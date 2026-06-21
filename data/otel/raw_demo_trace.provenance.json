@@ -1,0 +1,6 @@
+{
+  "boundary": "Public OTLP JSON example used as local trace-format grounding; not production telemetry or external validation.",
+  "fetched_at": "2026-06-20T19:40:49.561451Z",
+  "output": "data/otel/raw_demo_trace.json",
+  "source_url": "https://raw.githubusercontent.com/open-telemetry/opentelemetry-proto/main/examples/trace.json"
+}

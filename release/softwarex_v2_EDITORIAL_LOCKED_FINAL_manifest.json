@@ -1,0 +1,790 @@
+{
+  "affected_clauses": [
+    "EEOAP-001",
+    "EEOAP-002",
+    "EEOAP-003",
+    "EEOAP-004",
+    "EEOAP-005"
+  ],
+  "boundary": "Generated file inventory and checksums for the packaged software artifact.",
+  "files": [
+    {
+      "bytes": 10774,
+      "path": "LICENSE",
+      "sha256": "sha256:2191d05c6ee7c145480916b745bd020484adb61653be943c43cff10bc22927a1"
+    },
+    {
+      "bytes": 10774,
+      "path": "LICENSE.txt",
+      "sha256": "sha256:2191d05c6ee7c145480916b745bd020484adb61653be943c43cff10bc22927a1"
+    },
+    {
+      "bytes": 13032,
+      "path": "README.md",
+      "sha256": "sha256:02dcc9123385208a91b6d71142e8ba308aa90581828cf9bacdd8019998b905c8"
+    },
+    {
+      "bytes": 1938,
+      "path": "README_SOFTWAREX_SUBMISSION.md",
+      "sha256": "sha256:b309f420df8a3c5c566af3a56c78dda0426746f7b3b4cc8da00d3c2669b52379"
+    },
+    {
+      "bytes": 1558,
+      "path": "agent_evidence/__init__.py",
+      "sha256": "sha256:6cf71408df877c734ea8e644ef071f5a441da54700eeddb2bc25fdc29e48ea0c"
+    },
+    {
+      "bytes": 752,
+      "path": "agent_evidence/_canonical.py",
+      "sha256": "sha256:52dc836f51799cbd32201a07a6e1c9bce585249f18d18d0546bac00d3b2d3a7b"
+    },
+    {
+      "bytes": 372,
+      "path": "agent_evidence/aep/__init__.py",
+      "sha256": "sha256:0e291645191bbc3a30e94964efaaaf54bb99ed0792f6aa6d315b53595092a419"
+    },
+    {
+      "bytes": 10236,
+      "path": "agent_evidence/aep/bundle.py",
+      "sha256": "sha256:4444bc4790a28af3eeaf9e43e180bdf521b81fa838b89b1cb6c6e015c5ca8e23"
+    },
+    {
+      "bytes": 1389,
+      "path": "agent_evidence/aep/canonicalizer.py",
+      "sha256": "sha256:74f6af8f1b41496460c0a680718e7c04a4ba0fdf02ce6f4c80195684fb209c5a"
+    },
+    {
+      "bytes": 1482,
+      "path": "agent_evidence/aep/hash_chain.py",
+      "sha256": "sha256:d9e5bbb6b9a4fb4a4daf78167e8e62424a7b64e9134d89183e90f99784c7198b"
+    },
+    {
+      "bytes": 4451,
+      "path": "agent_evidence/aep/schema_v0.1.json",
+      "sha256": "sha256:9f8fc6a9bb46cc1e852796a74ad201dc9b58abffd764cefedb7f909e54c8ef98"
+    },
+    {
+      "bytes": 11691,
+      "path": "agent_evidence/aep/verify.py",
+      "sha256": "sha256:ecffe916baf3880f862dc0d5dad5247d7c7ac22f38d59686aaf23d091ef65326"
+    },
+    {
+      "bytes": 43,
+      "path": "agent_evidence/cli/__init__.py",
+      "sha256": "sha256:f44571985896b00a2a589e9baf56dcdc1c6503bd49c8e40fdbc7d41e15f693b1"
+    },
+    {
+      "bytes": 41364,
+      "path": "agent_evidence/cli/main.py",
+      "sha256": "sha256:b2b98557d4ea695629e4b8296b74698c985568c431c7d00bb7ef585d8944cf74"
+    },
+    {
+      "bytes": 255,
+      "path": "agent_evidence/crypto/__init__.py",
+      "sha256": "sha256:cb22781a25b89328755da898b727e98c32f00c78d63d1689c2add18c747156fe"
+    },
+    {
+      "bytes": 1388,
+      "path": "agent_evidence/crypto/chain.py",
+      "sha256": "sha256:39a5f09ef63c904985595adae82efbeeaa2a5428c064dc7e34612b7ce3f888c7"
+    },
+    {
+      "bytes": 610,
+      "path": "agent_evidence/crypto/hashing.py",
+      "sha256": "sha256:17bad2f8cbbf8e28dc7370a2b9429780703d4295d5530529680430724859101c"
+    },
+    {
+      "bytes": 46055,
+      "path": "agent_evidence/export.py",
+      "sha256": "sha256:c651aa46f6b6c7584df88e33330e9955187b00c671f84a82b04eb43096823422"
+    },
+    {
+      "bytes": 884,
+      "path": "agent_evidence/integrations/__init__.py",
+      "sha256": "sha256:d11fd42c2dfb043788c8370e7859f0e893c48a69878f321a08b3e943b15c11be"
+    },
+    {
+      "bytes": 28201,
+      "path": "agent_evidence/integrations/automaton.py",
+      "sha256": "sha256:3ab5c43dae190d0b4c7f6001fe12ab0e6d75e972cbe40691b229186461be9f12"
+    },
+    {
+      "bytes": 23543,
+      "path": "agent_evidence/integrations/langchain.py",
+      "sha256": "sha256:2596779384eb24ba7e6e3f7a223eccffc4bdc9aec3a59f4491b7263d94f3d484"
+    },
+    {
+      "bytes": 9645,
+      "path": "agent_evidence/integrations/openai_agents.py",
+      "sha256": "sha256:c70352455804fd5f070561f9878f1ed69e50e01a5f7257606140fcbcb6dfc403"
+    },
+    {
+      "bytes": 12322,
+      "path": "agent_evidence/manifest.py",
+      "sha256": "sha256:73bbacd7d544cf53d073d675321807dcb3df458d35c929e8538297d263101669"
+    },
+    {
+      "bytes": 70,
+      "path": "agent_evidence/mcp/__init__.py",
+      "sha256": "sha256:133e2d8f7846d35cfb27badd460416e7d582347679e720d4274425f6d24a5b90"
+    },
+    {
+      "bytes": 6827,
+      "path": "agent_evidence/mcp/server.py",
+      "sha256": "sha256:7ea5307090c5075d6505c30ce5f3d6c5ff6cf98e84d23a23006bd79b9f44385e"
+    },
+    {
+      "bytes": 3126,
+      "path": "agent_evidence/models.py",
+      "sha256": "sha256:ca760022adb523a3d07a4d2731fbae75cdac543d544e0dac6c4c2c9a8eb34b4d"
+    },
+    {
+      "bytes": 17901,
+      "path": "agent_evidence/oap.py",
+      "sha256": "sha256:591dff8708685ca1cbd296c801b567dedad82f28b649c941c987c66e8cb25af5"
+    },
+    {
+      "bytes": 4905,
+      "path": "agent_evidence/recorder.py",
+      "sha256": "sha256:60db99bc43839227d4d5606f7b401f1e1d4c9cbec05e819d04ff10e4a9435a5c"
+    },
+    {
+      "bytes": 18949,
+      "path": "agent_evidence/review_pack.py",
+      "sha256": "sha256:68a22a411ba6e8f047946e2a053a987661efbca185040b03cd1d2e36f1b4c572"
+    },
+    {
+      "bytes": 2689,
+      "path": "agent_evidence/schema/evidence.schema.json",
+      "sha256": "sha256:8dbf94645bfcbfaa217e42a4c0e517549ed04b15b350771486cc2d28ebf8dff8"
+    },
+    {
+      "bytes": 9764,
+      "path": "agent_evidence/schema/execution-evidence-operation-accountability-profile-v0.1.schema.json",
+      "sha256": "sha256:cadff8c3b30a47f58563fa8700bcb2aa962338bc68336907d4f228e9b2387ea8"
+    },
+    {
+      "bytes": 4484,
+      "path": "agent_evidence/serialization.py",
+      "sha256": "sha256:4c923ffc660bdab186e91b990a8914b515d1aa490fb13b3d20f6e7b232baaabe"
+    },
+    {
+      "bytes": 210,
+      "path": "agent_evidence/server/__init__.py",
+      "sha256": "sha256:ae3b3c2319c5b576479b51c348ed6c6890daf489762941a1187da8ff328c1b3d"
+    },
+    {
+      "bytes": 9796,
+      "path": "agent_evidence/server/local_api.py",
+      "sha256": "sha256:20a9f30b2bffa1f88a818c313a41875a454e11ab81240e8c845d7a4c08e9738a"
+    },
+    {
+      "bytes": 531,
+      "path": "agent_evidence/storage/__init__.py",
+      "sha256": "sha256:ef44921c4489b60d12cfbcc268a9bd758ddc1d044ae62d7c230fc23e41cd9da2"
+    },
+    {
+      "bytes": 2321,
+      "path": "agent_evidence/storage/base.py",
+      "sha256": "sha256:da4133d79b983f050711dc4586750e2df0193ae2dcc39b60bf6728d3db8fc88e"
+    },
+    {
+      "bytes": 996,
+      "path": "agent_evidence/storage/factory.py",
+      "sha256": "sha256:abb03fb7fa86b38692755e0e555e0481fe3821ca5e5806ecbec836f8a48c4e37"
+    },
+    {
+      "bytes": 6995,
+      "path": "agent_evidence/storage/local.py",
+      "sha256": "sha256:57ac498560fc781cd478dea7bcb44b7c5c730b210735a931fd7c58501a03848a"
+    },
+    {
+      "bytes": 527,
+      "path": "agent_evidence/storage/migrate.py",
+      "sha256": "sha256:831a54c2a4aff4c3719e4b9af742a80a790577700e07a3751792553e9ef51cca"
+    },
+    {
+      "bytes": 8665,
+      "path": "agent_evidence/storage/sql.py",
+      "sha256": "sha256:cf3137ac199c6dcec57b1971a26b966a294746ef0e28aff89d1d37be4e57ee60"
+    },
+    {
+      "bytes": 1503,
+      "path": "data/eeoap/real_trace_adapter_record.json",
+      "sha256": "sha256:746ded27a6b4737c63ad0ce5d83298723d9fdcfba94615d5732699dfaa84dd5b"
+    },
+    {
+      "bytes": 4352,
+      "path": "data/eeoap/real_trace_evidence.json",
+      "sha256": "sha256:b6396c1dea849a55c14260d027caec0bfa3440ab86416cf954f07861a3a91763"
+    },
+    {
+      "bytes": 1230,
+      "path": "data/otel/raw_demo_trace.json",
+      "sha256": "sha256:3188145da2e54661cc1e2bdf66d05dc8a5939219ccfc6993388bda9114fb138f"
+    },
+    {
+      "bytes": 337,
+      "path": "data/otel/raw_demo_trace.provenance.json",
+      "sha256": "sha256:a2ce9106118e806bfc3adce452f082fccf0e75f88323a924aac7b6cc1c37ee14"
+    },
+    {
+      "bytes": 1361,
+      "path": "data/otel/trace_provenance_record.json",
+      "sha256": "sha256:eb12850e66adff172a95615f5ce2e4d7de91636b2d064b9e1f9fb0d98bec2db8"
+    },
+    {
+      "bytes": 459,
+      "path": "docs/figures/architecture.mmd",
+      "sha256": "sha256:dfc84c4daffd7cab1161a56ab60bd2d49965439cc7c836e69d3dad7ccdf9a45c"
+    },
+    {
+      "bytes": 3189,
+      "path": "docs/figures/architecture.svg",
+      "sha256": "sha256:bab7a9458a768d3ba67c3056544a654973e0896ad4ee747de37cc3793ca7bd57"
+    },
+    {
+      "bytes": 1017,
+      "path": "docs/protocol/citation-guide.md",
+      "sha256": "sha256:f259cb774ff5f3de14a07ed83bf93cb57d6acbf249ef15c87054769d3a0cf370"
+    },
+    {
+      "bytes": 3174,
+      "path": "docs/protocol/clauses.md",
+      "sha256": "sha256:cace23a300fcbabf03b3e0e5dba37322ecce99cb2418ad42309aefc86611ed9a"
+    },
+    {
+      "bytes": 1222,
+      "path": "docs/protocol/profile.md",
+      "sha256": "sha256:b580be23444922675df0e5c1137e749dea5ee6e4680da911f035bcb655c35fc7"
+    },
+    {
+      "bytes": 5376,
+      "path": "docs/public/EEOAP_v0.1_public_spec.md",
+      "sha256": "sha256:236fdd431dd5b57de63a9e5c9cb334e05319ecda0a7b2fed44748bc583011b62"
+    },
+    {
+      "bytes": 1392,
+      "path": "docs/softwarex_environment.md",
+      "sha256": "sha256:b12057b72477079cda24bf70ae7f75d323946d5508af0704b2e5c33f4244ac8c"
+    },
+    {
+      "bytes": 3722,
+      "path": "docs/specs/EEOAP_v0_1.md",
+      "sha256": "sha256:12a57676a31b8349513122d0002b20e27acfcbb1da5bfed6a28f9f311c5015d8"
+    },
+    {
+      "bytes": 2572,
+      "path": "examples/io_trace_to_eeoap.json",
+      "sha256": "sha256:2c59d0f2b9cb3682aa4dc25f6d52ee2f24a20a0229afbbbcbea3891f68daf5bc"
+    },
+    {
+      "bytes": 3475,
+      "path": "examples/minimal-valid-evidence.json",
+      "sha256": "sha256:7d2337adbd6e4bfbd18fdb8b7a6c3ce77b01b7d9acde5e56fece33addf81ae1d"
+    },
+    {
+      "bytes": 2221,
+      "path": "experiments/_common.py",
+      "sha256": "sha256:ea7fbc84b02ecc522855b806c0b452ad117ed44d3cf899cde411cc30a1f4da81"
+    },
+    {
+      "bytes": 6156,
+      "path": "experiments/baselines/otel_native_vs_eeoap.py",
+      "sha256": "sha256:d7b1f2474ecafb8871286ee7ebc026a74b70cbd19dd920b098a43cd39db323de"
+    },
+    {
+      "bytes": 3203,
+      "path": "experiments/exp1_synthetic.py",
+      "sha256": "sha256:bfd53f7aa4605617b074b72a483c9ea1923fc76ec6450acaf18c113b874f6b67"
+    },
+    {
+      "bytes": 1946,
+      "path": "experiments/exp2_real_trace.py",
+      "sha256": "sha256:e4dcacec3b5b9717b8f5e8a9a3663cfbb19a45d95b6d5744f75c60ae10a9eecd"
+    },
+    {
+      "bytes": 2550,
+      "path": "experiments/exp3_noisy_recovery.py",
+      "sha256": "sha256:b3cfffd764787e2fe5f10da444d443097ea12402a48000418d51b5e098dffe93"
+    },
+    {
+      "bytes": 3381,
+      "path": "experiments/exp4_determinism_oracle.py",
+      "sha256": "sha256:055708615f5e7ec4a50aa2478150c512e8a35043f9edd05a12a10357a869d16f"
+    },
+    {
+      "bytes": 379,
+      "path": "experiments/generate_tables.py",
+      "sha256": "sha256:1cdf9892c528da23e968abfd1d5d2152fa3077a5d3dc9d131d825dda371dbfd8"
+    },
+    {
+      "bytes": 630,
+      "path": "experiments/results/exp1_synthetic.json",
+      "sha256": "sha256:ef60c6381d9cefdca2cda4fa85405952e7ce609984f500142fda9bc2468f078d"
+    },
+    {
+      "bytes": 4384,
+      "path": "experiments/results/exp1_synthetic_evidence.json",
+      "sha256": "sha256:8580522cdf922470cb158b23118882b91369dd3800cabe7195576d35e96f9e3c"
+    },
+    {
+      "bytes": 1545,
+      "path": "experiments/results/exp1_synthetic_trace.json",
+      "sha256": "sha256:df65da1c07bde611a165f1121cbf9f60c9fa2b7c53b169de4a1964640cba7618"
+    },
+    {
+      "bytes": 797,
+      "path": "experiments/results/exp2_real_trace.json",
+      "sha256": "sha256:f71f07879002139d6e7ea06913477dd37fd07593548fe04fb555d287992aaa15"
+    },
+    {
+      "bytes": 773,
+      "path": "experiments/results/exp3_noisy_recovery.json",
+      "sha256": "sha256:2816ebf0c310331e69ae002a0888bf31e53f9957e57a0ca06f1056c9b4402d09"
+    },
+    {
+      "bytes": 4376,
+      "path": "experiments/results/exp3_noisy_recovery_evidence.json",
+      "sha256": "sha256:1416f6bad4e354b9789d444ec469cbd5ec971675df15af88af0dfa4e7434d88b"
+    },
+    {
+      "bytes": 1780,
+      "path": "experiments/results/exp3_noisy_trace.json",
+      "sha256": "sha256:06afefe759c9b331d8d37ae542f780913d802a194d1b4355b6d956dd35e852f0"
+    },
+    {
+      "bytes": 1831,
+      "path": "experiments/results/exp4_determinism_oracle.json",
+      "sha256": "sha256:1168f76d3a10047d69992a39353b35fda1e50a57d7670a32ab72239d5d6ec1f7"
+    },
+    {
+      "bytes": 1529,
+      "path": "experiments/results/otel_native_vs_eeoap.json",
+      "sha256": "sha256:4d3e9f53a2bb2e0fcebd623fc78e8bcdc1eb78090076f67a17ee3b37a936c17b"
+    },
+    {
+      "bytes": 1452,
+      "path": "experiments/results/otel_native_vs_eeoap.md",
+      "sha256": "sha256:d92e8f3b2b4ae598967346f533311c68c372c126d1d6aeebd30e03ab0106c7df"
+    },
+    {
+      "bytes": 452,
+      "path": "paper/ai_use_declaration.md",
+      "sha256": "sha256:89da56f9b50ca5ed24680392d731b37e4eb4241bd263715a0b3cf2858005f89f"
+    },
+    {
+      "bytes": 1328,
+      "path": "paper/cover_letter.md",
+      "sha256": "sha256:33e4cb2f760c1bb1eababe3f8a1b29a3f12307a00039bbe22066214b679c8ccf"
+    },
+    {
+      "bytes": 737,
+      "path": "paper/data_availability_statement.md",
+      "sha256": "sha256:807b17fe11a539864ae2194f70093bca8470f8187db4daf2dc102b467b73bbd8"
+    },
+    {
+      "bytes": 861,
+      "path": "paper/figures/evaluation_table.md",
+      "sha256": "sha256:eb4e97ec94641f7be535f32e35d25f2dd1b53016d68c7382df473cc5f2005619"
+    },
+    {
+      "bytes": 212,
+      "path": "paper/highlights.txt",
+      "sha256": "sha256:d1aaa58dd04dd527b654cb18e1cc1fc3df596cfbd7eb67f796aa40ad1958ef5e"
+    },
+    {
+      "bytes": 78339,
+      "path": "paper/softwarex_osp_template_manuscript.docx",
+      "sha256": "sha256:66f4c0253afd683979b5fbb70d52dfcbe6c3eabee57c2901829718a0637ac14f"
+    },
+    {
+      "bytes": 210267,
+      "path": "paper/softwarex_osp_template_manuscript.pdf",
+      "sha256": "sha256:bf375a5fb1a5e856403e9d462025aca7298c607bcea3afaf96eb48e49e8fd396"
+    },
+    {
+      "bytes": 13202,
+      "path": "paper/softwarex_v2_revised.md",
+      "sha256": "sha256:347193690e064940ae497d3dfc3c1a857fd5b6e593402a39eb4ce06a65f4112e"
+    },
+    {
+      "bytes": 18897,
+      "path": "paper/softwarex_v2_revised.pdf",
+      "sha256": "sha256:93da6a2f18989482a9dd5878ced682d02c3c167a27aea86b16834254116e971f"
+    },
+    {
+      "bytes": 2772,
+      "path": "protocol/clause-index.json",
+      "sha256": "sha256:1fac6947f292ad45a2b51f88afb64617ad6232c48be32083906484e72dc28aa5"
+    },
+    {
+      "bytes": 847,
+      "path": "protocol/manifest.json",
+      "sha256": "sha256:e7c64c7caff48480799f1885ae3fc63c7b19b45c08595014fe589ab775d27534"
+    },
+    {
+      "bytes": 2466,
+      "path": "pyproject.toml",
+      "sha256": "sha256:9028e3d89c987068d6ef751e4768efa1e2650ddde0a640a4dbeaa795c3bfe3f0"
+    },
+    {
+      "bytes": 1558,
+      "path": "repo/src/agent_evidence/__init__.py",
+      "sha256": "sha256:6cf71408df877c734ea8e644ef071f5a441da54700eeddb2bc25fdc29e48ea0c"
+    },
+    {
+      "bytes": 752,
+      "path": "repo/src/agent_evidence/_canonical.py",
+      "sha256": "sha256:52dc836f51799cbd32201a07a6e1c9bce585249f18d18d0546bac00d3b2d3a7b"
+    },
+    {
+      "bytes": 372,
+      "path": "repo/src/agent_evidence/aep/__init__.py",
+      "sha256": "sha256:0e291645191bbc3a30e94964efaaaf54bb99ed0792f6aa6d315b53595092a419"
+    },
+    {
+      "bytes": 10236,
+      "path": "repo/src/agent_evidence/aep/bundle.py",
+      "sha256": "sha256:4444bc4790a28af3eeaf9e43e180bdf521b81fa838b89b1cb6c6e015c5ca8e23"
+    },
+    {
+      "bytes": 1389,
+      "path": "repo/src/agent_evidence/aep/canonicalizer.py",
+      "sha256": "sha256:74f6af8f1b41496460c0a680718e7c04a4ba0fdf02ce6f4c80195684fb209c5a"
+    },
+    {
+      "bytes": 1482,
+      "path": "repo/src/agent_evidence/aep/hash_chain.py",
+      "sha256": "sha256:d9e5bbb6b9a4fb4a4daf78167e8e62424a7b64e9134d89183e90f99784c7198b"
+    },
+    {
+      "bytes": 4451,
+      "path": "repo/src/agent_evidence/aep/schema_v0.1.json",
+      "sha256": "sha256:9f8fc6a9bb46cc1e852796a74ad201dc9b58abffd764cefedb7f909e54c8ef98"
+    },
+    {
+      "bytes": 11691,
+      "path": "repo/src/agent_evidence/aep/verify.py",
+      "sha256": "sha256:ecffe916baf3880f862dc0d5dad5247d7c7ac22f38d59686aaf23d091ef65326"
+    },
+    {
+      "bytes": 43,
+      "path": "repo/src/agent_evidence/cli/__init__.py",
+      "sha256": "sha256:f44571985896b00a2a589e9baf56dcdc1c6503bd49c8e40fdbc7d41e15f693b1"
+    },
+    {
+      "bytes": 41364,
+      "path": "repo/src/agent_evidence/cli/main.py",
+      "sha256": "sha256:b2b98557d4ea695629e4b8296b74698c985568c431c7d00bb7ef585d8944cf74"
+    },
+    {
+      "bytes": 255,
+      "path": "repo/src/agent_evidence/crypto/__init__.py",
+      "sha256": "sha256:cb22781a25b89328755da898b727e98c32f00c78d63d1689c2add18c747156fe"
+    },
+    {
+      "bytes": 1388,
+      "path": "repo/src/agent_evidence/crypto/chain.py",
+      "sha256": "sha256:39a5f09ef63c904985595adae82efbeeaa2a5428c064dc7e34612b7ce3f888c7"
+    },
+    {
+      "bytes": 610,
+      "path": "repo/src/agent_evidence/crypto/hashing.py",
+      "sha256": "sha256:17bad2f8cbbf8e28dc7370a2b9429780703d4295d5530529680430724859101c"
+    },
+    {
+      "bytes": 46055,
+      "path": "repo/src/agent_evidence/export.py",
+      "sha256": "sha256:c651aa46f6b6c7584df88e33330e9955187b00c671f84a82b04eb43096823422"
+    },
+    {
+      "bytes": 884,
+      "path": "repo/src/agent_evidence/integrations/__init__.py",
+      "sha256": "sha256:d11fd42c2dfb043788c8370e7859f0e893c48a69878f321a08b3e943b15c11be"
+    },
+    {
+      "bytes": 28201,
+      "path": "repo/src/agent_evidence/integrations/automaton.py",
+      "sha256": "sha256:3ab5c43dae190d0b4c7f6001fe12ab0e6d75e972cbe40691b229186461be9f12"
+    },
+    {
+      "bytes": 23543,
+      "path": "repo/src/agent_evidence/integrations/langchain.py",
+      "sha256": "sha256:2596779384eb24ba7e6e3f7a223eccffc4bdc9aec3a59f4491b7263d94f3d484"
+    },
+    {
+      "bytes": 9645,
+      "path": "repo/src/agent_evidence/integrations/openai_agents.py",
+      "sha256": "sha256:c70352455804fd5f070561f9878f1ed69e50e01a5f7257606140fcbcb6dfc403"
+    },
+    {
+      "bytes": 12322,
+      "path": "repo/src/agent_evidence/manifest.py",
+      "sha256": "sha256:73bbacd7d544cf53d073d675321807dcb3df458d35c929e8538297d263101669"
+    },
+    {
+      "bytes": 70,
+      "path": "repo/src/agent_evidence/mcp/__init__.py",
+      "sha256": "sha256:133e2d8f7846d35cfb27badd460416e7d582347679e720d4274425f6d24a5b90"
+    },
+    {
+      "bytes": 6827,
+      "path": "repo/src/agent_evidence/mcp/server.py",
+      "sha256": "sha256:7ea5307090c5075d6505c30ce5f3d6c5ff6cf98e84d23a23006bd79b9f44385e"
+    },
+    {
+      "bytes": 3126,
+      "path": "repo/src/agent_evidence/models.py",
+      "sha256": "sha256:ca760022adb523a3d07a4d2731fbae75cdac543d544e0dac6c4c2c9a8eb34b4d"
+    },
+    {
+      "bytes": 17901,
+      "path": "repo/src/agent_evidence/oap.py",
+      "sha256": "sha256:591dff8708685ca1cbd296c801b567dedad82f28b649c941c987c66e8cb25af5"
+    },
+    {
+      "bytes": 4905,
+      "path": "repo/src/agent_evidence/recorder.py",
+      "sha256": "sha256:60db99bc43839227d4d5606f7b401f1e1d4c9cbec05e819d04ff10e4a9435a5c"
+    },
+    {
+      "bytes": 18949,
+      "path": "repo/src/agent_evidence/review_pack.py",
+      "sha256": "sha256:68a22a411ba6e8f047946e2a053a987661efbca185040b03cd1d2e36f1b4c572"
+    },
+    {
+      "bytes": 2689,
+      "path": "repo/src/agent_evidence/schema/evidence.schema.json",
+      "sha256": "sha256:8dbf94645bfcbfaa217e42a4c0e517549ed04b15b350771486cc2d28ebf8dff8"
+    },
+    {
+      "bytes": 9764,
+      "path": "repo/src/agent_evidence/schema/execution-evidence-operation-accountability-profile-v0.1.schema.json",
+      "sha256": "sha256:cadff8c3b30a47f58563fa8700bcb2aa962338bc68336907d4f228e9b2387ea8"
+    },
+    {
+      "bytes": 4484,
+      "path": "repo/src/agent_evidence/serialization.py",
+      "sha256": "sha256:4c923ffc660bdab186e91b990a8914b515d1aa490fb13b3d20f6e7b232baaabe"
+    },
+    {
+      "bytes": 210,
+      "path": "repo/src/agent_evidence/server/__init__.py",
+      "sha256": "sha256:ae3b3c2319c5b576479b51c348ed6c6890daf489762941a1187da8ff328c1b3d"
+    },
+    {
+      "bytes": 9796,
+      "path": "repo/src/agent_evidence/server/local_api.py",
+      "sha256": "sha256:20a9f30b2bffa1f88a818c313a41875a454e11ab81240e8c845d7a4c08e9738a"
+    },
+    {
+      "bytes": 531,
+      "path": "repo/src/agent_evidence/storage/__init__.py",
+      "sha256": "sha256:ef44921c4489b60d12cfbcc268a9bd758ddc1d044ae62d7c230fc23e41cd9da2"
+    },
+    {
+      "bytes": 2321,
+      "path": "repo/src/agent_evidence/storage/base.py",
+      "sha256": "sha256:da4133d79b983f050711dc4586750e2df0193ae2dcc39b60bf6728d3db8fc88e"
+    },
+    {
+      "bytes": 996,
+      "path": "repo/src/agent_evidence/storage/factory.py",
+      "sha256": "sha256:abb03fb7fa86b38692755e0e555e0481fe3821ca5e5806ecbec836f8a48c4e37"
+    },
+    {
+      "bytes": 6995,
+      "path": "repo/src/agent_evidence/storage/local.py",
+      "sha256": "sha256:57ac498560fc781cd478dea7bcb44b7c5c730b210735a931fd7c58501a03848a"
+    },
+    {
+      "bytes": 527,
+      "path": "repo/src/agent_evidence/storage/migrate.py",
+      "sha256": "sha256:831a54c2a4aff4c3719e4b9af742a80a790577700e07a3751792553e9ef51cca"
+    },
+    {
+      "bytes": 8665,
+      "path": "repo/src/agent_evidence/storage/sql.py",
+      "sha256": "sha256:cf3137ac199c6dcec57b1971a26b966a294746ef0e28aff89d1d37be4e57ee60"
+    },
+    {
+      "bytes": 1794,
+      "path": "schema/execution-evidence-object.schema.json",
+      "sha256": "sha256:0462e63f78b3aa017f1c5f9ceebc4a78dc623aab0e5d8d55d50e59514d6c86ed"
+    },
+    {
+      "bytes": 9764,
+      "path": "schema/execution-evidence-operation-accountability-profile-v0.1.schema.json",
+      "sha256": "sha256:cadff8c3b30a47f58563fa8700bcb2aa962338bc68336907d4f228e9b2387ea8"
+    },
+    {
+      "bytes": 12864,
+      "path": "scripts/convert_otel_trace_to_eeoap.py",
+      "sha256": "sha256:24e46cc30457c30e8862a8b14af317a8dfd3b83f849379d175e5c2716155a506"
+    },
+    {
+      "bytes": 2298,
+      "path": "scripts/fetch_otel_demo_trace.py",
+      "sha256": "sha256:075027c8856df7c45678f39c47c2b362b7de75456536bef039f591b544db0bd9"
+    },
+    {
+      "bytes": 2146,
+      "path": "scripts/generate_softwarex_v2_evaluation_table.py",
+      "sha256": "sha256:29e8908e5b0f73a11acb6d2370a1c390c9ecb1228c6431b71ae04206666af2f0"
+    },
+    {
+      "bytes": 3855,
+      "path": "scripts/render_markdown_to_simple_pdf.py",
+      "sha256": "sha256:39ca3baccb77b0ca79ed8465bcbb8495e35bf4e3a3cb48468a409a056974b717"
+    },
+    {
+      "bytes": 1688,
+      "path": "scripts/reproduce_paper.sh",
+      "sha256": "sha256:caae4bda482300db224815ab6ac41bda2628a9e5ae31cccaac9022079e2ea3f2"
+    },
+    {
+      "bytes": 17915,
+      "path": "scripts/validate_softwarex_package.py",
+      "sha256": "sha256:1ad1f05810bc67b300c76cbf9eefd906d1bdc8df7742ff4bf43b323728192f73"
+    },
+    {
+      "bytes": 1891,
+      "path": "spec/execution-evidence-object.md",
+      "sha256": "sha256:41f7df5496d5ce13f13dbbceb05a123d3fde57de5f5c444948574607a4b1ca51"
+    },
+    {
+      "bytes": 8062,
+      "path": "spec/execution-evidence-operation-accountability-profile-v0.1.md",
+      "sha256": "sha256:ba8fb0ae317d1474c60d7f77b8e8da1fab0eccb447213e2b669fe9e30413cd0e"
+    },
+    {
+      "bytes": 4231,
+      "path": "specs/eeoap/v0.1/eeoap.schema.json",
+      "sha256": "sha256:37a4520e2006a5afa850894a249fc75d5a90ba48520e2996d917eb33d25c7de2"
+    },
+    {
+      "bytes": 53,
+      "path": "tests/__init__.py",
+      "sha256": "sha256:16a532dc3dcdc83393cc3e847dad6f8625c9b2acecd8046e15a5063651ed760a"
+    },
+    {
+      "bytes": 450,
+      "path": "tests/fixtures/agent_evidence_profile/invalid/live-automaton-runtime-root-tampered-bundle/erc8004-validation-stub.json",
+      "sha256": "sha256:38f0f40a5e1e34d3b14d8ab9e7deaabf65cac878566a614f5df0ea93714e3364"
+    },
+    {
+      "bytes": 412,
+      "path": "tests/fixtures/agent_evidence_profile/invalid/live-automaton-runtime-root-tampered-bundle/fdo-stub.json",
+      "sha256": "sha256:8345cf6975a7ceded823a1e9cee23c4048c5741c88962be1df36f9677ae79f74"
+    },
+    {
+      "bytes": 1975,
+      "path": "tests/fixtures/agent_evidence_profile/invalid/live-automaton-runtime-root-tampered-bundle/manifest.json",
+      "sha256": "sha256:101e6c0a92662a7809d351f112e366e279c5a9dfbe830b6f4d32f642b5a2a0be"
+    },
+    {
+      "bytes": 2706,
+      "path": "tests/fixtures/agent_evidence_profile/invalid/live-automaton-runtime-root-tampered-bundle/records.jsonl",
+      "sha256": "sha256:860f6e9179d24edf1995c02df4258c4e2578f6eec005ee614f9120110fa6871d"
+    },
+    {
+      "bytes": 450,
+      "path": "tests/fixtures/agent_evidence_profile/invalid/live-automaton-tampered-bundle/erc8004-validation-stub.json",
+      "sha256": "sha256:38f0f40a5e1e34d3b14d8ab9e7deaabf65cac878566a614f5df0ea93714e3364"
+    },
+    {
+      "bytes": 412,
+      "path": "tests/fixtures/agent_evidence_profile/invalid/live-automaton-tampered-bundle/fdo-stub.json",
+      "sha256": "sha256:8345cf6975a7ceded823a1e9cee23c4048c5741c88962be1df36f9677ae79f74"
+    },
+    {
+      "bytes": 1909,
+      "path": "tests/fixtures/agent_evidence_profile/invalid/live-automaton-tampered-bundle/manifest.json",
+      "sha256": "sha256:08258eb24ecf4bb1e158c94ff902b907499b9075b93e0b1287f26e236ee9f413"
+    },
+    {
+      "bytes": 2698,
+      "path": "tests/fixtures/agent_evidence_profile/invalid/live-automaton-tampered-bundle/records.jsonl",
+      "sha256": "sha256:9038c9fcb880de44067930f8e81087c306ed8098105e55a7130cfa36ba8afdc8"
+    },
+    {
+      "bytes": 1007,
+      "path": "tests/fixtures/agent_evidence_profile/invalid/tampered-bundle/manifest.json",
+      "sha256": "sha256:5299990ff23de8e89b503a7449720012ccea53b064e145bf12476486202ad370"
+    },
+    {
+      "bytes": 1714,
+      "path": "tests/fixtures/agent_evidence_profile/invalid/tampered-bundle/records.jsonl",
+      "sha256": "sha256:548a826e40e15909dd77c64915d1296d9261840bbd9c8353bf5f89d580c67206"
+    },
+    {
+      "bytes": 1007,
+      "path": "tests/fixtures/agent_evidence_profile/valid/basic-bundle/manifest.json",
+      "sha256": "sha256:5299990ff23de8e89b503a7449720012ccea53b064e145bf12476486202ad370"
+    },
+    {
+      "bytes": 1712,
+      "path": "tests/fixtures/agent_evidence_profile/valid/basic-bundle/records.jsonl",
+      "sha256": "sha256:d98bf43ab5a8ed3183f01a34f2e82438f9e4103b1624d524dbfdeef90a8b5ddf"
+    },
+    {
+      "bytes": 450,
+      "path": "tests/fixtures/agent_evidence_profile/valid/live-automaton-bundle/erc8004-validation-stub.json",
+      "sha256": "sha256:38f0f40a5e1e34d3b14d8ab9e7deaabf65cac878566a614f5df0ea93714e3364"
+    },
+    {
+      "bytes": 412,
+      "path": "tests/fixtures/agent_evidence_profile/valid/live-automaton-bundle/fdo-stub.json",
+      "sha256": "sha256:8345cf6975a7ceded823a1e9cee23c4048c5741c88962be1df36f9677ae79f74"
+    },
+    {
+      "bytes": 2055,
+      "path": "tests/fixtures/agent_evidence_profile/valid/live-automaton-bundle/manifest.json",
+      "sha256": "sha256:f6b937479ea6bb7508f9282dea93d66e3e65b0aa8000eca2936c24dea4f87978"
+    },
+    {
+      "bytes": 2689,
+      "path": "tests/fixtures/agent_evidence_profile/valid/live-automaton-bundle/records.jsonl",
+      "sha256": "sha256:28cdce49a72d44b124469f412aca320be636df92461344a99fee75984da1b0f0"
+    },
+    {
+      "bytes": 450,
+      "path": "tests/fixtures/agent_evidence_profile/valid/live-automaton-runtime-root-bundle/erc8004-validation-stub.json",
+      "sha256": "sha256:38f0f40a5e1e34d3b14d8ab9e7deaabf65cac878566a614f5df0ea93714e3364"
+    },
+    {
+      "bytes": 412,
+      "path": "tests/fixtures/agent_evidence_profile/valid/live-automaton-runtime-root-bundle/fdo-stub.json",
+      "sha256": "sha256:8345cf6975a7ceded823a1e9cee23c4048c5741c88962be1df36f9677ae79f74"
+    },
+    {
+      "bytes": 1975,
+      "path": "tests/fixtures/agent_evidence_profile/valid/live-automaton-runtime-root-bundle/manifest.json",
+      "sha256": "sha256:101e6c0a92662a7809d351f112e366e279c5a9dfbe830b6f4d32f642b5a2a0be"
+    },
+    {
+      "bytes": 2689,
+      "path": "tests/fixtures/agent_evidence_profile/valid/live-automaton-runtime-root-bundle/records.jsonl",
+      "sha256": "sha256:28cdce49a72d44b124469f412aca320be636df92461344a99fee75984da1b0f0"
+    },
+    {
+      "bytes": 4960,
+      "path": "tests/test_aep_profile.py",
+      "sha256": "sha256:7e3d2842a9a1f20bdd25827a9ea9826f6a2cad339ceab05df2e3031eaf720e2a"
+    },
+    {
+      "bytes": 16816,
+      "path": "tests/test_automaton_integration.py",
+      "sha256": "sha256:971160608d1c1b04c604391648f4b762a67dfb4c333c6c9617060e1c5bf16de1"
+    },
+    {
+      "bytes": 6645,
+      "path": "tests/test_cli.py",
+      "sha256": "sha256:7844b5a469c5346d2c3cb09a3dbd7306c7c3820518c1246aba4cf3699c8473b3"
+    }
+  ],
+  "generated_at": "2026-06-21T01:51:41.421256Z",
+  "package_id": "softwarex_v2_submission_package",
+  "status": "prepared_package"
+}

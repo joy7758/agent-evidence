@@ -1,0 +1,668 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R 7 0 R 9 0 R 11 0 R 13 0 R 15 0 R] /Count 6 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Length 2753 >>
+stream
+BT
+/F1 10 Tf
+54 740 Td
+(A SOFTWARE ARTIFACT FOR DETERMINISTIC CONVERSION OF OPENTELEMETRY TRACES INTO STRUCTURED) Tj
+0 -14 Td
+(EXECUTION EVIDENCE) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Bin Zhang) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Independent Researcher, China) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(ABSTRACT) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(This software artifact implements a deterministic transformation from OpenTelemetry trace) Tj
+0 -14 Td
+(data into structured execution evidence representations. The repository contains the schema,) Tj
+0 -14 Td
+(conversion script, validation path, trace provenance record, baseline comparison, and) Tj
+0 -14 Td
+(reproducibility script. The evaluation uses synthetic traces, a public OpenTelemetry trace) Tj
+0 -14 Td
+(fixture, and a noisy-trace recovery case to check local conversion and validator behavior.) Tj
+0 -14 Td
+(The artifact is designed for reusable inspection of trace-derived execution evidence in) Tj
+0 -14 Td
+(scientific software workflows.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(KEYWORDS) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(OpenTelemetry; tracing; evidence; validation; reproducibility) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(REQUIRED METADATA) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(CURRENT CODE VERSION) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(| Nr. | Code metadata description | Metadata |) Tj
+0 -14 Td
+(| --- | --- | --- |) Tj
+0 -14 Td
+(| C1 | Current code version | `v2.1-softwarex-template` |) Tj
+0 -14 Td
+(| C2 | Permanent GitHub link to code/repository used for this code version |) Tj
+0 -14 Td
+(`https://github.com/joy7758/agent-evidence/releases/tag/v2.1-softwarex-template` |) Tj
+0 -14 Td
+(| C3 | Legal Code License | Apache License 2.0 |) Tj
+0 -14 Td
+(| C4 | Code versioning system used | Git |) Tj
+0 -14 Td
+(| C5 | Software code languages, tools, and services used | Python 3, JSON Schema, pytest,) Tj
+0 -14 Td
+(OpenTelemetry JSON fixtures |) Tj
+0 -14 Td
+(| C6 | Compilation requirements, operating environments and dependencies | Standard Python) Tj
+0 -14 Td
+(environment; install with `python3 -m venv .venv` and `.venv/bin/python -m pip install -e) Tj
+0 -14 Td
+(".[test]"` |) Tj
+0 -14 Td
+(| C7 | If available Link to developer documentation/manual | `README.md`,) Tj
+0 -14 Td
+(`README_SOFTWAREX_SUBMISSION.md`, `docs/public/EEOAP_v0.1_public_spec.md` |) Tj
+0 -14 Td
+(| C8 | Support email for questions | `joy7759@gmail.com` |) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(MAIN TEXT) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(1. MOTIVATION AND SIGNIFICANCE) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(OpenTelemetry traces are widely used to inspect distributed execution, but raw trace JSON is) Tj
+0 -14 Td
+(not, by itself, a single validator-readable evidence object. A trace records spans, timing,) Tj
+0 -14 Td
+(attributes, and status information. A post-execution review task often needs a different) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 3197 >>
+stream
+BT
+/F1 10 Tf
+54 740 Td
+(object: one that binds the original trace, selected span identifiers, provenance, evidence) Tj
+0 -14 Td
+(references, integrity digests, and a validation result into a compact record that can be) Tj
+0 -14 Td
+(checked outside the runtime that produced the trace.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The software described here addresses that gap for a bounded research-software use case. It) Tj
+0 -14 Td
+(converts OpenTelemetry Protocol \(OTLP\) JSON trace data into an Execution Evidence and) Tj
+0 -14 Td
+(Operation Accountability Profile \(EEOAP\) evidence object. In this repository, EEOAP is a) Tj
+0 -14 Td
+(versioned, repository-scoped JSON schema and validation target, documented in) Tj
+0 -14 Td
+(`docs/public/EEOAP_v0.1_public_spec.md` and `specs/eeoap/v0.1/eeoap.schema.json`. This) Tj
+0 -14 Td
+(implementation shows how OpenTelemetry trace data can be transformed into an Execution) Tj
+0 -14 Td
+(Evidence and Operation Accountability Profile record with preserved identifiers, provenance) Tj
+0 -14 Td
+(links, and validator-readable output. The artifact complements OpenTelemetry by targeting) Tj
+0 -14 Td
+(validator-readable execution evidence rather than telemetry capture.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The intended users are researchers, tool builders, and developers who already have) Tj
+0 -14 Td
+(OpenTelemetry trace exports and want to inspect how a run can be represented as structured) Tj
+0 -14 Td
+(execution evidence. The artifact is useful when the question is not only "what spans were) Tj
+0 -14 Td
+(observed?" but also "which trace produced this evidence object, what identifiers and digests) Tj
+0 -14 Td
+(were preserved, and did the generated object pass the repository validator?") Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Related tools such as Jaeger and Zipkin support trace storage and visualization. Logging) Tj
+0 -14 Td
+(frameworks record operational events, usually without a single schema-bound evidence object.) Tj
+0 -14 Td
+(This artifact complements those tools by producing a reproducible trace-to-evidence mapping) Tj
+0 -14 Td
+(for local post-run inspection.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(2. SOFTWARE DESCRIPTION) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(2.1 SOFTWARE ARCHITECTURE) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The artifact is implemented as a Python research software package with a small conversion) Tj
+0 -14 Td
+(and validation surface. The primary entry point for reproducing the paper results is) Tj
+0 -14 Td
+(`scripts/reproduce_paper.sh`:) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(```bash) Tj
+0 -14 Td
+(scripts/reproduce_paper.sh) Tj
+0 -14 Td
+(```) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The architecture is:) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(![Architecture]\(docs/figures/architecture.svg\)) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The conversion path has five components:) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(1. OTLP JSON input fixture: `data/otel/raw_demo_trace.json`.) Tj
+0 -14 Td
+(2. Trace parser: extracts resource spans, scope spans, trace identifiers, span identifiers,) Tj
+0 -14 Td
+(timestamps, attributes, and status fields.) Tj
+0 -14 Td
+(3. EEOAP mapper: writes the trace-derived execution evidence object and adapter record.) Tj
+0 -14 Td
+(4. Evidence output: `data/eeoap/real_trace_evidence.json` and) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Length 2555 >>
+stream
+BT
+/F1 10 Tf
+54 740 Td
+(`data/eeoap/real_trace_adapter_record.json`.) Tj
+0 -14 Td
+(5. Validation and evaluation: schema checks, baseline comparison, and deterministic-output) Tj
+0 -14 Td
+(checks.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The repository also contains a public-facing EEOAP specification, JSON schemas,) Tj
+0 -14 Td
+(reproducibility scripts, experiment scripts, and pytest tests. The release archive includes) Tj
+0 -14 Td
+(the Python source tree, tests, examples, input fixtures, generated outputs, documentation,) Tj
+0 -14 Td
+(and the package manifest.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(2.2 SOFTWARE FUNCTIONALITIES) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The main functions are:) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(- parse an OpenTelemetry JSON trace fixture;) Tj
+0 -14 Td
+(- preserve trace and span identifiers in a structured output object;) Tj
+0 -14 Td
+(- bind input trace provenance through file references and digests;) Tj
+0 -14 Td
+(- generate an EEOAP evidence object and adapter record;) Tj
+0 -14 Td
+(- validate evidence objects against schema-bound requirements;) Tj
+0 -14 Td
+(- compare raw OTLP retention, generic OTLP JSON export, and EEOAP output;) Tj
+0 -14 Td
+(- reproduce the reported experiments from a clean unpacked archive.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The supported OpenTelemetry surface is intentionally explicit. The current adapter preserves) Tj
+0 -14 Td
+(trace ID, span ID, parent span ID, name, kind, timestamps, status code, selected attributes,) Tj
+0 -14 Td
+(and instrumentation-scope metadata. Events, links, detailed status semantics, and schema URL) Tj
+0 -14 Td
+(metadata are documented as extension points rather than silently treated as fully) Tj
+0 -14 Td
+(interpreted fields.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(2.3 IMPLEMENTATION AND INTERFACES) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The conversion interface can be invoked directly:) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(```bash) Tj
+0 -14 Td
+(python scripts/convert_otel_trace_to_eeoap.py \\) Tj
+0 -14 Td
+(  --input data/otel/raw_demo_trace.json \\) Tj
+0 -14 Td
+(  --output data/eeoap/real_trace_evidence.json \\) Tj
+0 -14 Td
+(  --adapter-record data/eeoap/real_trace_adapter_record.json) Tj
+0 -14 Td
+(```) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The package-level reproduction command runs schema validation, real-trace conversion,) Tj
+0 -14 Td
+(baseline comparison, the determinism oracle, the test suite, and table generation:) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(```bash) Tj
+0 -14 Td
+(scripts/reproduce_paper.sh) Tj
+0 -14 Td
+(```) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The package audit command is:) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(```bash) Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 8 0 R >>
+endobj
+10 0 obj
+<< /Length 3160 >>
+stream
+BT
+/F1 10 Tf
+54 740 Td
+(python3 scripts/validate_softwarex_package.py \\) Tj
+0 -14 Td
+(  --input release/softwarex_v2_EDITORIAL_LOCKED_FINAL.zip) Tj
+0 -14 Td
+(```) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(3. ILLUSTRATIVE EXAMPLES) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The file `examples/io_trace_to_eeoap.json` gives a compact input-output example. The input) Tj
+0 -14 Td
+(side is an OpenTelemetry JSON trace containing one span chain. The output side is an EEOAP) Tj
+0 -14 Td
+(evidence object that records the execution identifier, trace source, span summary, evidence) Tj
+0 -14 Td
+(references, status, and schema version.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(For the public OpenTelemetry fixture, the reproduction script converts) Tj
+0 -14 Td
+(`data/otel/raw_demo_trace.json` into `data/eeoap/real_trace_evidence.json`. The generated) Tj
+0 -14 Td
+(record exposes the trace identifier, span identifier, input trace digest, output statement) Tj
+0 -14 Td
+(digest, and validation status in one place. This lets a developer inspect trace identity,) Tj
+0 -14 Td
+(provenance binding, and validator status without manually traversing the raw OTLP JSON.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The evaluation suite contains four executable checks:) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(| Experiment | Source | Span count | Validator ok | Issue count |) Tj
+0 -14 Td
+(| --- | --- | ---: | --- | ---: |) Tj
+0 -14 Td
+(| `exp1_synthetic` | synthetic fixture | 2 | true | 0 |) Tj
+0 -14 Td
+(| `exp2_real_trace` | public OpenTelemetry proto example | 1 | true | 0 |) Tj
+0 -14 Td
+(| `exp3_noisy_recovery` | public example plus trace-format noise | 1 | true | 0 |) Tj
+0 -14 Td
+(| `exp4_determinism_oracle` | repeated conversion oracle | 1 | true | 0 |) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The public OpenTelemetry example is intentionally small and contains a single demonstrated) Tj
+0 -14 Td
+(span. It is included as a provenance-tracked real fixture. The synthetic experiment) Tj
+0 -14 Td
+(exercises parent-child preservation, and the noisy experiment checks behavior when non-) Tj
+0 -14 Td
+(semantic fields are added to the trace input.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(4. IMPACT) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The artifact supports research and software engineering work that needs reproducible post-) Tj
+0 -14 Td
+(execution inspection of trace-derived records. It provides a minimal, executable example of) Tj
+0 -14 Td
+(how observability data can be transformed into structured evidence that can be validated,) Tj
+0 -14 Td
+(compared, and packaged with its provenance.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The main practical benefit is inspection consistency. Raw trace retention preserves) Tj
+0 -14 Td
+(telemetry payloads, but it does not create a single operation-accountability object with) Tj
+0 -14 Td
+(policy references, evidence references, provenance links, integrity digests, and validator-) Tj
+0 -14 Td
+(readable output. The adapter adds those surfaces while preserving the original trace as an) Tj
+0 -14 Td
+(input artifact.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The baseline comparison in `experiments/results/otel_native_vs_eeoap.md` distinguishes three) Tj
+0 -14 Td
+(representations:) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(- raw OTLP retention;) Tj
+ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 10 0 R >>
+endobj
+12 0 obj
+<< /Length 2800 >>
+stream
+BT
+/F1 10 Tf
+54 740 Td
+(- OTLP exported as generic structured JSON;) Tj
+0 -14 Td
+(- EEOAP generation as a validator-readable review artifact.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(This comparison clarifies which gains come from retaining telemetry and which gains come) Tj
+0 -14 Td
+(from generating a structured evidence object. The artifact can therefore serve as a reusable) Tj
+0 -14 Td
+(testbed for future work on trace-derived evidence records, validator design, and) Tj
+0 -14 Td
+(reproducible packaging of execution traces.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(4.1 EVALUATION SCOPE) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The evaluation focuses on structural correctness and reproducibility within repository-level) Tj
+0 -14 Td
+(trace fixtures. The tests are structural rather than performance-oriented. The current) Tj
+0 -14 Td
+(package contains one public OTLP JSON example and synthetic/noisy cases for controlled) Tj
+0 -14 Td
+(checks. A broader corpus of public multi-span real traces would strengthen future) Tj
+0 -14 Td
+(evaluation, but the present artifact already provides a complete executable path from input) Tj
+0 -14 Td
+(trace fixture to validated evidence output.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(5. CONCLUSIONS) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(This SoftwareX artifact provides a reproducible Python implementation for deterministic) Tj
+0 -14 Td
+(conversion of OpenTelemetry trace data into structured execution evidence. It includes the) Tj
+0 -14 Td
+(conversion code, schemas, examples, real-trace fixture, generated outputs, tests, baseline) Tj
+0 -14 Td
+(comparison, architecture figure, and reproduction script. The contribution is a reusable) Tj
+0 -14 Td
+(software artifact: it makes the trace-to-evidence mapping inspectable, repeatable, and) Tj
+0 -14 Td
+(package-level verifiable.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(ACKNOWLEDGEMENTS) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(No specific grant funding was received for this work.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(CREDIT AUTHOR STATEMENT) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Bin Zhang: Conceptualization, Methodology, Software, Validation, Investigation, Data) Tj
+0 -14 Td
+(curation, Writing - original draft, Writing - review and editing.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(DECLARATION OF COMPETING INTEREST) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The author declares that there are no known competing financial interests or personal) Tj
+0 -14 Td
+(relationships that could have appeared to influence the work reported in this paper.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(FUNDING) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(This research did not receive any specific grant from funding agencies in the public,) Tj
+0 -14 Td
+(commercial, or not-for-profit sectors.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(DATA AVAILABILITY) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The software artifact, input trace fixtures, generated EEOAP outputs, evaluation scripts,) Tj
+ET
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 12 0 R >>
+endobj
+14 0 obj
+<< /Length 2750 >>
+stream
+BT
+/F1 10 Tf
+54 740 Td
+(reproducibility script, and package manifest are available in the public repository release) Tj
+0 -14 Td
+(record:) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(`https://github.com/joy7758/agent-evidence/releases/tag/v2.1-softwarex-template`) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The GitHub release tag identifies the exact package snapshot used for this submission.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(DECLARATION OF GENERATIVE AI AND AI-ASSISTED TECHNOLOGIES IN THE MANUSCRIPT PREPARATION) Tj
+0 -14 Td
+(PROCESS) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(During the preparation of this work, the author used ChatGPT, Codex, and AI-assisted) Tj
+0 -14 Td
+(research tools to support manuscript organization, language refinement, and revision) Tj
+0 -14 Td
+(planning. After using these tools, the author reviewed, edited, verified, and adapted the) Tj
+0 -14 Td
+(content as needed.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(The author takes full responsibility for the content of the submitted manuscript.) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(REFERENCES) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(1. OpenTelemetry. Trace API specification.) Tj
+0 -14 Td
+(https://opentelemetry.io/docs/specs/otel/trace/api/) Tj
+0 -14 Td
+(2. OpenTelemetry. Common specification concepts.) Tj
+0 -14 Td
+(https://opentelemetry.io/docs/specs/otel/common/) Tj
+0 -14 Td
+(3. open-telemetry/opentelemetry-proto. `examples/trace.json`. https://github.com/open-) Tj
+0 -14 Td
+(telemetry/opentelemetry-proto/blob/main/examples/trace.json) Tj
+0 -14 Td
+(4. open-telemetry/opentelemetry-proto. `opentelemetry/proto/trace/v1/trace.proto`.) Tj
+0 -14 Td
+(https://github.com/open-telemetry/opentelemetry-) Tj
+0 -14 Td
+(proto/blob/main/opentelemetry/proto/trace/v1/trace.proto) Tj
+0 -14 Td
+(5. Jaeger Documentation. https://www.jaegertracing.io/docs/) Tj
+0 -14 Td
+(6. OpenZipkin. https://zipkin.io/) Tj
+0 -14 Td
+(7. Zhang B. Agent Evidence: deterministic OpenTelemetry trace to structured execution) Tj
+0 -14 Td
+(evidence conversion. Version v2.1-softwarex-template [software]. GitHub; 2026 Jun 21.) Tj
+0 -14 Td
+(https://github.com/joy7758/agent-evidence/releases/tag/v2.1-softwarex-template) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(CURRENT EXECUTABLE SOFTWARE VERSION) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(- Current software version: `v2.1-softwarex-template`.) Tj
+0 -14 Td
+(- Permanent link to executables of this version: `https://github.com/joy7758/agent-) Tj
+0 -14 Td
+(evidence/releases/tag/v2.1-softwarex-template`.) Tj
+0 -14 Td
+(- Legal software license: Apache License 2.0.) Tj
+0 -14 Td
+(- Computing platform / operating system: macOS/Linux with Python 3.) Tj
+0 -14 Td
+(- Installation requirements and dependencies: `pip install -e ".[test]"`.) Tj
+0 -14 Td
+(- User manual: `README_SOFTWAREX_SUBMISSION.md`.) Tj
+0 -14 Td
+(- Support email: `joy7759@gmail.com`.) Tj
+ET
+endstream
+endobj
+15 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 14 0 R >>
+endobj
+xref
+0 16
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000154 00000 n 
+0000000224 00000 n 
+0000003028 00000 n 
+0000003154 00000 n 
+0000006402 00000 n 
+0000006528 00000 n 
+0000009134 00000 n 
+0000009260 00000 n 
+0000012472 00000 n 
+0000012600 00000 n 
+0000015452 00000 n 
+0000015580 00000 n 
+0000018382 00000 n 
+trailer
+<< /Size 16 /Root 1 0 R >>
+startxref
+18510
+%%EOF

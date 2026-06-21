@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/agent-evidence/evidence.schema.json",
+  "title": "EvidenceEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event",
+    "hashes"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "2.0.0"
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "timestamp",
+        "event_type",
+        "actor",
+        "inputs",
+        "outputs",
+        "context",
+        "metadata"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "event_type": {
+          "type": "string"
+        },
+        "actor": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "object"
+        },
+        "outputs": {
+          "type": "object"
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source",
+            "ancestor_span_ids",
+            "tags",
+            "attributes"
+          ],
+          "properties": {
+            "source": {
+              "type": "string"
+            },
+            "component": {
+              "type": ["string", "null"]
+            },
+            "source_event_type": {
+              "type": ["string", "null"]
+            },
+            "span_id": {
+              "type": ["string", "null"]
+            },
+            "parent_span_id": {
+              "type": ["string", "null"]
+            },
+            "ancestor_span_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "name": {
+              "type": ["string", "null"]
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "attributes": {
+              "type": "object"
+            }
+          }
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    },
+    "hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_hash",
+        "previous_event_hash",
+        "chain_hash"
+      ],
+      "properties": {
+        "event_hash": {
+          "type": "string"
+        },
+        "previous_event_hash": {
+          "type": ["string", "null"]
+        },
+        "chain_hash": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

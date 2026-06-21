@@ -1,0 +1,21 @@
+{
+  "adapter_record": "data/eeoap/real_trace_adapter_record.json",
+  "affected_clauses": [
+    "EEOAP-001",
+    "EEOAP-002",
+    "EEOAP-003",
+    "EEOAP-004",
+    "EEOAP-005"
+  ],
+  "boundary": "Local experiment receipt only; not production telemetry, external validation, certification, publication status, or deployment proof.",
+  "description": "Official OpenTelemetry OTLP JSON example converted to EEOAP.",
+  "experiment_id": "exp2_real_trace",
+  "input_trace": "data/otel/raw_demo_trace.json",
+  "issue_count": 0,
+  "output_profile": "data/eeoap/real_trace_evidence.json",
+  "primary_error_code": null,
+  "source_note": "Fetched from open-telemetry/opentelemetry-proto examples/trace.json.",
+  "source_type": "public_opentelemetry_proto_example",
+  "span_count": 1,
+  "validator_ok": true
+}

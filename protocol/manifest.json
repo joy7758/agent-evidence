@@ -1,0 +1,28 @@
+{
+  "protocol_name": "Execution Evidence and Operation Accountability Profile",
+  "short_name": "EEOAP",
+  "version": "0.1.0",
+  "canonical_reference": "docs/protocol/profile.md",
+  "clause_index": "protocol/clause-index.json",
+  "clause_prefix": "EEOAP",
+  "primary_artifact": "operation_accountability_statement",
+  "required_surfaces": [
+    "operation",
+    "policy",
+    "evidence",
+    "provenance",
+    "validation_report"
+  ],
+  "validator_command": "agent-evidence validate-profile examples/minimal-valid-evidence.json",
+  "claim_scope": {
+    "positive": "local profile-aware validation surface for completed operations",
+    "non_claims": [
+      "legal_compliance",
+      "external_certification",
+      "full_fdo_implementation",
+      "general_provenance_standard",
+      "deployment_proof",
+      "publication_evidence"
+    ]
+  }
+}

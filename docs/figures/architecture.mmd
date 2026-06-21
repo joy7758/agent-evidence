@@ -1,0 +1,17 @@
+flowchart LR
+    collector["OpenTelemetry Collector / OTLP JSON Source"]
+    parser["Trace Parser"]
+    mapper["EEOAP Mapper"]
+    store["Evidence Store"]
+    audit["Inspection Interface"]
+    validator["Local Validator"]
+
+    collector --> parser
+    parser --> mapper
+    mapper --> store
+    store --> audit
+    mapper --> validator
+    validator --> audit
+
+    note["Validation report: schema, references, and provenance checks."]
+    validator -.-> note

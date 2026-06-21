@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/joy7758/agent-evidence/blob/main/specs/eeoap/v0.1/eeoap.schema.json",
+  "title": "EEOAP v0.1 Trace-Grounded Evidence Record",
+  "description": "Repository-local EEOAP v0.1 trace-grounding record used by the OpenTelemetry-to-EEOAP trace-grounding artifact. This schema does not claim external standard-body adoption, legal compliance, certification, or deployment proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "execution_id",
+    "timestamp",
+    "trace_source",
+    "spans",
+    "evidence",
+    "status"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "v0.1",
+      "description": "Schema version for this repository-local trace-grounding record."
+    },
+    "execution_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable identifier for the converted execution or trace."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Event time selected from the trace, normally the earliest span start time."
+    },
+    "trace_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "system",
+        "format",
+        "locator",
+        "digest"
+      ],
+      "properties": {
+        "system": {
+          "type": "string",
+          "const": "opentelemetry"
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "otlp-json"
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "spans": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "trace_id",
+          "span_id",
+          "name",
+          "start_time_unix_nano",
+          "end_time_unix_nano",
+          "kind",
+          "attributes"
+        ],
+        "properties": {
+          "trace_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "span_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parent_span_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "start_time_unix_nano": {
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "end_time_unix_nano": {
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "kind": {
+            "type": [
+              "integer",
+              "string"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidence_id",
+          "role",
+          "object_ref",
+          "digest",
+          "locator"
+        ],
+        "properties": {
+          "evidence_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "input",
+              "output",
+              "artifact"
+            ]
+          },
+          "object_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "derived_from_span_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "succeeded",
+        "failed",
+        "unknown"
+      ]
+    }
+  }
+}
